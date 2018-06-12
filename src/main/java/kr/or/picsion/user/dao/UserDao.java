@@ -18,6 +18,10 @@ public interface UserDao {
 	public List<Picture> respectPicList(int userNo);
 	public List<User> followingUserList(int userNo);	//내가 따르는 회원 리스트 (팔로잉 회원들)
 	public List<User> followerUserList(int userNo);		//나를 따르는 회원 리스트 (팔로워 회원들)
+	public int followingConfirm(int userNo, int followingUserNo);	//팔로잉하고 있는지 확인
+	
+	public void insertFollow(int userNo, int followingUserNo);		//팔로잉테이블에   insert
+	public void deleteFollow(int userNo, int followingUserNo);		//팔로잉테이블에서 delete
 	
 	//////////////////////////
 	List<User> getPicsionList();

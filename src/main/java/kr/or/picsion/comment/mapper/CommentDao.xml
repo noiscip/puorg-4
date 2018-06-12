@@ -5,4 +5,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="kr.or.picsion.comment.dao.CommentDao">
 
+<select id="commentList" resultType="kr.or.picsion.comment.dto.Comment">
+  select * from COMMENTS where brdNo=#{brdNo}
+ </select>
+
+
+<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment">
+insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})
+</insert>
+
+
 </mapper>

@@ -9,9 +9,9 @@ public interface BoardDao {
 
 	public List<Board> boardList(HashMap<String, Integer> map);
 	public int insertBoard(Board board);
-	public int deleteBoard(int boardNo);
+	public int deleteBoard(int brdNo);
 	public int updateBoard(Board board);
-	public Board selectBoard(int boardNo);
+	public Board selectBoard(int brdNo);
 	public List<Board> writerBoard(int userNo);
 	public int getBoardCount();
 }

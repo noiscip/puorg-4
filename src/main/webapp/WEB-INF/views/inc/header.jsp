@@ -27,7 +27,7 @@
                       <i class="material-icons">apps</i> Components
                   </a>
                   <div class="dropdown-menu dropdown-with-icons">
-                    <a href="board.ps" class="dropdown-item">
+                    <a href="<%=request.getContextPath()%>/board.ps" class="dropdown-item">
                         <i class="material-icons">list</i> 요청 게시판
                     </a>
                     <a href="" class="dropdown-item">
@@ -57,7 +57,6 @@
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item">
-						 
 							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"> 
 								  <img style ="width: 30px;" alt="Circle Image" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
 								  ${sessionScope.user.userName}

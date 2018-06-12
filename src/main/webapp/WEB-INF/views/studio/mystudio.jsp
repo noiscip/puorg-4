@@ -3,22 +3,57 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
+<script type="text/javascript">
+	$(function() {
+		$('#messageSend').click(function(){
+			var data= {msgContent:$("#msgContent").val(), 
+						sendUserNo:${sessionScope.user.userNo}, 
+						receiveUserNo:${userinfo.userNo}
+					   };
+			$.ajax({
+				  url : "/picsion/message/send.ps",
+				  data: data,
+				  success : function(){
+				      $("#msgContent").val("");
+				  },
+				  error: function(){
+				   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
+				  }
+			});
+		})
+		
+		$('#follow').click(function(){
+			var data = {userNo:${sessionScope.user.userNo}, 
+						followingUserNo:${userinfo.userNo}}			
+			$.ajax({
+				  url : "/picsion/user/following.ps",
+				  data: data,
+				  success : function(data){
+					  console.log(data.result);
+					  if(data.result==1){
+						  $('#follow-icon')[0].innerHTML = 'favorite_border'
+						  $('#follow')[0].childNodes[2].data = '팔로우'
+					  }else{
+						  $('#follow-icon')[0].innerHTML = 'favorite'
+						  $('#follow')[0].childNodes[2].data = '팔로우 취소' 
+					  }
+				  }
+			});
+		})
+		
+	})
+</script>
+
 <style>
 	.img-size{
-		width: 300px;
 		height: 300px;
 	}
 	
 	.user-img{
-		width:45px;
-		height:45px;
+		width:50px;
+		height:50px;
 	}
 </style>
-
-<!-- get 파라미터 숨기기 -->
-<!-- <script>
-	history.replaceState({}, null, location.pathname);
-</script> -->
 
   
   <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -38,14 +73,44 @@
               		</c:otherwise>
               	</c:choose>
               </div>
+              
+              <c:if test="${sessionScope.user.userNo ne userinfo.userNo}">
+	              <div align="right" style="float: right;">
+				  	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModal">메시지</button>
+				  	
+				  	<button class="btn btn-primary btn-sm" id="follow">
+				  		<c:choose>
+				  			<c:when test="${followReslut eq 1}">
+				  				<i class="material-icons" id="follow-icon">favorite</i> 팔로우 취소
+				  			</c:when>
+				  			<c:otherwise>
+				  				<i class="material-icons" id="follow-icon">favorite_border</i> 팔로우
+				  			</c:otherwise>
+				  		</c:choose>
+					</button>
+				  </div>
+			  </c:if>
+			  
               <div class="name">
                 <h3 class="title">${userinfo.userName}</h3>
               </div>
             </div>
           </div>
         </div>
+        
+        
+				
         <div class="description text-center">
-          <p>${userinfo.prContent}</p>
+          <p>
+	          <c:choose>
+	          	<c:when test="${userinfo.prContent eq null}">
+	          		자기 소개 정보가 없습니다.
+	          	</c:when>
+	          	<c:otherwise>
+	          		${userinfo.prContent}
+	          	</c:otherwise>
+	          </c:choose>
+          </p>
         </div>
         <div class="row">
           <div class="col-md-6 ml-auto mr-auto">
@@ -134,4 +199,33 @@
     </div>
   </div>
 
-
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">메시지</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      
+	      <div class="modal-body">
+	        <!-- <div class="form-group">
+			     <label for="exampleInput1" class="bmd-label-floating">제목</label>
+			     <input type="text" class="form-control" id="msgNo" name="msgNo" placeholder="제목">
+		    </div> -->
+		    <div class="form-group">
+		    	<label for="exampleFormControlTextarea1">내용</label>
+		    	<textarea class="form-control" id="msgContent" name="msgContent" rows="3"></textarea>
+		    </div>
+		    
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" id="messageSend" data-dismiss="modal">보내기</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
