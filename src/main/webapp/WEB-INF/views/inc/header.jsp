@@ -5,7 +5,7 @@
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
-        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps">picsion</a>
+        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
                       <i class="material-icons">apps</i> Components
                   </a>
                   <div class="dropdown-menu dropdown-with-icons">
-                    <a href="board.ps" class="dropdown-item">
+                    <a href="<%=request.getContextPath()%>/board.ps" class="dropdown-item">
                         <i class="material-icons">list</i> 요청 게시판
                     </a>
                     <a href="" class="dropdown-item">
@@ -57,7 +57,12 @@
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item">
+<<<<<<< HEAD
 							<a class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}" onclick="scrollToDownload()"> 
+=======
+						 
+							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"> 
+>>>>>>> a2cfdef16f9c7ed098beb8d344b072d8466bc7de
 								  <img style ="width: 30px;" alt="Circle Image" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
 								  ${sessionScope.user.userName}
 							</a>

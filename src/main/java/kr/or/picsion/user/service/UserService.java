@@ -81,6 +81,7 @@ public class UserService {
 		
 		return followingList;
 	}
+<<<<<<< HEAD
 	
 	//회원이 팔로잉하고 있는지 확인
 	public int followingConfirm(int userNo, int followingUserNo) {
@@ -102,4 +103,7 @@ public class UserService {
 		userDao.insertFollow(userNo, followingUserNo);
 	}
 	
+=======
+
+>>>>>>> a2cfdef16f9c7ed098beb8d344b072d8466bc7de
 }

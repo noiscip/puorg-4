@@ -21,7 +21,7 @@
 	
 	<!-- CSS Files -->
 	<link href="<%=request.getContextPath()%>/assets/css/material-kit.css" rel="stylesheet" />
-	
+	<link href=https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" rel="stylesheet" />
 	<!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

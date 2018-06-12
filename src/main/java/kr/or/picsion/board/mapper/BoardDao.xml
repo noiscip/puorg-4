@@ -15,8 +15,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  <select id="getBoardCount" resultType="Integer">
   select count(*) from BOARD
  </select>
+<!-- select Board -->
+<select id="selectBoard" resultType="kr.or.picsion.board.dto.Board">
+  select * from BOARD where brdNo=#{brdNo}
+ </select>
 
 
-
+<insert id="insertBoard" parameterType="kr.or.picsion.board.dto.Board">
+insert into BOARD values (brdNo, #{brdTitle},#{brdContent},#{brdExpectPrice},#{brdExpectEndDate},#{copyright},SYSDATE(),#{userNo},#{tableNo},#{operStateNo})
+</insert>
 
 </mapper>
