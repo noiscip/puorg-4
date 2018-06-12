@@ -57,12 +57,7 @@
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item">
-<<<<<<< HEAD
-							<a class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}" onclick="scrollToDownload()"> 
-=======
-						 
 							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"> 
->>>>>>> a2cfdef16f9c7ed098beb8d344b072d8466bc7de
 								  <img style ="width: 30px;" alt="Circle Image" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
 								  ${sessionScope.user.userName}
 							</a>
