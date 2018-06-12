@@ -1,5 +1,7 @@
 package kr.or.picsion.notice.socket;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +32,6 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
 		System.out.println("여기는 노티스 소켓 핸들러");
 		System.out.println(message);
 		System.out.println(message.getPayload());
