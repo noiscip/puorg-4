@@ -35,10 +35,10 @@
 	<script src="<%=request.getContextPath()%>/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 	<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
 	<script src="<%=request.getContextPath()%>/assets/js/material-kit.js?v=2.0.1" type="text/javascript"></script>
-	
+	<script type="text/javascript" src="<%=request.getContextPath()%>/ckeditor/ckeditor.js"></script>
 </head>
 
-<body class="index-page sidebar-collapse">
+<body class="profile-page sidebar-collapse">
 	<!-- header -->
 	<tiles:insertAttribute name="header" />
 

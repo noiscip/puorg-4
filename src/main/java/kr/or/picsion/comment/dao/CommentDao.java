@@ -8,6 +8,6 @@ public interface CommentDao {
 	
 	public int insertComment(Comment comment);
 	public int updateComment(Comment comment);
-	public List<Comment> commentList(int no);
+	public List<Comment> commentList(int brdNo);
 	public int deleteComment(int cmtNo);
 }

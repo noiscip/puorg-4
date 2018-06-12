@@ -16,6 +16,16 @@ public class BoardService {
 
 	@Autowired
 	private SqlSession sqlSession;
+	// 글 상세보기 서비스
+	public Board selectBoard(int brdNo) {
+		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+		System.out.println("보드 서비스 ");
+		Board board= boarddao.selectBoard(brdNo);
+		
+		return board;
+	}
+	
+	
 	
 	// 글목록보기 서비스
 		public List<Board> boardList(HashMap<String, Integer> map) throws ClassNotFoundException, SQLException {
@@ -50,5 +60,11 @@ public class BoardService {
 			total=boarddao.getBoardCount();
 			return total;
 		}
-	
+	//글쓰기
+		public void insertBoard(Board board){
+			BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+			System.out.println("글 쓰기 전");
+			boarddao.insertBoard(board);
+			System.out.println("글쓰기 완료");
+		}
 }

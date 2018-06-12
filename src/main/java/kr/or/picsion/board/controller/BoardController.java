@@ -5,14 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
 import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
+import kr.or.picsion.comment.dto.Comment;
+import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.user.dto.User;
 
 @Controller
 
@@ -24,6 +30,43 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+	@Autowired
+	private CommentService commentService;
+
+	@RequestMapping(value = "boardInfo.ps")
+	public String selectBoard(int brdNo, Model model) {
+		System.out.println("보드인포 컨트롤");
+		Board boardInfo = boardService.selectBoard(brdNo);
+		List<Comment> comment = commentService.commentList(brdNo);
+		model.addAttribute("boardInfo", boardInfo);
+		model.addAttribute("comment",comment);
+		return "board.boardInfo";
+	}
+		
+	
+	
+	
+	@RequestMapping(value = "writeboard.ps", method = RequestMethod.POST)
+	public String postwriteBoard(Board board, HttpSession session) {		
+		User user = (User)session.getAttribute("user");
+		Board inboard = board;
+		System.out.println(board);
+		inboard.setUserNo(user.getUserNo());
+		inboard.setTableNo(3);
+		inboard.setOperStateNo(1);
+		System.out.println(inboard);
+		boardService.insertBoard(inboard);
+		return "board.writeBoard";
+	}
+		
+	
+	
+	
+	@RequestMapping(value = "writeboard.ps", method = RequestMethod.GET)
+	public String getwriteBoard() {
+		System.out.println("겟 보드");
+		return "board.writeBoard";
+	}
 		
 	
 	@RequestMapping("board.ps")
