@@ -78,4 +78,23 @@ public class UserController {
 		return "home.admin";
 	}
 	
+	//팔로잉 하고 있는지 확인
+	@RequestMapping("following.ps")
+	public View followingConfirm(int userNo, int followingUserNo, Model model) {
+		
+		int result = userService.followingConfirm(userNo, followingUserNo); 
+
+		if(result!=0) {		//result가 1이면 팔로잉 취소 처리
+			userService.deleteFollow(userNo, followingUserNo);
+			System.out.println("팔로잉 취소 완료!!");
+		}else {				//result가 0이면 팔로우 처리
+			userService.insertFollow(userNo, followingUserNo);
+			System.out.println("팔로잉 완료!!!");
+		}		
+		
+		model.addAttribute("result", result);
+		
+		return jsonview;
+	}
+	
 }

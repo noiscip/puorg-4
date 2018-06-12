@@ -81,4 +81,25 @@ public class UserService {
 		
 		return followingList;
 	}
+	
+	//회원이 팔로잉하고 있는지 확인
+	public int followingConfirm(int userNo, int followingUserNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		int result = userDao.followingConfirm(userNo, followingUserNo);
+		
+		return result;
+	}
+	
+	//팔로잉 취소
+	public void deleteFollow(int userNo, int followingUserNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		userDao.deleteFollow(userNo, followingUserNo);
+	}
+	
+	//팔로잉 insert
+	public void insertFollow(int userNo, int followingUserNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		userDao.insertFollow(userNo, followingUserNo);
+	}
+	
 }

@@ -37,19 +37,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 회원의 팔로워 리스트 (나를 따르는 회원)-->
 	<select id="followerUserList" resultType="kr.or.picsion.user.dto.User">
-		select f.userNo as userNo, p.prPicture, p.prContent
-		from FOLLOW f join PROFILE p
-		on f.userNo=p.userNo
-		where f.followingUserNo=#{userNo}
+		SELECT f.userNo as userNo, p.prPicture, p.prContent
+		FROM FOLLOW f JOIN PROFILE p
+		ON f.userNo=p.userNo
+		WHERE f.followingUserNo=#{userNo}
 	</select>
 	
 	<!-- 회원의 팔로잉 리스트 (내가 따르는 회원) -->
 	<select id="followingUserList" resultType="kr.or.picsion.user.dto.User">
-		select f.followingUserNo as userNo, p.prPicture as prPicture, p.prContent as prContent
-		from FOLLOW f join PROFILE p
-		on f.followingUserNo=p.userNo
-		where f.userNo=#{userNo}
+		SELECT f.followingUserNo as userNo, p.prPicture as prPicture, p.prContent as prContent
+		FROM FOLLOW f JOIN PROFILE p
+		ON f.followingUserNo=p.userNo
+		WHERE f.userNo=#{userNo}
 	</select>
+	
+	<!-- 회원이 팔로잉하고 있는 회원인지 확인 -->
+	<select id="followingConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2};
+	</select>
+	
+	<!-- 팔로잉 insert -->
+	<insert id="insertFollow">
+		INSERT INTO FOLLOW VALUES(#{param1}, #{param2})
+	</insert>
+	
+	<!-- 팔로잉 delete -->
+	<delete id="deleteFollow">
+		DELETE FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2};
+	</delete>
 	
 	
 </mapper>
