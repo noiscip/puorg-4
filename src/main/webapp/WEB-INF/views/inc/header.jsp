@@ -5,7 +5,7 @@
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
-        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps">picsion</a>
+        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
@@ -58,7 +58,7 @@
 					<c:otherwise>
 						<li class="nav-item">
 						 
-							<a class="nav-link" href="#" onclick="scrollToDownload()"> 
+							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"> 
 								  <img style ="width: 30px;" alt="Circle Image" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
 								  ${sessionScope.user.userName}
 							</a>

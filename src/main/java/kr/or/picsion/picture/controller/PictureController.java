@@ -1,14 +1,22 @@
 package kr.or.picsion.picture.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
+import kr.or.picsion.user.dto.User;
+import kr.or.picsion.user.service.UserService;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/picture/")
 public class PictureController {
 
 	@Autowired
@@ -16,4 +24,33 @@ public class PictureController {
 
 	@Autowired
 	private PictureService pictureService;
+	
+
+	@Autowired
+	private UserService userService;
+	
+	//Studio 페이지 이동(userNo 값 받아서)  회원 팔로잉,팔로워,업로드한 사진 불러오기 
+	@RequestMapping("mystudio.ps")
+	public String myStudio(Model model, int userNo){
+		
+		List<Picture> picList = new ArrayList<Picture>();
+		List<User> followerList = new ArrayList<User>();
+		List<User> followingList = new ArrayList<User>();
+		
+		//
+		User userInfo = userService.userInfo(userNo);
+		
+		picList = pictureService.myPicList(userNo);
+		followerList = userService.followerUserList(userNo);
+		followingList = userService.followingUserList(userNo);
+		
+		model.addAttribute("userinfo", userInfo);
+		model.addAttribute("piclist", picList);
+		model.addAttribute("followerlist", followerList);
+		model.addAttribute("followinglist", followingList);
+		
+		return "studio.mystudio";
+	}
+	
+	
 }

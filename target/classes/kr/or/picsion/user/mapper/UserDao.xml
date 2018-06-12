@@ -24,4 +24,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectUser" resultType="kr.or.picsion.user.dto.User">
 		SELECT * FROM USERS WHERE userId= #{userId}
 	</select>
+	
+	<!-- userNo로 회원 정보 가져오기 -->
+	<select id="selectUserNo" resultType="kr.or.picsion.user.dto.User">
+		SELECT * FROM USERS WHERE userNo=#{userNo}
+	</select>
+	
+	<!-- 회원의 프로필 정보 가져오기 -->
+	<select id="selectProfile" resultType="kr.or.picsion.user.dto.User">
+		SELECT * FROM PROFILE WHERE userNo=#{userNo}
+	</select>
+	
+	<!-- 회원의 팔로워 리스트 (나를 따르는 회원)-->
+	<select id="followerUserList" resultType="kr.or.picsion.user.dto.User">
+		select f.userNo as userNo, p.prPicture, p.prContent
+		from FOLLOW f join PROFILE p
+		on f.userNo=p.userNo
+		where f.followingUserNo=#{userNo}
+	</select>
+	
+	<!-- 회원의 팔로잉 리스트 (내가 따르는 회원) -->
+	<select id="followingUserList" resultType="kr.or.picsion.user.dto.User">
+		select f.followingUserNo as userNo, p.prPicture as prPicture, p.prContent as prContent
+		from FOLLOW f join PROFILE p
+		on f.followingUserNo=p.userNo
+		where f.userNo=#{userNo}
+	</select>
+	
+	
 </mapper>
