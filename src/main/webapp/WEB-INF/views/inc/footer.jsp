@@ -71,9 +71,8 @@
 		  
 		  function send() {
 			  	var loginUser = $('#loginUserNo').val()
-		        var nickname = "닉네임?"
 		        var msg = "메시지이?";
-		        wsocket.send("4:"+ loginUser +":"+nickname+":"+msg);
+		        wsocket.send(loginUser+":4:"+msg);
 		    }
 		  
 		  //top으로
