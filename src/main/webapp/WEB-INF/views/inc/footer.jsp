@@ -8,7 +8,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Insert title here</title>
 		<link href="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" rel="stylesheet" />
-		
 		  <style>
 		  	  footer {
 			  	  background-color:  #e5faf5;
@@ -19,7 +18,8 @@
 			  footer p{
 			  	  color : #3e9c9d;
 			  	  margin : 0px 0px 0px 0px;
-			  }		  
+			  }		
+  
 		  </style>
 		  <script type="text/javascript">
 		  //top으로ws

@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-5 mr-auto">
                 
-                  <form class="form" method="post" action="user/register.ps">
+                  <form class="form" method="post" action="<%=request.getContextPath()%>/user/register.ps">
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
