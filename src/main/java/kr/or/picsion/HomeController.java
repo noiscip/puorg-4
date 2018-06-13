@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dao.UserDao;
 import kr.or.picsion.user.dto.User;
+import kr.or.picsion.user.service.UserService;
 
 
 /**
@@ -29,35 +33,18 @@ public class HomeController {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@Autowired
+	private UserService userService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping("/popular.ps")
-	public String getList(Model model) {
-		System.out.println("들어왔");
-		List<String> list = new ArrayList<String>();
-		list.add("images/5.jpg");
-		list.add("images/6.jpg");
-		list.add("images/7.jpg");
-		list.add("images/8.jpg");
-		list.add("images/9.jpg");
-		list.add("images/picsionlogo.png");
-		list.add("images/picsionlogo.png");
-		list.add("images/picsionlogo.png");
-		list.add("images/picsionlogo.png");
-		list.add("images/picsionlogo.png");
-		
-		model.addAttribute("popularlist",list);
-		
-		return "popular.popular";
-	}
 	
 	
 	@RequestMapping(value = "home.ps", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model, HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -67,20 +54,20 @@ public class HomeController {
 		
 		UserDao UserDao = sqlSession.getMapper(UserDao.class);
 		
+		User user2 = (User) session.getAttribute("user");
+		
 		List<User> user = UserDao.getPicsionList();
 		System.out.println("User 리스트를 보여주세요");
 		for(User u : user) {
 			System.out.println(u);
 		}
 		
-		List<String> list = new ArrayList<String>();
-		list.add("images/5.jpg");
-		list.add("images/6.jpg");
-		list.add("images/7.jpg");
-		list.add("images/8.jpg");
-		list.add("images/9.jpg");
+		if(user2 != null) {
+			List<Picture> followingPicList = userService.listpic(user2);
+		    model.addAttribute("imagelist", followingPicList);
+			
+		}
 		
-		model.addAttribute("imagelist", list);
 		model.addAttribute("userList", user);
 		model.addAttribute("serverTime", formattedDate );
 		

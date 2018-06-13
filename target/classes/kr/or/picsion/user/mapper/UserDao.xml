@@ -69,5 +69,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2};
 	</delete>
 	
+	 <!-- 팔로잉 최신 사진 10장 -->
+    <select id="followingUserPictureList" resultType="kr.or.picsion.picture.dto.Picture">
+    	SELECT f.followingUserNo as userNo, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
+      	FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
+                   join PICTURE p on u.userNo = p.userNo
+                   where f.userNo = #{userNo}
+                   order by p.picReg
+				   limit 10;
+    </select> 
+	
 	
 </mapper>

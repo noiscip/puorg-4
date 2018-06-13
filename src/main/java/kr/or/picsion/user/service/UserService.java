@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dao.UserDao;
 import kr.or.picsion.user.dto.User;
 
@@ -36,8 +37,10 @@ public class UserService {
 		}else {
 			//사용자 프로필 테이블 검색해서 set
 			User u = userDao.selectProfile(selectUser.getUserNo());
-			selectUser.setPrContent(u.getPrContent());
-			selectUser.setPrPicture(u.getPrPicture());
+			if(u != null) {
+				selectUser.setPrContent(u.getPrContent());
+				selectUser.setPrPicture(u.getPrPicture());
+			}
 		}
 		
 		return selectUser;
@@ -48,6 +51,16 @@ public class UserService {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		List<User> userList = userDao.userList();
 		return userList;
+	}
+	
+	//팔로잉하고 있는 사람의 최신 사진리스트 가져오기
+	public List<Picture> listpic(User user) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		User selectUser = userDao.selectUser(user.getUserId());
+		System.out.println(selectUser.toString());
+		List<Picture> followingPic = userDao.followingUserPictureList(selectUser.getUserNo());
+		System.out.println(followingPic);
+		return followingPic;
 	}
 	
 	

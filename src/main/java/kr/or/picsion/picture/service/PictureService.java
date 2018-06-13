@@ -25,4 +25,12 @@ public class PictureService {
 		
 		return list;
 	}
+	
+	
+	//사진 좋아요 증가
+	public void increaseRespect(int picNo){
+		PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+		pictureDao.respectIncrease(picNo);
+		
+	}
 }
