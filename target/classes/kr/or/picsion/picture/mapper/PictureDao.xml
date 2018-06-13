@@ -7,4 +7,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="writerPicture" resultType="kr.or.picsion.picture.dto.Picture">
 		SELECT * FROM PICTURE WHERE userNo=#{userNo}
 	</select>
+	
+	<!-- 사진 좋아요 생성 -->
+	<insert id="respectIncrease">
+	INSERT INTO RESPECT
+		(picNo, userNo)
+	VALUES
+		( #{picNo}, #{userNo})
+	</insert>
 </mapper>
