@@ -5,6 +5,7 @@
 
 <script type="text/javascript">
 	$(function() {
+		
 		$('#messageSend').click(function(){
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:${sessionScope.user.userNo}, 
