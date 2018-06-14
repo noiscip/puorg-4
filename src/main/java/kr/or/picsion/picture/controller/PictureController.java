@@ -55,7 +55,7 @@ public class PictureController {
 		model.addAttribute("piclist", picList);
 		model.addAttribute("followerlist", followerList);
 		model.addAttribute("followinglist", followingList);
-		model.addAttribute("followReslut", followResult);
+		model.addAttribute("followResult", followResult);
 		
 		return "studio.mystudio";
 	}

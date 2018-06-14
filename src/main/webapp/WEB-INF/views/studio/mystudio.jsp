@@ -80,7 +80,7 @@
 				  	
 				  	<button class="btn btn-primary btn-sm" id="follow">
 				  		<c:choose>
-				  			<c:when test="${followReslut eq 1}">
+				  			<c:when test="${followResult eq 1}">
 				  				<i class="material-icons" id="follow-icon">favorite</i> 팔로우 취소
 				  			</c:when>
 				  			<c:otherwise>
@@ -101,10 +101,10 @@
         
 				
         <div class="description text-center">
-          <p>
+          <p><%-- ${userinfo.prContent} --%>
 	          <c:choose>
 	          	<c:when test="${userinfo.prContent eq null}">
-	          		자기 소개 정보가 없습니다.
+	          		사용자의 자기 소개 정보가 없습니다.
 	          	</c:when>
 	          	<c:otherwise>
 	          		${userinfo.prContent}
