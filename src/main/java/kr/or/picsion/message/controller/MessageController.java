@@ -1,12 +1,18 @@
 package kr.or.picsion.message.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
 import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.message.service.MessageService;
+import kr.or.picsion.user.dto.User;
 
 @Controller
 @RequestMapping("/message/")
@@ -35,4 +41,20 @@ public class MessageController {
 		return jsonview;
 	}
 	
+	//받은 메시지 리스트 
+	@RequestMapping("receivemessage.ps")
+	public String receiveMessage(HttpSession session, Model model) {
+		System.out.println("receiveMessage 컨트롤~~");
+		User user = (User)session.getAttribute("user");
+		
+		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
+		List<User> receiveInfo = messageService.receiveMessageInfo(user.getUserNo());
+		
+		System.out.println("sdfsdfwefjwoijefpowjepfojwf0"+receiveInfo);
+		
+		model.addAttribute("receiveList", receiveList);
+		model.addAttribute("receiveInfo", receiveInfo);
+		
+		return "mypage.message";
+	}
 }
