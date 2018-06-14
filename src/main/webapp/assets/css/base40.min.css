@@ -617,7 +617,7 @@ label{display:block;margin-top:3px !important;margin-bottom:3px !important}
 .index .cats a{color:#555;display:block;padding:7px 20px 7px 10px;text-overflow:ellipsis;overflow:hidden;text-decoration:none}
 .flex_grid{overflow:hidden;margin:4px 17px 0 18px}
 .flex_grid .item{float:left;position:relative;display:none;margin:5px;box-sizing:content-box;overflow:hidden}
-.flex_grid .item img{display:block;width:100%;height:auto}
+.flex_grid .item img{display:block;width:100%;}
 .flex_grid.credits .item{background:#f3f3f3}
 .flex_grid.credits .item>div{position:absolute;left:0;right:0;bottom:-15px;padding:10px 10px 8px;opacity:0;transition:.25s;background:linear-gradient(to top,rgba(0,0,0,.6) 0,rgba(0,0,0,0) 100%);font-size:14px;color:#fff}
 .flex_grid.credits .item:hover>div{position:absolute;left:0;right:0;bottom:0;opacity:1}
