@@ -9,6 +9,7 @@ public interface UserDao {
 
 	public List<User> userList();
 	public int registerUser(User user);
+	public int insertProfile(int userNo);
 	public int updateUser(User user);
 	public int deleteUser(int userNo);
 	public User selectUser(String userId);
@@ -19,7 +20,7 @@ public interface UserDao {
 	public List<User> followingUserList(int userNo);	//내가 따르는 회원 리스트 (팔로잉 회원들)
 	public List<User> followerUserList(int userNo);		//나를 따르는 회원 리스트 (팔로워 회원들)
 	public int followingConfirm(int userNo, int followingUserNo);	//팔로잉하고 있는지 확인
-	
+	public List<Picture> followingUserPictureList(int userNo);	//내가 따르는 회원 최신 사진 리스트
 	public void insertFollow(int userNo, int followingUserNo);		//팔로잉테이블에   insert
 	public void deleteFollow(int userNo, int followingUserNo);		//팔로잉테이블에서 delete
 	

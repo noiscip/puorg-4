@@ -10922,12 +10922,12 @@ legend {
 }
 
 a {
-  color: #9c27b0;
+  color: white;
 }
 
 a:hover,
 a:focus {
-  color: #89229b;
+  color: #0a6ebd;
   text-decoration: none;
 }
 
@@ -13854,7 +13854,7 @@ textarea {
   color: inherit;
   padding: 0.9375rem;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 20px;
   text-transform: uppercase;
   border-radius: 3px;
   line-height: 20px;
@@ -14405,10 +14405,16 @@ textarea {
   background-color: rgba(200, 200, 200, 0.2);
 }
 
+/*보라색
 .nav-pills .nav-item .nav-link.active {
   color: #fff;
   background-color: #9c27b0;
   box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6);
+}*/
+.nav-pills .nav-item .nav-link.active {
+  color: #fff;
+  background-color: #212121;
+  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(33, 33, 33, 0.4);
 }
 
 .nav-pills .nav-item i {
@@ -15980,8 +15986,15 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .clear-filter::before {
   background: none;
 }
+/* 
+.purple-filter:after {
+  background: rgba(101, 47, 142, 0.64);
+  background: linear-gradient(45deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);
+  background: -moz-linear-gradient(135deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);
+  background: -webkit-linear-gradient(135deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);
+}
 
-/* .purple-filter:after {
+.purple-filter:after {
   background: rgba(101, 47, 142, 0.64);
   background: linear-gradient(45deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);
   background: -moz-linear-gradient(135deg, rgba(101, 47, 142, 0.88) 0%, rgba(125, 46, 185, 0.45) 100%);
@@ -16205,6 +16218,7 @@ footer .pull-center {
 
 .card .card-header.card-header-image img {
   width: 100%;
+  height: 100%;
   border-radius: 6px;
   pointer-events: none;
   box-shadow: 0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2);

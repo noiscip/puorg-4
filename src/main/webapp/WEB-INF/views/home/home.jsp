@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<head>
+
 
 <style>
 .hashTag{
@@ -71,7 +71,7 @@ height: 560px;
 #carousel .imgDiv img{
 	height: 100%;
 	width: 100%;
-	object-fit: cover;
+	object-fit: fill;
 }
 #carousel .hideLeft {
 	height: 260px;
@@ -92,9 +92,9 @@ height: 560px;
 	opacity: 0; /*투명도 0으로 숨김처리 */
 }
 #carousel .hideLeft img {
-   height: 100%;
+   height: 170px;
    width: 100%;
-   object-fit: cover;
+   object-fit: fill;
 }
 #carousel .hideRight {
 	height: 260px;
@@ -115,9 +115,9 @@ height: 560px;
 	opacity: 0;
 }
 #carousel .hideRight img {
-   height: 100%;
+   height: 170px;
    width: 100%;
-   object-fit: cover;
+   object-fit: fill;
 }
 #carousel .prev {
 	height: 460px; 
@@ -138,9 +138,9 @@ height: 560px;
 	z-index: 5;
 }
 #carousel .prev img{
-   height: 100%;
+   height: 370px;
    width: 100%;
-   object-fit: cover;
+   object-fit: fill;
 }
 #carousel .prevLeftSecond {
 	height: 360px;
@@ -164,9 +164,9 @@ height: 560px;
 	opacity: .7;
 }
 #carousel .prevLeftSecond img{
-   height: 100%;
+   height: 270px;
    width: 100%;
-   object-fit: cover;
+   object-fit: fill;
 }
 /*가운데 이미지 */
 #carousel .selected {
@@ -188,9 +188,9 @@ height: 560px;
 	z-index: 10;
 }
 #carousel .selected img {
-   height: 100%;
+   height: 470px;
    width: 100%;
-   object-fit: cover;
+   object-fit: fill;
 }
 #carousel .next {
 	height: 460px;
@@ -211,9 +211,9 @@ height: 560px;
 	z-index: 5;
 }
 #carousel .next img {
-   height: 100%;
+   height: 370px;
    width: 100%;
-   object-fit: cover;
+   object-fit: fill;
 }
 #carousel .nextRightSecond {
 	height: 360px;
@@ -237,9 +237,9 @@ height: 560px;
 	opacity: .7;
 }
 #carousel .nextRightSecond img {
-   height: 100%;
+   height: 270px;
    width: 100%;
-   object-fit: cover;
+   object-fit: fill;
 }
 /* 사진 넘기기 버튼 */
 .buttons {
@@ -260,15 +260,6 @@ a,a:visited{
     text-decoration: none !important;
 }
 
-.multiFile{
-	position: absolute;
-	height: 39px;
-	width: 39px;
-	background-image: url("http://hyunjoolee.pythonanywhere.com/static/images/sprites/fef349.png");
-	background-position: -360px -104px;
-	right: 8px;
-	top: 8px; 
-}
 ._622au{padding:0}._9dpug{border-bottom:1px solid #efefef}._9dpug._msz04{height:76px;padding:0 16px 16px}._5mwg7{height:60px;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;position:absolute}._ebcx9{padding:0 16px}
 ._8oo9w{margin-top:4px}._nlmjy{margin-bottom:8px}._277v9{-webkit-box-flex:1;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;-webkit-flex-shrink:1;-ms-flex-negative:1;flex-shrink:1;min-height:0;overflow:auto}._277v9,._6d44r{margin-bottom:4px}._ti7l3{margin-top:4px}._e34hf{display:none}._fsupd ._ti7l3{min-height:48px}._5lms4 ._ti7l3{padding-right:26px}._fsupd ._9dpug{padding-right:40px}._fsupd ._5mwg7{right:10px;top:0}._5lms4 ._5mwg7{bottom:0;height:52px;right:10px;top:auto}._8n9ix._9445e ._8oo9w{margin-top:-34px}._4kplh{width:100%}._4kplh ._sxolz{background-color:#000;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;margin-right:335px;min-height:450px}._4kplh ._sxolz._mi48x{background-color:#fafafa}._4kplh ._9dpug{border-bottom:1px solid #efefef;height:78px;margin-right:0;padding:20px 0;position:absolute;right:24px;top:0;width:287px}._4kplh ._9dpug._msz04{height:98px;padding:0 0 20px}._4kplh ._ebcx9{bottom:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-left:24px;padding-right:24px;position:absolute;right:0;top:78px;width:335px}._4kplh ._ebcx9._6zn4x{top:98px}._4kplh ._8oo9w{border-top:1px solid #efefef;margin:0;-webkit-box-ordinal-group:3;-webkit-order:2;-ms-flex-order:2;order:2;padding-top:2px}._4kplh ._nlmjy{margin-bottom:4px;-webkit-box-ordinal-group:4;-webkit-order:3;-ms-flex-order:3;order:3}._4kplh ._277v9{margin:0 -24px auto;-webkit-box-ordinal-group:2;-webkit-order:1;-ms-flex-order:1;order:1;padding:12px 24px}._4kplh ._6d44r{margin-bottom:0;-webkit-box-ordinal-group:5;-webkit-order:4;-ms-flex-order:4;order:4}._4kplh ._ti7l3{-webkit-box-ordinal-group:6;-webkit-order:5;-ms-flex-order:5;order:5}._4kplh._5lms4 ._5mwg7{right:18px}@media (-webkit-min-device-pixel-ratio:2){._8n9ix ._9dpug{border-bottom-width:.5px}}
 ._7b8eu,._csp04{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row}._7b8eu{height:60px;padding:16px;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center}._iuvin button{line-height:18px;padding:0}._csp04{-webkit-box-align:baseline;-webkit-align-items:baseline;-ms-flex-align:baseline;align-items:baseline}._6y8ij{max-width:100%}._s7b66{display:inline}._74oom{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-box-align:baseline;-webkit-align-items:baseline;-ms-flex-align:baseline;align-items:baseline;max-width:240px}._j56ec{-webkit-box-align:start;-webkit-align-items:flex-start;-ms-flex-align:start;align-items:flex-start;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-flex:1;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;-webkit-flex-shrink:1;-ms-flex-negative:1;flex-shrink:1;margin-left:12px;overflow:hidden}._k32zm{padding-top:20px}._60iqg{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}._eeohz{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;max-width:100%}._iadoq,._iadoq:visited{color:#262626;-webkit-box-flex:0;-webkit-flex-grow:0;-ms-flex-positive:0;flex-grow:0;-webkit-flex-shrink:1;-ms-flex-negative:1;flex-shrink:1}._hz9vr{-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;margin-left:5px}._elp6f{color:#999;display:inline-block;max-width:100%}
@@ -296,22 +287,7 @@ span{
 position: relative;
 background-color:black;
 }
-.imgDiv > video{
-	position: absolute;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
 
-.glyphicon {
-	top: -1px;
-}
 
  #wordchart{
  
@@ -319,11 +295,11 @@ background-color:black;
 
 	margin: 20px
 } 
+
 </style>
 <script>
 //postid 가져와서 댓글달기
 $(document).ready(function(){
-	
 	//이미지 class명부여
 	//postModal("main");
 	$("#carousel").on("mousewheel", function(e){
@@ -479,69 +455,117 @@ function nextPost(curObj){
 	curObj.next().click();
 	$(".selected > div").children().click();
 }
-</script>
-</head>
-<body>
 
-  <div class="page-header header-filter clear-filter purple-filter" data-parallax="true" style="background-image: url('./assets/img/bg2.jpg');">
+
+</script>
+
+  <div class="page-header header-filter clear-filter purple-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/bg2.jpg');">
     <div class="container">
-	    <div class="row">
-	    <div class="col-md-12">
-	     <div class="col-md-2" style="float: right;">
-     		<a class="nav-link" href="popular.ps">
-              <i class="material-icons">format_list_bulleted</i> 전체보기
-            </a>
-		 </div>
-		</div>
-		</div>
-        <div class="row" id="carousel">
-		<c:forEach items="${imagelist}" var="imagelist"  varStatus='status'>
-		<article 
+	    
 		<c:choose>
-		<c:when test="${status.index == 0}">
-			class="post prev"
-		</c:when>
-		<c:when test="${status.index ==	1}">
-			class="post selected"
-		</c:when>
-		<c:when test="${status.index ==	2}">
-			class="post next"
-		</c:when>
-		<c:when test="${status.index ==	3}">
-			class="post nextRightSecond"
+		<c:when test="${sessionScope.user eq null}">
+		<div class="row">
+	    <div class="col-md-12 mr-auto ml-auto">
+	    <div class="card card-raised card-carousel">
+			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+			  <ol class="carousel-indicators">
+			    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+			    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+			    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+			    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+			  </ol>
+			  <div style="height: 500px" class="carousel-inner">
+			    <div class="carousel-item active">
+			      <img class="d-block w-100" src="<%=request.getContextPath()%>/assets/img/bg.jpg" alt="First slide">
+			    </div>
+			    <div class="carousel-item">
+			      <img class="d-block w-100" src="<%=request.getContextPath()%>/assets/img/bg3.jpg" alt="Second slide">
+			    </div>
+			    <div class="carousel-item">
+			      <img class="d-block w-100" src="<%=request.getContextPath()%>/assets/img/bg7.jpg" alt="Third slide">
+			    </div>
+			    <div class="carousel-item">
+			      <img class="d-block w-100" src="<%=request.getContextPath()%>/assets/img/faces/giphy.gif" alt="Fourth slide">
+			    </div>
+			  </div>
+			  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="sr-only">Previous</span>
+			  </a>
+			  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="sr-only">Next</span>
+			  </a>
+			</div>
+			</div>
+			</div>
+			</div>
 		</c:when>
 		<c:otherwise>
-		class="post hideRight"
-		</c:otherwise>
-		</c:choose>
-		>
+
+		<c:if test="${imagelist eq ''}">
 		
-		<c:forEach items="${imagelist}" var="fileInfo" varStatus='fileInfoListStatus'>
-			<div class="card card-blog">
-			    <div class="card-header card-header-image">
-			        <a href="#pablo">
-			            <img class="img" src="${fileInfo}">
-			            <div class="card-title">
-			                This Summer Will be Awesome
-			            </div>
-			        </a>
-			    </div>
-			    <div class="card-body">
-			        <h6 class="card-category text-info">Fashion</h6>
-			        <p class="card-description">
-			            <!-- Don&apos;t be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens&#x2019; bed design but the back is... -->
-			            	내용을 넣어주세요
-			        </p>
-			    </div>
+		<h6>팔로잉 하세요</h6>
+		</c:if>
+		
+				<div class="row">
+			    <div class="col-md-12">
+			     <div class="col-md-2" style="float: right;">
+		     		<a class="nav-link" href="<%=request.getContextPath()%>/user/popular.ps">
+		              <i class="material-icons">format_list_bulleted</i> 전체보기
+		            </a>
+				 </div>
+				</div>
+				</div>
+		       <div class="row" id="carousel">
+					
+						   <c:forEach items="${imagelist}" var="fileInfo"  varStatus='status'>
+							<article 
+							<c:choose>
+							<c:when test="${status.index == 0}">
+								class="post prev"
+							</c:when>
+							<c:when test="${status.index ==	1}">
+								class="post selected"
+							</c:when>
+							<c:when test="${status.index ==	2}">
+								class="post next"
+							</c:when>
+							<c:when test="${status.index ==	3}">
+								class="post nextRightSecond"
+							</c:when>
+							<c:otherwise>
+							class="post hideRight"
+							</c:otherwise>
+							</c:choose>
+							> 
+		 
+						<div class="card card-blog">
+						    <div class="card-header card-header-image">
+						        <a href="#pablo">
+						            <img class="img" src="<%=request.getContextPath()%>${fileInfo.picPath}">
+						            <div class="card-title">
+						                ${fileInfo.picReg}
+						            </div>
+						        </a>
+						    </div>
+						    <div class="card-body">
+						        <h6 class="card-category text-info">Fashion</h6>
+						        <p class="card-description">
+						            <!-- Don&apos;t be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens&#x2019; bed design but the back is... -->
+						            	내용을 넣어주세요
+						        </p>
+						    </div>
+						</div>
+	 					</article>
+						</c:forEach>  
 			</div>
-		
-				</c:forEach>
-	 	</article>
-		</c:forEach>
-	</div>
-			 
-    </div>
+			</c:otherwise>
+			</c:choose>
+		    </div>
 </div>
+
+
 
 <div class="main main-raised">
     <div class="section section-basic">
@@ -571,4 +595,3 @@ function nextPost(curObj){
 	</div>
 </div>
 
-</body>

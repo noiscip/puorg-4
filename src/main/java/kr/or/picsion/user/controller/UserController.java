@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -68,6 +69,17 @@ public class UserController {
 		session.invalidate();
 		
 		return "redirect:/home.ps";
+	}
+	
+	@RequestMapping(value="popular.ps", method=RequestMethod.GET)
+	public String getList(HttpSession session, Model model) {
+		
+		User user = (User) session.getAttribute("user");
+		List<Picture> followingPicList = userService.listpic(user); 
+		model.addAttribute("imagelistall", followingPicList);
+		System.out.println(followingPicList);
+		
+		return "popular.followingpicall";
 	}
 	
 	@RequestMapping(value="userlist.ps")
