@@ -5,5 +5,6 @@ import java.util.HashMap;
 public interface NoticeDao {
 
 	public int insertNotice(HashMap<String, Object> map);
+	public int readCheckCount(int userNo);
 	
 }

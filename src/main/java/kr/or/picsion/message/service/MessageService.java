@@ -1,10 +1,7 @@
 package kr.or.picsion.message.service;
 
-<<<<<<< HEAD
 import java.util.List;
-=======
 import java.util.HashMap;
->>>>>>> dae10c0344ffc50c4d1aaddcb91a402db5302d23
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +9,8 @@ import org.springframework.stereotype.Service;
 
 import kr.or.picsion.message.dao.MessageDao;
 import kr.or.picsion.message.dto.Message;
-<<<<<<< HEAD
 import kr.or.picsion.user.dto.User;
-=======
 import kr.or.picsion.notice.dao.NoticeDao;
->>>>>>> dae10c0344ffc50c4d1aaddcb91a402db5302d23
 
 @Service
 public class MessageService {

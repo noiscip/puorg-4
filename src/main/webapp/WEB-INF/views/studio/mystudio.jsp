@@ -20,6 +20,7 @@
 				  data: data,
 				  success : function(){
 				      $("#msgContent").val("");
+				      send();
 				  },
 				  error: function(){
 				   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
