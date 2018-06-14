@@ -19,12 +19,12 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		System.out.println("afterConnectionClosed?????");
+		System.out.println("afterConnectionClosed????? 커넥션 닫힘???");
 	}
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		System.out.println("afterConnectionEstablished!!!!!!!");
+		System.out.println("afterConnectionEstablished!!!!!!! 커넥션 열림??");
 	}
 
 	@Override

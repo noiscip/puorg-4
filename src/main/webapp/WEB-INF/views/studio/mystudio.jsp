@@ -5,7 +5,11 @@
 
 <script type="text/javascript">
 	$(function() {
+<<<<<<< HEAD
+		/* 메시지 보내기 비동기 처리 */
+=======
 		
+>>>>>>> dae10c0344ffc50c4d1aaddcb91a402db5302d23
 		$('#messageSend').click(function(){
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:${sessionScope.user.userNo}, 
@@ -16,6 +20,7 @@
 				  data: data,
 				  success : function(){
 				      $("#msgContent").val("");
+				      send();
 				  },
 				  error: function(){
 				   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
@@ -23,9 +28,10 @@
 			});
 		})
 		
+		/* 팔로우가 되있으면 팔로우 취소 처리, 팔로우가 안되있으면 팔로잉 처리 (비동기)*/
 		$('#follow').click(function(){
 			var data = {userNo:${sessionScope.user.userNo}, 
-						followingUserNo:${userinfo.userNo}}			
+						followingUserNo:${userinfo.userNo}};			
 			$.ajax({
 				  url : "/picsion/user/following.ps",
 				  data: data,
@@ -40,23 +46,25 @@
 					  }
 				  }
 			});
-		})
+		}) 
 		
 	})
 </script>
 
 <style>
+	/* 뿌려주는 이미지의 크기 */
 	.img-size{
 		height: 300px;
 	}
 	
+	/* 사용자의 프로필 사진의 크기 */
 	.user-img{
 		width:50px;
 		height:50px;
 	}
 </style>
 
-  
+
   <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
   <div class="main main-raised">
     <div class="profile-content">
@@ -78,7 +86,6 @@
               <c:if test="${sessionScope.user.userNo ne userinfo.userNo}">
 	              <div align="right" style="float: right;">
 				  	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModal">메시지</button>
-				  	
 				  	<button class="btn btn-primary btn-sm" id="follow">
 				  		<c:choose>
 				  			<c:when test="${followResult eq 1}">
@@ -98,8 +105,7 @@
             </div>
           </div>
         </div>
-        
-        
+
 				
         <div class="description text-center">
           <p><%-- ${userinfo.prContent} --%>
@@ -140,8 +146,8 @@
             
               	<!-- DB에서 이미지 불러와서 해당 이미지의 상세페이지 요청 -->
               	<c:forEach items="${piclist}" var="pic">
-              		<div class="col-md-3 mr-auto ml-auto" align="left">
-	              		<a href="">
+              		<div class="col-md-3" >
+	              		<a href="">  <!-- *******이미지 상세페이지로 이동******** -->
 	                		<img src="<%=request.getContextPath()%>${pic.picPath}" class="rounded img-size">
 	                	</a>
                 	</div>
@@ -181,12 +187,12 @@
           				<c:when test="${following.prPicture eq null}">
           					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
           					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
-          						<img title="" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
+          						<img title="${following.userId}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
           					</a>
           				</c:when>
           				<c:otherwise>
           					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
-          						<img title="" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded user-img">
+          						<img title="${following.userId}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded user-img">
           					</a>
           				</c:otherwise>
           			</c:choose>
@@ -201,7 +207,7 @@
   </div>
 
 	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -230,3 +236,5 @@
 	    </div>
 	  </div>
 	</div>
+
+	
