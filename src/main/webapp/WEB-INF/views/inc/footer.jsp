@@ -35,23 +35,21 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://localhost:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.13:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
 		  	function onOpen(evt) {
 				console.log("여기는 오픈 이벤트")
 			}
 		  	function onMessage(evt){
-		  		
+		  		console.log("onMessage 실행")
 				var data = evt.data
-				console.log(evt)
 				
-				console.log(data)
 				var table = data.substr(2,1)
-				var newMessage = '<img src="https://png.icons8.com/doodle/50/000000/new.png">'
-				var urlsa = "/picsion/notice/noticeMsg.ps";
-				console.log(urlsa)
-				console.log(table)
+				var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
+				var urlsa = "";
+
 				if(table == 1){
 					console.log("1번, 유저 ")
 				}else if (table == 2){
@@ -61,15 +59,19 @@
 				}else if(table == 4){
 					console.log("4번, 댓글")
 					console.log($('#userProfile'))
-					
+					urlsa = "/picsion/notice/noticeMsg.ps"
 				}else if(table == 5){
 					console.log("5번, 메시지")
 				}
 				
+							$('#userProfile').append(newMessage)
 				$.ajax({
 					url:urlsa,
 					async: false,
-					success: function () {
+					success: function (data) {
+						if (data.count > 0 && $('#newNotice').length == 0){
+							console.log("???")
+						}
 						console.log("헤헤")
 					}
 				})
