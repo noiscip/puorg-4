@@ -28,16 +28,16 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 	}
 
 	@Override
-	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+	protected void handleTextMessage(WebSocketSession wSession, TextMessage message) throws Exception {
 		System.out.println("여기는 노티스 소켓 핸들러");
 		System.out.println(message.getPayload());
-		System.out.println(session.getId());
+		System.out.println(wSession.getId());
 		String[] info = message.getPayload().split(":");
 	
 		User user =userService.userInfo(Integer.valueOf(info[0]));
 		System.out.println(user.toString());
 		
-		session.sendMessage(message);   
+		wSession.sendMessage(message);   
 		// 현재 수신자에게 몇개의 메세지가 와있는지 디비에서 검색함.
 
 	}
