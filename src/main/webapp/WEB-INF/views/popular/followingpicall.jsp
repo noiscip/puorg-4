@@ -28,18 +28,10 @@
             </div>
           </div>
         </div>
+        
         <div id="gallery">
           <div class="flex_grid credits">
-       <c:forEach items="${imagelistall}" var="f" varStatus="i">
-			<c:forEach  items="${f.value}" var="u" varStatus="j">
-				${u.picNo }<br>
-			</c:forEach>
-			<br>
-			
-        </c:forEach> 
-        
-        
-            <%--  <c:forEach items="${imagelistall}" var="followinglistall" varStatus="i">
+            <c:forEach items="${imagelistall}" var="followinglistall" varStatus="status">
             <div class="item" data-w="640" data-h="426" style="width: 255px; height: 300px; display: block;">
                 <a href="">
                     <img class="rounded img-size" src="<%=request.getContextPath()%>/${followinglistall.picPath}" alt="">
@@ -50,10 +42,10 @@
                         <em data-href="" class="ajax"><i class="icon icon_like material-icons">favorite_border</i></em>
                         <em data-href="" class="ajax"><i class="icon icon_favorite material-icons">bookmark_border</i></em>
                     </div>
-                    <a href="">${followinglistall[${i.index}].Users.userName}</a>
+                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${ownlist[status.index].userNo}">${ownlist[status.index].userName}</a>
                 </div>
             </div>
-             </c:forEach>  --%>
+            </c:forEach> 
           </div>
         </div>
       </div>

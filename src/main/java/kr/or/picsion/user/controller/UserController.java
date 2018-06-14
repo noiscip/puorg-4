@@ -1,5 +1,6 @@
 package kr.or.picsion.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -76,9 +77,13 @@ public class UserController {
 	public String getList(HttpSession session, Model model) {
 		
 		User user = (User) session.getAttribute("user");
-		Map<Integer, Object> followingPicList = userService.mapObj(user.getUserNo());
+		List<Picture> followingPicList = userService.listpic(user.getUserNo());
+		List<User> followingPicListOwner = userService.listpicown(user.getUserNo());
 		model.addAttribute("imagelistall", followingPicList);
+		model.addAttribute("ownlist",followingPicListOwner);
 		System.out.println(followingPicList);
+		
+		
 		return "popular.followingpicall";
 	}
 	
@@ -108,11 +113,5 @@ public class UserController {
 		
 		return jsonview;
 	}
-	
-	//마이 페이지로 이동
-	/*@RequestMapping("mypage.ps")
-	public String myPage() {
-		return "mypage.";
-	}*/
 	
 }
