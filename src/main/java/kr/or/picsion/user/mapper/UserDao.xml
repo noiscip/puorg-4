@@ -11,14 +11,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="userList" resultType="kr.or.picsion.user.dto.User">
 		select * from  USERS
-	
 	</select>
 	
-	<insert id="registerUser">
-	INSERT INTO USERS
-		(userId, pwd, userName, roleNo)
-	VALUES
-		( #{userId}, #{pwd}, #{userName},  1)
+	<insert id="registerUser" parameterType="kr.or.picsion.user.dto.User" useGeneratedKeys="true" keyProperty="userNo">
+		INSERT INTO USERS
+			(userId, pwd, userName, roleNo)
+		VALUES
+			( #{userId}, #{pwd}, #{userName},  1);
+	</insert>
+	
+	<insert id="insertProfile">
+		INSERT INTO PROFILE (userNo) VALUES	(#{userNo})
 	</insert>
 	
 	<select id="selectUser" resultType="kr.or.picsion.user.dto.User">

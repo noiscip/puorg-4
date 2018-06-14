@@ -7,5 +7,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertMessage" parameterType="kr.or.picsion.message.dto.Message">
 		INSERT INTO MESSAGES (msgContent, sendUserNo, receiveUserNo)
 		VALUES (#{msgContent}, #{sendUserNo}, #{receiveUserNo})
+		<selectKey keyProperty="msgNo,tableNo" resultType="hashmap" order="AFTER">
+			SELECT msgNo, tableNo from MESSAGES where msgNo = LAST_INSERT_ID()
+		</selectKey>
 	</insert>
 </mapper>

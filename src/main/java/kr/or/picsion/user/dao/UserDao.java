@@ -9,6 +9,7 @@ public interface UserDao {
 
 	public List<User> userList();
 	public int registerUser(User user);
+	public int insertProfile(int userNo);
 	public int updateUser(User user);
 	public int deleteUser(int userNo);
 	public User selectUser(String userId);

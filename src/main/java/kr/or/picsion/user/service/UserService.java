@@ -22,6 +22,9 @@ public class UserService {
 		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		userDao.registerUser(user);
+		System.out.println("유저 넘버 : " + user.getUserNo());
+		userDao.insertProfile(user.getUserNo());
+		
 	}
 	
 	public User login(User user) {

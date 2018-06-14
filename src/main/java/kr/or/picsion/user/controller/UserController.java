@@ -109,4 +109,10 @@ public class UserController {
 		return jsonview;
 	}
 	
+	//마이 페이지로 이동
+	/*@RequestMapping("mypage.ps")
+	public String myPage() {
+		return "mypage.";
+	}*/
+	
 }

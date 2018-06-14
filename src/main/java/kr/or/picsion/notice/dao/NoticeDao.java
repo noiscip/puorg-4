@@ -1,5 +1,7 @@
 package kr.or.picsion.notice.dao;
 
-public class NoticeDao {
+public interface NoticeDao {
 
+	public int insertNotice();
+	
 }
