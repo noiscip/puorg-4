@@ -1,7 +1,9 @@
 package kr.or.picsion.user.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,15 +56,21 @@ public class UserService {
 	}
 	
 	//팔로잉하고 있는 사람의 최신 사진리스트 가져오기
-	public List<Picture> listpic(User user) {
+	public List<Picture> listpic(int userNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		User selectUser = userDao.selectUser(user.getUserId());
-		System.out.println(selectUser.toString());
-		List<Picture> followingPic = userDao.followingUserPictureList(selectUser.getUserNo());
+		List<Picture> followingPic = userDao.followingUserPictureList(userNo);
 		System.out.println(followingPic);
 		return followingPic;
 	}
 	
+
+	//팔로잉하고 있는 사람의 최신 사진의 주인리스트 가져오기
+	public List<User> listpicown(int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> followingPicOwner = userDao.followingUserPictureOwnerList(userNo);
+		System.out.println(followingPicOwner);
+		return followingPicOwner;
+	}
 	
 	//userNo로 회원 정보 가져오기
 	public User userInfo(int userNo) {

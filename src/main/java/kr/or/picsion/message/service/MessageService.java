@@ -1,6 +1,10 @@
 package kr.or.picsion.message.service;
 
+<<<<<<< HEAD
 import java.util.List;
+=======
+import java.util.HashMap;
+>>>>>>> dae10c0344ffc50c4d1aaddcb91a402db5302d23
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +12,11 @@ import org.springframework.stereotype.Service;
 
 import kr.or.picsion.message.dao.MessageDao;
 import kr.or.picsion.message.dto.Message;
+<<<<<<< HEAD
 import kr.or.picsion.user.dto.User;
+=======
+import kr.or.picsion.notice.dao.NoticeDao;
+>>>>>>> dae10c0344ffc50c4d1aaddcb91a402db5302d23
 
 @Service
 public class MessageService {
@@ -21,6 +29,19 @@ public class MessageService {
 		
 		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
 		int result = messageDao.insertMessage(message);
+		
+		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
+		System.out.println(message.toString());
+		
+		HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+		
+		noticeMap.put("msgNo", message.getMsgNo());
+		noticeMap.put("receiveUserNo", message.getReceiveUserNo());
+		noticeMap.put("sendUserNo", message.getSendUserNo());
+		noticeMap.put("table", "msgNo");
+		noticeMap.put("tableNo", message.getTableNo());
+		System.out.println(noticeMap.keySet());
+		noticeDao.insertNotice(noticeMap);
 		
 		return result;
 	}

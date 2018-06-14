@@ -519,7 +519,8 @@ function nextPost(curObj){
 				</div>
 		       <div class="row" id="carousel">
 					
-						   <c:forEach items="${imagelist}" var="fileInfo"  varStatus='status'>
+						   <c:forEach items="${imagelist}" var="fileInfo" begin="0" varStatus='status' end="9">
+						  
 							<article 
 							<c:choose>
 							<c:when test="${status.index == 0}">

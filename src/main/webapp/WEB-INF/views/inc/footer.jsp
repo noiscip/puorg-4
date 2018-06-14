@@ -42,14 +42,16 @@
 				console.log("여기는 오픈 이벤트")
 			}
 		  	function onMessage(evt){
+		  		
 				var data = evt.data
 				console.log(evt)
 				
 				console.log(data)
-									
-				var table = data.substr(0,1)
+				var table = data.substr(2,1)
 				var newMessage = '<img src="https://png.icons8.com/doodle/50/000000/new.png">'
-				
+				var urlsa = "/picsion/notice/noticeMsg.ps";
+				console.log(urlsa)
+				console.log(table)
 				if(table == 1){
 					console.log("1번, 유저 ")
 				}else if (table == 2){
@@ -60,10 +62,18 @@
 					console.log("4번, 댓글")
 					console.log($('#userProfile'))
 					
-					$('#userProfile').append(newMessage)
 				}else if(table == 5){
 					console.log("5번, 메시지")
 				}
+				
+				$.ajax({
+					url:urlsa,
+					async: false,
+					success: function () {
+						console.log("헤헤")
+					}
+				})
+				
 		 	}
 		  	function onClose(evt) {
 			  console.log("여기는 클로즈 이벤트")

@@ -61,5 +61,11 @@ public class PictureController {
 		return "studio.mystudio";
 	}
 	
+	@RequestMapping("??.ps")
+	public int increaseRespect(Model model) {
+		int result = 0;
+		return result;
+	}
+	
 	
 }

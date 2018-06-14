@@ -1,5 +1,9 @@
 package kr.or.picsion.notice.dao;
 
-public class NoticeDao {
+import java.util.HashMap;
 
+public interface NoticeDao {
+
+	public int insertNotice(HashMap<String, Object> map);
+	
 }

@@ -5,7 +5,11 @@
 
 <script type="text/javascript">
 	$(function() {
+<<<<<<< HEAD
 		/* 메시지 보내기 비동기 처리 */
+=======
+		
+>>>>>>> dae10c0344ffc50c4d1aaddcb91a402db5302d23
 		$('#messageSend').click(function(){
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:${sessionScope.user.userNo}, 
