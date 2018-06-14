@@ -35,7 +35,6 @@
             <div class="item" data-w="640" data-h="426" style="width: 255px; height: 300px; display: block;">
                 <a href="">
                     <img class="rounded img-size" src="<%=request.getContextPath()%>/${followinglistall.picPath}" alt="">
-                    
                 </a>
                 <div>
                     <div class="counts hide-xs hide-sm ">
