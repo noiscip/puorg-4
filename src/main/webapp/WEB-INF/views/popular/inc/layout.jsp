@@ -23,12 +23,10 @@
 	
 	<!-- CSS Files -->
 	<link href="<%=request.getContextPath()%>/assets/css/material-kit.css?v=2.0.1" rel="stylesheet" />
-	<link href="<%=request.getContextPath()%>/assets/css/base40.min.css?v=2.0.1" rel="stylesheet" />
+	<link href="<%=request.getContextPath()%>/assets/css/base40.min.css?v=2.0.2" rel="stylesheet" />
 	
 	<!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/wordcloud.js"></script>
 	<!--   Core JS Files   -->
 	<script src="<%=request.getContextPath()%>/assets/js/core/jquery.min.js" type="text/javascript"></script>
 	<script src="<%=request.getContextPath()%>/assets/js/core/popper.min.js" type="text/javascript"></script>
