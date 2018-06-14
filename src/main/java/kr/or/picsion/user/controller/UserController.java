@@ -1,6 +1,7 @@
 package kr.or.picsion.user.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -114,10 +115,9 @@ public class UserController {
 	public String getList(HttpSession session, Model model) {
 		
 		User user = (User) session.getAttribute("user");
-		List<Picture> followingPicList = userService.listpic(user); 
+		Map<Integer, Object> followingPicList = userService.mapObj(user.getUserNo());
 		model.addAttribute("imagelistall", followingPicList);
 		System.out.println(followingPicList);
-		
 		return "popular.followingpicall";
 	}
 	
