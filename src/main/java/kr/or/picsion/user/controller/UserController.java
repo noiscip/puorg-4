@@ -1,5 +1,6 @@
 package kr.or.picsion.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -109,10 +110,31 @@ public class UserController {
 		return jsonview;
 	}
 	
-	//마이 페이지로 이동
-	/*@RequestMapping("mypage.ps")
-	public String myPage() {
-		return "mypage.";
-	}*/
+	//즐겨찾기한 사진 목록보기 페이지로 이동
+	@RequestMapping("bookmarklist.ps")
+	public String myBookmark(HttpSession session, Model model) {
+		System.out.println("myBookmark 컨트롤");
+		User user = (User)session.getAttribute("user");
+		System.out.println(user.getUserNo());
+		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo());
+		
+		model.addAttribute("bookmarkPicList", bookmarkPicList);
+		
+		return "mypage.bookmark";
+	}
+	
+	//팔로잉한 회원의 목록보기 페이지로 이동
+	@RequestMapping("followinglist.ps")
+	public String myFollowing(HttpSession session, Model model) {
+		System.out.println("myFollowing 컨트롤");
+		User user = (User)session.getAttribute("user");
+		
+		List<User> followingList = userService.followingUserList(user.getUserNo());
+		
+		model.addAttribute("followingList", followingList);
+		
+		return "mypage.following";
+	}
+	
 	
 }

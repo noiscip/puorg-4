@@ -4,8 +4,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.or.picsion.message.dao.MessageDao">
+	<!-- 메시지 보내기 처리 (insert) -->
 	<insert id="insertMessage" parameterType="kr.or.picsion.message.dto.Message">
 		INSERT INTO MESSAGES (msgContent, sendUserNo, receiveUserNo)
 		VALUES (#{msgContent}, #{sendUserNo}, #{receiveUserNo})
 	</insert>
+	
+	<!-- 받은 메시지리스트 -->
+	<select id="receiveMessageList" resultType="kr.or.picsion.message.dto.Message">
+		SELECT *
+		FROM MESSAGES
+		WHERE receiveUserNo=#{receiveUserNo};
+	</select>
+	
+	<!-- 받은 메시지 보낸사람 리스트 -->
+	<select id="receiveMessageUserInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u.*
+		FROM MESSAGES m JOIN USERS u ON m.sendUserNo=u.userNo
+		WHERE m.receiveUserNo=#{receiveUserNo};
+	</select>
+	
 </mapper>
