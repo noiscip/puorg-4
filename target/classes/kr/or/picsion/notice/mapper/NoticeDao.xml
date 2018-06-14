@@ -5,4 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="kr.or.picsion.notice.dao.NoticeDao">
 
+	<insert id="insertNotice">
+		
+	</insert>
 </mapper>

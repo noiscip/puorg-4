@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.picsion.message.dao.MessageDao;
 import kr.or.picsion.message.dto.Message;
+import kr.or.picsion.notice.dao.NoticeDao;
 
 @Service
 public class MessageService {
@@ -18,6 +19,9 @@ public class MessageService {
 		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
 		int result = messageDao.insertMessage(message);
 		
+		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
+		System.out.println("message : " + message.getMsgNo() + " : " + message.getTableNo());
+		/*noticeDao.insertNotice();*/
 		return result;
 	}
 	
