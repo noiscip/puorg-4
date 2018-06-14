@@ -28,7 +28,7 @@
 						<th>유저 이름</th>
 						<th>유저 포인트</th>
 						<th>유저 가입날짜</th>
-						<th>유저 테이블 종류 번호</th>
+						
 					</tr>
 				</thead>
 
@@ -40,8 +40,7 @@
 							<td>${admin.userId}</td>
 							<td>${admin.userName}</td>
 							<td>${admin.point}</td>
-							<td>${admin.userReg}</td>	
-							<td>${admin.tableNo}</td>
+							<td>${admin.userReg}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

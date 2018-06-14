@@ -96,6 +96,7 @@ public class UserController {
 	@RequestMapping("adminComplainList.ps")
 	public String complain(Model model) {
 		
+		
 		List<Blame> blameList = blameService.complain();
 		model.addAttribute("blameList",blameList);
 		return "admin.complain";
