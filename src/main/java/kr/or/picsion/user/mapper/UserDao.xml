@@ -76,7 +76,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                    join PICTURE p on u.userNo = p.userNo
                    where f.userNo = #{userNo}
                    order by p.picReg
-				   limit 10;
     </select> 
 	
 	
