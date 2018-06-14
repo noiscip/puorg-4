@@ -30,8 +30,8 @@
                     <a href="<%=request.getContextPath()%>/board.ps" class="dropdown-item">
                         <i class="material-icons">list</i> 요청 게시판
                     </a>
-                    <a href="" class="dropdown-item">
-                        <i class="material-icons">content_paste</i> 넣고싶은 거 넣으셈
+                    <a href="<%-- <%=request.getContextPath()%>/user/mypage.ps --%>" class="dropdown-item">
+                        <i class="material-icons">person</i> 마이 페이지
                     </a>
                     <a href="" class="dropdown-item">
                         <i class="material-icons">content_paste</i> 넣고싶은 거 넣으셈
