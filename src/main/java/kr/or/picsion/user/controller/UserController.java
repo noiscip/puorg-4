@@ -114,7 +114,6 @@ public class UserController {
 		return jsonview;
 	}
 	
-<<<<<<< HEAD
 	//즐겨찾기한 사진 목록보기 페이지로 이동
 	@RequestMapping("bookmarklist.ps")
 	public String myBookmark(HttpSession session, Model model) {
@@ -142,6 +141,4 @@ public class UserController {
 	}
 	
 	
-=======
->>>>>>> dae10c0344ffc50c4d1aaddcb91a402db5302d23
 }
