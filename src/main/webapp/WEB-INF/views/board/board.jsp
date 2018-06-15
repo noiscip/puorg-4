@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
+
+
+
+
    <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
   <div class="main main-raised">
     <div class="profile-content">
@@ -16,17 +20,19 @@
             <th class="text-center">제목</th>
             <th class="text-center">작성자</th>
             <th class="text-center">작성일</th>
+            <th class="text-center">작업상태</th>
         </tr>
     </thead>
     <tbody>
-    	<c:forEach items="${list}" var="n">
+    	<c:forEach items="${list}" var="n" varStatus="status">
         <tr>
 			<td class="text-center">${n.brdNo}</td>
 			<td class="text-center"><a href="boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a></td>
-			<td class="text-center">${n.brdNo}</td>
-			<td class="text-center">${n.brdReg}</td>							
+			<td class="text-center">${userid[status.index]}</td>
+			<td class="text-center">${n.brdReg}</td>
+			<td class="text-center">${boardstate[status.index]}</td>				
 		</tr>
-		</c:forEach>
+		</c:forEach> 
     </tbody>
     <tfoot>
      <tr>
