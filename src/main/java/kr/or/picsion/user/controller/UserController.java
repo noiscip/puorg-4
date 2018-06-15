@@ -1,8 +1,6 @@
 package kr.or.picsion.user.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.blame.dto.Blame;
+import kr.or.picsion.blame.service.BlameService;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.purchase.dto.Purchase;
+import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -27,7 +29,14 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+		
+    @Autowired
+    private BlameService blameService;
+    
+    @Autowired
+    private PurchaseService purchaseService;
+    
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -57,7 +66,12 @@ public class UserController {
 		if(loginUser != null) {
 			System.out.println("로그인 성공");
 			session.setAttribute("user", loginUser);
-			result = "redirect:/home.ps";
+			System.out.println(loginUser.getRoleNo());
+			if(loginUser.getRoleNo()==3) {
+				result = "redirect:/user/admin.ps";
+			}else {
+				result = "redirect:/home.ps";
+			}
 		}else {
 			System.out.println("로그인 실패");
 			result = "redirect:/user/login.ps";
@@ -72,6 +86,48 @@ public class UserController {
 		
 		return "redirect:/home.ps";
 	}
+	
+	@RequestMapping("admin.ps")
+	public String adminPage(Model model) {
+		
+		List<User> userList = userService.userList();
+		model.addAttribute("userList",userList);
+		return "admin.admin";
+	}
+	
+	@RequestMapping("adminUserDel.ps")
+	public View userDel(int userNo, Model model) {
+		
+		int result = userService.userDel(userNo);
+		model.addAttribute("result",result);
+		return jsonview;
+	}
+	
+	@RequestMapping("adminAllUser.ps")
+	public View userFindAll(Model model) {
+		List<User> userList = userService.userList();
+		model.addAttribute("allUser",userList);
+		return jsonview;
+	}
+	
+	@RequestMapping("adminComplainList.ps")
+	public String complain(Model model) {
+		
+		
+		List<Blame> blameList = blameService.complain();
+		model.addAttribute("blameList",blameList);
+		return "admin.complain";
+	}
+	
+	@RequestMapping("adminPurchase.ps")
+	public String purchase(Model model) {
+		
+		List<Purchase> purchaseList = purchaseService.purchaseList();
+		model.addAttribute("purchaseList",purchaseList);
+		return "admin.purchase";
+	}
+	
+	
 	
 	@RequestMapping(value="popular.ps", method=RequestMethod.GET)
 	public String getList(HttpSession session, Model model) {

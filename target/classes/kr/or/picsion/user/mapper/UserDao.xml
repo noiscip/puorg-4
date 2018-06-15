@@ -98,4 +98,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE b.userNo=#{userNo};
 	</select>
 	
+	<delete id="deleteUser">
+		delete from USERS where userNo = #{userNo}
+	</delete>
+	
 </mapper>

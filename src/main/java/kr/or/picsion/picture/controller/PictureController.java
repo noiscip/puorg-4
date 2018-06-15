@@ -63,8 +63,12 @@ public class PictureController {
 	}
 	
 	@RequestMapping("??.ps")
-	public int increaseRespect(Model model) {
+	public int increaseRespect(HttpSession session, Model model) {
 		int result = 0;
+		User user = (User) session.getAttribute("user");
+		
+		/*Picture pic = pictureService.increaseRespect(picNo, userNo);*/
+		
 		return result;
 	}
 	

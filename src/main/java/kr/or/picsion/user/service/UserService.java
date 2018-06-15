@@ -137,4 +137,10 @@ public class UserService {
 		return bookmarkList;
 	}
 	
+	public int userDel(int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		int result = userDao.deleteUser(userNo);
+		return result;
+	}
+	
 }
