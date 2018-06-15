@@ -6,17 +6,22 @@
 <script type="text/javascript">
 	$(function() {
 		/* 메시지 보내기 비동기 처리 */
+		var sendUserNo : ${user.userNo};
+		var receiveUserNo : ${userinfo.userNo};
+		
 		$('#messageSend').click(function(){
-			var data= {msgContent:$('#msgContent').val(), 
-						sendUserNo:${sessionScope.user.userNo}, 
-						receiveUserNo:${userinfo.userNo}
+			var tableNo = 4
+			var data= {msgContent:$("#msgContent").val(), 
+						sendUserNo:sendUserNo, 
+						receiveUserNo:receiveUserNo
 					   };
+			
 			$.ajax({
 				  url : "/picsion/message/send.ps",
 				  data: data,
 				  success : function(){
-				      $('#msgContent').val("");
-				      send();
+				      $("#msgContent").val("");
+				      send(receiveUserNo,tableNo);
 				  },
 				  error: function(){
 				   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
@@ -26,19 +31,19 @@
 		
 		/* 팔로우가 되있으면 팔로우 취소 처리, 팔로우가 안되있으면 팔로잉 처리 (비동기)*/
 		$('#follow').click(function(){
-			var data = {userNo:${sessionScope.user.userNo}, 
-						followingUserNo:${userinfo.userNo}};			
+			var data = {userNo:sendUserNo, 
+						followingUserNo:receiveUserNo};			
 			$.ajax({
 				  url : "/picsion/user/following.ps",
 				  data: data,
 				  success : function(data){
 					  console.log(data.result);
 					  if(data.result==1){
-						  $('#follow-icon')[0].innerHTML = "favorite_border";
-						  $('#follow')[0].childNodes[2].data = "팔로우";
+						  $('#follow-icon')[0].innerHTML = 'favorite_border';
+						  $('#follow')[0].childNodes[2].data = '팔로우';
 					  }else{
-						  $('#follow-icon')[0].innerHTML = "favorite";
-						  $('#follow')[0].childNodes[2].data = "팔로우 취소"; 
+						  $('#follow-icon')[0].innerHTML = 'favorite';
+						  $('#follow')[0].childNodes[2].data = '팔로우 취소'; 
 					  }
 				  }
 			});
