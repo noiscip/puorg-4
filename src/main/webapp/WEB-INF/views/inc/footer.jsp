@@ -25,8 +25,13 @@
 		  //top으로ws
 		  
 			$(document).ready(function() {
-				$('#sendBtn').click(function() { send(); });
-				connect();
+				$('#sendBtn').click(function() { send() })
+
+				if($('#loginUserNo').val()!= ""){
+					connect() 
+					console.log($('#loginUserNo').val())
+					console.log('고ㅜㅏ여언')					
+				}
 				
 			});
 			
@@ -81,10 +86,11 @@
 			  console.log("여기는 클로즈 이벤트")
 			}
 		  
-		  function send() {
+		  function send(receiveUser,tableNo) {
+			  	console.log("send오긴해?")
 			  	var loginUser = $('#loginUserNo').val()
-		        var msg = "메시지이?";
-		        wsocket.send(loginUser+":4:"+msg);
+			  
+		        wsocket.send(loginUser+":"+receiveUser+":4");
 		    }
 		  
 		  //top으로

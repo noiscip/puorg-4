@@ -8,21 +8,41 @@ public class Message {
 	private String msgContent;
 	private Date msgReg;
 	private String msgState;
+	private String sendMsgDel;
+	private String receiveMsgDel;
 	private int sendUserNo;
 	private int receiveUserNo;
 	private int tableNo;
-	
+
 	public Message() {}
 
-	public Message(int msgNo, String msgContent, Date msgReg, String msgState, int sendUserNo, int receiveUserNo,
-			int tableNo) {
+	public Message(int msgNo, String msgContent, Date msgReg, String msgState, String sendMsgDel, String receiveMsgDel,
+			int sendUserNo, int receiveUserNo, int tableNo) {
 		this.msgNo = msgNo;
 		this.msgContent = msgContent;
 		this.msgReg = msgReg;
 		this.msgState = msgState;
+		this.sendMsgDel = sendMsgDel;
+		this.receiveMsgDel = receiveMsgDel;
 		this.sendUserNo = sendUserNo;
 		this.receiveUserNo = receiveUserNo;
 		this.tableNo = tableNo;
+	}
+
+	public String getSendMsgDel() {
+		return sendMsgDel;
+	}
+
+	public void setSendMsgDel(String sendMsgDel) {
+		this.sendMsgDel = sendMsgDel;
+	}
+
+	public String getReceiveMsgDel() {
+		return receiveMsgDel;
+	}
+
+	public void setReceiveMsgDel(String receiveMsgDel) {
+		this.receiveMsgDel = receiveMsgDel;
 	}
 
 	public int getMsgNo() {
@@ -84,10 +104,7 @@ public class Message {
 	@Override
 	public String toString() {
 		return "Message [msgNo=" + msgNo + ", msgContent=" + msgContent + ", msgReg=" + msgReg + ", msgState="
-				+ msgState + ", sendUserNo=" + sendUserNo + ", receiveUserNo=" + receiveUserNo + ", tableNo=" + tableNo
-				+ "]";
+				+ msgState + ", sendMsgDel=" + sendMsgDel + ", receiveMsgDel=" + receiveMsgDel + ", sendUserNo="
+				+ sendUserNo + ", receiveUserNo=" + receiveUserNo + ", tableNo=" + tableNo + "]";
 	}
-
-	
-	
 }

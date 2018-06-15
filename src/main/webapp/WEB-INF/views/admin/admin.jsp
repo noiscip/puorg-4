@@ -6,15 +6,49 @@
 $(function(){
 	$('button[title=userDelete]').click(function () {
 		console.log($(this)[0].id)
+		$.ajax({
+			url:"/picsion/user/adminUserDel.ps",
+			data:{userNo:$(this)[0].id},
+			success: function (data) {
+				console.log(data.result)
+				if(data.result==0){
+					console.log("삭제실패")
+					
+				}else{
+					console.log("삭제")
+					userFindAll()
+					
+				}
+			}
+		})
 	})
-	
-	
-	
-	
-	
-	
 })
 
+function userFindAll() {
+	$.ajax({
+		url:"/picsion/user/adminAllUser.ps",
+		async : false,
+		success: function (data) {
+			console.log(data)
+			var table='<table border="3"><thead><tr><th>유저 번호</th><th>유저 아이디</th><th>유저 이름</th><th>유저 포인트</th><th>유저 가입날짜</th><th>삭제</th></tr></thead>'
+				table += '<tbody>'
+				$.each(data.allUser, function(i,elt){
+					table +='<tr>'
+					table +='<td>'+elt.userNo+'</td>'
+					table +='<td>'+elt.userId+'</td>'
+					table +='<td>'+elt.userName+'</td>'
+					table +='<td>'+elt.point+'</td>' 
+
+					table +='<td>'+elt.userReg+'</td>'
+					table +='<td><button class="btn btn-primary btn-link" title="userDelete" id="'+elt.userNo+'">삭제</button></td>'
+				})
+			table += '</tr></tbody></table>'
+			
+			$('#userTable').empty()
+			$('#userTable').append(table)			
+		}
+	})
+}
 
 
 
@@ -36,33 +70,35 @@ $(function(){
 		
 		
 			<h1>전체 회원 목록</h1>
-			<table border="3">
-				<thead>
-					<tr>
-						<th>유저 번호</th>
-						<th>유저 아이디</th>
-						<th>유저 이름</th>
-						<th>유저 포인트</th>
-						<th>유저 가입날짜</th>
-						<th>삭제</th>
-						
-					</tr>
-				</thead>
-
-				<tbody>
-					<c:forEach var="admin" items="${userList}">
-
+			<div id="userTable">
+				<table border="3">
+					<thead>
 						<tr>
-							<td>${admin.userNo}</td>
-							<td>${admin.userId}</td>
-							<td>${admin.userName}</td>
-							<td>${admin.point}</td>
-							<td>${admin.userReg}</td>
-							<td><button class="btn btn-primary btn-link" title="userDelete" id="${admin.userNo}">삭제</button></td>
+							<th>유저 번호</th>
+							<th>유저 아이디</th>
+							<th>유저 이름</th>
+							<th>유저 포인트</th>
+							<th>유저 가입날짜</th>
+							<th>삭제</th>
+							
 						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+					</thead>
+	
+					<tbody>
+						<c:forEach var="admin" items="${userList}">
+	
+							<tr>
+								<td>${admin.userNo}</td>
+								<td>${admin.userId}</td>
+								<td>${admin.userName}</td>
+								<td>${admin.point}</td>
+								<td>${admin.userReg}</td>
+								<td><button class="btn btn-primary btn-link" title="userDelete" id="${admin.userNo}">삭제</button></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
