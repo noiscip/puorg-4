@@ -18,7 +18,9 @@ import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
+import kr.or.picsion.user.service.UserService;
 
 @Controller
 
@@ -31,13 +33,24 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@Autowired
+	private OperationApplyService operationApplyService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private CommentService commentService;
 
 	@RequestMapping(value = "boardInfo.ps")
 	public String selectBoard(int brdNo, Model model) {
 		System.out.println("보드인포 컨트롤");
 		Board boardInfo = boardService.selectBoard(brdNo);
+		List<String> commuserid = new ArrayList<String>();
 		List<Comment> comment = commentService.commentList(brdNo);
+		for(Comment s : comment) {
+			commuserid.add(userService.userInfo(s.getUserNo()).getUserId());
+		}
+		model.addAttribute("commuserid", commuserid);		
 		model.addAttribute("boardInfo", boardInfo);
 		model.addAttribute("comment",comment);
 		return "board.boardInfo";
@@ -110,12 +123,14 @@ public class BoardController {
 		HashMap<String, Integer> map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
-		
-		
-		
+		List<String> userid = new ArrayList<String>();
+		List<String> boardstate = new ArrayList<String>();
 		try {
 			list = boardService.boardList(map);
-
+			for(Board s : list) {
+				userid.add(userService.userInfo(s.getUserNo()).getUserId());
+				boardstate.add(operationApplyService.operationStatus(s.getOperStateNo()));
+			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,7 +138,11 @@ public class BoardController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 		model.addAttribute("list", list);
+		model.addAttribute("userid", userid);
+		model.addAttribute("boardstate", boardstate);
 		model.addAttribute("pg", page);
 		model.addAttribute("allPage", allPage);
 		model.addAttribute("block", block);
