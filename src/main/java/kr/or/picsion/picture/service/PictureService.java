@@ -28,9 +28,9 @@ public class PictureService {
 	
 	
 	//사진 좋아요 증가
-	public void increaseRespect(int picNo, int UserNo){
+	public void increaseRespect(int picNo, int userNo){
 		PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
-		pictureDao.respectIncrease(picNo, UserNo);
+		pictureDao.respectIncrease(picNo, userNo);
 		
 	}
 }
