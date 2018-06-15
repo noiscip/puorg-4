@@ -1,5 +1,6 @@
 package kr.or.picsion.message.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
+
+import com.sun.javafx.collections.MappingChange.Map;
 
 import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.message.service.MessageService;
@@ -50,10 +53,17 @@ public class MessageController {
 		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
 		List<User> receiveInfo = messageService.receiveMessageInfo(user.getUserNo());
 		
-		System.out.println("sdfsdfwefjwoijefpowjepfojwf0"+receiveInfo);
+		/*HashMap<String, Object> receiveMap = new HashMap<String, Object>();
+		
+		receiveMap.put("receiveList", receiveList);
+		receiveMap.put("receiveInfo", receiveInfo);
+		
+		System.out.println("****************************Map은????"+receiveMap);*/
 		
 		model.addAttribute("receiveList", receiveList);
 		model.addAttribute("receiveInfo", receiveInfo);
+		
+		/*model.addAttribute("receiveMap", receiveMap);*/
 		
 		return "mypage.message";
 	}

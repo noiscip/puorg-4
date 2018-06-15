@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 <html>
@@ -25,8 +25,12 @@
 		  //top으로ws
 		  
 			$(document).ready(function() {
-				$('#sendBtn').click(function() { send(); });
-				connect();
+				$('#sendBtn').click(function() { send(1,4) })
+
+				if($('#loginUserNo').val()!= ""){
+					connect() 
+					console.log($('#loginUserNo').val())
+				}
 				
 			});
 			
@@ -44,11 +48,9 @@
 			}
 		  	function onMessage(evt){
 		  		console.log("onMessage 실행")
-				var data = evt.data
-				
-				var table = data.substr(2,1)
+				var table = evt.data.split(':')[2]
 				var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
-				var urlsa = "";
+				var url = "";
 
 				if(table == 1){
 					console.log("1번, 유저 ")
@@ -59,20 +61,18 @@
 				}else if(table == 4){
 					console.log("4번, 댓글")
 					console.log($('#userProfile'))
-					urlsa = "/picsion/notice/noticeMsg.ps"
+					url = "/picsion/notice/noticeMsg.ps"
 				}else if(table == 5){
 					console.log("5번, 메시지")
 				}
 				
-							$('#userProfile').append(newMessage)
 				$.ajax({
-					url:urlsa,
+					url:url,
 					async: false,
 					success: function (data) {
 						if (data.count > 0 && $('#newNotice').length == 0){
-							console.log("???")
+							$('#userProfile').append(newMessage)
 						}
-						console.log("헤헤")
 					}
 				})
 				
@@ -81,10 +81,11 @@
 			  console.log("여기는 클로즈 이벤트")
 			}
 		  
-		  function send() {
+		  function send(receiveUser,tableNo) {
+			  	console.log("send오긴해?")
 			  	var loginUser = $('#loginUserNo').val()
-		        var msg = "메시지이?";
-		        wsocket.send(loginUser+":4:"+msg);
+			  
+		        wsocket.send(loginUser+":"+receiveUser+":4");
 		    }
 		  
 		  //top으로

@@ -2,6 +2,20 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<script type="text/javascript">
+	$(function(){
+		$('.messageModal').click(function() {
+			console.log('여기는 들어오는거지?');
+			console.log($(this))
+			console.log();
+			/* $('.modal-body').append() */
+			$('.modal-body').empty();
+			$('.modal-body').append("<h5>메시지 내용</h5>"+$(this)[0].children[2].innerText);
+		})
+	})
+
+</script>
+
 <style>
 /* 뿌려주는 이미지의 크기 */
 .img-size {
@@ -207,10 +221,23 @@ table > tbody > tr:hover > td {
 			<li class="nav-item"><a class="nav-link" href="#">정보 수정</a></li>
 		</ul>
 		
+
 		<div class="container">
 			<div class="gallery text-center">
 				<div class="row">
-					<div class="col-md-12" align="center">
+					<div class="col-md-12" >
+					
+					<div class="col-md-3 dropdown" align="left">
+						<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    	받은 메시지
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">받은 메시지</a></li>
+							<li><a href="#">보낸 메시지</a></li>
+						</ul>
+					</div>
+					
+					
 						<table cellspacing='0' style="width:100%; border:#ccc 2px solid"> <!-- cellspacing='0' is important, must stay -->
 							<thead>
 								<tr align="center">
@@ -226,12 +253,12 @@ table > tbody > tr:hover > td {
 							<tbody>
 							
 								<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
-									<tr class="url-tr" data-url="" data-toggle="modal" data-target="#myModal">
+									<tr class="url-tr messageModal" data-url="" data-toggle="modal" data-target="#myModal">
 									
 										<td>${receiveMessage.msgNo}</td>
 										<td>${receiveInfo[status.index].userName}</td>
 										<!-- 상세 페이지? 상세 메시지 내용을 보여주는 Modal? -->
-										<td>${receiveMessage.msgContent}</td>
+										<td title="content">${receiveMessage.msgContent}</td>
 										<td>${receiveMessage.msgReg}</td>
 										<td>
 											<c:choose>
@@ -245,6 +272,26 @@ table > tbody > tr:hover > td {
 										</td>
 									</tr>
 								</c:forEach>
+								<%-- <c:forEach items="${receiveMap}" var="receive" varStatus="status">
+									<tr class="url-tr messageModal" data-url="" data-toggle="modal" data-target="#myModal">
+									
+										<td>${receive.Message.receiveMessage.msgNo}</td>
+										<td>${receive.Users.receiveInfo.userName}</td>
+										<!-- 상세 페이지? 상세 메시지 내용을 보여주는 Modal? -->
+										<td title="content">${receive.Message.receiveMessage.msgContent}</td>
+										<td>${receive.Message.receiveMessage.msgReg}</td>
+										<td>
+											<c:choose>
+												<c:when test="${receive.Message.receiveMessage.msgState eq 'F'}">
+													안읽음
+												</c:when>
+												<c:otherwise>
+													읽음
+												</c:otherwise>
+											</c:choose>
+										</td>
+									</tr>
+								</c:forEach> --%>
 							</tbody>
 						</table>
 					</div>
@@ -259,13 +306,15 @@ table > tbody > tr:hover > td {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-      	<h4 class="modal-title" id="myModalLabel">메시지</h4>
+      	<h5 class="modal-title" id="myModalLabel">메시지</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body">
       	<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
-      		${receiveInfo[status.index].userName}<br>
-      		${receiveMessage.msgContent}
+      		<%-- <c:if test="${receiveList.msgNo eq $('#msgNo')}">
+      			${receiveInfo[status.index].userName}<br>
+      			${receiveMessage.msgContent}<br>
+      		</c:if> --%>
       	</c:forEach>
       </div>
       <div class="modal-footer">
