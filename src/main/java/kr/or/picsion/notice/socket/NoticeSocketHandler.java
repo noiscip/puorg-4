@@ -4,16 +4,10 @@ package kr.or.picsion.notice.socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
-import kr.or.picsion.user.service.UserService;
 
 public class NoticeSocketHandler extends TextWebSocketHandler {
 
@@ -21,7 +15,6 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession wSession) throws Exception {
-		super.afterConnectionEstablished(wSession);
 		System.out.println("afterConnectionEstablished!!!!!!! 커넥션 열림??");
 		
 		Map<String,Object> map = wSession.getAttributes();
@@ -58,8 +51,7 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 	}
 
 	   @Override
-	    public void handleTransportError(
-	            WebSocketSession session, Throwable exception) throws Exception {
+	    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
 	        System.out.println(session.getId() + " 익셉션 발생: " + exception.getMessage());
 	    }
 
