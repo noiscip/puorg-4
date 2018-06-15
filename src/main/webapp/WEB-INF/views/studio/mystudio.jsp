@@ -7,7 +7,7 @@
 	$(function() {
 		/* 메시지 보내기 비동기 처리 */
 		$('#messageSend').click(function(){
-			var data= {msgContent:$("#msgContent").val(), 
+			var data= {msgContent:$('#msgContent').val(), 
 						sendUserNo:${sessionScope.user.userNo}, 
 						receiveUserNo:${userinfo.userNo}
 					   };
@@ -15,7 +15,7 @@
 				  url : "/picsion/message/send.ps",
 				  data: data,
 				  success : function(){
-				      $("#msgContent").val("");
+				      $('#msgContent').val("");
 				      send();
 				  },
 				  error: function(){

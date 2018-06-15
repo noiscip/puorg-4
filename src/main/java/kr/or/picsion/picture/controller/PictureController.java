@@ -37,11 +37,6 @@ public class PictureController {
 		
 		User user = (User) session.getAttribute("user");
 		
-		/*List<Picture> picList = new ArrayList<Picture>();
-		List<User> followerList = new ArrayList<User>();
-		List<User> followingList = new ArrayList<User>();*/
-		
-		//
 		User userInfo = userService.userInfo(userNo);
 		List<Picture> picList = pictureService.myPicList(userNo);
 		List<User> followerList = userService.followerUserList(userNo);
@@ -61,14 +56,38 @@ public class PictureController {
 		return "studio.mystudio";
 	}
 	
-	@RequestMapping("??.ps")
-	public int increaseRespect(HttpSession session, Model model) {
-		int result = 0;
-		User user = (User) session.getAttribute("user");
-		
-		/*Picture pic = pictureService.increaseRespect(picNo, userNo);*/
-		
-		return result;
+	//사진 좋아요
+	@RequestMapping("increaserespect.ps")
+	public View pictureRespect(int picNo, int userNo, Model model) {
+		int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
+		System.out.println("사진 좋아요 컨트롤러");
+		System.out.println(picNo);
+		System.out.println(userNo);
+		if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
+			pictureService.deleteRespect(picNo, userNo);
+			System.out.println("좋아요 취소");
+		}else {	//좋아요 하지 않을때 -> 좋아요 증가
+			pictureService.increaseRespect(picNo, userNo);
+			System.out.println("좋아요 선택");
+		}
+		model.addAttribute("result",result);
+		return jsonview;
+	}
+	
+	//사진 북마크
+	@RequestMapping("increasebookmark.ps")
+	public View pictureBookmark(int picNo, int userNo, Model model) {
+		int result = pictureService.bookmarkConfirm(picNo, userNo);
+		System.out.println("사진 북마크 컨트롤러");
+		if(result!=0) {	 //북마크 하고 있을때 -> 북마크 삭제
+			pictureService.deleteBookmark(picNo, userNo);
+			System.out.println("북마크 취소");
+		}else {	//북마크 하지 않을때 -> 북마크 증가
+			pictureService.increaseBookmark(picNo, userNo);
+			System.out.println("북마크 선택");
+		}
+		model.addAttribute("result",result);
+		return jsonview;
 	}
 	
 	
