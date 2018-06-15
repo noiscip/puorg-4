@@ -1,7 +1,12 @@
 package kr.or.picsion.notice.socket;
 
 
-import org.apache.ibatis.session.SqlSession;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -17,23 +22,30 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 	@Autowired
 	private UserService userService;
 
+	private Map<Integer, WebSocketSession> users = new ConcurrentHashMap<Integer, WebSocketSession>();
+
+	@Override
+	public void afterConnectionEstablished(WebSocketSession wSession) throws Exception {
+		System.out.println("afterConnectionEstablished!!!!!!! 커넥션 열림??");
+		
+		System.out.println(wSession);
+	}
+	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("afterConnectionClosed????? 커넥션 닫힘???");
-	}
-
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		System.out.println("afterConnectionEstablished!!!!!!! 커넥션 열림??");
+		
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession wSession, TextMessage message) throws Exception {
 		System.out.println("여기는 노티스 소켓 핸들러");
+		
 		System.out.println(message.getPayload());
 		System.out.println(wSession.getId());
 		String[] info = message.getPayload().split(":");
 	
+		System.out.println("바뀜??");
 		User user =userService.userInfo(Integer.valueOf(info[0]));
 		System.out.println(user.toString());
 		

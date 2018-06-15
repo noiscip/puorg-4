@@ -6,7 +6,6 @@
 <script type="text/javascript">
 	$(function() {
 		/* 메시지 보내기 비동기 처리 */
-		
 		$('#messageSend').click(function(){
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:${sessionScope.user.userNo}, 
