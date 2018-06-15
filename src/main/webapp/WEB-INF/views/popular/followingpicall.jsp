@@ -28,7 +28,6 @@
             </div>
           </div>
         </div>
-        
         <div id="gallery">
           <div class="flex_grid credits">
             <c:forEach items="${imagelistall}" var="followinglistall" varStatus="status">
