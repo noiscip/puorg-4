@@ -26,13 +26,33 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession wSession) throws Exception {
+		super.afterConnectionEstablished(wSession);
 		System.out.println("afterConnectionEstablished!!!!!!! 커넥션 열림??");
+		System.out.println("wSession ::: " + wSession);
 		
-		System.out.println(wSession);
+		Map<String,Object> map = wSession.getAttributes();
+		System.out.println("map ::: " + map);
+
+		int userNo = (Integer)map.get("userNo");
+		System.out.println("userNo ::: " + userNo);
+		
+		System.out.println("여기까지가 커넥션 열림부분");
+		
+		users.put(userNo, wSession);
+		System.out.println(users.keySet());
+		System.out.println(users.values());
 	}
 	
 	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+	public void afterConnectionClosed(WebSocketSession wSession, CloseStatus status) throws Exception {
+		Map<String,Object> map = wSession.getAttributes();
+		System.out.println("map ::: " + map);
+
+		int userNo = (Integer)map.get("userNo");
+		System.out.println("userNo ::: " + userNo);
+		
+		users.remove(userNo);
+		System.out.println("닫히는부분");
 		System.out.println("afterConnectionClosed????? 커넥션 닫힘???");
 		
 	}
@@ -46,10 +66,16 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 		String[] info = message.getPayload().split(":");
 	
 		System.out.println("바뀜??");
-		User user =userService.userInfo(Integer.valueOf(info[0]));
+		User user = userService.userInfo(Integer.valueOf(info[0]));
 		System.out.println(user.toString());
 		
-		wSession.sendMessage(message);   
+		System.out.println(users.values());
+		System.out.println("시스아웃");
+		
+		for(WebSocketSession s : users.values()) {
+			System.out.println("하하 : " + s);
+			s.sendMessage(message);   
+		}
 		// 현재 수신자에게 몇개의 메세지가 와있는지 디비에서 검색함.
 
 	}
