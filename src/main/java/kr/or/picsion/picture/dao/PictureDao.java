@@ -1,12 +1,15 @@
 package kr.or.picsion.picture.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kr.or.picsion.picture.dto.Picture;
 
 public interface PictureDao {
 
-	public int insertPicture(Picture picture);
+	public int insertPicture(HashMap<String, Object> picmap);
+	public int insertTag(int picNo);////////////////////////////뀨?
+	public int searchPath(int picNo);////////////////////////////뀨?
 	public int deletePicture(int picNo);
 	public int updatePicture(Picture picture);
 	public List<Picture> pictureList();

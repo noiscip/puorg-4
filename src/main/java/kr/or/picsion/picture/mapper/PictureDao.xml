@@ -15,4 +15,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	VALUES
 		( #{picNo}, #{userNo})
 	</insert>
+	
+	<!-- 사진 업로드 저장 -->
+	<insert id="insertPicture" parameterType="hashmap">		
+	insert into PICTURE
+	 (picNo, picTitle, picContent, picPath, picWater, picPrice, userNo)
+	values (#{picture.picNo},#{picture.picTitle},#{picture.picContent},#{picture.picPath},"test",100,#{userNo})
+	 <selectKey keyProperty="picture.picNo" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+	
+	<!-- 사진 업로드 저장 시 태그 저장 -->
+	<insert id="insertTag">
+	insert into TAG
+	values (#{picNo},#{tagContent})
+	</insert>
+	
+	<!--  사진 경로 뽑아내기? 
+	<select id="searchPath">
+		select picPath
+	</select> -->
 </mapper>

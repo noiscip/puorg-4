@@ -1,4 +1,4 @@
-package kr.or.picsion;
+/*package kr.or.picsion;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,3 +114,4 @@ public class AmazonTest {
 	
 
 }
+*/

@@ -1,6 +1,7 @@
 package kr.or.picsion.picture.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -26,11 +27,23 @@ public class PictureService {
 		return list;
 	}
 	
-	
+		
 	//사진 좋아요 증가
 	public void increaseRespect(int picNo, int UserNo){
 		PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
 		pictureDao.respectIncrease(picNo, UserNo);
 		
+	}
+	//사진업로드 저장
+	public void insertPicture(Picture picture, int userNo) {
+		HashMap<String, Object> picmap = new HashMap<String, Object>();
+		picmap.put("picture", picture);
+		picmap.put("userNo", userNo);
+		System.out.println(picture.toString());  //////////////////////////////////뀨?
+		PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+		pictureDao.insertPicture(picmap);
+//		pictureDao.insertTag(picture.getPicNo());
+		System.out.println(picture.toString());
+
 	}
 }
