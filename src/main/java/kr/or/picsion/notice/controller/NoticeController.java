@@ -3,12 +3,16 @@
  */
 package kr.or.picsion.notice.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
 import kr.or.picsion.notice.service.NoticeService;
+import kr.or.picsion.user.dto.User;
 
 /**
  * @project Final_Picsion
@@ -28,8 +32,16 @@ public class NoticeController {
 	private NoticeService noticeService;
 	
 	@RequestMapping("noticeMsg.ps")
-	public View noticeMsg() {
+	public View noticeMsg(HttpSession session,Model model) {
 		System.out.println("과아아아아연");
+		User user = (User)session.getAttribute("user");
+		
+		int count = noticeService.readCheckCount(user.getUserNo());
+		
+		System.out.println("count : " + count);
+		
+		model.addAttribute("count",count);
+		
 		return jsonview;
 	}
 	

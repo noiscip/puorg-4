@@ -63,26 +63,14 @@ public class UserService {
 		return followingPic;
 	}
 	
-	public Map<Integer, Object> mapObj(int userNo) {
-		HashMap<Integer, Object> mapObj = new HashMap<Integer, Object>();
+
+	//팔로잉하고 있는 사람의 최신 사진의 주인리스트 가져오기
+	public List<User> listpicown(int userNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		List<Picture> followingPic = userDao.followingUserPictureList(userNo);
-		int i = 0;
-		for(Picture pic : followingPic) {
-			User user = userDao.selectUserNo(pic.getUserNo());
-			List<Object> objList = new ArrayList<Object>();
-			objList.add(pic);
-			objList.add(user);
-			mapObj.put(i++, objList);
-		}
-		
-		System.out.println(mapObj.keySet());
-		System.out.println(mapObj.values());
-		return mapObj;
+		List<User> followingPicOwner = userDao.followingUserPictureOwnerList(userNo);
+		System.out.println(followingPicOwner);
+		return followingPicOwner;
 	}
-	
-	
-	
 	
 	//userNo로 회원 정보 가져오기
 	public User userInfo(int userNo) {
@@ -136,6 +124,17 @@ public class UserService {
 	public void insertFollow(int userNo, int followingUserNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		userDao.insertFollow(userNo, followingUserNo);
+	}
+	
+	
+	//회원의 북마크 리스트
+	public List<Picture> bookmarkPicList(int userNo){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		
+		List<Picture> bookmarkList = new ArrayList<Picture>();
+		bookmarkList=userDao.bookmarkPicList(userNo);
+		
+		return bookmarkList;
 	}
 	
 }

@@ -48,9 +48,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 회원의 팔로잉 리스트 (내가 따르는 회원) -->
 	<select id="followingUserList" resultType="kr.or.picsion.user.dto.User">
-		SELECT f.followingUserNo as userNo, p.prPicture as prPicture, p.prContent as prContent
-		FROM FOLLOW f JOIN PROFILE p
-		ON f.followingUserNo=p.userNo
+		SELECT f.followingUserNo as userNo, u.userId as userId, u.userName as userName, p.prPicture as prPicture, p.prContent as prContent
+		FROM FOLLOW f JOIN PROFILE p ON f.followingUserNo=p.userNo
+		              JOIN USERS u ON f.followingUserNo=u.userNo
 		WHERE f.userNo=#{userNo}
 	</select>
 	
@@ -79,8 +79,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select> 
     
     
-    <!--  
-     팔로잉 최신 사진의 주인 
+  
+     <!-- 팔로잉 최신 사진의 주인 --> 
     <select id="followingUserPictureOwnerList" resultType="kr.or.picsion.user.dto.User">
     	SELECT f.followingUserNo as userNo, u.userName as userName, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
       	FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
@@ -88,7 +88,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                    where f.userNo = #{userNo}
                    order by p.picReg
     </select> 
-     -->
+   
 	
+	<!-- 즐겨찾기한 사진 리스트 -->
+	<select id="bookmarkPicList" resultType="kr.or.picsion.picture.dto.Picture">
+		SELECT p.*
+		FROM PICTURE p JOIN BOOKMARK b 
+			ON p.picNo = b.picNo
+		WHERE b.userNo=#{userNo};
+	</select>
 	
 </mapper>
