@@ -66,12 +66,12 @@ public class UserController {
 		if(loginUser != null) {
 			System.out.println("로그인 성공");
 			session.setAttribute("user", loginUser);
+			System.out.println(loginUser.getRoleNo());
 			if(loginUser.getRoleNo()==3) {
 				result = "redirect:/user/admin.ps";
 			}else {
 				result = "redirect:/home.ps";
 			}
-			result = "redirect:/home.ps";
 		}else {
 			System.out.println("로그인 실패");
 			result = "redirect:/user/login.ps";
@@ -95,6 +95,21 @@ public class UserController {
 		return "admin.admin";
 	}
 	
+	@RequestMapping("adminUserDel.ps")
+	public View userDel(int userNo, Model model) {
+		
+		int result = userService.userDel(userNo);
+		model.addAttribute("result",result);
+		return jsonview;
+	}
+	
+	@RequestMapping("adminAllUser.ps")
+	public View userFindAll(Model model) {
+		List<User> userList = userService.userList();
+		model.addAttribute("allUser",userList);
+		return jsonview;
+	}
+	
 	@RequestMapping("adminComplainList.ps")
 	public String complain(Model model) {
 		
@@ -111,6 +126,8 @@ public class UserController {
 		model.addAttribute("purchaseList",purchaseList);
 		return "admin.purchase";
 	}
+	
+	
 	
 	@RequestMapping(value="popular.ps", method=RequestMethod.GET)
 	public String getList(HttpSession session, Model model) {
