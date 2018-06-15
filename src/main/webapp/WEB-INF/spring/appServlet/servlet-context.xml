@@ -21,12 +21,8 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
-	
-	
-	
 	<context:component-scan base-package="kr.or.picsion" />
 	<context:component-scan base-package="kr.or.picsion.*.*" />
- 
  
 	<!--Tiles 설정 (Bean 객체 생성 주입) -->
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
@@ -41,7 +37,10 @@
 	</bean> 
 	
 	<websocket:handlers>
-		<websocket:mapping handler="message" path="/message.ps" />
+		<websocket:mapping handler="message" path="/message.ps"/>
+		<websocket:handshake-interceptors>
+       		 <bean class="kr.or.picsion.utils.HandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
 	</websocket:handlers>
 	
 	<bean id="message" class="kr.or.picsion.notice.socket.NoticeSocketHandler"></bean>	

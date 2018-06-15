@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,5 +91,12 @@ public class PictureController {
 		return jsonview;
 	}
 	
+	@RequestMapping(value="upload.ps",method=RequestMethod.POST)
+	public String insertPicture(Picture picture,HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		pictureService.insertPicture(picture, user.getUserNo());
+		 
+		return "studio.mystudio";
+	}
 	
 }
