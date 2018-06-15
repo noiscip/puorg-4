@@ -7,7 +7,7 @@
 	$(function() {
 		/* 메시지 보내기 비동기 처리 */
 		$('#messageSend').click(function(){
-			var data= {msgContent:$("#msgContent").val(), 
+			var data= {msgContent:$('#msgContent').val(), 
 						sendUserNo:${sessionScope.user.userNo}, 
 						receiveUserNo:${userinfo.userNo}
 					   };
@@ -15,7 +15,7 @@
 				  url : "/picsion/message/send.ps",
 				  data: data,
 				  success : function(){
-				      $("#msgContent").val("");
+				      $('#msgContent').val("");
 				      send();
 				  },
 				  error: function(){
@@ -34,11 +34,11 @@
 				  success : function(data){
 					  console.log(data.result);
 					  if(data.result==1){
-						  $('#follow-icon')[0].innerHTML = 'favorite_border'
-						  $('#follow')[0].childNodes[2].data = '팔로우'
+						  $('#follow-icon')[0].innerHTML = "favorite_border";
+						  $('#follow')[0].childNodes[2].data = "팔로우";
 					  }else{
-						  $('#follow-icon')[0].innerHTML = 'favorite'
-						  $('#follow')[0].childNodes[2].data = '팔로우 취소' 
+						  $('#follow-icon')[0].innerHTML = "favorite";
+						  $('#follow')[0].childNodes[2].data = "팔로우 취소"; 
 					  }
 				  }
 			});
