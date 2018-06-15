@@ -20,10 +20,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE receiveUserNo=#{receiveUserNo}
 		ORDER BY msgReg DESC -->
 		
-		<!-- SELECT msgNo, msgContent, date_format(msgReg, '%y-%m-%d  %h:%i') as msgReg, msgState, sendUserNo, receiveUserNo, tableNo
-		FROM MESSAGES
-		WHERE receiveUserNo=#{receiveUserNo}
-		ORDER BY msgReg DESC -->
 		SELECT *
 		FROM MESSAGES
 		WHERE receiveUserNo=#{receiveUserNo}
@@ -37,5 +33,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE m.receiveUserNo=#{receiveUserNo}
 		ORDER BY msgReg DESC
 	</select>
+	
+	<!-- 메시지 읽었을 때 상태 update -->
+	<update id="messageState">
+		UPDATE MESSAGES
+		SET msgState='T'
+		WHERE msgNo=#{msgNo}
+	</update>
 	
 </mapper>

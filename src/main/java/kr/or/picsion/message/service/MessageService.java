@@ -56,4 +56,12 @@ public class MessageService {
 		return receiveInfo;
 	}
 	
+	//메시지  읽었을때 메시지 읽음 상황 변경
+	public int messageState(int msgNo) {
+		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
+		int result = messageDao.messageState(msgNo);
+		
+		return result;
+	}
+	
 }

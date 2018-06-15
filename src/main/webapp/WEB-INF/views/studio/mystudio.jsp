@@ -6,8 +6,8 @@
 <script type="text/javascript">
 	$(function() {
 		/* 메시지 보내기 비동기 처리 */
-		var sendUserNo : ${user.userNo};
-		var receiveUserNo : ${userinfo.userNo};
+		var sendUserNo = ${user.userNo};
+		var receiveUserNo = ${userinfo.userNo};
 		
 		$('#messageSend').click(function(){
 			var tableNo = 4

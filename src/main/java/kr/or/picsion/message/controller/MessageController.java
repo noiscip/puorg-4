@@ -47,7 +47,6 @@ public class MessageController {
 	//받은 메시지 리스트 
 	@RequestMapping("receivemessage.ps")
 	public String receiveMessage(HttpSession session, Model model) {
-		System.out.println("receiveMessage 컨트롤~~");
 		User user = (User)session.getAttribute("user");
 		
 		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
@@ -67,4 +66,26 @@ public class MessageController {
 		
 		return "mypage.message";
 	}
+	
+	
+	//메시지 확인시 messageState update
+	@RequestMapping("stateup.ps")
+	public int messageState(int msgNo, String msgState) {
+		System.out.println("messageState 컨트롤러~~~");
+		System.out.println("msgNo 잘 받아오니 ????" + msgNo);
+		System.out.println("msgState는 ?????" + msgState);
+		int result =0;
+		
+		if(msgState=="안읽음") {
+			result = messageService.messageState(msgNo);
+		}
+		
+		
+		/*int result = messageService.messageState(Integer.parseInt(msgNo));*/
+		/*System.out.println("뭐야 리절트 되는거야 ?" + result);*/
+		return result;
+	}
+	
+	
+	
 }
