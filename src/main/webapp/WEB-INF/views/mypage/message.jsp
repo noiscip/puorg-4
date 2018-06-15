@@ -226,11 +226,12 @@ table > tbody > tr:hover > td {
 							<tbody>
 							
 								<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
-									<tr>
+									<tr class="url-tr" data-url="" data-toggle="modal" data-target="#myModal">
+									
 										<td>${receiveMessage.msgNo}</td>
 										<td>${receiveInfo[status.index].userName}</td>
 										<!-- 상세 페이지? 상세 메시지 내용을 보여주는 Modal? -->
-										<td><a href="">${receiveMessage.msgContent}</a></td>
+										<td>${receiveMessage.msgContent}</td>
 										<td>${receiveMessage.msgReg}</td>
 										<td>
 											<c:choose>
@@ -253,4 +254,24 @@ table > tbody > tr:hover > td {
 	</div>
 </div>
 
-
+<!-- Modal Core -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<h4 class="modal-title" id="myModalLabel">메시지</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+      	<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
+      		${receiveInfo[status.index].userName}<br>
+      		${receiveMessage.msgContent}
+      	</c:forEach>
+      </div>
+      <div class="modal-footer">
+      	<!-- <button type="button" class="btn btn-info btn-simple">Save</button> -->
+        <button type="button" class="btn btn-default btn-simple" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
