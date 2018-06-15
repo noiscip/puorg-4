@@ -32,18 +32,12 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
         System.out.println("Before Handshake");
           
         ServletServerHttpRequest ssreq = (ServletServerHttpRequest) request;
-        System.out.println("URI:"+request.getURI());
   
         HttpServletRequest req =  ssreq.getServletRequest();
-
+        
         // HttpSession 에 저장된 이용자의 아이디를 추출하는 경우
         User user = (User)req.getSession().getAttribute("user");
-        
         attributes.put("userNo", user.getUserNo());
-        
-        System.out.println(attributes.values());
-        
-        System.out.println("HttpSession에 저장된 id:"+user.getUserNo());
         
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }

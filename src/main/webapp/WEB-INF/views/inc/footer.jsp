@@ -25,12 +25,11 @@
 		  //top으로ws
 		  
 			$(document).ready(function() {
-				$('#sendBtn').click(function() { send() })
+				$('#sendBtn').click(function() { send(1,4) })
 
 				if($('#loginUserNo').val()!= ""){
 					connect() 
 					console.log($('#loginUserNo').val())
-					console.log('고ㅜㅏ여언')					
 				}
 				
 			});
@@ -50,8 +49,7 @@
 		  	function onMessage(evt){
 		  		console.log("onMessage 실행")
 				var data = evt.data
-				
-				var table = data.substr(2,1)
+				var table = data.split(':')[2]
 				var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
 				var urlsa = "";
 
@@ -69,7 +67,8 @@
 					console.log("5번, 메시지")
 				}
 				
-							$('#userProfile').append(newMessage)
+				$('#userProfile').append(newMessage)
+				
 				$.ajax({
 					url:urlsa,
 					async: false,
