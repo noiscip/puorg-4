@@ -65,14 +65,14 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 		System.out.println(wSession.getId());
 		String[] info = message.getPayload().split(":");
 	
-		System.out.println("바뀜??");
 		User user = userService.userInfo(Integer.valueOf(info[0]));
+		
 		System.out.println(user.toString());
 		
 		System.out.println(users.values());
-		System.out.println("시스아웃");
 		
 		for(WebSocketSession s : users.values()) {
+			
 			System.out.println("하하 : " + s);
 			s.sendMessage(message);   
 		}

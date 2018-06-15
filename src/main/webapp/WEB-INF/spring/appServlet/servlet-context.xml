@@ -37,9 +37,9 @@
 	</bean> 
 	
 	<websocket:handlers>
-		<websocket:mapping handler="message" path="/message.ps" />
+		<websocket:mapping handler="message" path="/message.ps"/>
 		<websocket:handshake-interceptors>
-       		<bean class="kr.or.picsion.utils.HandshakeInterceptor"/>
+       		 <bean class="kr.or.picsion.utils.HandshakeInterceptor"/>
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
 	

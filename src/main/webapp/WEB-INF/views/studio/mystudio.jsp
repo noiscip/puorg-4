@@ -10,7 +10,7 @@
 		var receiveUserNo : ${userinfo.userNo};
 		
 		$('#messageSend').click(function(){
-			
+			var tableNo = 4
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:sendUserNo, 
 						receiveUserNo:receiveUserNo
@@ -21,7 +21,7 @@
 				  data: data,
 				  success : function(){
 				      $("#msgContent").val("");
-				      send(sendUserNosendUserNo,receiveUserNo);
+				      send(receiveUserNo,tableNo);
 				  },
 				  error: function(){
 				   	  alert("메시지 보내는 도중 오류가 발생했습니다.");

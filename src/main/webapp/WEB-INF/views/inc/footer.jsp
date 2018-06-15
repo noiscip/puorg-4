@@ -86,11 +86,11 @@
 			  console.log("여기는 클로즈 이벤트")
 			}
 		  
-		  function send(a,b) {
-			  console.log("send오긴해?")
+		  function send(receiveUser,tableNo) {
+			  	console.log("send오긴해?")
 			  	var loginUser = $('#loginUserNo').val()
-		        var msg = "메시지이?";
-		        wsocket.send(loginUser+":4:"+msg);
+			  
+		        wsocket.send(loginUser+":"+receiveUser+":4");
 		    }
 		  
 		  //top으로
