@@ -65,7 +65,6 @@ public class HomeController {
 		if(user2 != null) {
 			List<Picture> followingPicList = userService.listpic(user2.getUserNo());
 		    model.addAttribute("imagelist", followingPicList);
-			
 		}
 		
 		model.addAttribute("userList", user);

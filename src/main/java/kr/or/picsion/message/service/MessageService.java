@@ -60,6 +60,14 @@ public class MessageService {
 	public int messageState(int msgNo) {
 		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
 		int result = messageDao.messageState(msgNo);
+
+		return result;
+	}
+	
+	//받은 사람이 메시지 삭제
+	public int receiveMessageDel(int msgNo) {
+		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
+		int result = messageDao.receiveMessageDel(msgNo);
 		
 		return result;
 	}

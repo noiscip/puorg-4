@@ -18,6 +18,7 @@ import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.operationapply.dto.OperationApply;
 import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
@@ -42,14 +43,24 @@ public class BoardController {
 	private CommentService commentService;
 
 	@RequestMapping(value = "boardInfo.ps")
-	public String selectBoard(int brdNo, Model model) {
+	public String selectBoard(int brdNo, Model model, HttpSession session) {
 		System.out.println("보드인포 컨트롤");
+		User user = (User)session.getAttribute("user");
 		Board boardInfo = boardService.selectBoard(brdNo);
 		List<String> commuserid = new ArrayList<String>();
-		List<Comment> comment = commentService.commentList(brdNo);
+		List<Comment> comment = commentService.commentList(brdNo);		
+		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
+		List<String> applyid = new ArrayList<>();
+		System.out.println(list);
+		
 		for(Comment s : comment) {
 			commuserid.add(userService.userInfo(s.getUserNo()).getUserId());
 		}
+		for(OperationApply o : list) {
+			applyid.add(userService.userInfo(o.getOperUserNo()).getUserId());
+		}
+		model.addAttribute("applylist", list);
+		model.addAttribute("applyid", applyid);
 		model.addAttribute("commuserid", commuserid);		
 		model.addAttribute("boardInfo", boardInfo);
 		model.addAttribute("comment",comment);

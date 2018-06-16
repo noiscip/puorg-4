@@ -4,13 +4,31 @@
 
 <script type="text/javascript">
 	$(function(){
-		$('.messageModal').click(function() {
-			var msgNo=$(this)[0].children[0].innerText;
-			var msgState=$(this)[0].children[4].innerText;
+		//메시지를 읽었을 때 메시지 상태 비동기로 update
+		$(document).on('click', '.msgModal', function(){
+			var msgNo=$(this).parent()[0].children[0].innerText;
+			var msgState=$(this).parent()[0].children[4].innerText;
+			var msgChange=$(this).parent()[0].children[4];
+			var msgContent=$(this)[0].innerText;
 			
-			console.log('messageModal 여기는 들어오는거지?');
-			console.log($(this)[0].children[4].innerText)
-			console.log(msgNo)
+			$('.modal-body').empty();
+			$('.modal-body').append("<h5>메시지 내용</h5>"+msgContent);
+			
+			$.ajax({
+				url:"/picsion/message/stateup.ps",
+				data:{	msgNo:msgNo,
+						msgState:msgState
+					 },
+				success : function(data){
+					  if(data.result==1){
+						  msgChange.innerText='읽음';
+					  }
+				}
+			})
+			
+			/* var msgNo=$(this)[0].children[0].innerText;
+			var msgState=$(this)[0].children[4].innerText;
+			var msgChange=$(this)[0].children[4];
 			
 			$('.modal-body').empty();
 			$('.modal-body').append("<h5>메시지 내용</h5>"+$(this)[0].children[2].innerText);
@@ -21,12 +39,30 @@
 						msgState:msgState
 					 },
 				success : function(data){
-					  console.log(data.result)
-					  console.log(data.result + '상태 변환된겨???')
-					  
+					  if(data.result==1){
+						  msgChange.innerText='읽음';
+					  }
+				}
+			}); */
+		})
+		
+		//메시지 삭제 버튼 눌렀을때 (받은 메시지 삭제)
+		$(document).on('click', '.msgDel', function(){
+			var msgNo=$(this).parent().parent()[0].children[0].innerText;
+			var removeMsg=$(this).parent().parent()[0];
+			
+			$.ajax({
+				url:"/picsion/message/receivedel.ps",
+				data : {msgNo:msgNo},
+				success:function(data){
+					if(data.result==1){
+						removeMsg.remove();
+					}
 				}
 			});
+			
 		})
+		
 	})
 
 </script>
@@ -110,12 +146,12 @@
 					    	<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
 					    			<!-- 받은사람의 Del가 False인 경우만 메시지 리스트 가져오기 -->
 									<c:if test="${receiveMessage.receiveMsgDel eq 'F'}">
-										<tr class="url-tr messageModal" data-url="" data-toggle="modal" data-target="#myModal">
+										<tr class="url-tr" data-url="">
 											<td>${receiveMessage.msgNo}</td>
 											<td>${receiveInfo[status.index].userName}</td>
-											<!-- 상세 메시지 내용을 보여주는 Modal -->
-											<td title="content">${receiveMessage.msgContent}</td>
-											<td>${receiveMessage.msgReg}</td>
+											<!-- 상세 메시지를 Modal에 보여주는 내용 -->
+											<td class="msgModal" data-toggle="modal" data-target="#myModal">${receiveMessage.msgContent}</td>
+											<td>${msgReg[status.index]}</td>
 											<td>
 												<c:choose>
 													<c:when test="${receiveMessage.msgState eq 'F'}">
@@ -126,7 +162,7 @@
 													</c:otherwise>
 												</c:choose>
 											</td>
-											<td><i class="material-icons" id="msgDel-icon">clear</i></td>
+											<td><i class="material-icons msgDel" style="cursor: pointer;">clear</i></td>
 										</tr>
 									</c:if>
 							</c:forEach>
@@ -140,7 +176,7 @@
 	</div>
 </div>
 
-<!-- Modal Core -->
+<!-- 메시지 상세  Modal Core -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -149,12 +185,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body">
-      	<%--<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
-      		 <c:if test="${receiveList.msgNo eq $('#msgNo')}">
-      			${receiveInfo[status.index].userName}<br>
-      			${receiveMessage.msgContent}<br>
-      		</c:if> 
-      	</c:forEach>--%>
+      	
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-simple" data-dismiss="modal">Close</button>
@@ -162,3 +193,21 @@
     </div>
   </div>
 </div>
+
+<!-- 메시지 삭제 Modal -->
+<!-- <div class="modal fade" id="msgDelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    
+      <div class="modal-body">
+        	정말 삭제하시겠습니까?
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="msgDel">삭제</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+ -->
