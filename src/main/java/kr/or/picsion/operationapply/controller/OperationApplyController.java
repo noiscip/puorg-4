@@ -37,4 +37,17 @@ public class OperationApplyController {
 		applyService.insertOperationApply(operationApply);
 		return "board.boardInfo";
 	}
+	/*
+	@RequestMapping(value = "applylist.ps")
+	public View OperationApplyList(OperationApply operationApply, HttpSession session, Model model) {
+		User user = (User)session.getAttribute("user");
+		System.out.println("OperationApplyList 컨트롤러");
+		List<OperationApply> list = applyService.operationApplyList(operationApply);
+		System.out.println(list);
+		model.addAttribute("applylist", list);
+		
+		return jsonview;
+	}*/
+	
+	
 }
