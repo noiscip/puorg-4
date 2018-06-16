@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -13,6 +13,9 @@
 		var receiveUserNo = ${userinfo.userNo};
 		
 		$('#messageSend').click(function(){
+			var data= {msgContent:$('#msgContent').val(), 
+						sendUserNo:${sessionScope.user.userNo}, 
+						receiveUserNo:${userinfo.userNo}
 			var tableNo = 4
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:sendUserNo, 
@@ -23,6 +26,8 @@
 				  url : "/picsion/message/send.ps",
 				  data: data,
 				  success : function(){
+				      $('#msgContent').val("");
+				      send();
 				      $("#msgContent").val("");
 				      send(receiveUserNo,tableNo);
 				  },

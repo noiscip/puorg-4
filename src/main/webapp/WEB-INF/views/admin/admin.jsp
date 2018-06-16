@@ -3,55 +3,84 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
-$(function(){
-	$('button[title=userDelete]').click(function () {
-		console.log($(this)[0].id)
-		$.ajax({
-			url:"/picsion/user/adminUserDel.ps",
-			data:{userNo:$(this)[0].id},
-			success: function (data) {
-				console.log(data.result)
-				if(data.result==0){
-					console.log("삭제실패")
+	$(function() {
+
+		$(document).on('click', 'button[title=userDelete]', function() {
+
+			/* 삭제 ajax */
+			$.ajax({
+				url : "/picsion/user/adminUserDel.ps",
+				data : {
+					userNo : $(this)[0].id
+				},
+				success : function(data) {
+					console.log(data.result)
+					if (data.result == 0) {
+						console.log("삭제실패")
+					} else {
+						console.log("삭제")
+						userFindAll()
+					}
+				}
+			})
+			/* 삭제 ajax */
+		})
+
+		$('#searchbtn').click(function(){
+			console.log($('#search').val())
+			
+			$.ajax({
+				url: "/picsion/user/adminUserSearch.ps",
+				data:{userId:$('#search').val()},
+				success: function(data){
+					console.log(data.searchUser)
+					var table = '<tr>'
+						table += '<td>' + data.searchUser.userNo+ '</td>'
+						table += '<td>' + data.searchUser.userId+ '</td>'
+						table += '<td>' + data.searchUser.userName+ '</td>'
+						table += '<td>' + data.searchUser.point+ '</td>'
+						table += '<td>' + data.searchUser.userReg+ '</td>'
+						table += '<td><button class="btn btn-primary btn-link" title="userDelete" id="'+data.searchUser.userNo+'">삭제</button></td>'
+						table += '</tr>'
 					
-				}else{
-					console.log("삭제")
-					userFindAll()
+						$('#tableBody').empty()
+						$('#tableBody').append(table)
 					
 				}
+			})
+		})
+		
+		$('#allUser').click(function(){
+			userFindAll()
+		})
+		
+	})
+
+	function userFindAll() {
+		$.ajax({
+			url : "/picsion/user/adminAllUser.ps",
+			async : false,
+			success : function(data) {
+				console.log(data)
+				var table = ''
+				$.each(
+					data.allUser,
+					function(i, elt) {
+						table += '<tr>'
+						table += '<td>' + elt.userNo+ '</td>'
+						table += '<td>' + elt.userId+ '</td>'
+						table += '<td>' + elt.userName+ '</td>'
+						table += '<td>' + elt.point+ '</td>'
+						table += '<td>' + elt.userReg+ '</td>'
+						table += '<td><button class="btn btn-primary btn-link" title="userDelete" id="'+elt.userNo+'">삭제</button></td>'
+						table += '</tr>'
+					})
+
+				$('#tableBody').empty()
+				$('#tableBody').append(table)
 			}
 		})
-	})
-})
-
-function userFindAll() {
-	$.ajax({
-		url:"/picsion/user/adminAllUser.ps",
-		async : false,
-		success: function (data) {
-			console.log(data)
-			var table='<table border="3"><thead><tr><th>유저 번호</th><th>유저 아이디</th><th>유저 이름</th><th>유저 포인트</th><th>유저 가입날짜</th><th>삭제</th></tr></thead>'
-				table += '<tbody>'
-				$.each(data.allUser, function(i,elt){
-					table +='<tr>'
-					table +='<td>'+elt.userNo+'</td>'
-					table +='<td>'+elt.userId+'</td>'
-					table +='<td>'+elt.userName+'</td>'
-					table +='<td>'+elt.point+'</td>' 
-
-					table +='<td>'+elt.userReg+'</td>'
-					table +='<td><button class="btn btn-primary btn-link" title="userDelete" id="'+elt.userNo+'">삭제</button></td>'
-				})
-			table += '</tr></tbody></table>'
-			
-			$('#userTable').empty()
-			$('#userTable').append(table)			
-		}
-	})
-}
-
-
-
+	}
 </script>
 <div class="page-header header-filter clear-filter purple-filter"
 	data-parallax="true"
@@ -61,44 +90,46 @@ function userFindAll() {
 <div class="main main-raised">
 	<div class="section section-basic">
 		<div class="container">
-		
-		<ul class="nav nav-pills nav-pills-rose">
-		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminComplainList.ps">신고글 관리</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminPurchase.ps">매출 내역</a></li>
-		</ul>
-		
-		
+
+			<ul class="nav nav-pills nav-pills-rose">
+				<li class="nav-item"><a class="nav-link active"
+					href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=request.getContextPath()%>/user/adminComplainList.ps">신고글
+						관리</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=request.getContextPath()%>/user/adminPurchase.ps">매출
+						내역</a></li>
+			</ul>
+
+
 			<h1>전체 회원 목록</h1>
-			<div id="userTable">
-				<table border="3">
-					<thead>
+			
+			<input type="text" id="search"><button id="searchbtn">검색</button><button id="allUser">전체 조회</button>
+			<table border="3">
+				<thead>
+					<tr>
+						<th>유저 번호</th>
+						<th>유저 아이디</th>
+						<th>유저 이름</th>
+						<th>유저 포인트</th>
+						<th>유저 가입날짜</th>
+						<th>삭제</th>
+					</tr>
+				</thead>
+				<tbody id="tableBody">
+					<c:forEach var="admin" items="${userList}">
 						<tr>
-							<th>유저 번호</th>
-							<th>유저 아이디</th>
-							<th>유저 이름</th>
-							<th>유저 포인트</th>
-							<th>유저 가입날짜</th>
-							<th>삭제</th>
-							
+							<td>${admin.userNo}</td>
+							<td>${admin.userId}</td>
+							<td>${admin.userName}</td>
+							<td>${admin.point}</td>
+							<td>${admin.userReg}</td>
+							<td><button class="btn btn-primary btn-link" title="userDelete" id="${admin.userNo}">삭제</button></td>
 						</tr>
-					</thead>
-	
-					<tbody>
-						<c:forEach var="admin" items="${userList}">
-	
-							<tr>
-								<td>${admin.userNo}</td>
-								<td>${admin.userId}</td>
-								<td>${admin.userName}</td>
-								<td>${admin.point}</td>
-								<td>${admin.userReg}</td>
-								<td><button class="btn btn-primary btn-link" title="userDelete" id="${admin.userNo}">삭제</button></td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
+					</c:forEach>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>
