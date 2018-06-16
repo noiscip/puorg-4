@@ -1,4 +1,4 @@
-package kr.or.picsion.user.service;
+﻿package kr.or.picsion.user.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,6 +136,7 @@ public class UserService {
 		
 		return bookmarkList;
 	}
+	
 	
 	public int userDel(int userNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);

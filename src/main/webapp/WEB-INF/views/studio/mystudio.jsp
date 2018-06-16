@@ -1,16 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
 <script type="text/javascript">
+	
 	$(function() {
+	var sendUserNo = ${user.userNo}
+	var receiveUserNo = ${userinfo.userNo}
 		/* 메시지 보내기 비동기 처리 */
-		var sendUserNo : ${user.userNo};
-		var receiveUserNo : ${userinfo.userNo};
+		var sendUserNo = ${user.userNo};
+		var receiveUserNo = ${userinfo.userNo};
 		
 		$('#messageSend').click(function(){
-			
+			var data= {msgContent:$('#msgContent').val(), 
+						sendUserNo:${sessionScope.user.userNo}, 
+						receiveUserNo:${userinfo.userNo}
+			var tableNo = 4
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:sendUserNo, 
 						receiveUserNo:receiveUserNo
@@ -20,8 +26,10 @@
 				  url : "/picsion/message/send.ps",
 				  data: data,
 				  success : function(){
+				      $('#msgContent').val("");
+				      send();
 				      $("#msgContent").val("");
-				      send(sendUserNosendUserNo,receiveUserNo);
+				      send(receiveUserNo,tableNo);
 				  },
 				  error: function(){
 				   	  alert("메시지 보내는 도중 오류가 발생했습니다.");

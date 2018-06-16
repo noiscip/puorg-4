@@ -1,5 +1,6 @@
 package kr.or.picsion.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.View;
 import kr.or.picsion.blame.dto.Blame;
 import kr.or.picsion.blame.service.BlameService;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
@@ -29,6 +31,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PictureService pictureService;
 		
     @Autowired
     private BlameService blameService;
@@ -143,6 +148,14 @@ public class UserController {
 		User user = (User) session.getAttribute("user");
 		List<Picture> followingPicList = userService.listpic(user.getUserNo());
 		List<User> followingPicListOwner = userService.listpicown(user.getUserNo());
+		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo());
+		List<Integer> bookcheck= new ArrayList<Integer>();
+		for(Picture p : followingPicList) {
+			bookcheck.add(pictureService.bookmarkConfirm(p.getPicNo(), user.getUserNo()));
+		}
+			
+		
+		model.addAttribute("bookcheck", bookcheck);
 		model.addAttribute("imagelistall", followingPicList);
 		model.addAttribute("ownlist",followingPicListOwner);
 		System.out.println(followingPicList);

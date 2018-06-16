@@ -14,4 +14,6 @@ public interface MessageDao {
 	public Message selectMessgae(int msgNo);
 	public List<Message> sendMessageList(int sendUserNo);
 	
+	public int messageState(int msgNo);			//메시지 읽었을 때 상태 update
+	
 }

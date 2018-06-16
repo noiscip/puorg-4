@@ -20,7 +20,6 @@ public class NaverLoginController {
 	
 	@RequestMapping("/naverlogin.ps")
 	public String naverLogin(HttpSession session, Model model) {
-		System.out.println("네이버 로그인 컨트롤러");
 		String naverAuthUrl = naverLoginCon.getAuthorizationUrl(session);
 		model.addAttribute("url",naverAuthUrl);
 		
@@ -29,10 +28,22 @@ public class NaverLoginController {
 	}
 	
 	@RequestMapping("/callback.ps")
-	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException {
-		System.out.println("네이버 콜백 컨트롤러");
+	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session,Model model) throws IOException {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
+		
 		OAuth2AccessToken oauthToken = naverLoginCon.getAccessToken(session, code, state);
+
+		String apiResult = naverLoginCon.getUserProfile(oauthToken);
+		
+		System.out.println("apiResult");
+		String[] haha = apiResult.split("\"");
+		int i = 0;
+		for(String a : haha) {
+			System.out.println(i++);
+			System.out.println(a);
+		}
+		
+		System.out.println(haha[13]);
     	return "naver.callback";
 	}
 }

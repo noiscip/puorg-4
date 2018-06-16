@@ -15,16 +15,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 받은 메시지리스트 -->
 	<select id="receiveMessageList" resultType="kr.or.picsion.message.dto.Message">
+		<!-- SELECT msgNo, msgContent, date_format(msgReg, '%y-%m-%d  %h:%i') as msgReg, msgState, sendUserNo, receiveUserNo, tableNo
+		FROM MESSAGES
+		WHERE receiveUserNo=#{receiveUserNo}
+		ORDER BY msgReg DESC -->
+		
 		SELECT *
 		FROM MESSAGES
-		WHERE receiveUserNo=#{receiveUserNo};
+		WHERE receiveUserNo=#{receiveUserNo}
+		ORDER BY msgReg DESC
 	</select>
 	
 	<!-- 받은 메시지 보낸사람 리스트 -->
 	<select id="receiveMessageUserInfo" resultType="kr.or.picsion.user.dto.User">
 		SELECT u.*
 		FROM MESSAGES m JOIN USERS u ON m.sendUserNo=u.userNo
-		WHERE m.receiveUserNo=#{receiveUserNo};
+		WHERE m.receiveUserNo=#{receiveUserNo}
+		ORDER BY msgReg DESC
 	</select>
+	
+	<!-- 메시지 읽었을 때 상태 update -->
+	<update id="messageState">
+		UPDATE MESSAGES
+		SET msgState='T'
+		WHERE msgNo=#{msgNo}
+	</update>
 	
 </mapper>

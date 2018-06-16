@@ -22,11 +22,41 @@
                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
-         
-        
-        
-        
-        
+         <li class="dropdown nav-item">
+                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                      <i class="material-icons">apps</i> Components
+                  </a>
+                  <div class="dropdown-menu dropdown-with-icons">
+                    <a href="<%=request.getContextPath()%>/board.ps" class="dropdown-item">
+                        <i class="material-icons">list</i> 요청 게시판
+                    </a>
+                    <a href="<%=request.getContextPath()%>/upload.ps" class="dropdown-item">
+                        <i class="material-icons">add_circle_outline</i>업로드
+                    </a>
+                    <a href="<%=request.getContextPath()%>/user/bookmarklist.ps" class="dropdown-item">
+                        <i class="material-icons">bookmark</i>즐겨찾기
+                    </a>
+                    <a href="<%=request.getContextPath()%>/user/followinglist.ps" class="dropdown-item">
+                        <i class="material-icons">favorite</i>팔로잉
+                    </a>
+                    <a href="<%=request.getContextPath()%>/message/receivemessage.ps" class="dropdown-item">
+                        <i class="material-icons">mail</i>메시지함
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="material-icons">shop_two</i>거래내역
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="material-icons">description</i>요청/작업
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="material-icons">settings</i>정보 수정
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="material-icons">content_paste</i> 넣고싶은 거 넣으셈
+                    </a>
+                  </div>
+                </li>
+
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
