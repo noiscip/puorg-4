@@ -1,4 +1,4 @@
-package kr.or.picsion;
+/*package kr.or.picsion;
 
 import java.io.IOException;
 
@@ -23,13 +23,13 @@ public class NaverLoginController {
 		String naverAuthUrl = naverLoginCon.getAuthorizationUrl(session);
 		model.addAttribute("url",naverAuthUrl);
 		
-	        /* 생성한 인증 URL을 View로 전달 */
+	         생성한 인증 URL을 View로 전달 
 	 	return "naver.naverlogin";
 	}
 	
 	@RequestMapping("/callback.ps")
 	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session,Model model) throws IOException {
-		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
+		 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 
 		
 		OAuth2AccessToken oauthToken = naverLoginCon.getAccessToken(session, code, state);
 
@@ -38,6 +38,7 @@ public class NaverLoginController {
 		System.out.println("apiResult");
 		String[] haha = apiResult.split("\"");
 		int i = 0;
+		
 		for(String a : haha) {
 			System.out.println(i++);
 			System.out.println(a);
@@ -46,7 +47,9 @@ public class NaverLoginController {
 		System.out.println(haha[13]);
 		
 		
+		
     	return "naver.callback";
 	}
 }
 
+*/

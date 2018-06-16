@@ -8,7 +8,8 @@ import kr.or.picsion.user.dto.User;
 public interface MessageDao {
 
 	public int insertMessage(Message message);
-	public int deleteMessage(int msgNo);
+	public int receiveMessageDel(int msgNo);		//받은사람이 메시지 삭제
+	public int sendMessageDel(int msgNo);			//보낸사람이 메시지 삭제
 	public List<Message> receiveMessageList(int receiveUserNo);		//받은 메시지 리스트
 	public List<User> receiveMessageUserInfo(int receiveUserNo);	//받은 메시지 보낸사람 리스트
 	public Message selectMessgae(int msgNo);

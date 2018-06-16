@@ -16,9 +16,7 @@
                     <a href="#pablo" class="btn btn-link btn-just-icon">
                       <i class="fa fa-twitter"></i>
                     </a>
-                    <a href="#pablo" class="btn btn-link btn-just-icon">
-                      <i class="fa fa-google-plus"></i>
-                    </a>
+                    <a id="naver_id_login"></a>
                   </div>
                 </div>
                 <p class="text-divider">Or Be Classical</p>
@@ -31,14 +29,16 @@
                     </div>
                     <input type="text" class="form-control" name="userId" placeholder="아이디...">
                   </div></span>
-                  <span class="bmd-form-group"><div class="input-group">
+                  <span class="bmd-form-group">
+                  <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">
                         <i class="material-icons">lock_outline</i>
                       </span>
                     </div>
                     <input type="password" class="form-control" name="pwd" placeholder="비밀번호...">
-                  </div></span>
+                  </div>
+                  </span>
 
                 <div class="form-check">
                     <label class="form-check-label">
@@ -58,5 +58,24 @@
           </div>
         </div>
       </div>
-      </div>
     </div>
+    <input type="hidden" value="${sessionScope.result}" id="result">
+    
+<script type="text/javascript">
+  	var naver_id_login = new naver_id_login("AavwsVovOeUd6Ijvt3W0", "http://127.0.0.1:8090/picsion/naver/login.ps");
+  	var state = naver_id_login.getUniqState();
+    naver_id_login.response_type="code"; 
+  	naver_id_login.setDomain("http://127.0.0.1:8090/picsion/login.ps"); 
+  	naver_id_login.setState(state);
+  	naver_id_login.init_naver_id_login();
+  	
+  	var result = $('#result').val()
+  	setTimeout(() => {
+  		if(result =="F"){
+  			alert('연동된 계정이 없습니다')
+  		  	<%session.removeAttribute("result");%>
+  		}
+	}, 1000);
+  	
+
+</script>

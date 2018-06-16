@@ -36,6 +36,7 @@
 	<script src="<%=request.getContextPath()%>/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 	<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
 	<script src="<%=request.getContextPath()%>/assets/js/material-kit.js?v=2.0.1" type="text/javascript"></script>
+	<!-- 네이버 로그인 -->
 	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
 </head>
 

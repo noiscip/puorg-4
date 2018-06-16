@@ -1,4 +1,4 @@
-/*package kr.or.picsion;
+package kr.or.picsion.utils;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
@@ -28,4 +28,3 @@ public class NaverLoginApi extends DefaultApi20{
 
 
 }
-*/
