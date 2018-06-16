@@ -60,6 +60,32 @@
 					
 		console.log("apply클릭");
 		
+		
+		
+		
+	
+			$.ajax({
+				url : "apply.ps",
+				type : "post",
+				data : {
+					
+					operApplyAppeal : $("#operApplyAppeal").val(),
+					operApplyPrice : $("#operApplyPrice").val(),
+					operApplyReg : $("#operApplyReg").val(),
+					requestUserNo : ${boardInfo.userNo},
+					brdNo : ${boardInfo.brdNo}
+				},
+				success : function(data) {
+					
+					
+				}
+			});	
+		
+		
+		
+		
+		
+		
 				});
 		
 		
@@ -144,15 +170,15 @@
 	      <div class="modal-body">
 	        <div class="form-group">
 			     <label for="exampleInput1" class="bmd-label-floating">판매금액</label>
-			     <input type="text" class="form-control" id="msgNo" name="msgNo">
+			     <input type="text" class="form-control" id="operApplyPrice" name="operApplyPrice">
 		    </div>
 		    <div class="form-group">
 					    <label class="label-control">희망 완료 날짜</label>
-					    <input type="text" class="form-control datetimepicker" name = "brdExpectEndDate"/>
+					    <input type="text" class="form-control datetimepicker" id = "operApplyReg" name = "operApplyReg"/>
 			</div>
 		    <div class="form-group">
 		    	<label for="exampleFormControlTextarea1">간단한 소개글</label>
-		    	<textarea class="form-control" id="msgContent" name="msgContent" rows="3"></textarea>
+		    	<textarea class="form-control" id="operApplyAppeal" name="operApplyAppeal" rows="3"></textarea>
 		    </div>
 		    
 	      </div>
