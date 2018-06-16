@@ -11,12 +11,11 @@ public class OperationApply {
 	private int requestUserNo;
 	private int brdNo;
 	private int operUserNo;
-	private int resultNo;
 
 	public OperationApply() {}
 
 	public OperationApply(int operApplyNo, String operApplyAppeal, int operApplyPrice, Date operApplyReg,
-			int requestUserNo, int brdNo, int operUserNo, int resultNo) {
+			int requestUserNo, int brdNo, int operUserNo) {
 		this.operApplyNo = operApplyNo;
 		this.operApplyAppeal = operApplyAppeal;
 		this.operApplyPrice = operApplyPrice;
@@ -24,7 +23,6 @@ public class OperationApply {
 		this.requestUserNo = requestUserNo;
 		this.brdNo = brdNo;
 		this.operUserNo = operUserNo;
-		this.resultNo = resultNo;
 	}
 
 	public int getOperApplyNo() {
@@ -83,19 +81,13 @@ public class OperationApply {
 		this.operUserNo = operUserNo;
 	}
 
-	public int getResultNo() {
-		return resultNo;
-	}
-
-	public void setResultNo(int resultNo) {
-		this.resultNo = resultNo;
-	}
+	
 
 	@Override
 	public String toString() {
 		return "OperationApply [operApplyNo=" + operApplyNo + ", operApplyAppeal=" + operApplyAppeal
 				+ ", operApplyPrice=" + operApplyPrice + ", operApplyReg=" + operApplyReg + ", requestUserNo="
-				+ requestUserNo + ", brdNo=" + brdNo + ", operUserNo=" + operUserNo + ", resultNo=" + resultNo + "]";
+				+ requestUserNo + ", brdNo=" + brdNo + ", operUserNo=" + operUserNo + "]";
 	}
 
 }

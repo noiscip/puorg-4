@@ -26,4 +26,13 @@ public class OperationApplyService {
 		
 		return operState;
 	}
+	//신청하기
+	public int insertOperationApply(OperationApply operationApply){
+		System.out.println("insertoperation 서비스");
+		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
+		
+		int check = operationApplyDao.insertOperationApply(operationApply);
+		
+		return check;
+	}
 }
