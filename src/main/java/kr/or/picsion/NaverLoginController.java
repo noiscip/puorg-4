@@ -44,6 +44,8 @@ public class NaverLoginController {
 		}
 		
 		System.out.println(haha[13]);
+		
+		
     	return "naver.callback";
 	}
 }
