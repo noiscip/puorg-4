@@ -102,4 +102,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from USERS where userNo = #{userNo}
 	</delete>
 	
+	<!-- 네이버 계정 연동 정보 추가 -->
+	<insert id="insertAccountLinked">
+		insert into ACCOUNTLINKED 
+		values (#{param1}, #{param2})
+	</insert>
+	
+	<!-- 네이버 연동 확인 -->
+	<select id="selectAccountLinked" resultType="kr.or.picsion.user.dto.User">
+		select * from ACCOUNTLINKED where accountLinkId = #{accountNo}
+	</select>
 </mapper>

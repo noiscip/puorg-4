@@ -1,9 +1,7 @@
 ﻿package kr.or.picsion.user.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,16 +135,32 @@ public class UserService {
 		return bookmarkList;
 	}
 	
-	
+	//회원 탈퇴
 	public int userDel(int userNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		int result = userDao.deleteUser(userNo);
 		return result;
 	}
 	
+	//회원 아이디로 검색
 	public User searchUserId(String userId) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		User user = userDao.selectUser(userId);
 		return user;
 	}
+	
+	//회원 네이버 아이디 연동 정보 insert
+	public int insertAccountLinked(int userNo,String accountNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		return userDao.insertAccountLinked(userNo,accountNo);
+	}
+	
+	//회원 네이버 연동 되어있는지 확인
+	public User selectAccountLinked(String accountNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		User user = userDao.selectAccountLinked(accountNo);
+		
+		return user;
+	}
+	
 }

@@ -24,6 +24,8 @@ public interface UserDao {
 	public List<User> followingUserPictureOwnerList(int userNo);  //최신 사진 리스트 주인
  	public void insertFollow(int userNo, int followingUserNo);		//팔로잉테이블에   insert
 	public void deleteFollow(int userNo, int followingUserNo);		//팔로잉테이블에서 delete
+	public int insertAccountLinked(int userNo, String accountNo);    //회원 네이버 계정 연동
+	public User selectAccountLinked(String accountNo);
 	
 	//////////////////////////
 	List<User> getPicsionList();
