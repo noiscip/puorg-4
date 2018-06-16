@@ -161,6 +161,19 @@
 		</button>
 	</div>
 
+
+<table class="table">
+    <thead>
+     <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">작업신청자</th>
+            <th class="text-center">작업기간</th>
+            <th class="text-center">금액</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
 <c:choose>
 	<c:when test="${boardInfo.userNo eq user.userNo}">			
 			<div class="apply">
@@ -168,6 +181,10 @@
 				
 
 					${applyid[status.index]} : ${apply.operApplyAppeal} 
+					${apply.operApplyPrice}
+					${apply.operApplyReg}
+					${apply.operUserNo}
+					<input type="button" value="수락" operUserNo="${apply.operUserNo}" >
 					
 					<hr style="margin-top: 5px; margin-bottom: 5px;">
 
@@ -180,8 +197,8 @@
 	</c:otherwise>
 </c:choose>
 	
-
-
+</tbody>
+</table>
 
 
 
