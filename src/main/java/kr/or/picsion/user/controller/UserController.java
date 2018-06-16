@@ -64,8 +64,6 @@ public class UserController {
 	
 	@RequestMapping(value="login.ps", method=RequestMethod.POST)
 	public String userLogin(User user, HttpSession session) {
-		System.out.println("로그인");
-		
 		User loginUser = userService.login(user);
 		String result="";
 		if(loginUser != null) {

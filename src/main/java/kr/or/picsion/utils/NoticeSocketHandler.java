@@ -1,4 +1,4 @@
-package kr.or.picsion.notice.socket;
+package kr.or.picsion.utils;
 
 
 import java.util.Map;

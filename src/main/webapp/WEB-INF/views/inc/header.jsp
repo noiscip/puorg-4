@@ -66,14 +66,21 @@
 		                    <a href="#" class="dropdown-item">
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
-		                    <a href="#" class="dropdown-item">
-		                        <i class="material-icons">content_paste</i> 넣고싶은 거 넣으셈
-		                    </a>
+		                    <c:if test="${sessionScope.user ne null && sessionScope.user.accountLinkId eq null}">
+			                    <a id="#"> 네이버 계정 연동 </a>
+		                    </c:if>
 		                  </div>
 		                </li>
 						<li class="nav-item">
-							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"> 
-								  <img style ="width: 30px;" alt="Circle Image" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
+							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}">
+								<c:choose>
+									<c:when test="${sessionScope.user.prPicture eq null}">
+									  <img style="width:30px;" class="rounded-circle" src="<%=request.getContextPath()%>/assets/img/user.png">
+									</c:when>
+									<c:otherwise>
+									  <img style ="width: 30px;" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
+									</c:otherwise>
+								</c:choose> 
 								  ${sessionScope.user.userName}
 							</a>
 						</li>
@@ -88,5 +95,3 @@
       </div>
     </div>
   </nav>
-  
- 

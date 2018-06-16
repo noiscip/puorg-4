@@ -98,7 +98,9 @@ public class PictureController {
 	public String insertPicture(Picture picture,HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		pictureService.insertPicture(picture, user.getUserNo());
-		 
+		System.out.println("내밑에뭐지");
+		System.out.println(picture);
+		System.out.println(picture.getTagContent());
 		return "studio.mystudio";
 	}
 	

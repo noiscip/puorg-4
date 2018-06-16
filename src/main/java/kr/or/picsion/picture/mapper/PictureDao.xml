@@ -65,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 사진 업로드 저장 시 태그 저장 -->
-	<insert id="insertTag">
+	<insert id="insertTag" parameterType="Integer">
 	insert into TAG
 	values (#{picNo},#{tagContent})
 	</insert>

@@ -8,7 +8,7 @@
 	</div>
 	
 <script type="text/javascript">
-  	var naver_id_login = new naver_id_login("AavwsVovOeUd6Ijvt3W0", "http://127.0.0.1:8090/picsion/callback.ps");
+  	var naver_id_login = new naver_id_login("AavwsVovOeUd6Ijvt3W0", "http://127.0.0.1:8090/picsion/naver/login.ps");
   	var state = naver_id_login.getUniqState();
     naver_id_login.response_type="code"; 
   	naver_id_login.setButton("white", 3, 40);

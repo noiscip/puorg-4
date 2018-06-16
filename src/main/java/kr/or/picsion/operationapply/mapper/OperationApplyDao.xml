@@ -7,9 +7,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <select id="operationStatus" resultType="String">
-		select operState from OPERATIONSTATE where operStateNo = #{operStateNo};
+		select operState from OPERATIONSTATE where operStateNo = #{operStateNo}
 </select>
 
+<insert id="insertOperationApply" parameterType="kr.or.picsion.operationapply.dto.OperationApply">
+insert into OPERATIONAPPLY (operApplyAppeal,operApplyPrice,operApplyReg,requestUserNo,brdNo,operUserNo)VALUES (#{operApplyAppeal},#{operApplyPrice},#{operApplyReg},#{requestUserNo},#{brdNo},#{operUserNo})
+</insert>
+
+<select id="operationApplyList" resultType="kr.or.picsion.operationapply.dto.OperationApply">
+		select * from OPERATIONAPPLY where requestUserNo=#{param2} and brdNo=#{param1}
+</select>
 
 
 </mapper>
