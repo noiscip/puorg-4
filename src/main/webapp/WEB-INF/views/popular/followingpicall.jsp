@@ -10,14 +10,17 @@
 		var data = {userNo : ${sessionScope.user.userNo},
 			    picNo : $(this).attr("value")};
 		var respect =  $(this);
+		var rpa = $(this).parent();
 		 $.ajax({
 			url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
 			data : data,
 			success : function(data){
 				if(data.result==1){
 					  $(respect)[0].innerHTML = 'favorite_border';
+					  $(rpa)[0].childNodes[1].nodeValue--;
 				  }else{
 					  $(respect)[0].innerHTML = 'favorite';
+					  $(rpa)[0].childNodes[1].nodeValue++;
 				  }
 			}
 		 }) 
@@ -27,14 +30,17 @@
 		var data = {userNo : ${sessionScope.user.userNo},
 			    picNo : $(this).attr("value")};
 		var bookmark = $(this);
+		var bpa = $(this).parent();
 		 $.ajax({
 			url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
 			data : data,
 			success : function(data){
 				if(data.result==1){
 					  $(bookmark)[0].innerHTML = 'bookmark_border';
+					  $(bpa)[0].childNodes[1].nodeValue--;
 				  }else{
 					  $(bookmark)[0].innerHTML = 'bookmark';
+					  $(bpa)[0].childNodes[1].nodeValue++;
 				  }
 			}
 		 }) 
@@ -66,42 +72,38 @@
 						</ul>
 					</div>
 				</div>
-			</div>
+			</div> 
 			<div id="gallery">
 				<div class="flex_grid credits">
 					<c:forEach items="${imagelistall}" var="followinglistall"
 						varStatus="status">
 						<div class="item" data-w="640" data-h="426"
 							style="width: 255px; height: 300px; display: block;">
-							<a href=""> <img class="rounded img-size"
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps"> <img class="rounded img-size"
 								src="<%=request.getContextPath()%>/${followinglistall.picPath}"
 								alt="">
 							</a>
-							<div class="row">
-								<div class="col-md-7">
-									<a
-										href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${ownlist[status.index].userNo}">${ownlist[status.index].userName}</a>
-								</div>
-								<div class="col-md-2">
-									<a><i id="like" value="${followinglistall.picNo}"
-										class="material-icons">favorite_border</i></a>
-								</div>
-								<c:choose>
-								<c:when test="${bookcheck[status.index] eq 1}">
-								<div class="col-md-2">
-											<a><i id="down" value="${followinglistall.picNo}"
-												class="material-icons">bookmark</i></a>
-										</div>
-								</c:when>
-								<c:otherwise>
-									<div class="col-md-2">
-										<a><i id="down" value="${followinglistall.picNo}"
-											class="material-icons">bookmark_border</i></a>
-									</div>
-								</c:otherwise>
+							<div>
+			                    <div class="counts hide-xs hide-sm ">
+			                    <c:choose>
+									<c:when test="${likecheck[status.index] eq 1}">
+										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite</i>${likecount[status.index]}</em>
+									</c:when>
+									<c:otherwise>
+										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite_border</i>${likecount[status.index]}</em>
+									</c:otherwise>
 								</c:choose>
-							
-							</div>
+								<c:choose>
+									<c:when test="${bookcheck[status.index] eq 1}">
+										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark</i>${bookcount[status.index]}</em>
+									</c:when>
+									<c:otherwise>
+										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark_border</i>${bookcount[status.index]}</em>
+									</c:otherwise>
+								</c:choose>
+			                    </div>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${ownlist[status.index].userNo}">${ownlist[status.index].userName}</a>
+               				</div>
 						</div>
 					</c:forEach>
 				</div>

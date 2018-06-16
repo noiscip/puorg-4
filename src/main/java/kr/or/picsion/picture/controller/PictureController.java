@@ -32,6 +32,11 @@ public class PictureController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping("picinfo.ps")
+	public String picInfo(){
+		return "picture.picinfo";
+	}
+	
 	//Studio 페이지 이동(userNo 값 받아서)  회원 팔로잉,팔로워,업로드한 사진,팔로잉한 회원인지 확인 결과 불러오기 
 	@RequestMapping("mystudio.ps")
 	public String myStudio(HttpSession session, Model model, int userNo){
@@ -62,8 +67,6 @@ public class PictureController {
 	public View pictureRespect(int picNo, int userNo, Model model) {
 		int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
 		System.out.println("사진 좋아요 컨트롤러");
-		System.out.println(picNo);
-		System.out.println(userNo);
 		if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
 			pictureService.deleteRespect(picNo, userNo);
 			System.out.println("좋아요 취소");

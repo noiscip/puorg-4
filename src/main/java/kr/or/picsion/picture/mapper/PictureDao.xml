@@ -18,12 +18,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 사진 좋아요 삭제 -->
 	<delete id="respectDelete">
-		DELETE FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2};
+		DELETE FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
 	</delete>
 	
 	<!-- 사진 좋아요 확인 -->
 	<select id="respectConfirm" resultType="Integer">
-		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2};
+		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
+	</select>
+	
+	<!-- 사진 좋아요 갯수 확인 -->
+	<select id="respectCount" resultType="Integer">
+		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{picNo}
 	</select>
 	
 	<!-- 사진 북마크 생성 -->
@@ -36,13 +41,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 사진 북마크 삭제 -->
 	<delete id="bookmarkDelete">
-		DELETE FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2};
+		DELETE FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
 	</delete>
 	
 	<!-- 사진 북마크 확인 -->
 	<select id="bookmarkConfirm" resultType="Integer">
-		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2};
+		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
 	</select>
+	
+	<!-- 사진 북마크 갯수 확인 -->
+	<select id="bookmarkCount" resultType="Integer">
+		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{picNo}
+	</select>
+	
 	<!-- 사진 업로드 저장 -->
 	<insert id="insertPicture" parameterType="hashmap">		
 	insert into PICTURE

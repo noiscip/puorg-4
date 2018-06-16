@@ -126,6 +126,16 @@ public class UserService {
 		userDao.insertFollow(userNo, followingUserNo);
 	}
 	
+	//회원의 좋아요 리스트
+	public List<Picture> respectPicList(int userNo){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+			
+		List<Picture> respectList = new ArrayList<Picture>();
+		respectList=userDao.respectPicList(userNo);
+			
+		return respectList;
+	}
+		
 	
 	//회원의 북마크 리스트
 	public List<Picture> bookmarkPicList(int userNo){

@@ -73,7 +73,7 @@ public class AmazonTest {
 		System.out.println("응???");
 		boolean isSuccess = false;
 		
-		String uploadPath = "D:\\\\\\file\\\\\\";
+		String uploadPath = "D:\\file\\";
 		
 		File dir = new File(uploadPath);
 
