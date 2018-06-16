@@ -109,7 +109,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 네이버 연동 확인 -->
-	<select id="selectAccountLinked" resultType="kr.or.picsion.user.dto.User">
+	<select id="selectAccountNo" resultType="kr.or.picsion.user.dto.User">
 		select * from ACCOUNTLINKED where accountLinkId = #{accountNo}
 	</select>
 	

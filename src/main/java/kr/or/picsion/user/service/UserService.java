@@ -45,10 +45,9 @@ public class UserService {
 			User acUser = userDao.selectAccountUserNo(loginUser.getUserNo());
 			if(acUser != null) {
 				loginUser.setAccountLinkId(acUser.getAccountLinkId());
+				System.out.println(acUser.getAccountLinkId());
 			}
-			
 		}
-		
 		return loginUser;
 	}
 	
@@ -82,10 +81,13 @@ public class UserService {
 		
 		User userInfo = userDao.selectUserNo(userNo);
 		User userProfile = userDao.selectProfile(userNo);
+		User userAccountLinkId = userDao.selectAccountUserNo(userNo);
 		
 		userInfo.setPrContent(userProfile.getPrContent());
 		userInfo.setPrPicture(userProfile.getPrPicture());
-		
+		if(userAccountLinkId != null) {
+			userInfo.setAccountLinkId(userAccountLinkId.getAccountLinkId());
+		}
 		return userInfo;
 	}
 		

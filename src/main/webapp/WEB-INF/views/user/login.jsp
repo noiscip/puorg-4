@@ -65,7 +65,7 @@
   	var naver_id_login = new naver_id_login("AavwsVovOeUd6Ijvt3W0", "http://127.0.0.1:8090/picsion/naver/login.ps");
   	var state = naver_id_login.getUniqState();
     naver_id_login.response_type="code"; 
-  	naver_id_login.setDomain("http://127.0.0.1:8090/picsion/login.ps"); 
+  	naver_id_login.setDomain("http://127.0.0.1:8090/picsion/naver/login.ps"); 
   	naver_id_login.setState(state);
   	naver_id_login.init_naver_id_login();
   	

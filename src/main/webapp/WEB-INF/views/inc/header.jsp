@@ -67,9 +67,7 @@
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
 		                    <c:if test="${sessionScope.user ne null && sessionScope.user.accountLinkId eq null}">
-			                    <a href="#" class="dropdown-item">
-			                        <i class="material-icons">content_paste</i> 네이버 계정 연동
-			                    </a>
+			                    <a id="#"> 네이버 계정 연동 </a>
 		                    </c:if>
 		                  </div>
 		                </li>
@@ -97,5 +95,3 @@
       </div>
     </div>
   </nav>
-  
- 
