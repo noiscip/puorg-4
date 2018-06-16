@@ -26,35 +26,62 @@ public class NaverLoginController {
 	private UserService userService;
 	
 	@RequestMapping("naverlogin.ps")
-	public String naverLogin(HttpSession session, Model model) {
+	public String naver() {
 	 	return "naver.login";
 	}
 	
 	@RequestMapping("login.ps")
-	public String callback(String code,String state, HttpSession session, Model model) throws IOException {
+	public String naverLogin(String code,String state, HttpSession session, Model model) {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
-		OAuth2AccessToken oauthToken = naverLoginCon.getAccessToken(session, code, state);
-
-		String apiResult = naverLoginCon.getUserProfile(oauthToken);
-		
-		String[] haha = apiResult.split("\"");
-		
-		System.out.println(haha[13]);
-		User accountUser = userService.selectAccountLinked(haha[13]);
+		OAuth2AccessToken oauthToken;
 		String result = "redirect:/home.ps";
-		
-		if(accountUser == null) {
-			session.setAttribute("result", "F");
-			result = "redirect:/user/login.ps";
-		}else {
-			User user = userService.userInfo(accountUser.getUserNo());
-			session.setAttribute("user", user);
+		try {
+			oauthToken = naverLoginCon.getAccessToken(session, code, state);
+			String apiResult = naverLoginCon.getUserProfile(oauthToken);
+			
+			String[] haha = apiResult.split("\"");
+			
+			User accountUser = userService.selectAccountLinked(haha[13]);
+			
+			
+			if(accountUser == null) {
+				session.setAttribute("result", "F");
+				result = "redirect:/user/login.ps";
+			}else {
+				User user = userService.userInfo(accountUser.getUserNo());
+				session.setAttribute("user", user);
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 		
-		/*User user = (User)session.getAttribute("user");
-		userService.insertAccountLinked(user.getUserNo(),haha[13]);
-		*/
     	return result;
+	}
+
+	@RequestMapping("insert.ps")
+	public String naverInsert(String code,String state,HttpSession session) {
+		
+		OAuth2AccessToken oauthToken;
+		String result = "redirect:/user/login.ps";
+		try {
+			oauthToken = naverLoginCon.getAccessToken(session, code, state);
+			String apiResult = naverLoginCon.getUserProfile(oauthToken);
+			
+			String[] haha = apiResult.split("\"");
+			
+			User user = (User)session.getAttribute("user");
+			userService.insertAccountLinked(user.getUserNo(),haha[13]);
+			session.setAttribute("user", userService.userInfo(user.getUserNo()));
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		
+				
+		return result;
 	}
 }
 
