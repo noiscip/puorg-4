@@ -110,6 +110,14 @@ public class UserController {
 		return jsonview;
 	}
 	
+	@RequestMapping("adminUserSearch.ps")
+	public View userSearch(String userId, Model model) {
+		
+		User user = userService.searchUserId(userId);
+		model.addAttribute("searchUser",user);
+		return jsonview;
+	}
+	
 	@RequestMapping("adminComplainList.ps")
 	public String complain(Model model) {
 		

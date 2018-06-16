@@ -143,4 +143,9 @@ public class UserService {
 		return result;
 	}
 	
+	public User searchUserId(String userId) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		User user = userDao.selectUser(userId);
+		return user;
+	}
 }

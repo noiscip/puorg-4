@@ -2,6 +2,20 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+ <script>
+  $( function() {
+	  $('.datetimepicker').datetimepicker({
+	      icons: {
+	          date: "fa fa-calendar",
+	          previous: 'fa fa-chevron-left',
+	          next: 'fa fa-chevron-right',
+	          today: 'fa fa-screenshot',
+	          clear: 'fa fa-trash',
+	          close: 'fa fa-remove'
+	      }
+	  });
+  } );
+  </script>
 
 <div class="page-header header-filter clear-filter purple-filter"
 	data-parallax="true"
@@ -20,6 +34,10 @@
 		
 		
 			<h1>전체 신고글 목록</h1>
+			<div class="form-group">
+			    <label class="label-control">Datetime Picker</label>
+			    <input type="text" class="form-control datetimepicker"/>
+			</div>
 			<table border="3">
 				<thead>
 					<tr>
