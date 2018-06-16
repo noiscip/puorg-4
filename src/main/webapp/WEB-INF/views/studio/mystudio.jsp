@@ -6,17 +6,11 @@
 <script type="text/javascript">
 	
 	$(function() {
-	var sendUserNo = ${user.userNo}
-	var receiveUserNo = ${userinfo.userNo}
+		var sendUserNo = ${user.userNo}
+		var receiveUserNo = ${userinfo.userNo}
 		/* 메시지 보내기 비동기 처리 */
-		var sendUserNo = ${user.userNo};
-		var receiveUserNo = ${userinfo.userNo};
-		
 		$('#messageSend').click(function(){
-			var data= {msgContent:$('#msgContent').val(), 
-						sendUserNo:${sessionScope.user.userNo}, 
-						receiveUserNo:${userinfo.userNo}
-			var tableNo = 4
+			var tableNo = 4;
 			var data= {msgContent:$("#msgContent").val(), 
 						sendUserNo:sendUserNo, 
 						receiveUserNo:receiveUserNo
@@ -215,7 +209,7 @@
     </div>
   </div>
 
-	<!-- Modal -->
+	<!-- 메시지 Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -233,7 +227,7 @@
 		    </div> -->
 		    <div class="form-group">
 		    	<label for="exampleFormControlTextarea1">내용</label>
-		    	<textarea class="form-control" id="msgContent" name="msgContent" rows="3"></textarea>
+		    	<textarea class="form-control" id="msgContent" name="msgContent" rows="3" placeholder="최대 300자까지 가능"></textarea>
 		    </div>
 		    
 	      </div>

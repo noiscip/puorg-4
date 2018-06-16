@@ -1,5 +1,7 @@
 package kr.or.picsion.message.controller;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,16 +55,21 @@ public class MessageController {
 		
 		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
 		List<User> receiveInfo = messageService.receiveMessageInfo(user.getUserNo());
-		
+		List<String> msgReg = new ArrayList<>();
 		/*HashMap<String, Object> receiveMap = new HashMap<String, Object>();
 		
 		receiveMap.put("receiveList", receiveList);
 		receiveMap.put("receiveInfo", receiveInfo);
 		
 		System.out.println("****************************Map은????"+receiveMap);*/
+		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
+		for(Message m : receiveList) {
+			msgReg.add(reg.format(m.getMsgReg()));
+		}
 		
 		model.addAttribute("receiveList", receiveList);
 		model.addAttribute("receiveInfo", receiveInfo);
+		model.addAttribute("msgReg", msgReg);
 		
 		/*model.addAttribute("receiveMap", receiveMap);*/
 		
@@ -73,23 +80,24 @@ public class MessageController {
 	//메시지 확인시 messageState update
 	@RequestMapping("stateup.ps")
 	public View messageState(String msgNo, String msgState, Model model) {
-		System.out.println("messageState 컨트롤러~~~");
-		System.out.println("msgNo 잘 받아오니 ????" + msgNo);
-		System.out.println("msgState는 ?????" + msgState);
 		int result =0;
 		
 		if(msgState.equals("안읽음")) {
-			System.out.println("여기는????? ");
 			result = messageService.messageState(Integer.parseInt(msgNo));
 		}
 		
 		model.addAttribute("result", result);
 		
-		/*int result = messageService.messageState(Integer.parseInt(msgNo));*/
-		/*System.out.println("뭐야 리절트 되는거야 ?" + result);*/
 		return jsonview;
 	}
 	
-	
-	
+	//받은 메시지함에서 메시지 삭제
+	@RequestMapping("receivedel.ps")
+	public View receiveMessageDel(String msgNo, Model model) {
+		int result = messageService.receiveMessageDel(Integer.parseInt(msgNo));
+		
+		model.addAttribute("result", result);
+		
+		return jsonview;
+	}
 }

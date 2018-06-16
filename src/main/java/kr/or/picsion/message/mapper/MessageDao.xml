@@ -41,4 +41,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE msgNo=#{msgNo}
 	</update>
 	
+	<!-- 받은 사람이 메시지 삭제 (receiveMsgDel update) -->
+	<update id="receiveMessageDel">
+		UPDATE MESSAGES
+		SET receiveMsgDel='T'
+		WHERE msgNo=#{msgNo}
+	</update>
+	
 </mapper>

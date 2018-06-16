@@ -72,8 +72,15 @@
 		                  </div>
 		                </li>
 						<li class="nav-item">
-							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"> 
-								  <img style ="width: 30px;" alt="Circle Image" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
+							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}">
+								<c:choose>
+									<c:when test="${sessionScope.user.prPicture eq null}">
+									  <img style="width:30px;" class="rounded-circle" src="<%=request.getContextPath()%>/assets/img/user.png">
+									</c:when>
+									<c:otherwise>
+									  <img style ="width: 30px;" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
+									</c:otherwise>
+								</c:choose> 
 								  ${sessionScope.user.userName}
 							</a>
 						</li>
