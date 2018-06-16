@@ -68,6 +68,7 @@ public class PictureService {
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
 		int result = picturedao.bookmarkConfirm(picNo, userNo);
 		return result;
+	}
 	//사진업로드 저장
 	public void insertPicture(Picture picture, int userNo) {
 		HashMap<String, Object> picmap = new HashMap<String, Object>();
