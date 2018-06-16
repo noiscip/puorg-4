@@ -8,7 +8,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 
 import com.sun.javafx.collections.MappingChange.Map;
@@ -70,20 +72,22 @@ public class MessageController {
 	
 	//메시지 확인시 messageState update
 	@RequestMapping("stateup.ps")
-	public int messageState(int msgNo, String msgState) {
+	public View messageState(String msgNo, String msgState, Model model) {
 		System.out.println("messageState 컨트롤러~~~");
 		System.out.println("msgNo 잘 받아오니 ????" + msgNo);
 		System.out.println("msgState는 ?????" + msgState);
 		int result =0;
 		
-		if(msgState=="안읽음") {
-			result = messageService.messageState(msgNo);
+		if(msgState.equals("안읽음")) {
+			System.out.println("여기는????? ");
+			result = messageService.messageState(Integer.parseInt(msgNo));
 		}
 		
+		model.addAttribute("result", result);
 		
 		/*int result = messageService.messageState(Integer.parseInt(msgNo));*/
 		/*System.out.println("뭐야 리절트 되는거야 ?" + result);*/
-		return result;
+		return jsonview;
 	}
 	
 	

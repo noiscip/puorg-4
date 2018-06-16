@@ -58,9 +58,10 @@ public class MessageService {
 	
 	//메시지  읽었을때 메시지 읽음 상황 변경
 	public int messageState(int msgNo) {
+		System.out.println("여기 서비스는 오는거야???");
 		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
 		int result = messageDao.messageState(msgNo);
-		
+		System.out.println("result 값은 받ㅇ아오는겨???");
 		return result;
 	}
 	
