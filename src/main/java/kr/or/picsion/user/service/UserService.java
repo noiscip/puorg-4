@@ -2,6 +2,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +31,25 @@ public class UserService {
 	public User login(User user) {
 		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		User selectUser = userDao.selectUser(user.getUserId());
+		User loginUser = userDao.selectUser(user.getUserId());
 		
-		if(selectUser == null || !user.getPwd().equals(selectUser.getPwd())) {
-			selectUser = null;
+		if(loginUser == null || !user.getPwd().equals(loginUser.getPwd())) {
+			loginUser = null;
 		}else {
 			//사용자 프로필 테이블 검색해서 set
-			User u = userDao.selectProfile(selectUser.getUserNo());
-			if(u != null) {
-				selectUser.setPrContent(u.getPrContent());
-				selectUser.setPrPicture(u.getPrPicture());
+			User prUser = userDao.selectProfile(loginUser.getUserNo());
+			if(prUser != null) {
+				loginUser.setPrContent(prUser.getPrContent());
+				loginUser.setPrPicture(prUser.getPrPicture());
 			}
+			User acUser = userDao.selectAccountUserNo(loginUser.getUserNo());
+			if(acUser != null) {
+				loginUser.setAccountLinkId(acUser.getAccountLinkId());
+			}
+			
 		}
 		
-		return selectUser;
+		return loginUser;
 	}
 	
 	public List<User> userList(){
@@ -158,7 +164,7 @@ public class UserService {
 	//회원 네이버 연동 되어있는지 확인
 	public User selectAccountLinked(String accountNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		User user = userDao.selectAccountLinked(accountNo);
+		User user = userDao.selectAccountNo(accountNo);
 		
 		return user;
 	}

@@ -112,4 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectAccountLinked" resultType="kr.or.picsion.user.dto.User">
 		select * from ACCOUNTLINKED where accountLinkId = #{accountNo}
 	</select>
+	
+	<select id="selectAccountUserNo" resultType="kr.or.picsion.user.dto.User">
+		select * from ACCOUNTLINKED where userNo = #{userNo}
+	</select>
 </mapper>

@@ -25,7 +25,8 @@ public interface UserDao {
  	public void insertFollow(int userNo, int followingUserNo);		//팔로잉테이블에   insert
 	public void deleteFollow(int userNo, int followingUserNo);		//팔로잉테이블에서 delete
 	public int insertAccountLinked(int userNo, String accountNo);    //회원 네이버 계정 연동
-	public User selectAccountLinked(String accountNo);
+	public User selectAccountNo(String accountNo);
+	public User selectAccountUserNo(int userNo);
 	
 	//////////////////////////
 	List<User> getPicsionList();
