@@ -19,8 +19,7 @@
     <link href="<%=request.getContextPath()%>/assets/demo/demo.css" rel="stylesheet" />
 	
 	<!-- CSS Files -->
-	<link href="<%=request.getContextPath()%>/assets/css/material-kit.css?v=2.0.1" rel="stylesheet" />
-	
+	<link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />	
 	<!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://code.highcharts.com/highcharts.js"></script>

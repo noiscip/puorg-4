@@ -8,6 +8,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM PICTURE WHERE userNo=#{userNo}
 	</select>
 	
+	<!-- 사진 정보 -->
+	<select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">
+	select * from PICTURE where picNo = #{picNo}
+	</select>
+	
+	
 	<!-- 사진 좋아요 생성 -->
 	<insert id="respectIncrease" parameterType="int">
 	INSERT INTO RESPECT

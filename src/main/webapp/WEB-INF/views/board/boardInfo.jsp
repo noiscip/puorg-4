@@ -78,32 +78,53 @@
 					});	
 				});
 		
+
+		$('#applysummit').on("click",function() {
+		
+					$.ajax({
+						url : "operok.ps",
+						type : "post",
+						data : {							
+							operApplyAppeal : $("#oApplyAppeal").val(),
+							operApplyPrice : $("#oApplyPrice").val(),
+							operApplyReg : Date($("#oApplyReg").val()),
+							brdNo : ${boardInfo.brdNo},
+							operUserNo : $("#oUserNo").val(),
+							operApplyNo : $("#operApplyNo").val()
+						}, 
+						success : function(data) {
+							
+							
+						}
+					});	
+				});
 		
 		
 		
-		/* $('#applylist').on("click",function() {
+		$('.applyModal').on("click",function() {
+			var operApplyNo=$(this).attr("operApplyNo");
+			var applyid=$(this).children()[0].innerText;
+			console.log("applyid : "+applyid);
+			var operApplyPrice=$(this).children()[1].innerText;
+			console.log("operApplyPrice : "+operApplyPrice);
+			var operApplyReg=$(this).children()[2].innerText;
+			console.log("operApplyReg : "+operApplyReg);
+			var operUserNo=$(this).attr("operUserNo");
+			console.log("operUserNo : "+operUserNo);
+			var operApplyAppeal=$(this).attr("operApplyAppeal");
+			console.log("operApplyAppeal : "+operApplyAppeal);
 			
-			console.log("applylist클릭");
+			$('#oUserNo').val(operUserNo);
+			$('#applyid').val(applyid);
+			$('#oApplyPrice').val(operApplyPrice);
+			$('#oApplyReg').val(operApplyReg);
+			$('#oApplyAppeal').val(operApplyAppeal);
+			$('#operApplyNo').val(operApplyNo);
 			
-						$.ajax({
-							url : "applylist.ps",
-							type : "post",
-							data : {						
-								requestUserNo : ${boardInfo.userNo},
-								brdNo : ${boardInfo.brdNo}
-							},
-							success : function(data) {
-								console.log(data);
-								$.each(data.applylist,function(index,obj){
-									
-								}); 
-								
-							}
-						});	
-						
-						
-						
-					}); */
+			
+			
+			
+		});
 		
 		
 		
@@ -162,43 +183,45 @@
 	</div>
 
 
-<table class="table">
-    <thead>
-     <tr>
-            <th class="text-center">#</th>
-            <th class="text-center">작업신청자</th>
-            <th class="text-center">작업기간</th>
-            <th class="text-center">금액</th>
-        </tr>
-    </thead>
-    <tbody>
+	<table class="table">
+		<thead>
+			<tr>
+				<th class="text-center">작업신청자</th>
+				<th class="text-center">금액</th>
+				<th class="text-center">마감 날짜</th>
+			</tr>
+		</thead>
+		<tbody>
 
 
-<c:choose>
-	<c:when test="${boardInfo.userNo eq user.userNo}">			
-			<div class="apply">
-			<c:forEach var="apply" items="${applylist}" varStatus="status">
-				
+			<c:choose>
+				<c:when test="${boardInfo.userNo eq user.userNo}">
+					<div class="apply">
+						<c:forEach var="apply" items="${applylist}" varStatus="status">
 
-					${applyid[status.index]} : ${apply.operApplyAppeal} 
+							<tr class="applyModal" style="cursor:pointer;" data-toggle="modal" data-target="#operModal" operApplyNo="${apply.operApplyNo}" operUserNo="${apply.operUserNo}" operApplyAppeal="${apply.operApplyAppeal}">
+								<td class="text-center">${applyid[status.index]}</td>
+								<td class="text-center">${apply.operApplyPrice}</td>
+								<td class="text-center">${apply.operApplyReg}</td>
+								<%-- ${applyid[status.index]} : ${apply.operApplyAppeal} 
 					${apply.operApplyPrice}
 					${apply.operApplyReg}
-					${apply.operUserNo}
-					<input type="button" value="수락" operUserNo="${apply.operUserNo}" >
-					
-					<hr style="margin-top: 5px; margin-bottom: 5px;">
+					${apply.operUserNo} 
+					<input type="button" value="수락" operUserNo="${apply.operUserNo}" > --%>
+							</tr>
 
-			</c:forEach>
-		</div>
-	</c:when>
-	<c:otherwise>
-		<button type="button" class="btn btn-default btn-sm"
-			data-toggle="modal" data-target="#exampleModal">신청하기</button>		
-	</c:otherwise>
-</c:choose>
-	
-</tbody>
-</table>
+
+						</c:forEach>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<button type="button" class="btn btn-default btn-sm"
+						data-toggle="modal" data-target="#exampleModal">신청하기</button>
+				</c:otherwise>
+			</c:choose>
+
+		</tbody>
+	</table>
 
 
 
@@ -251,5 +274,45 @@
 	</div>
 </div>
 
-
+<!-- 신청자 상세  Modal Core -->
+<div class="modal fade" id="operModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<h5 class="modal-title" id="myModalLabel">신청자 상제보기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+      	
+      	<form>
+		  <fieldset disabled>
+		  <input type="text" style="display: none;" id="oUserNo" name="operUserNo" class="form-control">
+		  <input type="text" style="display: none;" id="operApplyNo" name="operApplyNo" class="form-control">
+		    <div class="form-group">													 
+		      <label for="disabledTextInput">신청자</label>
+		      <input type="text" id="applyid" class="form-control">
+		    </div>
+		    <div class="form-group">
+		      <label for="disabledTextInput">판매가격</label>
+		      <input type="text" id="oApplyPrice" name="operApplyPrice"  class="form-control">
+		    </div>
+		    <div class="form-group">
+		      <label for="disabledTextInput">완료 예정일</label>
+		      <input type="text" id="oApplyReg" name="operApplyReg"  class="form-control">
+		    </div>
+		    <div class="form-group">
+		      <label for="disabledTextInput">참고사항</label>
+		      <input type="text" id="oApplyAppeal" name="operApplyAppeal"  class="form-control">
+		    </div>
+		    
+		  </fieldset>
+		  <button type="button" class="btn btn-primary" id="applysummit"
+					data-dismiss="modal">수락</button>
+		</form>
+      	
+      </div>
+     
+    </div>
+  </div>
+</div>
 

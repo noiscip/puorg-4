@@ -6,6 +6,18 @@
 <input type="hidden" value="${sessionScope.result}" id="result">
 
 <style>
+a {
+    color: white;
+    background-color: transparent;
+}
+a:hover{
+	color: #555;
+	cursor: pointer;
+}
+a:focus{
+-webkit-box-shadow:none;
+box-shadow:none;
+}
 .hashTag{
 	color: hotpink;
 }
