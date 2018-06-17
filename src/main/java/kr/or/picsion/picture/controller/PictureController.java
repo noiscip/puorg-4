@@ -28,12 +28,13 @@ public class PictureController {
 	@Autowired
 	private PictureService pictureService;
 	
-
 	@Autowired
 	private UserService userService;
 	
 	@RequestMapping("picinfo.ps")
-	public String picInfo(){
+	public String picInfo(Model model, int picNo, int userNo){
+		Picture picture = pictureService.picInfo(picNo);
+		User userInfo = userService.userInfo(userNo);
 		return "picture.picinfo";
 	}
 	

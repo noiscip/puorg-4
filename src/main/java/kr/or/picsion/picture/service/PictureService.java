@@ -17,6 +17,16 @@ public class PictureService {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	//사진 상세정보
+	public Picture picInfo(int picNo) {
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		Picture picture = picDao.selectPicture(picNo);
+		
+		return picture;
+	}
+	
+	
+	
 	//내 계정의 사진 불러오기
 	public List<Picture> myPicList(int userNo){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
