@@ -45,7 +45,7 @@
 		                    <a href="<%=request.getContextPath()%>/board.ps" class="dropdown-item">
 		                        <i class="material-icons">list</i> 요청 게시판
 		                    </a>
-		                    <a href="#" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/upload.ps" class="dropdown-item">
 		                        <i class="material-icons">add_circle_outline</i>업로드
 		                    </a>
 		                    <a href="<%=request.getContextPath()%>/user/bookmarklist.ps" class="dropdown-item">

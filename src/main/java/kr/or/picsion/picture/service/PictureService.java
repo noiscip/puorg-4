@@ -17,6 +17,16 @@ public class PictureService {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	//사진 상세정보
+	public Picture picInfo(int picNo) {
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		Picture picture = picDao.selectPicture(picNo);
+		
+		return picture;
+	}
+	
+	
+	
 	//내 계정의 사진 불러오기
 	public List<Picture> myPicList(int userNo){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
@@ -27,7 +37,6 @@ public class PictureService {
 		return list;
 	}
 	
-		
 	//사진 좋아요 증가
 	public void increaseRespect(int picNo, int userNo){
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
@@ -69,6 +78,21 @@ public class PictureService {
 		int result = picturedao.bookmarkConfirm(picNo, userNo);
 		return result;
 	}
+	
+	//사진 좋아요 갯수
+	public int respectCount(int picNo) {
+		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
+		int result = picturedao.respectCount(picNo);
+		return result;
+	}
+	
+	//사진 북마크 갯수
+	public int bookmarkCount(int picNo) {
+		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
+		int result = picturedao.bookmarkCount(picNo);
+		return result;
+	}
+	
 	//사진업로드 저장
 	public void insertPicture(Picture picture, int userNo) {
 		HashMap<String, Object> picmap = new HashMap<String, Object>();

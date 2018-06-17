@@ -7,21 +7,20 @@
 <html>
 
 <head>
-	<link href="<%=request.getContextPath()%>/assets/img/picsion-logo.png" rel="icon" type="image/png">
+	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
 
   	<meta charset="utf-8">
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>PICSION</title>
 	
-    <!--     Fonts and icons     -->
+	<!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
     <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/demo/demo.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" />
-    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css" rel="stylesheet" />
     <!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--   Core JS Files   -->
@@ -40,7 +39,7 @@
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-selectpicker.js"></script>
     <!--	Plugin for Tags, full documentation here: https://xoxco.com/projects/code/tagsinput/  -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
-      <!--	Plugin for Small Gallery in Product Page -->
+       <!--	Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
     <!-- Plugins for presentation and navigation  -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/modernizr.js"></script>
@@ -51,7 +50,7 @@
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
 </head>
 
-<body class="profile-page sidebar-collapse">
+<body class="product-page">
 	<!-- header -->
 	<tiles:insertAttribute name="header" />
 

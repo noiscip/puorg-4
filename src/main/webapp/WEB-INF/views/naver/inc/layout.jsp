@@ -6,6 +6,8 @@
 
 <html>
 <head>
+	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
+	
 	<meta charset="utf-8">
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<title>PICSION</title>
@@ -20,8 +22,7 @@
     <link href="<%=request.getContextPath()%>/assets/demo/demo.css" rel="stylesheet" />
 	
 	<!-- CSS Files -->
-	<link href="<%=request.getContextPath()%>/assets/css/material-kit.css?v=2.0.1" rel="stylesheet" />
-	
+	<link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />	
 	<!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
