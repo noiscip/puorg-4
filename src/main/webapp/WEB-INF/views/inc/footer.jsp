@@ -97,7 +97,7 @@
 		
 	<body>
 	<!-- footer -->
-	<input type="hidden" value="${sessionScope.user.userNo}" id="loginUserNo">
+	
 		<footer class="text-center">
 			<a class="btn btn-primary btn-round" href="<%=request.getContextPath()%>/naver/naverlogin.ps" >네이버 연동</a>
 			<a class="btn btn-primary btn-round" href="<%=request.getContextPath()%>/naverlogin.ps" >네이버 로그인</a>

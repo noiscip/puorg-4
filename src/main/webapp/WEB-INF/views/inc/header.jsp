@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<input type="hidden" value="${sessionScope.user.userNo}" id="loginUserNo">
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
@@ -67,7 +67,9 @@
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
 		                    <c:if test="${sessionScope.user ne null && sessionScope.user.accountLinkId eq null}">
-			                    <a id="#"> 네이버 계정 연동 </a>
+			                    <a href="<%=request.getContextPath()%>/user/login.ps" class="dropdown-item"> 
+			                   		<i class="material-icons">visibility</i>네이버 계정 연동 
+		                    	</a>
 		                    </c:if>
 		                  </div>
 		                </li>

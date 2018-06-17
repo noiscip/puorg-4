@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
+<input type="hidden" value="${sessionScope.result}" id="result">
+
 <style>
 .hashTag{
 	color: hotpink;
@@ -300,6 +302,12 @@ background-color:black;
 <script>
 //postid 가져와서 댓글달기
 $(document).ready(function(){
+	console.log('자색고구마칩')
+	console.log($('#result').val())
+ 	if($('#result').val() == "F"){
+		alert('이미 연동된 계정 입니다. 다른 아이디를 등록 하세요.')
+	  	<%session.removeAttribute("result");%>
+	}
 	//이미지 class명부여
 	//postModal("main");
 	$("#carousel").on("mousewheel", function(e){
@@ -458,10 +466,8 @@ function nextPost(curObj){
 
 
 </script>
-
   <div class="page-header header-filter clear-filter purple-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/bg2.jpg');">
     <div class="container">
-	    
 		<c:choose>
 		<c:when test="${sessionScope.user eq null}">
 		<div class="row">
