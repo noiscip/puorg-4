@@ -12,14 +12,15 @@ public class User {
 	private Date userReg;
 	private int tableNo;
 	private int roleNo;
-	private String accountLinkId;
+	private String naver;
+	private String google;
 	private String prPicture;
 	private String prContent;
 
 	public User() {}
 
 	public User(int userNo, String userId, String pwd, String userName, int point, Date userReg, int tableNo,
-			int roleNo, String accountLinkId, String prPicture, String prContent) {
+			int roleNo, String naver, String google, String prPicture, String prContent) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.pwd = pwd;
@@ -28,11 +29,12 @@ public class User {
 		this.userReg = userReg;
 		this.tableNo = tableNo;
 		this.roleNo = roleNo;
-		this.accountLinkId = accountLinkId;
+		this.naver = naver;
+		this.google = google;
 		this.prPicture = prPicture;
 		this.prContent = prContent;
 	}
-	
+
 	public int getUserNo() {
 		return userNo;
 	}
@@ -97,12 +99,20 @@ public class User {
 		this.roleNo = roleNo;
 	}
 
-	public String getAccountLinkId() {
-		return accountLinkId;
+	public String getNaver() {
+		return naver;
 	}
 
-	public void setAccountLinkId(String accountLinkId) {
-		this.accountLinkId = accountLinkId;
+	public void setNaver(String naver) {
+		this.naver = naver;
+	}
+
+	public String getGoogle() {
+		return google;
+	}
+
+	public void setGoogle(String google) {
+		this.google = google;
 	}
 
 	public String getPrPicture() {
@@ -123,9 +133,9 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "Users [userNo=" + userNo + ", userId=" + userId + ", pwd=" + pwd + ", userName=" + userName + ", point="
-				+ point + ", userReg=" + userReg + ", tableNo=" + tableNo + ", roleNo=" + roleNo
-				+ ", accountLinkId=" + accountLinkId + ", prPicture=" + prPicture + ", prContent=" + prContent + "]";
+		return "User [userNo=" + userNo + ", userId=" + userId + ", pwd=" + pwd + ", userName=" + userName + ", point="
+				+ point + ", userReg=" + userReg + ", tableNo=" + tableNo + ", roleNo=" + roleNo + ", naver=" + naver
+				+ ", google=" + google + ", prPicture=" + prPicture + ", prContent=" + prContent + "]";
 	}
 
 }

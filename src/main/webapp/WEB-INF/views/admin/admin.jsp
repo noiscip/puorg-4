@@ -100,6 +100,7 @@
 				<li class="nav-item"><a class="nav-link"
 					href="<%=request.getContextPath()%>/user/adminPurchase.ps">매출
 						내역</a></li>
+				<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminPurchase.ps">통계</a></li>
 			</ul>
 
 

@@ -1,7 +1,5 @@
 package kr.or.picsion.utils.controller;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,69 +17,63 @@ import kr.or.picsion.utils.NaverLoginConnectUrl;
 @RequestMapping("/naver/")
 public class NaverLoginController {
 
+	private final String NAVER="naver";
+	
 	@Autowired
 	private NaverLoginConnectUrl naverLoginCon;
 	
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("naverlogin.ps")
-	public String naver() {
+	@RequestMapping("login.ps")
+	public String naverLogin() {
 	 	return "naver.login";
 	}
 	
-	@RequestMapping("login.ps")
+	/**
+	 * 날      짜 : 2018. 6. 15.
+	 * 메소드명 : naverLogin
+	 * 작성자명 : 아윤근
+	 *
+	 * @param code
+	 * @param state
+	 * @param session
+	 * @param model
+	 * @return
+	*/
+	@RequestMapping("callback.ps")
 	public String naverLogin(String code,String state, HttpSession session, Model model) {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
-		OAuth2AccessToken oauthToken;
+		OAuth2AccessToken oauthToken = naverLoginCon.getAccessToken(session, code, state);
+		String apiResult = naverLoginCon.getUserProfile(oauthToken);
+		
+		User user = (User)session.getAttribute("user");
+		String accountNo  = apiResult.split("\"")[13];
 		String result = "redirect:/home.ps";
-		try {
-			oauthToken = naverLoginCon.getAccessToken(session, code, state);
-			String apiResult = naverLoginCon.getUserProfile(oauthToken);
+
+		if(user == null) { //유저가 null이면 로그인이 안되어 있는 상태 
+			User accountUser = userService.selectAccountNo(accountNo,NAVER);
 			
-			String[] haha = apiResult.split("\"");
-			
-			User accountUser = userService.selectAccountLinked(haha[13]);
-			
-			
-			if(accountUser == null) {
+			if(accountUser == null) { //연동되어 있는 계정이 없음
 				session.setAttribute("result", "F");
 				result = "redirect:/user/login.ps";
-			}else {
-				User user = userService.userInfo(accountUser.getUserNo());
-				session.setAttribute("user", user);
+			}else { // 연동된 계정이 있으면
+				session.setAttribute("user", userService.userInfo(accountUser.getUserNo()));
 			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
+		}else { //유저가 존재 한다면 계정 연동
+			if(userService.selectAccountNo(accountNo,NAVER) == null) { //네이버 등록이 안되어 있다면
+				if(userService.selectAccountUserNo(user.getUserNo()) == null) { //구글 등록도 안되어 있다면 insert
+					userService.insertAccountNo(user.getUserNo(),accountNo,NAVER);
+				}else { //구글 등록은 되어 있다면 update
+					userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
+				}
+				session.setAttribute("user", userService.userInfo(user.getUserNo()));
+			}else { //네이버 등록이 되어 있다면
+				session.setAttribute("result", "F");
+				System.out.println("이미 연동되어있는 계쩡이야!");
+			}
 		}
-
-		
     	return result;
-	}
-
-	@RequestMapping("insert.ps")
-	public String naverInsert(String code,String state,HttpSession session) {
-		
-		OAuth2AccessToken oauthToken;
-		String result = "redirect:/user/login.ps";
-		try {
-			oauthToken = naverLoginCon.getAccessToken(session, code, state);
-			String apiResult = naverLoginCon.getUserProfile(oauthToken);
-			
-			String[] haha = apiResult.split("\"");
-			
-			User user = (User)session.getAttribute("user");
-			userService.insertAccountLinked(user.getUserNo(),haha[13]);
-			session.setAttribute("user", userService.userInfo(user.getUserNo()));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		
-				
-		return result;
 	}
 }
 

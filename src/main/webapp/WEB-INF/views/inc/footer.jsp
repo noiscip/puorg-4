@@ -24,7 +24,6 @@
 		  //top으로ws
 		  
 			$(document).ready(function() {
-				$('#sendBtn').click(function() { send(1,4) })
 
 				if($('#loginUserNo').val()!= ""){
 					connect() 
@@ -38,7 +37,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://127.0.0.1:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.13:8090/picsion/message.ps") //테스트 용도 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -97,17 +96,14 @@
 		
 	<body>
 	<!-- footer -->
-	<input type="hidden" value="${sessionScope.user.userNo}" id="loginUserNo">
+	
 		<footer class="text-center">
-			<a class="btn btn-primary btn-round" href="<%=request.getContextPath()%>/naver/naverlogin.ps" >네이버 연동</a>
-			<a class="btn btn-primary btn-round" href="<%=request.getContextPath()%>/naverlogin.ps" >네이버 로그인</a>
-			<button class="btn btn-primary btn-round" id="sendBtn">sendBtn</button>
-			<form action="amazontest.ps" enctype="multipart/form-data" method="post">
+<!-- 			<form action="amazontest.ps" enctype="multipart/form-data" method="post">
 				
 				<input type="file" name="filePath">
 				
 				<input type="submit" class="btn btn-primary btn-round" value="보내기">
-			</form>
+			</form> -->
 		  <a title="Go to top" onclick="topFunction()">
 		   <i class="fas fa-angle-up fa-2x"></i>
 		  </a><br><br>
