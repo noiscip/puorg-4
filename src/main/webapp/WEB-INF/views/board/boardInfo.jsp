@@ -80,21 +80,22 @@
 		
 
 		$('#applysummit').on("click",function() {
-		
+			var brdNo=${boardInfo.brdNo};
+			var requesterNo=${boardInfo.userNo};
 					$.ajax({
 						url : "operok.ps",
 						type : "post",
-						data : {							
-							operApplyAppeal : $("#oApplyAppeal").val(),
-							operApplyPrice : $("#oApplyPrice").val(),
-							operApplyReg : Date($("#oApplyReg").val()),
-							brdNo : ${boardInfo.brdNo},
-							operUserNo : $("#oUserNo").val(),
+						data : {	
+							requesterNo : requesterNo,
+							operPrice : $("#oApplyPrice").val(),
+							operEndReg : Date($("#oApplyReg").val()),
+							brdNo : brdNo,
+							operatorNo : $("#oUserNo").val(),
 							operApplyNo : $("#operApplyNo").val()
 						}, 
 						success : function(data) {
-							
-							
+							console.log(data.check);
+							location.href="boardInfo.ps?brdNo="+brdNo;
 						}
 					});	
 				});

@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.comment.dto.Comment;
+import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
@@ -31,10 +32,22 @@ public class PictureController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private CommentService commentService;
+	
 	@RequestMapping("picinfo.ps")
 	public String picInfo(Model model, int picNo, int userNo){
-		Picture picture = pictureService.picInfo(picNo);
-		User userInfo = userService.userInfo(userNo);
+		Picture picture = pictureService.picInfo(picNo); 			  //사진
+		User userInfo = userService.userInfo(userNo);    			  //사진 주인	
+		List<Comment> comment = commentService.picCommentList(picNo); //댓글 목록
+		List<User> commentUserList = new ArrayList<User>();           //댓글 작성자 목록
+		for(Comment c : comment) {
+			commentUserList.add(userService.userInfo(c.getUserNo()));
+		}
+		model.addAttribute("picture",picture);
+		model.addAttribute("userInfo",userInfo);
+		model.addAttribute("comment",comment);
+		model.addAttribute("commentUserList",commentUserList);
 		return "picture.picinfo";
 	}
 	

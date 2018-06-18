@@ -21,229 +21,193 @@
 		<div class="main main-raised main-product">
 			<div class="row">
 				<div class="col-md-6 col-sm-6">
-					<div class="tab-content">
-						<div class="tab-pane" id="product-page1">
-							<img src="<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg">
-						</div>
-						<div class="tab-pane active" id="product-page2">
-							<img src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
-						</div>
-						<div class="tab-pane" id="product-page3">
-							<img src="<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg">
-						</div>
-						<div class="tab-pane" id="product-page4">
-							<img src="<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg">
-						</div>
-					</div>
-					<div class="nbs-flexisel-container">
-						<div class="nbs-flexisel-inner">
-							<ul class="nav flexi-nav nbs-flexisel-ul" data-tabs="tabs"
-								id="flexiselDemo1" style="left: -750px;">
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page1" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page2" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page3" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page4" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page1" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page2" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page3" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page4" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page1" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page2" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page3" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg">
-								</a>
-								</li>
-								<li class="nav-item nbs-flexisel-item" style="width: 125px;">
-									<a href="#product-page4" class="nav-link" data-toggle="tab">
-										<img src="<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg">
-								</a>
-								</li>
-							</ul>
-							<div class="nbs-flexisel-nav-left">
-								<i class="material-icons">chevron_left</i>
-							</div>
-							<div class="nbs-flexisel-nav-right">
-								<i class="material-icons">chevron_right</i>
+					<div class="card card-blog">
+                        <div class="card-header card-header-image">
+                            <a href="#pablo">
+                                <img class="img" src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
+                                <div class="card-title">
+                                    <i class="material-icons">favorite</i> 2.4K ·
+                                    <i class="material-icons">bookmark</i> 45
+                                </div>
+                            </a>
+                         <div class="colored-shadow colored-shadow-big" style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div></div>
+                        <div class="card-body">
+                        </div>
+					 </div> 
+					<div class="team">
+						<div class="col-md-12">
+							<div class="card card-profile card-plain">
+								<div class="row">
+									<div class="col-md-5">
+										<div class="card-header card-header-image">
+											<a href="#pablo"> <img class="img"
+												src="<%=request.getContextPath()%>/assets/img/faces/card-profile1-square.jpg">
+											</a>
+											<div class="colored-shadow"
+												style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/faces/card-profile1-square.jpg&quot;); opacity: 1;"></div>
+										</div>
+									</div>
+									<div class="col-md-7">
+										<div class="card-body">
+											<h4 class="card-title">나작가</h4>
+											<h6 class="category text-muted">photographer</h6>
+											<p class="card-description">좋은 사진 많이 찍어요...</p>
+										</div>
+										<div class="card-footer justify-content-center">
+											<button type="button" class="btn btn-default btn-sm"
+												data-toggle="modal" data-target="#exampleModal">메시지</button>
+											<button class="btn btn-primary btn-sm" id="follow">
+												<i class="material-icons" id="follow-icon">favorite</i> 팔로우 취소
+											</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
+					
 				</div>
 				<div class="col-md-6 col-sm-6">
-					<h2 class="title">Becky Silk Blazer</h2>
-					<h3 class="main-price">$335</h3>
+					<h2 class="title">TITLE</h2>
+					<!-- <h3 class="main-price">$335</h3> -->
 					<div id="accordion" role="tablist">
 						<div class="card card-collapse">
 							<div class="card-header" role="tab" id="headingOne">
 								<h5 class="mb-0">
-									<a data-toggle="collapse" href="#collapseOne"
-										aria-expanded="false" aria-controls="collapseOne"
-										class="collapsed"> Description <i class="material-icons">keyboard_arrow_down</i>
-									</a>
+									<a>Content</a>
 								</h5>
 							</div>
-							<div id="collapseOne" class="collapse" role="tabpanel"
+							<div id="collapseOne" class="collapse show" role="tabpanel"
 								aria-labelledby="headingOne" data-parent="#accordion" style="">
 								<div class="card-body">
-									<p>Eres' daring 'Grigri Fortune' swimsuit has the fit and
-										coverage of a bikini in a one-piece silhouette. This fuchsia
-										style is crafted from the label's sculpting peau douce fabric
-										and has flattering cutouts through the torso and back. Wear
-										yours with mirrored sunglasses on vacation.</p>
+									<p>이 사진은 매우 찍기 어려운 사진입니다.</p>
 								</div>
 							</div>
 						</div>
 						<div class="card card-collapse">
 							<div class="card-header" role="tab" id="headingTwo">
 								<h5 class="mb-0">
-									<a class="collapsed" data-toggle="collapse" href="#collapseTwo"
-										aria-expanded="false" aria-controls="collapseTwo">
-										Designer Information <i class="material-icons">keyboard_arrow_down</i>
-									</a>
+									<a>Tag</a>
 								</h5>
 							</div>
-							<div id="collapseTwo" class="collapse" role="tabpanel"
+							<div id="collapseTwo" class="collapse show" role="tabpanel"
 								aria-labelledby="headingTwo" data-parent="#accordion" style="">
-								<div class="card-body">An infusion of West Coast cool and
-									New York attitude, Rebecca Minkoff is synonymous with It girl
-									style. Minkoff burst on the fashion scene with her best-selling
-									'Morning After Bag' and later expanded her offering with the
-									Rebecca Minkoff Collection - a range of luxe city staples with
-									a "downtown romantic" theme.</div>
+								<div class="card-body">#Tag #Tag #Tag #Tag #Tag #Tag #Tag #Tag</div>
 							</div>
 						</div>
 						<div class="card card-collapse">
 							<div class="card-header" role="tab" id="headingThree">
 								<h5 class="mb-0">
-									<a class="collapsed" data-toggle="collapse"
-										href="#collapseThree" aria-expanded="false"
-										aria-controls="collapseThree"> Details and Care <i
-										class="material-icons">keyboard_arrow_down</i>
-									</a>
+									<a>Comment</a>
 								</h5>
 							</div>
-							<div id="collapseThree" class="collapse" role="tabpanel"
-								aria-labelledby="headingThree" data-parent="#accordion" style="">
+							<div id="collapseThree" class="collapse show" role="tabpanel"
+								aria-labelledby="headingThree" data-parent="#accordion"
+								style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
 								<div class="card-body">
-									<ul>
-										<li>Storm and midnight-blue stretch cotton-blend</li>
-										<li>Notch lapels, functioning buttoned cuffs, two front
-											flap pockets, single vent, internal pocket</li>
-										<li>Two button fastening</li>
-										<li>84% cotton, 14% nylon, 2% elastane</li>
-										<li>Dry clean</li>
-									</ul>
+									<div class="media">
+										<a class="float-left" href="#pablo">
+											<div class="avatar">
+												<img class="media-object"
+													src="../assets/img/faces/card-profile4-square.jpg"
+													alt="...">
+											</div>
+										</a>
+										<div class="media-body">
+											<h4 class="media-heading">
+												Tina Andrew <small>· 7 minutes ago</small>
+											</h4>
+											<p>사진 멋있어요</p>
+											<a href="#pablo" class="btn btn-primary btn-link float-right"
+												rel="tooltip" title="" data-original-title="보내버리기"> <i
+												class="material-icons">reply</i> 신고
+											</a>
+										</div>
+									</div>
+									<div class="media">
+										<a class="float-left" href="#pablo">
+											<div class="avatar">
+												<img class="media-object" alt="Tim Picture"
+													src="../assets/img/faces/card-profile1-square.jpg">
+											</div>
+										</a>
+										<div class="media-body">
+											<h4 class="media-heading">
+												John Camber <small>· Yesterday</small>
+											</h4>
+											<p>감사용~</p>
+											<div class="media-footer">
+												<a href="#pablo"
+													class="btn btn-primary btn-link float-right" rel="tooltip"
+													title="" data-original-title="보내버리기"> <i
+													class="material-icons">reply</i> 신고
+												</a>
+											</div>
+										</div>
+									</div>
+									<div class="media">
+										<a class="float-left" href="#pablo">
+											<div class="avatar">
+												<img class="media-object" alt="Tim Picture"
+													src="../assets/img/faces/card-profile1-square.jpg">
+											</div>
+										</a>
+										<div class="media-body">
+											<h4 class="media-heading">
+												John Camber <small>· Yesterday</small>
+											</h4>
+											<p>사진 많아용~</p>
+											<div class="media-footer">
+												<a href="#pablo"
+													class="btn btn-primary btn-link float-right" rel="tooltip"
+													title="" data-original-title="보내버리기"> <i
+													class="material-icons">reply</i> 신고
+												</a>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row pick-size">
-						<div class="col-md-6 col-sm-6">
-							<label>Select color</label>
-							<div class="btn-group bootstrap-select">
-								<div class="dropdown-menu open" role="combobox">
-									<ul class="dropdown-menu inner" role="listbox"
-										aria-expanded="false">
-										<li data-original-index="0" class="selected"><a
-											tabindex="0" class="" data-tokens="null" role="option"
-											aria-disabled="false" aria-selected="true"> <span
-												class="text">Rose </span> <span
-												class="material-icons  check-mark"> done </span>
-										</a></li>
-										<li data-original-index="1"><a tabindex="0" class=""
-											data-tokens="null" role="option" aria-disabled="false"
-											aria-selected="false"> <span class="text">Gray</span> <span
-												class="material-icons  check-mark"> done </span>
-										</a></li>
-										<li data-original-index="2"><a tabindex="0" class=""
-											data-tokens="null" role="option" aria-disabled="false"
-											aria-selected="false"><span class="text">White</span><span
-												class="material-icons  check-mark"> done </span></a></li>
-									</ul>
-								</div>
-								<select class="selectpicker" data-style="select-with-transition"
-									data-size="7" tabindex="-98">
-									<option value="1">Rose</option>
-									<option value="2">Gray</option>
-									<option value="3">White</option>
-								</select>
+						<div class="card card-collapse">
+							<div class="card-header" role="tab" id="headingTwo">
+								<h5 class="mb-0">
+									<a>Input Comment</a>
+								</h5>
 							</div>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<label>Select size</label>
-							<div class="btn-group bootstrap-select">
-								<div class="dropdown-menu open" role="combobox">
-									<ul class="dropdown-menu inner" role="listbox"
-										aria-expanded="false">
-										<li data-original-index="0" class="selected"><a
-											tabindex="0" class="" data-tokens="null" role="option"
-											aria-disabled="false" aria-selected="true"><span
-												class="text">Small </span><span
-												class="material-icons  check-mark"> done </span></a></li>
-										<li data-original-index="1"><a tabindex="0" class=""
-											data-tokens="null" role="option" aria-disabled="false"
-											aria-selected="false"><span class="text">Medium</span><span
-												class="material-icons  check-mark"> done </span></a></li>
-										<li data-original-index="2"><a tabindex="0" class=""
-											data-tokens="null" role="option" aria-disabled="false"
-											aria-selected="false"><span class="text">Large</span><span
-												class="material-icons  check-mark"> done </span></a></li>
-									</ul>
-								</div>
-								<select class="selectpicker" data-style="select-with-transition"
-									data-size="7" tabindex="-98">
-									<option value="1">Small</option>
-									<option value="2">Medium</option>
-									<option value="3">Large</option>
-								</select>
+							<div id="collapseTwo" class="collapse show" role="tabpanel"
+								aria-labelledby="headingTwo" data-parent="#accordion" style="">
+								<div class="media media-post">
+                            <a class="author float-left" href="#pablo">
+                                <div class="avatar">
+                                    <img class="media-object" alt="64x64" src="../assets/img/faces/card-profile6-square.jpg">
+                                </div>
+                            </a>
+                            <div class="media-body">
+                                <div class="form-group label-floating bmd-form-group">
+                                    <label class="form-control-label bmd-label-floating" for="exampleBlogPost"> 댓글을 달아보세요...</label>
+                                    <textarea class="form-control" rows="5" id="exampleBlogPost"></textarea>
+                                </div>
+                                <div class="media-footer">
+                                    <a href="#pablo" class="btn btn-primary btn-round btn-wd float-right">Post Comment</a>
+                                </div>
+                            </div>
+                        </div>
 							</div>
 						</div>
 					</div>
-					<div class="row pull-right">
-						<button class="btn btn-rose btn-round">
-							Add to Cart &nbsp;<i class="material-icons">shopping_cart</i>
-						</button>
+				</div>
+				<div class="col-md-12 col-sm-12">
+				<div align="center">
+				  	
+								<h1 class="card-title">
+									<small>$</small>199
+								</h1>
+								 <button class="btn btn-rose btn-round card-title">
+									Buy &nbsp;<i class="material-icons">shopping_cart</i>
+								</button>
 					</div>
+				
 				</div>
 			</div>
 		</div>

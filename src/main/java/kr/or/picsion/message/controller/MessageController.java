@@ -34,9 +34,6 @@ public class MessageController {
 	//메시지 보내기
 	@RequestMapping("send.ps")
 	public View messageSend(Message message) {
-		
-		System.out.println("잘 받아왔나???" + message);
-		/*Message send = */
 				
 		int result = messageService.sendMessage(message);
 		
@@ -53,29 +50,37 @@ public class MessageController {
 	public String receiveMessage(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		
+		//받은 메시지에 대한 정보
 		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
 		List<User> receiveInfo = messageService.receiveMessageInfo(user.getUserNo());
-		List<String> msgReg = new ArrayList<>();
-		/*HashMap<String, Object> receiveMap = new HashMap<String, Object>();
+		List<String> receiveMsgReg = new ArrayList<>();
 		
-		receiveMap.put("receiveList", receiveList);
-		receiveMap.put("receiveInfo", receiveInfo);
-		
-		System.out.println("****************************Map은????"+receiveMap);*/
 		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
 		for(Message m : receiveList) {
-			msgReg.add(reg.format(m.getMsgReg()));
+			receiveMsgReg.add(reg.format(m.getMsgReg()));
+		}
+		
+		//보낸 메시지에 대한 정보
+		List<Message> sendList = messageService.sendMessageList(user.getUserNo());
+		List<User> sendInfo = messageService.sendMessageInfo(user.getUserNo());
+		List<String> sendMsgReg = new ArrayList<>();
+		
+		for(Message m : sendList) {
+			sendMsgReg.add(reg.format(m.getMsgReg()));
 		}
 		
 		model.addAttribute("receiveList", receiveList);
 		model.addAttribute("receiveInfo", receiveInfo);
-		model.addAttribute("msgReg", msgReg);
+		model.addAttribute("receiveMsgReg", receiveMsgReg);
+		
+		model.addAttribute("sendList", sendList);
+		model.addAttribute("sendInfo", sendInfo);
+		model.addAttribute("sendMsgReg", sendMsgReg);
 		
 		/*model.addAttribute("receiveMap", receiveMap);*/
 		
 		return "mypage.message";
 	}
-	
 	
 	//메시지 확인시 messageState update
 	@RequestMapping("stateup.ps")
@@ -100,4 +105,36 @@ public class MessageController {
 		
 		return jsonview;
 	}
+	
+	
+	//보낸 메시지함에서 메시지 삭제
+	@RequestMapping("senddel.ps")
+	public View sendMessageDel(String msgNo, Model model) {
+		int result = messageService.sendMessageDel(Integer.parseInt(msgNo));
+		
+		model.addAttribute("result", result);
+		
+		return jsonview;
+	}
+	
+	
+	//보낸 메시지함에서 userName으로 메시지 검색
+	@RequestMapping("receiveselect.ps")
+	public View receiveSelect(String userName, HttpSession session) {
+		User user = (User)session.getAttribute("user");
+		
+		//받은 메시지에 대한 정보
+		/*List<Message> receiveSelect = messageService.receiveSelectList(user.getUserNo());
+		List<User> receiveInfo = messageService.receiveSelectInfo(user.getUserNo());
+		List<String> receiveMsgReg = new ArrayList<>();
+		
+		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
+		for(Message m : receiveList) {
+			receiveMsgReg.add(reg.format(m.getMsgReg()));
+		}*/
+		
+		return jsonview;
+	}
+	
+	
 }

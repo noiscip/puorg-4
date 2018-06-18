@@ -50,7 +50,7 @@ public class MessageService {
 	
 	//받은 메시지 보낸사람 정보
 	public List<User> receiveMessageInfo(int receiveUserNo){
-		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
 		List<User> receiveInfo = messageDao.receiveMessageUserInfo(receiveUserNo);
 		
 		return receiveInfo;
@@ -58,7 +58,7 @@ public class MessageService {
 	
 	//메시지  읽었을때 메시지 읽음 상황 변경
 	public int messageState(int msgNo) {
-		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
 		int result = messageDao.messageState(msgNo);
 
 		return result;
@@ -66,10 +66,43 @@ public class MessageService {
 	
 	//받은 사람이 메시지 삭제
 	public int receiveMessageDel(int msgNo) {
-		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
 		int result = messageDao.receiveMessageDel(msgNo);
 		
 		return result;
 	}
+	
+	
+	//보낸 메시지 리스트
+	public List<Message> sendMessageList(int sendUserNo){
+		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
+		List<Message> sendList = messageDao.sendMessageList(sendUserNo);
+		
+		return sendList;
+	}
+	
+	//보낸 메시지 받은 사람 정보
+	public List<User> sendMessageInfo(int sendUserNo){
+		MessageDao messageDao =sqlSession.getMapper(MessageDao.class);
+		List<User> sendInfo = messageDao.sendMessageUserInfo(sendUserNo);
+		
+		return sendInfo;
+	}
+	
+	//보낸 사람이 메시지 삭제
+	public int sendMessageDel(int msgNo) {
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		int result = messageDao.sendMessageDel(msgNo);
+		
+		return result;
+	}
+	
+	//받은 메시지 검색
+	
+	
+	
+	
+	
+	
 	
 }

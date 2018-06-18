@@ -5,14 +5,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="kr.or.picsion.comment.dao.CommentDao">
 
-<select id="commentList" resultType="kr.or.picsion.comment.dto.Comment">
-  select * from COMMENTS where brdNo=#{brdNo}
- </select>
+	<select id="commentList" resultType="kr.or.picsion.comment.dto.Comment">
+	  select * from COMMENTS where brdNo=#{brdNo}
+	</select>
 
+	<!-- 사진에 대한 댓글리스트 가져오기 -->
+	<select id="picCommentList" resultType="kr.or.picsion.comment.dto.Comment">
+		SELECT * FROM COMMENTS WHERE picNo=#{picNo}
+	</select>
 
-<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment">
-insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})
-</insert>
+	<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment">
+	insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})
+	</insert>
+
+	<!-- 사진에 대한 댓글 저장 -->	
+	<insert id="picInsertComment" parameterType="kr.or.picsion.comment.dto.Comment">
+	insert into COMMENTS (cmtContent,userNo,picNo,tableNo) values (#{cmtContent},#{userNo},#{picNo},#{tableNo})
+	</insert>
 
 
 </mapper>

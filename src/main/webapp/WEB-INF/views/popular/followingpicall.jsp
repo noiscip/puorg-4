@@ -54,10 +54,13 @@
 </style>
 
 <div class="page-header header-filter" data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
+	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');">
+	
+</div>
 <div class="main main-raised">
 	<div class="profile-content">
 		<div class="container">
+		
 			<div class="row">
 				<div class="col-md-6 ml-auto mr-auto">
 					<div class="profile-tabs">
@@ -79,7 +82,7 @@
 						varStatus="status">
 						<div class="item" data-w="640" data-h="426"
 							style="width: 255px; height: 300px; display: block;">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}&?userNo=${ownlist[status.index].userNo}"> <img class="rounded img-size"
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}&userNo=${ownlist[status.index].userNo}"> <img class="rounded img-size"
 								src="<%=request.getContextPath()%>/${followinglistall.picPath}"
 								alt="">
 							</a>
