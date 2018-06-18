@@ -19,7 +19,7 @@ import kr.or.picsion.user.dto.User;
  * @project Final_Picsion
  * @package kr.or.picsion.utils 
  * @className HandshakeInterceptor
- * @date 2018. 6. 15.
+ * @date 2018. 6. 14.
  */
 
 public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
@@ -36,8 +36,9 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
         
         // HttpSession 에 저장된 이용자의 아이디를 추출하는 경우
         User user = (User)req.getSession().getAttribute("user");
-        attributes.put("userNo", user.getUserNo());
-        
+        if(user != null) {
+        	attributes.put("userNo", user.getUserNo());
+        }
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
   

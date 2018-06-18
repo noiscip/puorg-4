@@ -16,12 +16,13 @@ public class Operation {
 	private String operatorCancel;
 	private String requesterCancel;
 	private int operApplyNo;
+	private int brdNo;
 
 	public Operation() {}
 
 	public Operation(int operNo, int requesterNo, int operatorNo, int operPrice, Date operStartReg, Date operEndReg,
 			int firstCancelUserNo, String operatorEnd, String requesterEnd, String operatorCancel,
-			String requesterCancel, int operApplyNo) {
+			String requesterCancel, int operApplyNo, int brdNo) {
 		this.operNo = operNo;
 		this.requesterNo = requesterNo;
 		this.operatorNo = operatorNo;
@@ -34,6 +35,7 @@ public class Operation {
 		this.operatorCancel = operatorCancel;
 		this.requesterCancel = requesterCancel;
 		this.operApplyNo = operApplyNo;
+		this.brdNo = brdNo;
 	}
 
 	public int getOperNo() {
@@ -138,7 +140,15 @@ public class Operation {
 				+ ", operPrice=" + operPrice + ", operStartReg=" + operStartReg + ", operEndReg=" + operEndReg
 				+ ", firstCancelUserNo=" + firstCancelUserNo + ", operatorEnd=" + operatorEnd + ", requesterEnd="
 				+ requesterEnd + ", operatorCancel=" + operatorCancel + ", requesterCancel=" + requesterCancel
-				+ ", operApplyNo=" + operApplyNo + "]";
+				+ ", operApplyNo=" + operApplyNo + ", brdNo=" + brdNo + "]";
+	}
+
+	public int getBrdNo() {
+		return brdNo;
+	}
+
+	public void setBrdNo(int brdNo) {
+		this.brdNo = brdNo;
 	}
 
 }

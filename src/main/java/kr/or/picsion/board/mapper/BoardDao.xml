@@ -24,5 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <insert id="insertBoard" parameterType="kr.or.picsion.board.dto.Board">
 insert into BOARD values (brdNo, #{brdTitle},#{brdContent},#{brdExpectPrice},#{brdExpectEndDate},#{copyright},SYSDATE(),#{userNo},#{tableNo},#{operStateNo})
 </insert>
-
+<update id="updateBoard">
+update BOARD set brdExpectPrice=#{brdExpectPrice}, brdExpectEndDate=#{brdExpectEndDate}, operStateNo=#{operStateNo} where brdNo=#{brdNo}
+</update>
 </mapper>

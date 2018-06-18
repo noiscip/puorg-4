@@ -12,8 +12,14 @@ public interface MessageDao {
 	public int sendMessageDel(int msgNo);			//보낸사람이 메시지 삭제
 	public List<Message> receiveMessageList(int receiveUserNo);		//받은 메시지 리스트
 	public List<User> receiveMessageUserInfo(int receiveUserNo);	//받은 메시지 보낸사람 리스트
+	public List<Message> sendMessageList(int sendUserNo);	//보낸 메시지 리스트
+	public List<User> sendMessageUserInfo(int sendUserNo);	//보낸 메시지 받은사람 리스트
+	
+	public List<Message> selectReceiveMsg();	//받은 메시지 검색한 메시지 리스트
+	public List<User> selectReceiveInfo();		//받은 메시지 검색한 정보
+	
 	public Message selectMessgae(int msgNo);
-	public List<Message> sendMessageList(int sendUserNo);
+	
 	
 	public int messageState(int msgNo);			//메시지 읽었을 때 상태 update
 	

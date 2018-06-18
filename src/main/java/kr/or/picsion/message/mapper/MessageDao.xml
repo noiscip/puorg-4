@@ -48,4 +48,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE msgNo=#{msgNo}
 	</update>
 	
+	<!-- 보낸 메시지 리스트 -->
+	<select id="sendMessageList" resultType="kr.or.picsion.message.dto.Message">
+		SELECT *
+		FROM MESSAGES
+		WHERE sendUserNo=#{sendUserNo}
+		ORDER BY msgReg DESC;
+	</select>
+	
+	<!-- 보낸 메시지 받은사람 리스트  -->	
+	<select id="sendMessageUserInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u.*
+		FROM MESSAGES m JOIN USERS u ON m.receiveUserNo=u.userNo
+		WHERE m.sendUserNo=#{sendUserNo}
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 보낸 사람이 메시지 삭제 (sendMsgDel update) -->
+	<update id="sendMessageDel">
+		UPDATE MESSAGES
+		SET sendMsgDel='T'
+		WHERE msgNo=#{msgNo}
+	</update>
+	
 </mapper>
