@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO USERS
 			(userId, pwd, userName, roleNo)
 		VALUES
-			( #{userId}, #{pwd}, #{userName},  1);
+			( #{userId}, #{pwd}, #{userName},  1)
 	</insert>
 	
 	<insert id="insertProfile">
@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 회원이 팔로잉하고 있는 회원인지 확인 -->
 	<select id="followingConfirm" resultType="Integer">
-		SELECT COUNT(*) FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2};
+		SELECT COUNT(*) FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2}
 	</select>
 	
 	<!-- 팔로잉 insert -->
@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 팔로잉 delete -->
 	<delete id="deleteFollow">
-		DELETE FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2};
+		DELETE FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2}
 	</delete>
 	
 	 <!-- 팔로잉 최신 사진 -->
@@ -90,12 +90,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select> 
    
 	
-	<!-- 즐겨찾기한 사진 리스트 -->
+	<!-- 북마크한 사진 리스트 -->
 	<select id="bookmarkPicList" resultType="kr.or.picsion.picture.dto.Picture">
 		SELECT p.*
 		FROM PICTURE p JOIN BOOKMARK b 
 			ON p.picNo = b.picNo
-		WHERE b.userNo=#{userNo};
+		WHERE b.userNo=#{userNo}
+	</select>
+	
+	<!-- 좋아요한 사진 리스트 -->
+	<select id="respectPicList" resultType="kr.or.picsion.picture.dto.Picture">
+		SELECT p.*
+		FROM PICTURE p JOIN RESPECT r 
+			ON p.picNo = r.picNo
+		WHERE r.userNo=#{userNo}
 	</select>
 	
 	<delete id="deleteUser">

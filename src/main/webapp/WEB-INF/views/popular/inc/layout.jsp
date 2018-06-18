@@ -7,28 +7,27 @@
 <html>
 
 <head>
-	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
+	<link href="<%=request.getContextPath()%>/assets/img/picsion-logo.png" rel="icon" type="image/png">
 
   	<meta charset="utf-8">
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>PICSION</title>
 	
-	<!--     Fonts and icons     -->
+    <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
-    <link href="<%=request.getContextPath()%>/assets/css/material-kit.css?v=2.0.3" rel="stylesheet" />
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="<%=request.getContextPath()%>/assets/demo/demo.css" rel="stylesheet" />
-  
-    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css?v=2.0.2" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css" rel="stylesheet" />
     <!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--   Core JS Files   -->
 	<script src="<%=request.getContextPath()%>/assets/js/core/jquery.min.js" type="text/javascript"></script>
 	<script src="<%=request.getContextPath()%>/assets/js/core/popper.min.js" type="text/javascript"></script>
 	<script src="<%=request.getContextPath()%>/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+	<!--  Plugin for Date Time Picker and Full Calendar Plugin  -->
 	<script src="<%=request.getContextPath()%>/assets/js/plugins/moment.min.js"></script>
 	<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
 	<script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
@@ -36,7 +35,16 @@
 	<script src="<%=request.getContextPath()%>/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
 	<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
 	<script src="<%=request.getContextPath()%>/assets/js/material-kit.js?v=2.0.1" type="text/javascript"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/ckeditor/ckeditor.js"></script>
+	 <!--	Plugin for Select, full documentation here: https://silviomoreto.github.io/bootstrap-select -->
+    <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-selectpicker.js"></script>
+    <!--	Plugin for Tags, full documentation here: https://xoxco.com/projects/code/tagsinput/  -->
+    <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
+      <!--	Plugin for Small Gallery in Product Page -->
+    <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
+    <!-- Plugins for presentation and navigation  -->
+    <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
+    <!-- Fixed Sidebar Nav - js With initialisations -->
+    <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
 </head>
 
 <body class="profile-page sidebar-collapse">

@@ -4,80 +4,81 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.or.picsion.picture.dao.PictureDao">
-    <select id="writerPicture" resultType="kr.or.picsion.picture.dto.Picture">
-        SELECT * FROM PICTURE WHERE userNo=#{userNo}
-    </select>
-    
-    <!-- 사진 정보 -->
-    <select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">
-    select * from PICTURE where picNo = #{picNo}
-    </select>
-    
-    
-    <!-- 사진 좋아요 생성 -->
-    <insert id="respectIncrease" parameterType="int">
-    INSERT INTO RESPECT
-        (picNo, userNo)
-    VALUES
-        ( #{param1}, #{param2})
-    </insert>
-    
-    <!-- 사진 좋아요 삭제 -->
-    <delete id="respectDelete">
-        DELETE FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
-    </delete>
-    
-    <!-- 사진 좋아요 확인 -->
-    <select id="respectConfirm" resultType="Integer">
-        SELECT COUNT(*) FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
-    </select>
-    
-    <!-- 사진 좋아요 갯수 확인 -->
-    <select id="respectCount" resultType="Integer">
-        SELECT COUNT(*) FROM RESPECT WHERE picNo=#{picNo}
-    </select>
-    
-    <!-- 사진 북마크 생성 -->
-    <insert id="bookmarkIncrease">
-    INSERT INTO BOOKMARK
-        (picNo, userNo)
-    VALUES
-        ( #{param1}, #{param2})
-    </insert>
-    
-    <!-- 사진 북마크 삭제 -->
-    <delete id="bookmarkDelete">
-        DELETE FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
-    </delete>
-    
-    <!-- 사진 북마크 확인 -->
-    <select id="bookmarkConfirm" resultType="Integer">
-        SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
-    </select>
-    
-    <!-- 사진 북마크 갯수 확인 -->
-    <select id="bookmarkCount" resultType="Integer">
-        SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{picNo}
-    </select>
-    
-    <!-- 사진 업로드 저장 -->
-    <insert id="insertPicture" parameterType="hashmap">        
-    insert into PICTURE
-     (picNo, picTitle, picContent, picPath, picWater, picPrice, userNo)
-    values (#{picture.picNo},#{picture.picTitle},#{picture.picContent},#{picture.picPath},"test",100,#{userNo})
-     <selectKey keyProperty="picture.picNo" resultType="Integer" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey> 
-    </insert>
-    
-    <!-- 사진 업로드 저장 시 태그 저장 -->
-    <insert id="insertTag" parameterType="Integer">
-    insert into TAG
-    values (#{picNo},#{tagContent})
-    </insert>
-    
-    <!--  사진 경로 뽑아내기? 
-    <select id="searchPath">
-        select picPath
-    </select> -->
+
+  	<select id="writerPicture" resultType="kr.or.picsion.picture.dto.Picture">
+		SELECT * FROM PICTURE WHERE userNo=#{userNo}
+	</select>
+	
+	<!-- 사진 정보 -->
+	<select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">
+	select * from PICTURE where picNo = #{picNo}
+	</select>
+	
+	
+	<!-- 사진 좋아요 생성 -->
+	<insert id="respectIncrease" parameterType="int">
+	INSERT INTO RESPECT
+		(picNo, userNo)
+	VALUES
+		( #{param1}, #{param2})
+	</insert>
+	
+	<!-- 사진 좋아요 삭제 -->
+	<delete id="respectDelete">
+		DELETE FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
+	</delete>
+	
+	<!-- 사진 좋아요 확인 -->
+	<select id="respectConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
+	</select>
+	
+	<!-- 사진 좋아요 갯수 확인 -->
+	<select id="respectCount" resultType="Integer">
+		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{picNo}
+	</select>
+	
+	<!-- 사진 북마크 생성 -->
+	<insert id="bookmarkIncrease">
+	INSERT INTO BOOKMARK
+		(picNo, userNo)
+	VALUES
+		( #{param1}, #{param2})
+	</insert>
+	
+	<!-- 사진 북마크 삭제 -->
+	<delete id="bookmarkDelete">
+		DELETE FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
+	</delete>
+	
+	<!-- 사진 북마크 확인 -->
+	<select id="bookmarkConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
+	</select>
+	
+	<!-- 사진 북마크 갯수 확인 -->
+	<select id="bookmarkCount" resultType="Integer">
+		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{picNo}
+	</select>
+	
+	<!-- 사진 업로드 저장 -->
+	<insert id="insertPicture" parameterType="hashmap">		
+	insert into PICTURE
+	 (picNo, picTitle, picContent, picPath, picWater, picPrice, userNo)
+	values (#{picture.picNo},#{picture.picTitle},#{picture.picContent},#{picture.picPath},"test",100,#{userNo})
+	 <selectKey keyProperty="picture.picNo" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+	
+	<!-- 사진 업로드 저장 시 태그 저장 -->
+	<insert id="insertTag" parameterType="Integer">
+	insert into TAG
+	values (#{picNo},#{tagContent})
+	</insert>
+	
+	<!--  사진 경로 뽑아내기? 
+	<select id="searchPath">
+		select picPath
+	</select> -->
 </mapper>

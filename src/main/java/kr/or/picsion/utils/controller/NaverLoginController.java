@@ -26,13 +26,14 @@ public class NaverLoginController {
 	private UserService userService;
 	
 	@RequestMapping("naverlogin.ps")
-	public String naver() {
+	public String naverLogin() {
 	 	return "naver.login";
 	}
 	
 	@RequestMapping("login.ps")
 	public String naverLogin(String code,String state, HttpSession session, Model model) {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
+		System.out.println("로그인 실행 되었어요");
 		OAuth2AccessToken oauthToken;
 		String result = "redirect:/home.ps";
 		try {
@@ -42,7 +43,6 @@ public class NaverLoginController {
 			String[] haha = apiResult.split("\"");
 			
 			User accountUser = userService.selectAccountLinked(haha[13]);
-			
 			
 			if(accountUser == null) {
 				session.setAttribute("result", "F");
@@ -59,28 +59,38 @@ public class NaverLoginController {
 		
     	return result;
 	}
+	
+	@RequestMapping("naverinsert.ps")
+	public String naverInsert() {
+		
+		return "";
+	}
 
 	@RequestMapping("insert.ps")
 	public String naverInsert(String code,String state,HttpSession session) {
-		
+		System.out.println("인설트 실행되어야해요");
 		OAuth2AccessToken oauthToken;
-		String result = "redirect:/user/login.ps";
+		String result = "redirect:/home.ps";
 		try {
 			oauthToken = naverLoginCon.getAccessToken(session, code, state);
 			String apiResult = naverLoginCon.getUserProfile(oauthToken);
 			
 			String[] haha = apiResult.split("\"");
+			String accountNo = haha[13]; 
 			
 			User user = (User)session.getAttribute("user");
-			userService.insertAccountLinked(user.getUserNo(),haha[13]);
-			session.setAttribute("user", userService.userInfo(user.getUserNo()));
+			
+			if(userService.selectAccountLinked(accountNo) == null) { 
+				userService.insertAccountLinked(user.getUserNo(),accountNo);
+				session.setAttribute("user", userService.userInfo(user.getUserNo()));
+			}else {
+				session.setAttribute("result", "F");
+				System.out.println("으응??");
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		
-				
 		return result;
 	}
 }

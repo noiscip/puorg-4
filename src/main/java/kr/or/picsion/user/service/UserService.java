@@ -2,7 +2,6 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,14 @@ public class UserService {
 		
 	}
 	
+	/**
+	 * 날      짜 : 2018. 6. 18.
+	 * 메소드명 : login
+	 * 작성자명 : 
+	 *
+	 * @param user
+	 * @return
+	*/
 	public User login(User user) {
 		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
@@ -90,6 +97,7 @@ public class UserService {
 		}
 		return userInfo;
 	}
+	
 		
 		
 	//회원의 팔로워 리스트
@@ -132,6 +140,16 @@ public class UserService {
 		userDao.insertFollow(userNo, followingUserNo);
 	}
 	
+	//회원의 좋아요 리스트
+	public List<Picture> respectPicList(int userNo){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+			
+		List<Picture> respectList = new ArrayList<Picture>();
+		respectList=userDao.respectPicList(userNo);
+			
+		return respectList;
+	}
+		
 	
 	//회원의 북마크 리스트
 	public List<Picture> bookmarkPicList(int userNo){

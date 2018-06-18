@@ -5,11 +5,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
+
 <head>
 	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
-	
-	<meta charset="utf-8">
+
+  	<meta charset="utf-8">
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>PICSION</title>
 	
 	<!--     Fonts and icons     -->
@@ -17,6 +19,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
     <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/assets/demo/demo.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" />
     <!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -39,24 +42,21 @@
        <!--	Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
     <!-- Plugins for presentation and navigation  -->
+    <script src="<%=request.getContextPath()%>/assets/demo/js/modernizr.js"></script>
     <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
     <!-- Fixed Sidebar Nav - js With initialisations -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
-	<!-- 네이버 로그인 -->
-	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>	
 </head>
 
-<body class="signup-page sidebar-collapse">
+<body class="product-page">
 	<!-- header -->
 	<tiles:insertAttribute name="header" />
 
 	<!-- content -->
-	<div id="main">
-		<tiles:insertAttribute name="content" />
-	</div>
+	<tiles:insertAttribute name="content" />
 
 	<!-- footer -->
 	<tiles:insertAttribute name="footer" />
-
+  
 </body>
 </html>

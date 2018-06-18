@@ -22,6 +22,14 @@ import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
+
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.user.controller 
+ * @className UserController
+ * @date 2018. 6. 12.
+ */
+
 @Controller
 @RequestMapping("/user/")
 public class UserController {
@@ -139,25 +147,29 @@ public class UserController {
 	}
 	
 	
-	
+	//팔로잉하는 사람의 최신 사진 전체 페이지
 	@RequestMapping(value="popular.ps", method=RequestMethod.GET)
 	public String getList(HttpSession session, Model model) {
-		
 		User user = (User) session.getAttribute("user");
-		List<Picture> followingPicList = userService.listpic(user.getUserNo());
-		List<User> followingPicListOwner = userService.listpicown(user.getUserNo());
-		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo());
-		List<Integer> bookcheck= new ArrayList<Integer>();
+		List<Picture> followingPicList = userService.listpic(user.getUserNo()); //팔로잉 최신 사진 리스트
+		List<User> followingPicListOwner = userService.listpicown(user.getUserNo()); //사진 주인 리스트
+		List<Integer> likecheck = new ArrayList<Integer>();   //좋아요 확인
+		List<Integer> bookcheck = new ArrayList<Integer>();   //북마크 확인
+		List<Integer> likecount = new ArrayList<Integer>();   //좋아요 갯수
+		List<Integer> bookcount = new ArrayList<Integer>();   //북마크 갯수
 		for(Picture p : followingPicList) {
+			likecheck.add(pictureService.respectConfirm(p.getPicNo(), user.getUserNo()));
 			bookcheck.add(pictureService.bookmarkConfirm(p.getPicNo(), user.getUserNo()));
+			likecount.add(pictureService.respectCount(p.getPicNo())); 
+			bookcount.add(pictureService.bookmarkCount(p.getPicNo()));
 		}
-			
-		
+		model.addAttribute("likecount",likecount);
+		model.addAttribute("bookcount",bookcount);
+		model.addAttribute("likecheck",likecheck);
 		model.addAttribute("bookcheck", bookcheck);
 		model.addAttribute("imagelistall", followingPicList);
 		model.addAttribute("ownlist",followingPicListOwner);
 		System.out.println(followingPicList);
-		
 		
 		return "popular.followingpicall";
 	}
