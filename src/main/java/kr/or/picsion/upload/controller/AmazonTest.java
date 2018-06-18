@@ -72,7 +72,7 @@ public class AmazonTest {
 	public boolean fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
 		
-		String uploadPath = "D:\\file\\";
+		String uploadPath = "C:\\file\\";
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {

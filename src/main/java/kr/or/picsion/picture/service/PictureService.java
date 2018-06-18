@@ -13,7 +13,8 @@ import kr.or.picsion.picture.dto.Picture;
 
 @Service
 public class PictureService {
-	
+
+    
 	@Autowired
 	private SqlSession sqlSession;
 	
@@ -104,5 +105,5 @@ public class PictureService {
 		pictureDao.insertTag(picture.getPicNo());
 		System.out.println(picture.toString());
 
-	}
+    }
 }

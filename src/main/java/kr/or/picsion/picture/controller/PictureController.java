@@ -1,4 +1,4 @@
-package kr.or.picsion.picture.controller;
+﻿package kr.or.picsion.picture.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,10 @@ import kr.or.picsion.user.service.UserService;
 @RequestMapping("/picture/")
 public class PictureController {
 
-	@Autowired
-	private View jsonview;
+   	@Autowired
+    	private View jsonview;
 
-	@Autowired
+  	@Autowired
 	private PictureService pictureService;
 	
 	@Autowired
@@ -106,3 +106,4 @@ public class PictureController {
 	}
 	
 }
+

@@ -67,7 +67,6 @@ public class HomeController {
 		    model.addAttribute("imagelist", followingPicList);
 		}
 		
-		model.addAttribute("userList", user);
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home.home";

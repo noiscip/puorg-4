@@ -2,7 +2,6 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,14 @@ public class UserService {
 		
 	}
 	
+	/**
+	 * 날      짜 : 2018. 6. 18.
+	 * 메소드명 : login
+	 * 작성자명 : 
+	 *
+	 * @param user
+	 * @return
+	*/
 	public User login(User user) {
 		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
@@ -44,8 +51,8 @@ public class UserService {
 			}
 			User acUser = userDao.selectAccountUserNo(loginUser.getUserNo());
 			if(acUser != null) {
-				loginUser.setAccountLinkId(acUser.getAccountLinkId());
-				System.out.println(acUser.getAccountLinkId());
+				loginUser.setNaver(acUser.getNaver());
+				loginUser.setGoogle(acUser.getGoogle());
 			}
 		}
 		return loginUser;
@@ -86,7 +93,8 @@ public class UserService {
 		userInfo.setPrContent(userProfile.getPrContent());
 		userInfo.setPrPicture(userProfile.getPrPicture());
 		if(userAccountLinkId != null) {
-			userInfo.setAccountLinkId(userAccountLinkId.getAccountLinkId());
+			userInfo.setNaver(userAccountLinkId.getNaver());
+			userInfo.setGoogle(userAccountLinkId.getGoogle());
 		}
 		return userInfo;
 	}
@@ -168,18 +176,26 @@ public class UserService {
 		return user;
 	}
 	
-	//회원 네이버 아이디 연동 정보 insert
-	public int insertAccountLinked(int userNo,String accountNo) {
+	//회원 아이디 연동 정보 insert
+	public int insertAccountNo(int userNo,String accountNo,String portalSite) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		return userDao.insertAccountLinked(userNo,accountNo);
+		return userDao.insertAccount(userNo,accountNo,portalSite);
+	}
+	
+	public int updateAccountNo(int userNo, String accountNo, String portalSite) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		return userDao.updateAccount(userNo,accountNo,portalSite);
 	}
 	
 	//회원 네이버 연동 되어있는지 확인
-	public User selectAccountLinked(String accountNo) {
+	public User selectAccountNo(String accountNo,String field) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		User user = userDao.selectAccountNo(accountNo);
-		
-		return user;
+		return userDao.selectAccountNo(accountNo,field);
+	}
+	
+	public User selectAccountUserNo(int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		return userDao.selectAccountUserNo(userNo);
 	}
 	
 }

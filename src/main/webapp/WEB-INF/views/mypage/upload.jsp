@@ -84,12 +84,30 @@
 					<form action="amazontest.ps" enctype="multipart/form-data"
 						method="post">
 
-						<div class="file-loading">
-							<!-- <input id="input-b1" name="input-b1" type="file" class="file"> -->
+						<!-- <div class="file-loading">
+							<input id="input-b1" name="input-b1" type="file" class="file">
 							<input type="file" name="filePath">
-						</div>
+						</div> -->
+					
+					
+					<div class="fileinput fileinput-new text-center" data-provides="fileinput">
+					   <div class="fileinput-new thumbnail img-raised">
+						<img src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png" alt="...">
+					   </div>
+					   <div class="fileinput-preview fileinput-exists thumbnail img-raised"></div>
+					   <div>
+						<span class="btn btn-raised btn-round btn-default btn-file">
+						   <span class="fileinput-new">Select image</span>
+						   <span class="fileinput-exists">Change</span>
+						   <input type="file" name="filePath" />
+						</span>
+					        <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput">
+					        <i class="fa fa-times"></i> Remove</a>
+					   </div>
+					</div>
 						<input type="submit" class="btn btn-primary btn-round" value="보내기">
 					</form> 
+					
 					<!-- <form action="amazontest.ps" enctype="multipart/form-data"
 						method="post"> -->
 				 	<!-- 	<form enctype="multipart/form-data">
@@ -141,9 +159,3 @@
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
