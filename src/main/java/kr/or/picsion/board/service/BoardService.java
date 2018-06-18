@@ -25,7 +25,15 @@ public class BoardService {
 		return board;
 	}
 	
-	
+	// 글 수정 서비스
+		public int updateBoard(Board board) {
+			BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+			System.out.println("updateBoard 서비스 ");
+			int result = boarddao.updateBoard(board);
+			
+			return result;
+		}
+		
 	
 	// 글목록보기 서비스
 		public List<Board> boardList(HashMap<String, Integer> map) throws ClassNotFoundException, SQLException {

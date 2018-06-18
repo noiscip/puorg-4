@@ -35,15 +35,19 @@
 		</c:forEach> 
     </tbody>
     <tfoot>
-     <tr>
+     <tr> 
+  
+     
 		<td class="text-center">
+		<nav aria-label="Page navigation example">
+		 <ul class="pagination">
 			<!-- 처음 이전 링크 -->
 			<c:if test="${pg>block}">  <!-- 5>10 : false / 15>10 : true -->
-				[<a href="board.ps?pg=1" style="cursor:pointer;">◀◀</a>]
+				<li class="page-item"><a href="board.ps?pg=1" style="cursor:pointer;">◀◀gg</a></li>
 				[<a href="board.ps?pg=${fromPage-1}" style="cursor:pointer;">◀</a>]		
 			</c:if>
 			<c:if test="${pg<=block}"> <!-- 5<=10 :true / 15<=10:false -->
-				[<span style="color:gray">◀◀</span>]	
+				<li class="page-item"><span style="color:gray">◀◀dd</span></li>
 				[<span style="color:gray">◀</span>]
 			</c:if>
 			
@@ -58,7 +62,7 @@
 			<!-- 다음, 이후 -->
 			<c:if test="${toPage<allPage}"> <!-- 20<21 : true -->
 					[<a href="board.ps?pg=${toPage+1}" style="cursor:pointer;">▶</a>]
-					[<a href="board.ps?pg=${allPage}" style="cursor:pointer;">▶▶</a>]
+					<li class="page-item"><a href="board.ps?pg=${allPage}" style="cursor:pointer;">▶▶</a></li>
 			
 			</c:if>	
 			<c:if test="${toPage>=allPage}"> <!-- 21>=21 :true -->
@@ -66,8 +70,11 @@
 					[<span style="color:gray">▶▶</span>]
 			
 			</c:if>			
+			</ul>
 			
+</nav> 
 		</td>
+		
 	</tr>
     
     </tfoot>
