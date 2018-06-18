@@ -49,16 +49,14 @@
 	
 	<!-- google Class Bean설정 추가 -->
 	<!-- 클라이언트ID와 보안비밀 세팅 -->
-<!-- 	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
-	  <constructor-arg value="클라이언트ID" />
-	  <constructor-arg value="보안비밀" />
-	</bean> -->
+	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+	  <constructor-arg value="461123739745-bvb4iuqnptrkpushdmt2lds0atpgbohe.apps.googleusercontent.com" />
+	  <constructor-arg value="Hul6zAi4yWe0FsUe-RPHiC43" />
+	</bean>
  	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
-<!--	
 	<bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
 	  <property name="scope" value="https://www.googleapis.com/auth/plus.login" />
-	  <property name="redirectUri" value="http://localhost/user/googleSignInCallback" />
+	  <property name="redirectUri" value="http://127.0.0.1:8090/picsion/google/callback.ps" />
 	</bean>
- -->
 		
 </beans>

@@ -9,6 +9,13 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.utils 
+ * @className NoticeSocketHandler
+ * @date 2018. 6. 13.
+ */
+
 public class NoticeSocketHandler extends TextWebSocketHandler {
 
 	private Map<Integer, WebSocketSession> users = new ConcurrentHashMap<Integer, WebSocketSession>();
@@ -37,8 +44,8 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	protected void handleTextMessage(WebSocketSession wSession, TextMessage message) throws Exception {
-		System.out.println("여기는 노티스 소켓 핸들러");
-		
+		System.out.println("현재 접속되어 있는 유저");
+		System.out.println(users);
 		String[] info = message.getPayload().split(":");
 		
 		int receiveUserNo = Integer.valueOf(info[1]);
@@ -46,13 +53,11 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 		if(users.get(receiveUserNo) != null) {
 			users.get(receiveUserNo).sendMessage(message);   
 		}
-		// 현재 수신자에게 몇개의 메세지가 와있는지 디비에서 검색함.
-
 	}
 
 	   @Override
 	    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-	        System.out.println(session.getId() + " 익셉션 발생: " + exception.getMessage());
+	        System.out.println(session.getId() + " Exception 발생: " + exception.getMessage());
 	    }
 
 }

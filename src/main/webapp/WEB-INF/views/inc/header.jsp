@@ -66,11 +66,16 @@
 		                    <a href="#" class="dropdown-item">
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
-		                    <c:if test="${sessionScope.user ne null && sessionScope.user.accountLinkId eq null}">
-			                    <a href="<%=request.getContextPath()%>/user/login.ps" class="dropdown-item"> 
+		                    <c:if test="${sessionScope.user.naver eq null}">
+			                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>네이버 계정 연동 
 		                    	</a>
 		                    </c:if>
+		                    <c:if test="${sessionScope.user.google eq null}">
+			                    <a href="<%=request.getContextPath()%>/google/login.ps" class="dropdown-item"> 
+			                   		<i class="material-icons">visibility</i>구글 계정 연동 
+		                    	</a>
+	                    	</c:if>
 		                  </div>
 		                </li>
 						<li class="nav-item">

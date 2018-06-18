@@ -37,7 +37,18 @@ public class CommentService {
 	}
 	
 	
+	// 사진 댓글 목록 서비스
+	public List<Comment> picCommentList(int picNo){
+		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
+		return commentdao.picCommentList(picNo);
+	}
 	
+	// 사진 댓글 쓰기 서비스
+	public int picInsertComment(Comment comment) {
+		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
+		int result = commentdao.insertComment(comment);
+		return result;
+	}
 	
 	
 }

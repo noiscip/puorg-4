@@ -16,7 +16,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" rel="stylesheet" type="text/css"/>
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 	
-    <link href="<%=request.getContextPath()%>/assets/demo/demo.css" rel="stylesheet" />
 	
 	<!-- CSS Files -->
 	<link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />	

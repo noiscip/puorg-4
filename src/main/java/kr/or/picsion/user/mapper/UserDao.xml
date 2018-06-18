@@ -110,18 +110,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from USERS where userNo = #{userNo}
 	</delete>
 	
-	<!-- 네이버 계정 연동 정보 추가 -->
-	<insert id="insertAccountLinked">
-		insert into ACCOUNTLINKED 
+	<!-- 다른 사이트가 연동되어 있지 않는 경우 insert -->
+	<insert id="insertAccount">
+		insert into ACCOUNTLINKED (userNo, ${param3})
 		values (#{param1}, #{param2})
 	</insert>
 	
-	<!-- 네이버 연동 확인 -->
+	<!-- 이미 다른 사이트가 연동되어 있는 경우 update -->
+	<update id="updateAccount">
+		update ACCOUNTLINKED
+		   set ${param3} =#{param2}
+		 where userNo = #{param1}
+	</update>
+		
+	<!-- 계정 연동 확인 -->
 	<select id="selectAccountNo" resultType="kr.or.picsion.user.dto.User">
-		select * from ACCOUNTLINKED where accountLinkId = #{accountNo}
+		select userNo, ${param2} from ACCOUNTLINKED where ${param2} = #{param1}
 	</select>
 	
 	<select id="selectAccountUserNo" resultType="kr.or.picsion.user.dto.User">
 		select * from ACCOUNTLINKED where userNo = #{userNo}
 	</select>
+	
 </mapper>
