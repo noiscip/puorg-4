@@ -23,6 +23,13 @@ import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.user.controller 
+ * @className UserController
+ * @date 2018. 6. 12.
+ */
+
 @Controller
 @RequestMapping("/user/")
 public class UserController {
