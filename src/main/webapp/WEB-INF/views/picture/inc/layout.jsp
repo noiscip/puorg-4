@@ -44,8 +44,6 @@
     <!-- Plugins for presentation and navigation  -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/modernizr.js"></script>
     <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
-    <!-- Material Kit Core initialisations of plugins and Bootstrap Material Design Library -->
-    <script src="<%=request.getContextPath()%>/assets/js/material-kit.min.js?v=2.0.3"></script>
     <!-- Fixed Sidebar Nav - js With initialisations -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
 </head>
