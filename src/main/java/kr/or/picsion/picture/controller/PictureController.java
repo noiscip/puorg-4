@@ -95,14 +95,15 @@ public class PictureController {
 		return jsonview;
 	}
 	
-	@RequestMapping(value="upload.ps",method=RequestMethod.POST)
-	public String insertPicture(Picture picture,HttpSession session) {
+	@RequestMapping("uploadAfter.ps")
+	public String insertPicture(Picture picture,HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
 		pictureService.insertPicture(picture, user.getUserNo());
 		System.out.println("내밑에뭐지");
 		System.out.println(picture);
 		System.out.println(picture.getTagContent());
-		return "studio.mystudio";
+		model.addAttribute("pciture",picture);
+		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	
 }
