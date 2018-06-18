@@ -9,16 +9,16 @@
 	                <div class="card-header card-header-primary text-center">
 	                  <h4>Sign Up</h4>
 	                  <div class="social-line">
-	                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="btn btn-link btn-just-icon">
+	                    <a href="#" class="btn btn-link btn-just-icon">
 	                      <i class="fa fa-facebook-square"></i>
 	                    </a>
 	                    <a href="<%=request.getContextPath()%>/google/login.ps" class="btn btn-link btn-just-icon">
-	                      <i class="fa fa-twitter"></i>
+	                       <img alt="구글 로그인" src="<%=request.getContextPath()%>/assets/img/portalsite/google_icon.png" style="width: 40px">
 	                    </a>
 	                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="btn btn-link btn-just-icon">
-	                      <img alt="네이버 로그인" src="<%=request.getContextPath()%>/assets/img/naver_icon.PNG" style="width: 40px">
+	                      <img alt="네이버 로그인" src="<%=request.getContextPath()%>/assets/img/portalsite/naver_icon.png" style="width: 40px">
 	                    </a>
-	                  </div>
+	                  </div> 
 	                </div>
 	                <p class="text-divider">Or Be Classical</p>
 	                <div class="card-body">
@@ -72,6 +72,4 @@
   		  	<%session.removeAttribute("result");%>
   		}
 	}, 1000);
-  	
-
 </script>
