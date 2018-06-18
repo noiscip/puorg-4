@@ -2,7 +2,6 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,14 @@ public class UserService {
 		
 	}
 	
+	/**
+	 * 날      짜 : 2018. 6. 18.
+	 * 메소드명 : login
+	 * 작성자명 : 
+	 *
+	 * @param user
+	 * @return
+	*/
 	public User login(User user) {
 		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
