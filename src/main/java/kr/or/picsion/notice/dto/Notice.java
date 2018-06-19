@@ -11,11 +11,12 @@ public class Notice {
 	private int operNo;
 	private int cmtNo;
 	private int msgNo;
+	private int brdNo;
 
 	public Notice() {}
 
 	public Notice(int noticeNo, String readCheck, int receiveUserNo, int sendUserNo, int tableNo, int operApplyNo,
-			int operNo, int cmtNo, int msgNo) {
+			int operNo, int cmtNo, int msgNo, int brdNo) {
 		this.noticeNo = noticeNo;
 		this.readCheck = readCheck;
 		this.receiveUserNo = receiveUserNo;
@@ -25,6 +26,7 @@ public class Notice {
 		this.operNo = operNo;
 		this.cmtNo = cmtNo;
 		this.msgNo = msgNo;
+		this.brdNo = brdNo;
 	}
 
 	public int getNoticeNo() {
@@ -99,11 +101,19 @@ public class Notice {
 		this.msgNo = msgNo;
 	}
 
+	public int getBrdNo() {
+		return brdNo;
+	}
+
+	public void setBrdNo(int brdNo) {
+		this.brdNo = brdNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Notice [noticeNo=" + noticeNo + ", readCheck=" + readCheck + ", receiveUserNo=" + receiveUserNo
 				+ ", sendUserNo=" + sendUserNo + ", tableNo=" + tableNo + ", operApplyNo=" + operApplyNo + ", operNo="
-				+ operNo + ", cmtNo=" + cmtNo + ", msgNo=" + msgNo + "]";
+				+ operNo + ", cmtNo=" + cmtNo + ", msgNo=" + msgNo + ", brdNo=" + brdNo + "]";
 	}
 
 }

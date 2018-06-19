@@ -50,5 +50,9 @@ public class CommentService {
 		return result;
 	}
 	
+	public Comment selectComment(int cmtNo) {
+		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
+		return commentdao.selectComment(cmtNo);
+	}
 	
 }

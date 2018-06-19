@@ -13,12 +13,20 @@ $(function(){
 				var noticeMenu = '';
 				$.each(data.map, function(i, elt) {
 					console.log(elt)
-					if(elt[0].tableNo == 5){
-						noticeMenu += '<li class="divider"><a href="#">'
-						noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp"' 
-						noticeMenu += elt[1].userName +'"님이 메시지를 보냈습니다.</a></li>'
+					noticeMenu += '<li class="divider"><a href="#">'
+					noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
+					noticeMenu += '"'+ elt[1].userName +'"'
+					
+					if(elt[0].tableNo == 3){
+						noticeMenu += '님이 ' + elt[2].brdTitle +' 글에 댓글을 달았습니다'
+					}else if(elt[0].tableNo == 4){
+						
+					}else if(elt[0].tableNo == 5){
+						noticeMenu += '님이 메시지를 보냈습니다'
 					}
+					noticeMenu += '</a></li>'
 				})
+				
 				$('#noticeList').append(noticeMenu)
 			}
 		})
