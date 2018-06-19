@@ -169,7 +169,6 @@ public class UserController {
 		model.addAttribute("bookcheck", bookcheck);
 		model.addAttribute("imagelistall", followingPicList);
 		model.addAttribute("ownlist",followingPicListOwner);
-		System.out.println(followingPicList);
 		
 		return "popular.followingpicall";
 	}

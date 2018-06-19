@@ -37,7 +37,7 @@ public class PictureController {
 	
 	@RequestMapping("picinfo.ps")
 	public String picInfo(Model model, int picNo, int userNo){
-		Picture picture = pictureService.picInfo(picNo); 			  //사진
+		Picture picture = pictureService.picInfo(picNo); 			  //클릭한 사진
 		User userInfo = userService.userInfo(userNo);    			  //사진 주인	
 		List<Comment> comment = commentService.picCommentList(picNo); //댓글 목록
 		List<User> commentUserList = new ArrayList<User>();           //댓글 작성자 목록
