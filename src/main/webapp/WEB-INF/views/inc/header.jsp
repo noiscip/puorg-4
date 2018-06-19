@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<script>
+$(function(){
+	$('#newNotice').click(function(){
+		console.log('클릭클릭')
+	})
+	
+})
+
+</script>
 <input type="hidden" value="${sessionScope.user.userNo}" id="loginUserNo">
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
@@ -90,6 +100,21 @@
 								</c:choose> 
 								  ${sessionScope.user.userName}
 							</a>
+						</li>
+						<li class="nav-item">
+							<a href="#" data-toggle="dropdown">
+								<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">
+							</a>
+								<ul class="dropdown-menu">
+									<li><a href="#">Action</a></li>
+									<li><a href="#">Another action</a></li>
+									<li><a href="#">Something else here</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Separated link</a></li>
+									<li class="divider"></li>
+									<li><a href="#">One more separated link</a></li>
+								</ul>
+															
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/logout.ps" onclick="scrollToDownload()"> 

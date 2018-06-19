@@ -33,18 +33,20 @@ public class NoticeController {
 	
 	@RequestMapping("noticeMsg.ps")
 	public View noticeMsg(HttpSession session,Model model) {
-		System.out.println("과아아아아연");
 		User user = (User)session.getAttribute("user");
 		
 		int count = noticeService.readCheckCount(user.getUserNo());
-		
-		System.out.println("count : " + count);
 		
 		model.addAttribute("count",count);
 		
 		return jsonview;
 	}
-	
+
+	@RequestMapping("noticeComment.ps")
+	public View noticeComment(HttpSession session, Model model) {
+		
+		return jsonview;
+	}
 	
 	
 	
