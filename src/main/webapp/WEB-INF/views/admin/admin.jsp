@@ -63,9 +63,7 @@
 			success : function(data) {
 				console.log(data)
 				var table = ''
-				$.each(
-					data.allUser,
-					function(i, elt) {
+				$.each(data.allUser,function(i, elt) {
 						table += '<tr>'
 						table += '<td>' + elt.userNo+ '</td>'
 						table += '<td>' + elt.userId+ '</td>'
@@ -95,7 +93,7 @@
 				<li class="nav-item"><a class="nav-link active"
 					href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="<%=request.getContextPath()%>/user/adminComplainList.ps">신고글
+					href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글
 						관리</a></li>
 				<li class="nav-item"><a class="nav-link"
 					href="<%=request.getContextPath()%>/user/adminPurchase.ps">매출

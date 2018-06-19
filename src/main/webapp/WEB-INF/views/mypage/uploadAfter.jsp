@@ -2,23 +2,17 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
-<head>
-  
-    
-     
-</head>
-
 <script type="text/javascript">
 	$(document).on("click", "#tagDel", function() {
 		$('#tagbtn').remove();
 	});
-	/* $("#file-4").fileinput({
-	       theme: 'fa',
-	       allowedFileExtensions: ['jpg', 'png', 'gif']
-	     });  */
 </script>
 
+<style type="text/css">
+.bootstrap-tagsinput .tag{
+	background-color: #9c27b0;
+}
+</style>
 
 <div class="page-header header-filter clear-filter purple-filter"
 	data-parallax="true"
@@ -65,9 +59,11 @@
 </c:choose>
 
 			<h1>upload</h1>
-			
-
-			
+			<div class="row">
+				<div class="col-md-6">
+					<img src="<%=request.getContextPath()%>${picPath}">
+				</div>
+				
 				<div class="col-md-6"> 
 				<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
 				
@@ -88,9 +84,11 @@
 						<!-- <textarea class="form-control" rows="5" id="comment"> -->
 						<!-- </textarea> -->
 						<c:forEach var="t" items="${label}">
-							<button id="tagbtn" class="btn btn-primary btn-sm" name="tagContent">${t}<i
-									class="material-icons" id="tagDel">clear</i>
-							</button>
+						<input type="text" value="${t}" data-role="tagsinput">
+						<%-- 	<button id="tagbtn" class="btn btn-primary btn-sm" >${t}<i
+                                    class="material-icons" id="tagDel">clear</i>
+                            </button> --%>
+                            <input type="text" style="display: none;" name="tag" value="${t}">
 						</c:forEach>
 					</div>
 					<!-- </form> -->
@@ -102,6 +100,7 @@
 				
 				</form>
 				</div> 
+				</div>
 		</div>
 	</div>
 </div>
