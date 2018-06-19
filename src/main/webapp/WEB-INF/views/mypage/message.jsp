@@ -221,9 +221,10 @@ width: 300px;
 }
 </style>
 
-<div class="page-header header-filter" data-parallax="true"<%-- style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');" --%>></div>
+<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
 	<div class="profile-content">
+		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
 			<li class="nav-item"><a class="nav-link" href="#">업로드</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
@@ -233,9 +234,6 @@ width: 300px;
 			<li class="nav-item"><a class="nav-link" href="#">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">정보 수정</a></li>
 		</ul>
-		
-
-		<div class="container">
 			<div class="gallery text-center">
 				<div class="row">
 					<!-- <div class="col-md-12"> -->
@@ -265,7 +263,7 @@ width: 300px;
 						<div class="tab-pane active" id="receive">
 							<table class="table">
 							    <thead>
-							        <tr align="center">
+							        <tr >
 							            <th>번호</th>
 										<th>보낸이</th>
 										<th>내용</th>
@@ -306,7 +304,7 @@ width: 300px;
 						<div class="tab-pane" id="send">
 							<table class="table">
 							    <thead>
-							        <tr align="center">
+							        <tr>
 							            <th>번호</th>
 										<th>받은이</th>
 										<th>내용</th>

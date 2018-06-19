@@ -95,15 +95,18 @@ public class PictureService {
 	}
 	
 	//사진업로드 저장
-	public void insertPicture(Picture picture, int userNo) {
-		HashMap<String, Object> picmap = new HashMap<String, Object>();
-		picmap.put("picture", picture);
-		picmap.put("userNo", userNo);
-		System.out.println(picture.toString());  //////////////////////////////////뀨?
-		PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
-		pictureDao.insertPicture(picmap);
-		pictureDao.insertTag(picture.getPicNo());
-		System.out.println(picture.toString());
+    public void insertPicture(Picture picture, int userNo) {
+        HashMap<String, Object> picmap = new HashMap<String, Object>();
+        picmap.put("picture", picture);
+        picmap.put("userNo", userNo);
+        System.out.println(picture.toString());  //////////////////////////////////뀨?
+        PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+        pictureDao.insertPicture(picmap);
+        for(String p : picture.getTagContent()) {
+            pictureDao.insertTag(picture.getPicNo(), p);
+        }
+        
+        System.out.println(picture.toString());
 
     }
 }

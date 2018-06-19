@@ -88,9 +88,10 @@
 						<!-- <textarea class="form-control" rows="5" id="comment"> -->
 						<!-- </textarea> -->
 						<c:forEach var="t" items="${label}">
-							<button id="tagbtn" class="btn btn-primary btn-sm" name="tagContent">${t}<i
-									class="material-icons" id="tagDel">clear</i>
-							</button>
+							<button id="tagbtn" class="btn btn-primary btn-sm" >${t}<i
+                                    class="material-icons" id="tagDel">clear</i>
+                            </button>
+                            <input type="text" style="display: none;" name="tag" value="${t}">
 						</c:forEach>
 					</div>
 					<!-- </form> -->

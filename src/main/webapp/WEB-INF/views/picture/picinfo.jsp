@@ -24,13 +24,13 @@
 					<div class="card card-blog">
                         <div class="card-header card-header-image">
                             <a href="#pablo">
-                                <img class="img" src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
+                                <img class="img" src="<%=request.getContextPath()%>/${picture.picPath}">
                                 <div class="card-title">
                                     <i class="material-icons">favorite</i> 2.4K ·
                                     <i class="material-icons">bookmark</i> 45
                                 </div>
                             </a>
-                         <div class="colored-shadow colored-shadow-big" style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div></div>
+                         <div class="colored-shadow colored-shadow-big" style="background-image: url(&quot;<%=request.getContextPath()%>/${picture.picPath}?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div></div>
                         <div class="card-body">
                         </div>
 					 </div> 
@@ -41,17 +41,17 @@
 									<div class="col-md-5">
 										<div class="card-header card-header-image">
 											<a href="#pablo"> <img class="img"
-												src="<%=request.getContextPath()%>/assets/img/faces/card-profile1-square.jpg">
+												src="<%=request.getContextPath()%>/${userInfo.prPicture}">
 											</a>
 											<div class="colored-shadow"
-												style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/faces/card-profile1-square.jpg&quot;); opacity: 1;"></div>
+												style="background-image: url(&quot;<%=request.getContextPath()%>/${userInfo.prPicture}&quot;); opacity: 1;"></div>
 										</div>
 									</div>
 									<div class="col-md-7">
 										<div class="card-body">
-											<h4 class="card-title">나작가</h4>
+											<h4 class="card-title">${userInfo.userName}</h4>
 											<h6 class="category text-muted">photographer</h6>
-											<p class="card-description">좋은 사진 많이 찍어요...</p>
+											<p class="card-description">${userInfo.prContent}</p>
 										</div>
 										<div class="card-footer justify-content-center">
 											<button type="button" class="btn btn-default btn-sm"
@@ -68,7 +68,7 @@
 					
 				</div>
 				<div class="col-md-6 col-sm-6">
-					<h2 class="title">TITLE</h2>
+					<h2 class="title">${picture.picTitle}</h2>
 					<!-- <h3 class="main-price">$335</h3> -->
 					<div id="accordion" role="tablist">
 						<div class="card card-collapse">
@@ -80,7 +80,7 @@
 							<div id="collapseOne" class="collapse show" role="tabpanel"
 								aria-labelledby="headingOne" data-parent="#accordion" style="">
 								<div class="card-body">
-									<p>이 사진은 매우 찍기 어려운 사진입니다.</p>
+									<p>${picture.picContent}</p>
 								</div>
 							</div>
 						</div>
