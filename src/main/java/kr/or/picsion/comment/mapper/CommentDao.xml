@@ -22,6 +22,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="picInsertComment" parameterType="kr.or.picsion.comment.dto.Comment">
 	insert into COMMENTS (cmtContent,userNo,picNo,tableNo) values (#{cmtContent},#{userNo},#{picNo},#{tableNo})
 	</insert>
-
-
+	
+	<!-- 댓글 객체 하나 찾아오기 -->
+	<select id="selectComment" resultType="kr.or.picsion.comment.dto.Comment">
+		select * from COMMENTS where cmtNo = #{cmtNo}
+	</select>
 </mapper>

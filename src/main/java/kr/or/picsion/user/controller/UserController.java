@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
-import kr.or.picsion.blame.dto.Blame;
-import kr.or.picsion.blame.service.BlameService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
-import kr.or.picsion.purchase.dto.Purchase;
-import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -42,13 +38,6 @@ public class UserController {
 	
 	@Autowired
 	private PictureService pictureService;
-		
-    @Autowired
-    private BlameService blameService;
-    
-    @Autowired
-    private PurchaseService purchaseService;
-    
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -129,23 +118,6 @@ public class UserController {
 		return jsonview;
 	}
 	
-	@RequestMapping("adminComplainList.ps")
-	public String complain(Model model) {
-		
-		
-		List<Blame> blameList = blameService.complain();
-		model.addAttribute("blameList",blameList);
-		return "admin.complain";
-	}
-	
-	@RequestMapping("adminPurchase.ps")
-	public String purchase(Model model) {
-		
-		List<Purchase> purchaseList = purchaseService.purchaseList();
-		model.addAttribute("purchaseList",purchaseList);
-		return "admin.purchase";
-	}
-	
 	
 	//팔로잉하는 사람의 최신 사진 전체 페이지
 	@RequestMapping(value="popular.ps", method=RequestMethod.GET)
@@ -169,7 +141,6 @@ public class UserController {
 		model.addAttribute("bookcheck", bookcheck);
 		model.addAttribute("imagelistall", followingPicList);
 		model.addAttribute("ownlist",followingPicListOwner);
-		System.out.println(followingPicList);
 		
 		return "popular.followingpicall";
 	}
