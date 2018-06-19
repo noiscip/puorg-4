@@ -56,6 +56,7 @@
 					console.log("2번, 사진")
 				}else if(table == 3	){
 					console.log("3번, 보드")
+					url = "/picsion/notice/noticeComment.ps"
 				}else if(table == 4){
 					console.log("4번, 댓글")
 					console.log($('#userProfile'))
