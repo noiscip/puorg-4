@@ -66,13 +66,13 @@ public class AmazonTest {
 		model.addAttribute("label", labelBag);
 		model.addAttribute("picPath",picturePath);
 		System.out.println("labelBag: "+labelBag);
-		return "mypage.upload";
+		return "mypage.uploadAfter";
 	}
 	
 	public boolean fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
 		
-		String uploadPath = "C:\\file\\";
+		String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -98,7 +98,8 @@ public class AmazonTest {
 				logocheck=detectLogos(filePathh);
 				safecheck=detectSafeSearch(filePathh);
 				labelBag=detectLabels(filePathh);
-//				picturePath = filePathh;
+				picturePath = "/assets/img/examples/"+saveFileName;
+				System.out.println(picturePath);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

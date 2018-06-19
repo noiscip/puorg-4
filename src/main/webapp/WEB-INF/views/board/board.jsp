@@ -38,41 +38,59 @@
      <tr> 
   
      
-		<td class="text-center">
+		<td class="text-center" colspan="5">
 		<nav aria-label="Page navigation example">
-		 <ul class="pagination">
+  		<ul class="pagination justify-content-center">
+
 			<!-- 처음 이전 링크 -->
 			<c:if test="${pg>block}">  <!-- 5>10 : false / 15>10 : true -->
-				<li class="page-item"><a href="board.ps?pg=1" style="cursor:pointer;">◀◀gg</a></li>
-				[<a href="board.ps?pg=${fromPage-1}" style="cursor:pointer;">◀</a>]		
+				<li class="page-item"><a href="board.ps?pg=1" class="page-link">◀◀</a></li>
+				<li class="page-item"><a href="board.ps?pg=${fromPage-1}" class="page-link">◀</a>	</li>
 			</c:if>
 			<c:if test="${pg<=block}"> <!-- 5<=10 :true / 15<=10:false -->
-				<li class="page-item"><span style="color:gray">◀◀dd</span></li>
-				[<span style="color:gray">◀</span>]
+				<li class="page-item"><span style="color:gray" >◀◀</span></li>
+				<li class="page-item"><span style="color:gray">◀</span></li>
 			</c:if>
 			
 			<!-- 블록 범위 찍기 -->
 			<c:forEach begin="${fromPage}" end="${toPage}" var="i">
-				<c:if test="${i==pg}">[${i}]</c:if>
+				<c:if test="${i==pg}"> 
+      				<li class="page-item active">
+					      <span class="page-link">
+					        ${i}
+					        <span class="sr-only">(current)</span>
+     					 </span>
+    				</li>
+      			</c:if>
 				<c:if test="${i!=pg}">
-					[<a href="board.ps?pg=${i}">${i}</a>]
+					<li class="page-item"><a href="board.ps?pg=${i}"class="page-link">${i}</a></li>
 				</c:if>
 			</c:forEach>
 			
 			<!-- 다음, 이후 -->
 			<c:if test="${toPage<allPage}"> <!-- 20<21 : true -->
-					[<a href="board.ps?pg=${toPage+1}" style="cursor:pointer;">▶</a>]
-					<li class="page-item"><a href="board.ps?pg=${allPage}" style="cursor:pointer;">▶▶</a></li>
+					<li class="page-item"><a href="board.ps?pg=${toPage+1}" class="page-link">▶</a></li>
+					<li class="page-item"><a href="board.ps?pg=${allPage}" class="page-link">▶▶</a></li>
 			
 			</c:if>	
 			<c:if test="${toPage>=allPage}"> <!-- 21>=21 :true -->
-					[<span style="color:gray">▶</span>]
-					[<span style="color:gray">▶▶</span>]
+					<li class="page-item"><span style="color:gray">▶</span></li>
+					<li class="page-item"><span style="color:gray">▶▶</span></li>
 			
 			</c:if>			
 			</ul>
 			
 </nav> 
+ <tr> 
+  
+     
+		<td class="text-right" colspan="5" style="border-top-width: 0px">
+
+			<a href="<%=request.getContextPath()%>/writeboard.ps" style="cursor:pointer;">
+				<button class="btn btn-primary btn-round" style="top: -78px">
+				  <i class="material-icons" >edit</i> 글 쓰기
+				</button>
+			</a>
 		</td>
 		
 	</tr>
@@ -80,7 +98,8 @@
     </tfoot>
 </table>
 
- <a href="<%=request.getContextPath()%>/writeboard.ps" style="cursor:pointer;">글 쓰기</a>
+
+
  </div>
 </div>
 
