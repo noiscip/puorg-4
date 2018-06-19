@@ -3,6 +3,8 @@
  */
 package kr.or.picsion.notice.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,25 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
+	
+	/**
+	 * 날      짜 : 2018. 6. 19.
+	 * 메소드명 : noticeList
+	 * 작성자명 : 아윤근
+	 *
+	 * @param session
+	 * @param model
+	 * @return
+	*/
+	@RequestMapping("notice.ps")
+	public View noticeList(HttpSession session, Model model) {
+		System.out.println("오나요??");
+		User user = (User)session.getAttribute("user");
+		Map<Integer, Object> map = noticeService.noticeList(user.getUserNo());
+		model.addAttribute("map",map);
+		System.out.println("가나요??");
+		return jsonview;
+	}
 	
 	@RequestMapping("noticeMsg.ps")
 	public View noticeMsg(HttpSession session,Model model) {
