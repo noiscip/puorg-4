@@ -6,6 +6,13 @@
 $(function(){
 	$('#newNotice').click(function(){
 		console.log('클릭클릭')
+		$.ajax({
+			url: "/picsion/notice/notice.ps",
+			success : function (data) {
+				console.log(data)
+				
+			}
+		})
 	})
 	
 })
