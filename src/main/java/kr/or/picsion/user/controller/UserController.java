@@ -1,14 +1,11 @@
 package kr.or.picsion.user.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.View;
 
-import kr.or.picsion.blame.dto.Blame;
-import kr.or.picsion.blame.service.BlameService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
-import kr.or.picsion.purchase.dto.Purchase;
-import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -45,13 +38,6 @@ public class UserController {
 	
 	@Autowired
 	private PictureService pictureService;
-		
-    @Autowired
-    private BlameService blameService;
-    
-    @Autowired
-    private PurchaseService purchaseService;
-    
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -130,18 +116,6 @@ public class UserController {
 		User user = userService.searchUserId(userId);
 		model.addAttribute("searchUser",user);
 		return jsonview;
-	}
-	
-
-	
-
-	
-	@RequestMapping("adminPurchase.ps")
-	public String purchase(Model model) {
-		
-		List<Purchase> purchaseList = purchaseService.purchaseList();
-		model.addAttribute("purchaseList",purchaseList);
-		return "admin.purchase";
 	}
 	
 	

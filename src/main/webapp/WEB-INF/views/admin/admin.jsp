@@ -63,9 +63,7 @@
 			success : function(data) {
 				console.log(data)
 				var table = ''
-				$.each(
-					data.allUser,
-					function(i, elt) {
+				$.each(data.allUser,function(i, elt) {
 						table += '<tr>'
 						table += '<td>' + elt.userNo+ '</td>'
 						table += '<td>' + elt.userId+ '</td>'
