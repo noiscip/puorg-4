@@ -71,4 +71,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE msgNo=#{msgNo}
 	</update>
 	
+	<!-- 받은 메시지 userName 검색 (메시지 정보 리스트)-->
+	<select id="selectReceiveMsg" resultType="kr.or.picsion.message.dto.Message">
+		SELECT m.*
+		FROM MESSAGES m JOIN USERS u1 ON m.receiveUserNo=u1.userNo
+							 JOIN USERS u2 ON m.sendUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 받은 메시지 userName 검색 (메시지 유저 정보 리스트) -->
+	<select id="selectReceiveInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u2.*
+		FROM MESSAGES m JOIN USERS u1 ON m.receiveUserNo=u1.userNo
+							 JOIN USERS u2 ON m.sendUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 보낸 메시지 userName 검색 (메시지 정보 리스트) -->
+	<select id="selectSendMsg" resultType="kr.or.picsion.message.dto.Message">
+		SELECT m.*
+		FROM MESSAGES m JOIN USERS u1 ON m.sendUserNo=u1.userNo
+							 JOIN USERS u2 ON m.receiveUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 보낸 메시지 userName 검색 (메시지 유저 정보 리스트) -->
+	<select id="selectSendInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u2.*
+		FROM MESSAGES m JOIN USERS u1 ON m.sendUserNo=u1.userNo
+							 JOIN USERS u2 ON m.receiveUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
 </mapper>
