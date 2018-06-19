@@ -61,7 +61,7 @@
 			<h1>upload</h1>
 			<div class="row">
 				<div class="col-md-6">
-					<img alt="" src="<%=request.getContextPath()%>${picPath}">
+					<img src="<%=request.getContextPath()%>${picPath}">
 				</div>
 				
 				<div class="col-md-6"> 
