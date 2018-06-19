@@ -9,5 +9,6 @@ public interface BlameDao {
 	public int insertBlame(Blame blame);
 	public List<Blame> blameList();
 	public Blame selectBlame(int blameNo);
+	public List<Blame> complainSearch(String date);
 	
 }

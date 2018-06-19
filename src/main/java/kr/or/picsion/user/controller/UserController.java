@@ -1,11 +1,14 @@
 package kr.or.picsion.user.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -129,14 +132,9 @@ public class UserController {
 		return jsonview;
 	}
 	
-	@RequestMapping("adminComplainList.ps")
-	public String complain(Model model) {
-		
-		
-		List<Blame> blameList = blameService.complain();
-		model.addAttribute("blameList",blameList);
-		return "admin.complain";
-	}
+
+	
+
 	
 	@RequestMapping("adminPurchase.ps")
 	public String purchase(Model model) {
