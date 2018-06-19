@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
 import kr.or.picsion.comment.dto.Comment;
@@ -109,13 +110,14 @@ public class PictureController {
 	}
 	
 	@RequestMapping("uploadAfter.ps")
-	public String insertPicture(Picture picture,HttpSession session, Model model) {
+	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
+		picture.setTagContent(tag);
 		pictureService.insertPicture(picture, user.getUserNo());
 		System.out.println("내밑에뭐지");
 		System.out.println(picture);
 		System.out.println(picture.getTagContent());
-		model.addAttribute("pciture",picture);
+		//model.addAttribute("pciture",picture);
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	
