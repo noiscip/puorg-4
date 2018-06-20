@@ -109,4 +109,11 @@ public class PictureService {
         System.out.println(picture.toString());
 
     }
+    
+    //태그 리스트
+    public List<String> selectTag(int picNo){
+    	PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
+    	List<String> tagList = picturedao.selectTag(picNo);
+    	return tagList;
+    }
 }

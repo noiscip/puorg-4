@@ -76,6 +76,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     insert into TAG
     values (#{param1},#{[param2]})
     </insert>
+    
+    <!-- 태그 정보 -->
+    <select id="selectTag" resultType="String">
+    	SELECT tagContent FROM TAG WHERE picNo=#{picNo}
+    </select>
 	
 	<!--  사진 경로 뽑아내기? 
 	<select id="searchPath">

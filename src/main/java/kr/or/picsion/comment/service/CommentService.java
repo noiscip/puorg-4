@@ -46,7 +46,7 @@ public class CommentService {
 	// 사진 댓글 쓰기 서비스
 	public int picInsertComment(Comment comment) {
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
-		int result = commentdao.insertComment(comment);
+		int result = commentdao.picInsertComment(comment);
 		return result;
 	}
 	
