@@ -26,23 +26,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- userId랑 userNo로 검색해서 회원의 프로필, 유저정보, 계정 연동 -->
 	<select id="selectUser" resultType="kr.or.picsion.user.dto.User">
-		<!-- SELECT * FROM USERS WHERE ${param1}=#{param2} -->
-		
-		SELECT * 
+		SELECT u.userNo as userNo, userId, pwd, userName, point, userReg, tableNo, roleNo, naver, google, prPicture, prContent
 		FROM USERS u JOIN PROFILE p ON u.userNo=p.userNo
 					 JOIN ACCOUNTLINKED a ON u.userNo=a.userNo
+					 
+					 
 		WHERE ${param1}=#{param2}
 	</select>
 	
 	<!-- userNo로 회원 정보 가져오기 -->
-	<select id="selectUserNo" resultType="kr.or.picsion.user.dto.User">
-		SELECT * FROM USERS WHERE userNo=#{userNo}
-	</select>
 	
 	<!-- 회원의 프로필 정보 가져오기 -->
-	<select id="selectProfile" resultType="kr.or.picsion.user.dto.User">
-		SELECT * FROM PROFILE WHERE userNo=#{userNo}
-	</select>
 	
 	<!-- 회원의 팔로워 리스트 (나를 따르는 회원)-->
 	<select id="followerUserList" resultType="kr.or.picsion.user.dto.User">
@@ -118,8 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 다른 사이트가 연동되어 있지 않는 경우 insert -->
 	<insert id="insertAccount">
-		insert into ACCOUNTLINKED (userNo, ${param3})
-		values (#{param1}, #{param2})
+		insert into ACCOUNTLINKED (userNo)
+		values (#{userNo})
 	</insert>
 	
 	<!-- 이미 다른 사이트가 연동되어 있는 경우 update -->
@@ -134,6 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select userNo, ${param2} from ACCOUNTLINKED where ${param2} = #{param1}
 	</select>
 	
+	<!-- 계정연동에 아이디가 있는지 확인 -->
 	<select id="selectAccountUserNo" resultType="kr.or.picsion.user.dto.User">
 		select * from ACCOUNTLINKED where userNo = #{userNo}
 	</select>

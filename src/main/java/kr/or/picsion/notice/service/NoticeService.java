@@ -18,7 +18,6 @@ import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.notice.dao.NoticeDao;
 import kr.or.picsion.notice.dto.Notice;
-import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
@@ -47,12 +46,6 @@ public class NoticeService {
 	@Autowired
 	private CommentService commentService;
 	
-	@Autowired
-	private OperationService operationService;
-	
-	@Autowired
-	private PictureService pictureService;
-	
 	public void insertNotice(Map<String, Object> noticeMap) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 		noticeDao.insertNotice(noticeMap);
@@ -67,15 +60,14 @@ public class NoticeService {
 		
 		for (Notice no : noticeList) {
 			List<Object> obj = new ArrayList<>();
+			System.out.println("uuuuuuu" + no.getSendUserNo());
 			User sendUserNo = userService.userInfo(no.getSendUserNo());
 			obj.add(no);
 			obj.add(sendUserNo);
 			
 			int tableNo = no.getTableNo();
 			
-			if(tableNo == 2) {
-				Picture picture;
-			}else if(tableNo == 3) {
+			if(tableNo == 3) {
 				Board board = boardService.selectBoard(no.getBrdNo());
 				obj.add(board);
 			}else if(tableNo == 4) {
