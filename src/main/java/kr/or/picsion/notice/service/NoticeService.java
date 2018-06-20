@@ -71,10 +71,11 @@ public class NoticeService {
 				}else {
 					
 				}
-				
-				
 			}else if(tableNo == 5) {
+				
+			}else {
 				System.out.println("여기 올리가 없는데...");
+				
 			}
 			map.put(i, obj);
 			i++;
