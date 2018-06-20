@@ -60,7 +60,6 @@ public class NoticeService {
 		
 		for (Notice no : noticeList) {
 			List<Object> obj = new ArrayList<>();
-			System.out.println("uuuuuuu" + no.getSendUserNo());
 			User sendUserNo = userService.userInfo(no.getSendUserNo());
 			obj.add(no);
 			obj.add(sendUserNo);
