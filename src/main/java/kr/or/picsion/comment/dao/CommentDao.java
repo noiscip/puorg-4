@@ -10,7 +10,6 @@ public interface CommentDao {
 	public int insertComment(Comment comment);
 	public int updateComment(Comment comment);
 	public List<Comment> commentList(int brdNo);
-	public List<String> commentnameList(int brdNo);
 	public List<User> commentuser(int brdNo); // 요청글에 해당하는 댓글 유저 정보
 	public List<Comment> picCommentList(int picNo); //사진에 대한 댓글리스트
 	public int picInsertComment(Comment comment);	//사진에 댓글 저장
