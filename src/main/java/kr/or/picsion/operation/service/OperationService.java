@@ -26,4 +26,13 @@ public class OperationService {
 			
 		return result;
 	}
+	// 작업 찾기 서비스
+		public Operation selectOper(int brdNo) {
+
+			System.out.println("selectOper 서비스 ");
+			OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+			Operation operation = operationDao.selectOper(brdNo);
+				
+			return operation;
+		}
 }

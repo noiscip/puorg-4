@@ -11,6 +11,7 @@ import org.springframework.web.servlet.View;
 
 import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
+import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.operationapply.dto.OperationApply;
@@ -26,6 +27,10 @@ public class OperationController {
 	
 
 	@Autowired
+	private CommentService commentService;
+	
+
+	@Autowired
 	private BoardService boardService;
 	
 	
@@ -37,8 +42,9 @@ public class OperationController {
 		
 		Board board = boardService.selectBoard(operation.getBrdNo());
 		board.setBrdExpectPrice(operation.getOperPrice());
-		board.setBrdExpectEndDate(operation.getOperEndReg());
+		board.setBrdExpectEndDate(operation.getOperEndReg());		
 		board.setOperStateNo(2);
+		commentService.deleteAllComment(board.getBrdNo());
 		boardService.updateBoard(board);
 		int result=operationService.insertOperation(operation);
 		model.addAttribute("check", result);
