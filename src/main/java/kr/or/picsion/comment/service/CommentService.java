@@ -35,7 +35,13 @@ public class CommentService {
 		System.out.println("insertComment 서비스 ");		
 		return result;
 	}
-	
+	// 댓글 전부 삭제 서비스
+		public int deleteAllComment(int brdNo) {
+			System.out.println("deleteComment 서비스 ");			
+			CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
+			int result = commentdao.deleteAllComment(brdNo);
+			return result;
+		}
 	
 	// 사진 댓글 목록 서비스
 	public List<Comment> picCommentList(int picNo){
@@ -46,7 +52,7 @@ public class CommentService {
 	// 사진 댓글 쓰기 서비스
 	public int picInsertComment(Comment comment) {
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
-		int result = commentdao.insertComment(comment);
+		int result = commentdao.picInsertComment(comment);
 		return result;
 	}
 	

@@ -9,6 +9,6 @@ public interface OperationDao {
 	public int insertOperation(Operation operation);
 	public int updateOperation(Operation operation);
 	public List<Operation> selectOperation(int userNo);
-	
+	public Operation selectOper(int brdNo);
 
 }

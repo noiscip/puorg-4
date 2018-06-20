@@ -40,14 +40,17 @@ public class PictureController {
 	public String picInfo(Model model, int picNo, int userNo){
 		Picture picture = pictureService.picInfo(picNo); 			  //클릭한 사진
 		User userInfo = userService.userInfo(userNo);    			  //사진 주인	
-		List<Comment> comment = commentService.picCommentList(picNo); //댓글 목록
+		List<Comment> commentList = commentService.picCommentList(picNo); //댓글 목록
 		List<User> commentUserList = new ArrayList<User>();           //댓글 작성자 목록
-		for(Comment c : comment) {
+		List<String> tagList = pictureService.selectTag(picNo);
+		for(Comment c : commentList) {
 			commentUserList.add(userService.userInfo(c.getUserNo()));
 		}
+		System.out.println(commentList);
+		model.addAttribute("tagList",tagList);
 		model.addAttribute("picture",picture);
 		model.addAttribute("userInfo",userInfo);
-		model.addAttribute("comment",comment);
+		model.addAttribute("commentList",commentList);
 		model.addAttribute("commentUserList",commentUserList);
 		return "picture.picinfo";
 	}
