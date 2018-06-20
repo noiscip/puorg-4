@@ -6,6 +6,7 @@
 	$(document).on("click", "#tagDel", function() {
 		$('#tagbtn').remove();
 	});
+	
 </script>
 
 <style type="text/css">

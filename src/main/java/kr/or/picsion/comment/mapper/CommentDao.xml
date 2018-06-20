@@ -13,7 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="picCommentList" resultType="kr.or.picsion.comment.dto.Comment">
 		SELECT * FROM COMMENTS WHERE picNo=#{picNo}
 	</select>
-
+	
+	<!-- 게시판 댓글 저장 -->
 	<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment">
 	insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})
 	</insert>
