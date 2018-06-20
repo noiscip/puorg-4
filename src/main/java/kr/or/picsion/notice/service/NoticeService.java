@@ -6,6 +6,7 @@ package kr.or.picsion.notice.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
-import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.notice.dao.NoticeDao;
 import kr.or.picsion.notice.dto.Notice;
 import kr.or.picsion.picture.dto.Picture;
@@ -43,6 +43,12 @@ public class NoticeService {
 	
 	@Autowired
 	private CommentService commentService;
+	
+	public void insertNotice(Map<String, Object> noticeMap) {
+		System.out.println("노티스 맵");
+		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
+		noticeDao.insertNotice(noticeMap);
+	}
 	
 	public HashMap<Integer, Object> noticeList(int userNo){
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);

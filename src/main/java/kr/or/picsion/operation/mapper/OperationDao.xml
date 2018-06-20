@@ -8,7 +8,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <insert id="insertOperation" parameterType="kr.or.picsion.operation.dto.Operation">
-insert into OPERATION (operApplyNo, operPrice, operEndReg, requesterNo, operatorNo, brdNo) values (#{operApplyNo},#{operPrice},#{operEndReg},#{requesterNo},#{operatorNo},#{brdNo})
+	insert into OPERATION (operApplyNo, operPrice, operEndReg, requesterNo, operatorNo, brdNo) values (#{operApplyNo},#{operPrice},#{operEndReg},#{requesterNo},#{operatorNo},#{brdNo})
+	<selectKey keyProperty="operNo,tableNo" resultType="hashmap" order="AFTER">
+		SELECT operNo, tableNo from OPERATION where operNo = LAST_INSERT_ID()
+	</selectKey>
 </insert>
 
 <select id="selectOper" resultType="kr.or.picsion.operation.dto.Operation">

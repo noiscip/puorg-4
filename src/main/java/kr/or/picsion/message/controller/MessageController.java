@@ -1,6 +1,5 @@
 package kr.or.picsion.message.controller;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,15 +9,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
-
-import com.sun.javafx.collections.MappingChange.Map;
 
 import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.message.service.MessageService;
+import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.user.dto.User;
 
 @Controller
@@ -31,17 +27,32 @@ public class MessageController {
 	@Autowired
 	private MessageService messageService;
 	
+	@Autowired
+	private NoticeService noticeService;
+	
 	//메시지 보내기
 	@RequestMapping("send.ps")
 	public View messageSend(Message message) {
 				
 		int result = messageService.sendMessage(message);
 		
-		if(result!=0) {
+		if(result != 0) {
 			System.out.println("메시지 보내기 성공!");
+			
+			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+			
+			noticeMap.put("no", message.getMsgNo());
+			noticeMap.put("receiveUserNo", message.getReceiveUserNo());
+			noticeMap.put("sendUserNo", message.getSendUserNo());
+			noticeMap.put("table", "msgNo");
+			noticeMap.put("tableNo", message.getTableNo());
+			
+			noticeService.insertNotice(noticeMap);
 		}else {
 			System.out.println("메시지 보내기 실패");
 		}
+		
+		
 		return jsonview;
 	}
 	
