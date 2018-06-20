@@ -36,13 +36,7 @@ public class CommentService {
 			return commentdao.commentuser(brdNo);	
 		}
 	
-	// 댓글 작성자 목록 서비스
-		public List<String> commentnameList(int brdNo) {
-			CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
-			System.out.println("commentnameList 서비스 ");
-				
-			return commentdao.commentnameList(brdNo);	
-		}
+	
 	
 	// 댓글 쓰기 서비스
 	public int insertComment(Comment comment) {

@@ -1,4 +1,4 @@
-package kr.or.picsion.user.dao;
+﻿package kr.or.picsion.user.dao;
 
 import java.util.List;
 
@@ -13,7 +13,8 @@ public interface UserDao {
 	public int insertProfile(int userNo);
 	public int updateUser(User user);
 	public int deleteUser(int userNo);
-	public User selectUser(String userId);
+	public User selectUser(String user, String userId);		//파라미터 값에따라 유동적으로 회원의 정보 검색
+	public User selectUserProfile(int userNo);
 	public User selectUserNo(int userNo);		//userNo으로 회원 정보 검색
 	public User selectProfile(int userNo);		//유저의 프로필 정보 검색
 	public List<Picture> bookmarkPicList(int userNo);	//내가 북마크한 사진 리스트

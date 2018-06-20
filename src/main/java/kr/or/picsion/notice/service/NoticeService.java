@@ -18,7 +18,10 @@ import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.notice.dao.NoticeDao;
 import kr.or.picsion.notice.dto.Notice;
+import kr.or.picsion.operation.dto.Operation;
+import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -44,8 +47,13 @@ public class NoticeService {
 	@Autowired
 	private CommentService commentService;
 	
+	@Autowired
+	private OperationService operationService;
+	
+	@Autowired
+	private PictureService pictureService;
+	
 	public void insertNotice(Map<String, Object> noticeMap) {
-		System.out.println("노티스 맵");
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 		noticeDao.insertNotice(noticeMap);
 	}
@@ -56,6 +64,7 @@ public class NoticeService {
 		List<Notice> noticeList = noticeDao.noticeList(userNo);
 		HashMap<Integer, Object> map = new HashMap<>();
 		int i = 0;
+		
 		for (Notice no : noticeList) {
 			List<Object> obj = new ArrayList<>();
 			User sendUserNo = userService.userInfo(no.getSendUserNo());
@@ -65,29 +74,19 @@ public class NoticeService {
 			int tableNo = no.getTableNo();
 			
 			if(tableNo == 2) {
-				System.out.println("사진");
 				Picture picture;
 			}else if(tableNo == 3) {
-				System.out.println("게시판");
 				Board board = boardService.selectBoard(no.getBrdNo());
 				obj.add(board);
 			}else if(tableNo == 4) {
-				System.out.println("댓글");
 				Comment comment = commentService.selectComment(no.getCmtNo());
 				if(comment.getTableNo() == 2) {
-					
+
 				}else {
 					Board board = boardService.selectBoard(comment.getBrdNo());
 				}
 			}else if(tableNo == 5) {
 				System.out.println("메시지");
-				
-			}else if(tableNo == 6){
-				System.out.println("작업 수락");
-			
-			}else {
-				System.out.println("여기 올리가 없는데...");
-				
 			}
 			map.put(i, obj);
 			i++;

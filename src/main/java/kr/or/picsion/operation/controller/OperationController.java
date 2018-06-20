@@ -49,10 +49,12 @@ public class OperationController {
 		if(result != 0) {
 			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 			
-			noticeMap.put("no", operation.getOperNo());
+			
+			noticeMap.put("no", operation.getBrdNo());
+			noticeMap.put("addNo", operation.getOperNo());
 			noticeMap.put("receiveUserNo", operation.getOperatorNo());
 			noticeMap.put("sendUserNo", operation.getRequesterNo());
-			noticeMap.put("table", "operNo");
+			noticeMap.put("table", "brdNo, operNo");
 			noticeMap.put("tableNo", operation.getTableNo());
 			
 			noticeService.insertNotice(noticeMap);

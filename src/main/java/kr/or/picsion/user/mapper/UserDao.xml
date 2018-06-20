@@ -24,8 +24,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO PROFILE (userNo,prPicture) VALUES	(#{userNo},'/assets/img/user.png')
 	</insert>
 	
+	<!-- userId랑 userNo로 검색해서 회원의 프로필, 유저정보, 계정 연동 -->
 	<select id="selectUser" resultType="kr.or.picsion.user.dto.User">
-		SELECT * FROM USERS WHERE userId= #{userId}
+		<!-- SELECT * FROM USERS WHERE ${param1}=#{param2} -->
+		
+		SELECT * 
+		FROM USERS u JOIN PROFILE p ON u.userNo=p.userNo
+					 JOIN ACCOUNTLINKED a ON u.userNo=a.userNo
+		WHERE ${param1}=#{param2}
 	</select>
 	
 	<!-- userNo로 회원 정보 가져오기 -->
@@ -131,6 +137,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectAccountUserNo" resultType="kr.or.picsion.user.dto.User">
 		select * from ACCOUNTLINKED where userNo = #{userNo}
 	</select>
+	
+	
 	
 
 </mapper>
