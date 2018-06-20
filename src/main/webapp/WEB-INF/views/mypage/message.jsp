@@ -309,7 +309,7 @@ width: 300px;
 			<div class="gallery text-center">
 				<div class="row">
 					<!-- <div class="col-md-12"> -->
-					<div class="col-md-3" align="left"><!-- style="margin-bottom: 15px" -->
+					<!-- <div class="col-md-3" align="left">style="margin-bottom: 15px"
 						<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 					    	메시지함 선택
 						</a>
@@ -327,9 +327,25 @@ width: 300px;
 			                 </div>
 			                 <i class="material-icons" style="cursor: pointer; margin-top: 10px" id="searchBtn">search</i>
 			           </form>
-					</div>
+					</div> -->
 					
-					<div class="col-md-12">
+					<div class="col-md-6">
+						
+						
+						<form class="form-inline">
+							<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						    	메시지함 선택
+							</a>
+							<ul class="nav dropdown-menu" role="tablist">
+								<li class="nav-item"><a class="nav-link tag" id="receiveTag" href="#receive" role="tab" data-toggle="tab">받은 메시지</a></li>
+								<li class="nav-item"><a class="nav-link" id="sendTag" href="#send" role="tab" data-toggle="tab">보낸 메시지</a></li>
+							</ul>
+			                 <div class="form-group has-default bmd-form-group" style="padding-top:0; margin-top: 10px;">
+	                            <input type="text" class="form-control selectMsg" placeholder="userName 검색">
+			                 </div>
+			                 <i class="material-icons" style="cursor: pointer; margin-top: 10px;" id="searchBtn">search</i>
+			           </form>
+			           
 					<div class="tab-content tab-space">
 						<!-- ******* 받은 메시지 테이블 ******* -->
 						<div class="tab-pane active" id="receive">

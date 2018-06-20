@@ -45,6 +45,18 @@
 .update-btn-margin{
 	margin-top: 10px;
 }
+
+/* 정보 수정페이지 라벨 여백 */
+.update-lab-padding{
+	padding-top: 35px;
+}
+
+/* 정보 수정페이지 저장 버튼 하단 여백 */
+.update-btn-save{
+	margin-bottom:30px
+}
+
+
 </style>
 
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -65,42 +77,14 @@
 			  <!--  -->
 			  <div class="col-md-12 ml-auto mr-auto update-margin update-padding">
               <div class="row">
-              	<div class="col-md-6 mr-auto text-center">
-                  	<div class="form-group">
+              	<div class="col-md-5 ml-auto">
+                  	<div class="form-group text-center">
+                  	
                   		<img src="<%=request.getContextPath()%>${sessionScope.user.prPicture}" class="img-raised rounded-circle img-fluid update-pr"><br>
 			      		<button type="submit" class="btn btn-default update-btn-margin">프로필 수정</button>
                   	</div>
-                    <div class="form-group">
-                      <label>아이디</label>
-                      <div class="input-group">
-                        <input type="text" class="form-control" id="userId" name="userId" value="${sessionScope.user.userId}" readonly="readonly">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label>이름</label>
-                      <div class="input-group">
-                        <input type="text" class="form-control" name="userName" value="${sessionScope.user.userName}">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label>비밀번호</label>
-                      <div class="input-group">
-                        <input type="password" placeholder="비밀번호..." name="pwd" class="form-control" />
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label>비밀번호 확인</label>
-                      <div class="input-group">
-                        <input type="password" placeholder="비밀번호 확인..." class="form-control" />
-                      </div>
-                    </div>
-                </div>
-                
-                
-                <div class="col-md-6 ml-auto">
-                  <div class="form-group update-margin">
-                  		<label>계정 연동 여부</label>
-	                    <!-- <h5 class="info-title">계정 연동 여부</h5> -->
+                  	<div class="form-group update-margin">
+                  		<label for="exampleInput1" class="bmd-label-floating">계정 연동 여부</label>
 	                      <div class="form-check">
 						      <label class="form-check-label">
 						      <c:choose>
@@ -119,11 +103,6 @@
 						          </span>
 						      	</c:otherwise>
 						      </c:choose>
-						          <!-- <input class="form-check-input" type="checkbox" value="" disabled checked>
-						          		사진을 등록하실 수 있습니다. 
-						          <span class="form-check-sign">
-						              <span class="check"></span>
-						          </span> -->
 						      </label>
 						      <!-- 구글, 네이버 아이콘 만드는곳~~~ -->
 						      <div align="center" style="float: right">
@@ -133,41 +112,85 @@
 						  </div>
 						  
                   </div>
-                  <!-- <div class="form-group update-margin">
-                  	<label>인증 계정</label>
-                    <h5 class="info-title">인증 계정</h5>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="accountLiked" name="accountLiked" placeholder="인증계정" readonly="readonly">
-                     </div>
-                  </div> -->
-                  
-                  <div class="form-group text-center update-margin">
-                  	<label>현재 캐시</label>
-                    <!-- <h5 class="info-title">현재 캐시</h5> -->
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="point" name="point" value="${sessionScope.user.point}" readonly="readonly">
-                     </div>
-                     <button type="submit" class="btn btn-default update-btn-margin">충전하기</button>
-                  </div>
-                  
                   <div class="form-group update-margin">
-                  	<label>자기 소개</label>
+                  	<label for="exampleInput1" class="bmd-label-floating">자기 소개</label>
                     <div class="input-group form-default">
                         <input type="text" class="form-control" id="prContent" name="prContent" value="${sessionScope.user.prContent}">
                      </div>
                   </div>
-                  <div align="center">
-                  	<button type="button" class="btn btn-info" >저장하기</button>
+                    
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-5 mr-auto">
+                	<div class="form-group update-lab-padding">
+	                      <label for="exampleInput1" class="bmd-label-floating">아이디</label>
+	                      <div class="input-group">
+	                        <input type="text" class="form-control" id="userId" name="userId" value="${sessionScope.user.userId}" readonly="readonly">
+	                      </div>
+	                 </div>
+                    <div class="form-group">
+                      <label for="exampleInput1" class="bmd-label-floating">이름</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" name="userName" value="${sessionScope.user.userName}">
+                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <label for="exampleInput1" class="bmd-label-floating">비밀번호</label>
+	                      <div class="input-group">
+	                        <input type="password" name="pwd" class="form-control" />
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <label for="exampleInput1" class="bmd-label-floating">비밀번호 확인</label>
+	                      <div class="input-group">
+	                        <input type="password" class="form-control" />
+	                      </div>
+                    </div>
+                    
+                  <div class="form-group text-center update-lab-padding">
+                  	<label for="exampleInput1" class="bmd-label-floating">현재 캐시</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="point" name="point" value="${sessionScope.user.point}" readonly="readonly">
+                     </div>
+                     <button type="button" class="btn btn-default update-margin" id="pointCharge" data-toggle="modal" data-target="#exampleModal">충전하기</button>
                   </div>
+                  
                 </div>
                 
               </div>
         	</div>
-        	<!--  -->
-        	
+        	<!-- submit -->
+        		<div align="center">
+                  	<button type="button" class="btn btn-info update-btn-save">저장하기</button>
+                 </div>
 			</form>
 		</div>
 	</div>
 </div>
 
+	<!-- 충전하기 Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">충전하기</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      
+	      <div class="modal-body">
+		    <div class="form-group bmd-form-group">
+					<label for="exampleInput1" class="bmd-label-floating">충전금액</label>
+					<input type="text" class="form-control" id="chargePrice">
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" id="messageSend" data-dismiss="modal">충전하기</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
 
