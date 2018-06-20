@@ -97,7 +97,7 @@ $(function(){
 		                    <a href="#" class="dropdown-item">
 		                        <i class="material-icons">description</i>요청/작업
 		                    </a>
-		                    <a href="#" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/user/updateinfo.ps" class="dropdown-item">
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
 		                    <c:if test="${sessionScope.user.naver eq null}">
