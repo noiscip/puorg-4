@@ -20,7 +20,7 @@
 							},
 							success : function(data) {
 								
-								
+								$("#reviewcontents").empty();
 								  var media="";
 							      $.each(data.commuserlist,function(index,element){
 										media += "<div class='media'>"+
@@ -32,14 +32,14 @@
 											media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
 										}
 										media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
-											element.userName+"<small>· "+Date(data.newcommentlist[index].cmtReg)+"</small>"+
-										    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p>"+
+											element.userName+"<small>· "+Date(data.comment[index].cmtReg)+"</small>"+
+										    "</h4><p>"+data.comment[index].cmtContent+"</p>"+
 										    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
 											"rel='tooltip' title='' data-original-title='보내버리기'> <i "+
 											"class='material-icons'>reply</i>신고</a></div></div>";
 									})
-									$(".review").empty();
-									$(".review").append(media); 									
+									console.log(media);
+									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#newComment").val("");
 							     
@@ -47,24 +47,6 @@
 							  error: function(){
 							   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
 							  }
-								
-								
-								
-								var html="";
-								$.each(data.comment,function(index,obj){
-									
-									
-									
-									html+=data.commuserid[index]+" : "+obj.cmtContent+"<br>";
-									html+="<hr style='margin-top: 5px; margin-bottom: 5px;'>";
-									
-									
-									
-								}); 
-								console.log(html);
-								$(".review").empty();
-								$(".review").append(html); 
-							}
 						});	
 					}
 				});
@@ -160,138 +142,147 @@
 		<div class="container">
 			<div class="row" style="border-width: 1px; text-align: center;">
 				<div class="col-md-12 ml-auto mr-auto">
-				<h2 class="title">${boardInfo.brdTitle}</h2>
+					<h2 class="title">${boardInfo.brdTitle}</h2>
 					<p>
 						<font>${boardInfo.brdContent}</font>
 					</p>
 				</div>
 			</div>
-	<c:choose>
-		<c:when test="${boardInfo.operStateNo eq 2}">
-			<div class="section section-comments">
-                <div class="row">
-                    <div class="col-md-12 ml-auto mr-auto">
-                                           
-			<div class="row">
-				<div class="col-md-6 col-sm-6">	
-				<h3 class="title" style="text-align: center">작업 정보</h3>				
-					<div class="card card-collapse">
-						<div class="card-header" role="tab" id="headingTwo">
-							<h5 class="mb-0">
-								<a>거래금액</a>
-							</h5>
-						</div>
-						<div id="collapseTwo" class="collapse show" role="tabpanel"
-							aria-labelledby="headingTwo" data-parent="#accordion" style="">
-							<div class="card-body">${boardInfo.brdExpectPrice}</div>
-						</div>
-					</div>
-					<div class="card card-collapse">
-						<div class="card-header" role="tab" id="headingTwo">
-							<h5 class="mb-0">
-								<a>작업완료날짜</a>
-							</h5>
-						</div>
-						<div id="collapseTwo" class="collapse show" role="tabpanel"
-							aria-labelledby="headingTwo" data-parent="#accordion" style="">
-							<div class="card-body">${boardInfo.brdExpectEndDate}</div>
-						</div>
-					</div>
-					<div class="card card-collapse">
-						<div class="card-header" role="tab" id="headingTwo">
-							<h5 class="mb-0">
-								<a>저작권 양도여부</a>
-							</h5>
-						</div>
-						<div id="collapseTwo" class="collapse show" role="tabpanel"
-							aria-labelledby="headingTwo" data-parent="#accordion" style="">
-							<div class="card-body">${boardInfo.copyright}</div>
-						</div>
-					</div>
-				</div>
+			<c:choose>
+				<c:when test="${boardInfo.operStateNo eq 2}">
+					<div class="section section-comments">
+						<div class="row">
+							<div class="col-md-12 ml-auto mr-auto">
 
-				<div class="col-md-6 col-sm-6">
-					<div id="re" style="text-align: center;">
-						<h3 class="title">작업 메시지함</h3>
-						<!-- <h3 class="main-price">$335</h3> -->
-						<div id="accordion" role="tablist">
-
-							<div class="card card-collapse">
-								
-								<div id="collapseThree" class="collapse show" role="tabpanel"
-									aria-labelledby="headingThree" data-parent="#accordion"
-									style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
-									<div class="card-body">	
-										
-								<c:forEach var="review1" items="${comment}" varStatus="status">
-						
-										<div class="media">
-											<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
-												<div class="avatar">
-														<img class="media-object" alt="Tim Picture"
-															src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
-												</div>
-											</a>
-											<div class="media-body">
-												<h4 class="media-heading">
-													${commentuser[status.index].userId}<small>· Yesterday</small>
-												</h4>
-												<p>${review1.cmtContent} </p>
-												<div class="media-footer">
-													<a href="#pablo"
-														class="btn btn-primary btn-link float-right" rel="tooltip"
-														title="" data-original-title="보내버리기"> <i
-														class="material-icons">reply</i> 신고
-													</a>
-												</div>
+								<div class="row">
+									<div class="col-md-6 col-sm-6">
+										<h3 class="title" style="text-align: center">작업 정보</h3>
+										<div class="card card-collapse">
+											<div class="card-header" role="tab" id="headingTwo">
+												<h5 class="mb-0">
+													<a>거래금액</a>
+												</h5>
+											</div>
+											<div id="collapseTwo" class="collapse show" role="tabpanel"
+												aria-labelledby="headingTwo" data-parent="#accordion"
+												style="">
+												<div class="card-body">${boardInfo.brdExpectPrice}</div>
 											</div>
 										</div>
-										
-					</c:forEach>
-										
-									</div>
-								</div>
-							</div>
-							<div class="card card-collapse">
-								<div class="card-header" role="tab" id="headingTwo">
-									<h5 class="mb-0">
-										<a>Input Comment</a>
-									</h5>
-								</div>
-								<div id="collapseTwo" class="collapse show" role="tabpanel"
-									aria-labelledby="headingTwo" data-parent="#accordion" style="">
-									<div class="media media-post">
-										<a class="author float-left" href="#pablo">
-											<div class="avatar">
-												<img class="media-object" alt="64x64"
-													src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
+										<div class="card card-collapse">
+											<div class="card-header" role="tab" id="headingTwo">
+												<h5 class="mb-0">
+													<a>작업완료날짜</a>
+												</h5>
 											</div>
-										</a>
-										<div class="media-body">
-											<div class="form-group label-floating bmd-form-group">
-												<label class="form-control-label bmd-label-floating"
-													for="exampleBlogPost"> 댓글을 달아보세요...</label>
-												<textarea class="form-control" rows="5" id="reviewcontent"></textarea>
+											<div id="collapseTwo" class="collapse show" role="tabpanel"
+												aria-labelledby="headingTwo" data-parent="#accordion"
+												style="">
+												<div class="card-body">${boardInfo.brdExpectEndDate}</div>
 											</div>
-											<div class="media-footer">
-												<a href="#pablo"
-													class="btn btn-primary btn-round btn-wd float-right" id="addreviewbutton">Post
-													Comment</a>
+										</div>
+										<div class="card card-collapse">
+											<div class="card-header" role="tab" id="headingTwo">
+												<h5 class="mb-0">
+													<a>저작권 양도여부</a>
+												</h5>
+											</div>
+											<div id="collapseTwo" class="collapse show" role="tabpanel"
+												aria-labelledby="headingTwo" data-parent="#accordion"
+												style="">
+												<div class="card-body">${boardInfo.copyright}</div>
 											</div>
 										</div>
 									</div>
+
+									<div class="col-md-6 col-sm-6">
+										<div id="re" style="text-align: center;">
+											<h3 class="title">작업 메시지함</h3>
+											<!-- <h3 class="main-price">$335</h3> -->
+											<div id="accordion" role="tablist">
+
+												<div class="card card-collapse">
+
+													<div id="collapseThree" class="collapse show"
+														role="tabpanel" aria-labelledby="headingThree"
+														data-parent="#accordion"
+														style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
+														<div class="card-body" id="reviewcontents">
+
+															<c:forEach var="review1" items="${comment}"
+																varStatus="status">
+
+																<div class="media">
+																	<a class="float-left"
+																		href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
+																		<div class="avatar">
+																			<img class="media-object" alt="Tim Picture"
+																				src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
+																		</div>
+																	</a>
+																	<div class="media-body">
+																		<h4 class="media-heading">
+																			${commentuser[status.index].userId}<small>·
+																				Yesterday</small>
+																		</h4>
+																		<p>${review1.cmtContent}</p>
+																		<div class="media-footer">
+																			<a href="#pablo"
+																				class="btn btn-primary btn-link float-right"
+																				rel="tooltip" title="" data-original-title="보내버리기">
+																				<i class="material-icons">reply</i> 신고
+																			</a>
+																		</div>
+																	</div>
+																</div>
+
+															</c:forEach>
+
+														</div>
+													</div>
+												</div>
+												<div class="card card-collapse">
+													<div class="card-header" role="tab" id="headingTwo">
+														<h5 class="mb-0">
+															<a>Input Comment</a>
+														</h5>
+													</div>
+													<div id="collapseTwo" class="collapse show" role="tabpanel"
+														aria-labelledby="headingTwo" data-parent="#accordion"
+														style="">
+														<div class="media media-post">
+															<a class="author float-left" href="#pablo">
+																<div class="avatar">
+																	<img class="media-object" alt="64x64"
+																		src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
+																</div>
+															</a>
+															<div class="media-body">
+																<div class="form-group label-floating bmd-form-group">
+																	<label class="form-control-label bmd-label-floating"
+																		for="exampleBlogPost"> 댓글을 달아보세요...</label>
+																	<textarea class="form-control" rows="5"
+																		id="reviewcontent"></textarea>
+																</div>
+																<div class="media-footer">
+																	<a href="#pablo"
+																		class="btn btn-primary btn-round btn-wd float-right"
+																		id="addreviewbutton">Post Comment</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
-				</div>
-			</div>
-			           </div>
-                </div>
-            </div>
-		</c:when>
-	</c:choose>	
+				</c:when>
+			</c:choose>
 
 
 			<table class="table">
@@ -317,7 +308,7 @@
 										<td class="text-center">${applyid[status.index]}</td>
 										<td class="text-center">${apply.operApplyPrice}</td>
 										<td class="text-center">${apply.operApplyReg}</td>
-										
+
 									</tr>
 
 
