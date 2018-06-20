@@ -19,25 +19,35 @@ $(function(){
 					noticeMenu += '<li class="divider"><a href="#">'
 					noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
 					noticeMenu += '"'+ elt[1].userName +'"'
-					
+					var value = ''
 					if(elt[0].tableNo == 3){
 						noticeMenu += '님이 ' + elt[2].brdTitle
 						if(elt[0].operNo == 0){
+							value = elt[0].operNo
 							noticeMenu += ' 작업을 신청 하였습니다'
 						}else{
+							value = elt[0].operApplyNo
 							noticeMenu += ' 작업이 시작 되었습니다'
 						}
 					}else if(elt[0].tableNo == 4){
-						
+						value = elt[0].cmtNo
 					}else if(elt[0].tableNo == 5){
+						value = elt[0].msgNo
 						noticeMenu += '님이 메시지를 보냈습니다'
 					}
+					noticeMenu += '<input type="hidden" value="'+value+'">'
 					noticeMenu += '</a></li>'
 				})
 				
 				$('#noticeList').append(noticeMenu)
 			}
 		})
+	})
+	
+	
+	$(document).on('click','.divider',function(){
+		console.log($(this))
+		console.log(this)
 	})
 	
 })
