@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -198,5 +199,12 @@ public class UserController {
 		return "mypage.following";
 	}
 	
+	//정보 수정 페이지로 이동
+	@RequestMapping("updateinfo.ps")
+	public String updatePage(HttpSession session) {
+		
+		
+		return "mypage.updateinfo";
+	}
 	
 }

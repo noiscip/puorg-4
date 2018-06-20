@@ -98,11 +98,37 @@ public class MessageService {
 	}
 	
 	//받은 메시지 검색
+	public List<Message> selectReceiveMsg(int receiveUserNo, String userName){
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		List<Message> receiveSelect = messageDao.selectReceiveMsg(receiveUserNo, userName);
+		
+		return receiveSelect;
+	}
+	
+	//받은 메시지 검색(User 정보)
+	public List<User> selectReceiveInfo(int receiveUserNo, String userName){
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		List<User> receiveSelectInfo = messageDao.selectReceiveInfo(receiveUserNo, userName);
+		
+		return receiveSelectInfo;
+	}
+	
+	//보낸 메시지 검색
+	public List<Message> selectSendMsg(int receiveUserNo, String userName){
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		List<Message> sendSelect = messageDao.selectSendMsg(receiveUserNo, userName);
+		
+		return sendSelect;
+	}
 	
 	
-	
-	
-	
+	//보낸 메시지 검색(User 정보)
+	public List<User> selectSendInfo(int receiveUserNo, String userName){
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		List<User> sendSelectInfo = messageDao.selectSendInfo(receiveUserNo, userName);
+		
+		return sendSelectInfo;
+	}
 	
 	
 }

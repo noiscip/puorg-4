@@ -58,8 +58,8 @@ public class AmazonTest {
 		return "mypage.upload";
 	}
 	
-	@RequestMapping("amazontest.ps")
-	public String aaaaa(MultipartHttpServletRequest filePath,Model model) throws Exception {
+	@RequestMapping(value = "amazontest.ps", method=RequestMethod.POST)
+	public View aaaaa(MultipartHttpServletRequest filePath,Model model) throws Exception {
 		String abc= fileUpload(filePath);
 		String logocheck=detectLogos(abc);
 		String safecheck=detectSafeSearch(abc);
@@ -69,13 +69,14 @@ public class AmazonTest {
 		model.addAttribute("label", labelBag);
 		model.addAttribute("picPath",picturePath);
 		System.out.println("labelBag: "+labelBag);
-		return "mypage.uploadAfter";
+		return jsonview;
 	}
 	
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
 		String filePathh="";
-		String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
+		/*String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
+		String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
