@@ -18,6 +18,10 @@
     <!-- CSS Files -->
     <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" />
+    
+    <!-- 아림이 수정중 -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css"> -->
+
     <!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--   Core JS Files   -->
@@ -35,7 +39,7 @@
 	 <!--	Plugin for Select, full documentation here: https://silviomoreto.github.io/bootstrap-select -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-selectpicker.js"></script>
     <!--	Plugin for Tags, full documentation here: https://xoxco.com/projects/code/tagsinput/  -->
-    <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script> 
        <!--	Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
     <!-- Plugins for presentation and navigation  -->

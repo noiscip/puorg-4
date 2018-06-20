@@ -53,7 +53,6 @@ public class NaverLoginController {
 
 		if(user == null) { //유저가 null이면 로그인이 안되어 있는 상태 
 			User accountUser = userService.selectAccountNo(accountNo,NAVER);
-			
 			if(accountUser == null) { //연동되어 있는 계정이 없음
 				session.setAttribute("result", "F");
 				result = "redirect:/user/login.ps";
@@ -62,11 +61,7 @@ public class NaverLoginController {
 			}
 		}else { //유저가 존재 한다면 계정 연동
 			if(userService.selectAccountNo(accountNo,NAVER) == null) { //네이버 등록이 안되어 있다면
-				if(userService.selectAccountUserNo(user.getUserNo()) == null) { //구글 등록도 안되어 있다면 insert
-					userService.insertAccountNo(user.getUserNo(),accountNo,NAVER);
-				}else { //구글 등록은 되어 있다면 update
-					userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
-				}
+				userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
 				session.setAttribute("user", userService.userInfo(user.getUserNo()));
 			}else { //네이버 등록이 되어 있다면
 				session.setAttribute("result", "F");

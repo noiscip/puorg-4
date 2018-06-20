@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.or.picsion.blame.dto.Blame;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dao.UserDao;
 import kr.or.picsion.user.dto.User;
@@ -17,15 +16,12 @@ public class UserService {
 
 	@Autowired
 	private SqlSession sqlSession;
-
 	
 	public void register(User user) {
-		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		userDao.registerUser(user);
-		System.out.println("유저 넘버 : " + user.getUserNo());
 		userDao.insertProfile(user.getUserNo());
-		
+		userDao.insertAccount(user.getUserNo());
 	}
 	
 	/**
@@ -43,19 +39,8 @@ public class UserService {
 		
 		if(loginUser == null || !user.getPwd().equals(loginUser.getPwd())) {
 			loginUser = null;
-		}/*else {
-			//사용자 프로필 테이블 검색해서 set
-			User prUser = userDao.selectProfile(loginUser.getUserNo());
-			if(prUser != null) {
-				loginUser.setPrContent(prUser.getPrContent());
-				loginUser.setPrPicture(prUser.getPrPicture());
-			}
-			User acUser = userDao.selectAccountUserNo(loginUser.getUserNo());
-			if(acUser != null) {
-				loginUser.setNaver(acUser.getNaver());
-				loginUser.setGoogle(acUser.getGoogle());
-			}
-		}*/
+		}
+		
 		return loginUser;
 	}
 	
@@ -70,7 +55,6 @@ public class UserService {
 	public List<Picture> listpic(int userNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		List<Picture> followingPic = userDao.followingUserPictureList(userNo);
-		System.out.println(followingPic);
 		return followingPic;
 	}
 	
@@ -79,24 +63,13 @@ public class UserService {
 	public List<User> listpicown(int userNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		List<User> followingPicOwner = userDao.followingUserPictureOwnerList(userNo);
-		System.out.println(followingPicOwner);
 		return followingPicOwner;
 	}
 	
 	//userNo로 회원 정보 가져오기
 	public User userInfo(int userNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		
-		User userInfo = userDao.selectUserNo(userNo);
-		User userProfile = userDao.selectProfile(userNo);
-		User userAccountLinkId = userDao.selectAccountUserNo(userNo);
-		
-		userInfo.setPrContent(userProfile.getPrContent());
-		userInfo.setPrPicture(userProfile.getPrPicture());
-		if(userAccountLinkId != null) {
-			userInfo.setNaver(userAccountLinkId.getNaver());
-			userInfo.setGoogle(userAccountLinkId.getGoogle());
-		}
+		User userInfo = userDao.selectUser("u.userNo",userNo);
 		return userInfo;
 	}
 	
@@ -106,20 +79,14 @@ public class UserService {
 	//회원의 팔로워 리스트
 	public List<User> followerUserList(int userNo){
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		
-		List<User> followList = new ArrayList<User>();
-		followList = userDao.followerUserList(userNo);
-		
+		List<User> followList = userDao.followerUserList(userNo);
 		return followList;
 	}
 		
 	//회원의 팔로잉 리스트
 	public List<User> followingUserList(int userNo){
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		
-		List<User> followingList = new ArrayList<User>();
-		followingList = userDao.followingUserList(userNo);
-		
+		List<User> followingList = userDao.followingUserList(userNo);
 		return followingList;
 	}
 	
@@ -127,7 +94,6 @@ public class UserService {
 	public int followingConfirm(int userNo, int followingUserNo) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		int result = userDao.followingConfirm(userNo, followingUserNo);
-		
 		return result;
 	}
 	
@@ -178,12 +144,7 @@ public class UserService {
 		return user;
 	}
 	
-	//회원 아이디 연동 정보 insert
-	public int insertAccountNo(int userNo,String accountNo,String portalSite) {
-		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		return userDao.insertAccount(userNo,accountNo,portalSite);
-	}
-	
+	//회원 아이디 연동 정보 update
 	public int updateAccountNo(int userNo, String accountNo, String portalSite) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		return userDao.updateAccount(userNo,accountNo,portalSite);
@@ -193,11 +154,6 @@ public class UserService {
 	public User selectAccountNo(String accountNo,String field) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		return userDao.selectAccountNo(accountNo,field);
-	}
-	
-	public User selectAccountUserNo(int userNo) {
-		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		return userDao.selectAccountUserNo(userNo);
 	}
 	
 
