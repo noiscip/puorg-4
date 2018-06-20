@@ -302,7 +302,7 @@ width: 300px;
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">거래/내역</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
 		</ul>
@@ -335,13 +335,13 @@ width: 300px;
 						<div class="tab-pane active" id="receive">
 							<table class="table">
 							    <thead>
-							        <tr >
-							            <th>번호</th>
-										<th>보낸이</th>
-										<th>내용</th>
-										<th>받은 날짜</th>
-										<th>상태</th>
-										<th>삭제</th>
+							        <tr>
+							            <th style="width: 5%">번호</th>
+										<th style="width: 10%">보낸이</th>
+										<th style="width: 60%">내용</th>
+										<th style="width: 10%">받은 날짜</th>
+										<th style="width: 10%">상태</th>
+										<th style="width: 5%">삭제</th>
 							        </tr>
 							    </thead>
 							    <tbody>
@@ -377,12 +377,12 @@ width: 300px;
 							<table class="table">
 							    <thead>
 							        <tr>
-							            <th>번호</th>
-										<th>받은이</th>
-										<th>내용</th>
-										<th>보낸 날짜</th>
-										<th>상태</th>
-										<th>삭제</th>
+							            <th style="width: 5%">번호</th>
+										<th style="width: 10%">받은이</th>
+										<th style="width: 60%">내용</th>
+										<th style="width: 10%">보낸 날짜</th>
+										<th style="width: 10%">상태</th>
+										<th style="width: 5%">삭제</th>
 							        </tr>
 							    </thead>
 							    <tbody>

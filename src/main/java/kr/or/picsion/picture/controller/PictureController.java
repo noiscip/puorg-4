@@ -46,7 +46,6 @@ public class PictureController {
 		for(Comment c : commentList) {
 			commentUserList.add(userService.userInfo(c.getUserNo()));
 		}
-		System.out.println(commentList);
 		model.addAttribute("tagList",tagList);
 		model.addAttribute("picture",picture);
 		model.addAttribute("userInfo",userInfo);

@@ -190,25 +190,13 @@
 										<div class="media">
 											<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
 												<div class="avatar">
-												<c:choose>
-													<c:when test="${review1.userNo eq sessionScope.user.userNo}">			
-																			
 														<img class="media-object" alt="Tim Picture"
-															src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
-													</c:when>
-													<c:otherwise>
-														<img class="media-object" alt="Tim Picture"
-															src="<%=request.getContextPath()%>/${operuser.prPicture}">
-													</c:otherwise>
-												</c:choose>
-												
-											
-												
+															src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
 												</div>
 											</a>
 											<div class="media-body">
 												<h4 class="media-heading">
-													${commuserid[status.index]}<small>· Yesterday</small>
+													${commentuser[status.index].userId}<small>· Yesterday</small>
 												</h4>
 												<p>${review1.cmtContent} </p>
 												<div class="media-footer">
