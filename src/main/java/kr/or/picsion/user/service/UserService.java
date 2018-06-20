@@ -99,13 +99,7 @@ public class UserService {
 		}
 		return userInfo;
 	}
-	public User selectUserProfile(int userNo) {
-		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		
-		User userInfo=userDao.selectUserProfile(userNo);
-		
-		return userInfo;
-	}
+	
 	
 		
 		

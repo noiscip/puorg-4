@@ -4,15 +4,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
-	
-		
-	
-	
-	
-	
-	
-	
+	$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 	
 	
 	$(document).on('click','#commentbtn',function(){
@@ -27,10 +19,10 @@ $(document).ready(function() {
 			  url : "<%=request.getContextPath()%>/insertpiccomment.ps",
 			  data: data,
 			  success : function(data){
+				  var media="";
 			      $('#commentstart').empty();
 			      $.each(data.newcommentUserList,function(index,element){
-			    	  console.log(element);
-						var media = "<div class='media'>"+
+						media += "<div class='media'>"+
 					    "<a class='float-left' href='#pablo'>"+
 						"<div class='avatar'>";
 						if(element.prPicture == null){
@@ -39,12 +31,15 @@ $(document).ready(function() {
 							media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
 						}
 						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
-							element.userName+"<small>·"+data.newcommentlist[index].cmtReg+"</small>"+
+							element.userName+"<small>· "+Date(data.newcommentlist[index].cmtReg)+"</small>"+
 						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p>"+
 						    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
-							"rel='tooltip' title='' data-original-title='보내버리기'> <i"+
+							"rel='tooltip' title='' data-original-title='보내버리기'> <i "+
 							"class='material-icons'>reply</i>신고</a></div></div>";
 					})
+					$('#commentstart').append(media);
+			        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+			      	$("#newComment").val("");
 			     
 			  },
 			  error: function(){

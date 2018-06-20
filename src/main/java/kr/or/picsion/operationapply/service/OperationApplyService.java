@@ -35,6 +35,16 @@ public class OperationApplyService {
 		
 		return check;
 	}
+	
+	//해당유저가쓴 요청글에 신청자 이름 목록 가져오기
+			public List<String> operationApplyNameList(int brdNo){
+				System.out.println("operationApplyNameList 서비스");
+				OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
+				
+				List<String> operationApplyNameList = operationApplyDao.operationApplyNameList(brdNo);
+				
+				return operationApplyNameList;
+			}
 	//해당유저가쓴 요청글에 신청자 목록 가져오기
 		public List<OperationApply> operationApplyList(int brdNo, int requestUserNo){
 			System.out.println("operationApplyList 서비스");

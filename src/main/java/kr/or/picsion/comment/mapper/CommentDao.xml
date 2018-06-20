@@ -8,12 +8,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="commentList" resultType="kr.or.picsion.comment.dto.Comment">
 	  select * from COMMENTS where brdNo=#{brdNo}
 	</select>
+<!-- 요청글에 대한 댓글 작성자리스트 가져오기 -->
+	<select id="commentnameList" resultType="String">
+		select u.userId from COMMENTS c join USERS u on c.userNo=u.userNo where c.brdNo=#{brdNo}
+	</select>
+<!-- 요청글에 대한 댓글 작성자리스트 가져오기 -->
+	<select id="commentuser" resultType="kr.or.picsion.user.dto.User">
+		select u.userNo as userNo, u.userId as userId, p.prPicture as prPicture from COMMENTS c join USERS u on c.userNo=u.userNo 
+								join PROFILE p on c.userNo=p.userNo
+	 where c.brdNo=#{brdNo};
+	</select>
+
+
 
 	<!-- 사진에 대한 댓글리스트 가져오기 -->
 	<select id="picCommentList" resultType="kr.or.picsion.comment.dto.Comment">
 		SELECT * FROM COMMENTS WHERE picNo=#{picNo}
 	</select>
 	<!-- 요청글 댓글 쓰기  -->	
+	
+	<!-- 사진에 대한 댓글리스트 가져오기 -->
+	<select id="picCommentUserList" resultType="kr.or.picsion.comment.dto.User">
+		SELECT * FROM COMMENTS WHERE picNo=#{picNo}
+	</select>
 	
 	<!-- 게시판 댓글 저장 -->
 	<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment">
