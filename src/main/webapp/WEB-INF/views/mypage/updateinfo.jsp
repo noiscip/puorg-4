@@ -67,7 +67,7 @@
               <div class="row">
               	<div class="col-md-6 mr-auto text-center">
                   	<div class="form-group">
-                  		<img src="/picsion/assets/img/faces/card-profile1-square.jpg" alt="Circle Image" class="img-raised rounded-circle img-fluid update-pr"><br>
+                  		<img src="<%=request.getContextPath()%>${sessionScope.user.prPicture}" class="img-raised rounded-circle img-fluid update-pr"><br>
 			      		<button type="submit" class="btn btn-default update-btn-margin">프로필 수정</button>
                   	</div>
                     <div class="form-group">
