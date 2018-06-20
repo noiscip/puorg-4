@@ -10,6 +10,7 @@ public interface OperationApplyDao {
 	public int deleteOperationApply(int operApplyNo);
 	public List<OperationApply> selectOperationApply(int requestUserNo);
 	public List<OperationApply> operationApplyList(int brdNo, int requestUserNo);
+	public List<String> operationApplyNameList(int brdNo);
 	public String operationStatus(int operStateNo);
 	
 	

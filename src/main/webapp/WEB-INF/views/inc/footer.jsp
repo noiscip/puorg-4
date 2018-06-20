@@ -59,10 +59,11 @@
 					url = "/picsion/notice/noticeComment.ps"
 				}else if(table == 4){
 					console.log("4번, 댓글")
-					console.log($('#userProfile'))
 					url = "/picsion/notice/noticeMsg.ps"
 				}else if(table == 5){
 					console.log("5번, 메시지")
+				}else if(table == 6){
+					console.log("6번, 작업 수락")
 				}
 				
 				$.ajax({

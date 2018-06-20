@@ -54,5 +54,15 @@ public class CommentController {
 		return jsonview;
 	}
 	
+	@RequestMapping(value = "insertpiccomment.ps")
+	public View insertPicComment(Comment comment, Model model, int picNo) {
+		commentService.picInsertComment(comment);
+		List<Comment> newcommentlist = commentService.picCommentList(picNo); //댓글 목록
+		List<User> newcommentUserList = commentService.picCommentUserList(picNo); //댓글 유저 목록
+		model.addAttribute("newcommentUserList",newcommentUserList);
+		model.addAttribute("newcommentlist",newcommentlist);
+		return jsonview;
+	}
+	
 	
 }

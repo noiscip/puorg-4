@@ -44,11 +44,11 @@ public class NoticeController {
 	*/
 	@RequestMapping("notice.ps")
 	public View noticeList(HttpSession session, Model model) {
-		System.out.println("오나요??");
 		User user = (User)session.getAttribute("user");
+		
 		Map<Integer, Object> map = noticeService.noticeList(user.getUserNo());
 		model.addAttribute("map",map);
-		System.out.println("가나요??");
+		
 		return jsonview;
 	}
 	
@@ -57,7 +57,6 @@ public class NoticeController {
 		User user = (User)session.getAttribute("user");
 		
 		int count = noticeService.readCheckCount(user.getUserNo());
-		
 		model.addAttribute("count",count);
 		
 		return jsonview;

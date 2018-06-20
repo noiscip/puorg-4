@@ -1,6 +1,57 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+	
+	
+	$(document).on('click','#commentbtn',function(){
+		var tableNo = 2;
+		var data= {cmtContent:$("#newComment").val(), 
+					userNo:${sessionScope.user.userNo}, 
+					picNo:${picture.picNo},
+					tableNo : tableNo
+				   };
+		
+		$.ajax({
+			  url : "<%=request.getContextPath()%>/insertpiccomment.ps",
+			  data: data,
+			  success : function(data){
+				  var media="";
+			      $('#commentstart').empty();
+			      console.log("데이터들"+data);
+			      $.each(data.newcommentUserList,function(index,element){
+						media += "<div class='media'>"+
+					    "<a class='float-left' href='#pablo'>"+
+						"<div class='avatar'>";
+						if(element.prPicture == null){
+							 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
+						}else{
+							media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
+						}
+						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
+							element.userName+"<small>· "+Date(data.newcommentlist[index].cmtReg)+"</small>"+
+						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p>"+
+						    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
+							"rel='tooltip' title='' data-original-title='보내버리기'> <i "+
+							"class='material-icons'>reply</i>신고</a></div></div>";
+					})
+					$('#commentstart').append(media);
+			        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+			      	$("#newComment").val("");
+			     
+			  },
+			  error: function(){
+			   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
+			  }
+		});
+	})
+
+});
+
+</script>
 <div class="page-header header-filter" data-parallax="true"
 	filter-color="rose"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
@@ -40,8 +91,8 @@
 								<div class="row">
 									<div class="col-md-5">
 										<div class="card-header card-header-image">
-											<a href="#pablo"> <img class="img"
-												src="<%=request.getContextPath()%>/${userInfo.prPicture}">
+											<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${userInfo.userNo}"> <img class="img"
+												src="<%=request.getContextPath()%>${userInfo.prPicture}">
 											</a>
 											<div class="colored-shadow"
 												style="background-image: url(&quot;<%=request.getContextPath()%>/${userInfo.prPicture}&quot;); opacity: 1;"></div>
@@ -92,7 +143,13 @@
 							</div>
 							<div id="collapseTwo" class="collapse show" role="tabpanel"
 								aria-labelledby="headingTwo" data-parent="#accordion" style="">
-								<div class="card-body">#Tag #Tag #Tag #Tag #Tag #Tag #Tag #Tag</div>
+								<div class="card-body">
+									<c:forEach var="tag" items="${tagList}">
+										<a href="#pablo">
+										#${tag}
+										</a>
+									</c:forEach>
+								</div>
 							</div>
 						</div>
 						<div class="card card-collapse">
@@ -103,69 +160,42 @@
 							</div>
 							<div id="collapseThree" class="collapse show" role="tabpanel"
 								aria-labelledby="headingThree" data-parent="#accordion"
-								style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
-								<div class="card-body">
+								style="max-height: 250px; overflow-x: hidden; overflow-y: inherit;">
+								<div id="commentstart" class="card-body">
+								<c:choose>
+								<c:when test="${empty commentList}">
+								<h3 class="category text-muted">아직 댓글이 없습니다.</h3>
+								</c:when>
+								<c:otherwise>
+								<c:forEach var="comm" items="${commentList}" varStatus="status">
+								
 									<div class="media">
 										<a class="float-left" href="#pablo">
 											<div class="avatar">
-												<img class="media-object"
-													src="../assets/img/faces/card-profile4-square.jpg"
-													alt="...">
+											<c:choose>
+											<c:when test="${commentUserList[status.index].prPicture eq null}">
+											  <img class="media-object" alt="64x64" src="<%=request.getContextPath()%>/assets/img/user.png">
+											</c:when>
+											<c:otherwise>
+											  <img class="media-object" alt="64x64" src="<%=request.getContextPath()%>${commentUserList[status.index].prPicture}">
+											</c:otherwise>
+											</c:choose> 
 											</div>
 										</a>
 										<div class="media-body">
 											<h4 class="media-heading">
-												Tina Andrew <small>· 7 minutes ago</small>
+												${commentUserList[status.index].userName} <small>· ${comm.cmtReg}</small>
 											</h4>
-											<p>사진 멋있어요</p>
+											<p>${comm.cmtContent}</p>
 											<a href="#pablo" class="btn btn-primary btn-link float-right"
 												rel="tooltip" title="" data-original-title="보내버리기"> <i
 												class="material-icons">reply</i> 신고
 											</a>
 										</div>
 									</div>
-									<div class="media">
-										<a class="float-left" href="#pablo">
-											<div class="avatar">
-												<img class="media-object" alt="Tim Picture"
-													src="../assets/img/faces/card-profile1-square.jpg">
-											</div>
-										</a>
-										<div class="media-body">
-											<h4 class="media-heading">
-												John Camber <small>· Yesterday</small>
-											</h4>
-											<p>감사용~</p>
-											<div class="media-footer">
-												<a href="#pablo"
-													class="btn btn-primary btn-link float-right" rel="tooltip"
-													title="" data-original-title="보내버리기"> <i
-													class="material-icons">reply</i> 신고
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="media">
-										<a class="float-left" href="#pablo">
-											<div class="avatar">
-												<img class="media-object" alt="Tim Picture"
-													src="../assets/img/faces/card-profile1-square.jpg">
-											</div>
-										</a>
-										<div class="media-body">
-											<h4 class="media-heading">
-												John Camber <small>· Yesterday</small>
-											</h4>
-											<p>사진 많아용~</p>
-											<div class="media-footer">
-												<a href="#pablo"
-													class="btn btn-primary btn-link float-right" rel="tooltip"
-													title="" data-original-title="보내버리기"> <i
-													class="material-icons">reply</i> 신고
-												</a>
-											</div>
-										</div>
-									</div>
+									</c:forEach>
+								</c:otherwise>
+								</c:choose>
 								</div>
 							</div>
 						</div>
@@ -178,21 +208,41 @@
 							<div id="collapseTwo" class="collapse show" role="tabpanel"
 								aria-labelledby="headingTwo" data-parent="#accordion" style="">
 								<div class="media media-post">
-                            <a class="author float-left" href="#pablo">
-                                <div class="avatar">
-                                    <img class="media-object" alt="64x64" src="../assets/img/faces/card-profile6-square.jpg">
-                                </div>
-                            </a>
-                            <div class="media-body">
-                                <div class="form-group label-floating bmd-form-group">
-                                    <label class="form-control-label bmd-label-floating" for="exampleBlogPost"> 댓글을 달아보세요...</label>
-                                    <textarea class="form-control" rows="5" id="exampleBlogPost"></textarea>
-                                </div>
-                                <div class="media-footer">
-                                    <a href="#pablo" class="btn btn-primary btn-round btn-wd float-right">Post Comment</a>
-                                </div>
-                            </div>
-                        </div>
+								
+								 <c:choose>
+									<c:when test="${sessionScope.user eq null}">
+									<h3 class="category text-muted">로그인 후 이용가능합니다.</h3>
+									</c:when>
+								 	<c:otherwise>
+								 	<a class="author float-left" href="#pablo">
+										<div class="avatar">
+											<c:choose>
+												<c:when test="${sessionScope.user.prPicture eq null}">
+													<img class="media-object" alt="64x64"
+														src="<%=request.getContextPath()%>/assets/img/user.png">
+												</c:when>
+												<c:otherwise>
+													<img class="media-object" alt="64x64"
+														src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
+												</c:otherwise>
+											</c:choose>
+										</div>
+									</a>
+									<div class="media-body">
+										<div class="form-group label-floating bmd-form-group">
+											<label class="form-control-label bmd-label-floating"
+												for="exampleBlogPost"> 댓글을 달아보세요...</label>
+											<textarea id="newComment"class="form-control" rows="5" id="exampleBlogPost"></textarea>
+										</div>
+										<div class="media-footer">
+												<button type="button" id="commentbtn"
+												class="btn btn-primary btn-round btn-wd float-right">Post
+												Comment</button>
+										</div>
+									</div>
+								 	</c:otherwise>
+								  </c:choose>
+								</div>
 							</div>
 						</div>
 					</div>

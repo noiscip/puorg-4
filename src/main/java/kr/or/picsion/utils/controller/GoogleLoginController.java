@@ -109,11 +109,7 @@ public class GoogleLoginController {
 			}
 	  }else { //널이 아니면 등록
 		  if(userService.selectAccountNo(accountNo,GOOGLE) == null) {  //구글 등록이 안되어 있다면
-			  if(userService.selectAccountUserNo(user.getUserNo()) == null) { //네이버 등록도 안되어 있다면 insert
-				  userService.insertAccountNo(user.getUserNo(),accountNo,GOOGLE);
-			  }else { //네이버 등록은 되어있다면
-				  userService.updateAccountNo(user.getUserNo(),accountNo,GOOGLE);
-			  }
+			  userService.updateAccountNo(user.getUserNo(),accountNo,GOOGLE);
 			  session.setAttribute("user", userService.userInfo(user.getUserNo()));
 		  }else { //구글 등록이 되어있다면
 			  	session.setAttribute("result", "F");

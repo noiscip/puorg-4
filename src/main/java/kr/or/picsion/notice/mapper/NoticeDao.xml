@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="insertNotice" parameterType="hashmap">
 		insert into NOTICE (receiveUserNo, sendUserNo,tableNo,${table})
-		values (#{receiveUserNo},#{sendUserNo},#{tableNo},#{msgNo})
+		values (#{receiveUserNo},#{sendUserNo},#{tableNo},#{no} <if test="addNo != null and addNo != '' "> ,#{addNo}</if>)
 	</insert>
 	
 	<select id="readCheckCount" resultType="int">

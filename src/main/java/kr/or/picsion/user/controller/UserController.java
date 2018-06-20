@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,16 +64,13 @@ public class UserController {
 		User loginUser = userService.login(user);
 		String result="";
 		if(loginUser != null) {
-			System.out.println("로그인 성공");
 			session.setAttribute("user", loginUser);
-			System.out.println(loginUser.getRoleNo());
 			if(loginUser.getRoleNo()==3) {
 				result = "redirect:/user/admin.ps";
 			}else {
 				result = "redirect:/home.ps";
 			}
 		}else {
-			System.out.println("로그인 실패");
 			result = "redirect:/user/login.ps";
 		}
 		return result;
@@ -82,9 +78,7 @@ public class UserController {
 	
 	@RequestMapping("logout.ps")
 	public String userLogout(HttpSession session) {
-		
 		session.invalidate();
-		
 		return "redirect:/home.ps";
 	}
 	
@@ -130,6 +124,7 @@ public class UserController {
 		List<Integer> bookcheck = new ArrayList<Integer>();   //북마크 확인
 		List<Integer> likecount = new ArrayList<Integer>();   //좋아요 갯수
 		List<Integer> bookcount = new ArrayList<Integer>();   //북마크 갯수
+		
 		for(Picture p : followingPicList) {
 			likecheck.add(pictureService.respectConfirm(p.getPicNo(), user.getUserNo()));
 			bookcheck.add(pictureService.bookmarkConfirm(p.getPicNo(), user.getUserNo()));
@@ -199,10 +194,10 @@ public class UserController {
 		return "mypage.following";
 	}
 	
-	//정보 수정 페이지로 이동
+	//정보 수정 페이지로 이동 (회원의 정보 검색해서)
 	@RequestMapping("updateinfo.ps")
 	public String updatePage(HttpSession session) {
-		
+		User user = (User)session.getAttribute("user");
 		
 		return "mypage.updateinfo";
 	}
