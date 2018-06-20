@@ -39,11 +39,11 @@ public class UserService {
 	public User login(User user) {
 		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		User loginUser = userDao.selectUser(user.getUserId());
+		User loginUser = userDao.selectUser("userId", user.getUserId());
 		
 		if(loginUser == null || !user.getPwd().equals(loginUser.getPwd())) {
 			loginUser = null;
-		}else {
+		}/*else {
 			//사용자 프로필 테이블 검색해서 set
 			User prUser = userDao.selectProfile(loginUser.getUserNo());
 			if(prUser != null) {
@@ -55,7 +55,7 @@ public class UserService {
 				loginUser.setNaver(acUser.getNaver());
 				loginUser.setGoogle(acUser.getGoogle());
 			}
-		}
+		}*/
 		return loginUser;
 	}
 	
@@ -180,7 +180,7 @@ public class UserService {
 	//회원 아이디로 검색
 	public User searchUserId(String userId) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		User user = userDao.selectUser(userId);
+		User user = userDao.selectUser("userId", userId);
 		return user;
 	}
 	

@@ -73,13 +73,13 @@
                     <div class="form-group">
                       <label>아이디</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디..." readonly="readonly">
+                        <input type="text" class="form-control" id="userId" name="userId" placeholder="${sessionScope.user.userId}" readonly="readonly">
                       </div>
                     </div>
                     <div class="form-group">
                       <label>이름</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" name="userName" placeholder="이름...">
+                        <input type="text" class="form-control" name="userName" value="${sessionScope.user.userName}">
                       </div>
                     </div>
                     <div class="form-group">
@@ -104,20 +104,26 @@
 	                      <div class="form-check">
 						      <label class="form-check-label">
 						          <input class="form-check-input" type="checkbox" value="" disabled checked>
-						          		사진을 등록하실 수 있습니다.
+						          		사진을 등록하실 수 있습니다. 
 						          <span class="form-check-sign">
 						              <span class="check"></span>
 						          </span>
 						      </label>
+						      <!-- 구글, 네이버 아이콘 만드는곳~~~ -->
+						      <div align="center" style="float: right">
+						      	  <i class="material-icons">highlight_off</i>
+							      <i class="material-icons">highlight_off</i>
+						      </div>
 						  </div>
+						  
                   </div>
-                  <div class="form-group update-margin">
+                  <!-- <div class="form-group update-margin">
                   	<label>인증 계정</label>
-                    <!-- <h5 class="info-title">인증 계정</h5> -->
+                    <h5 class="info-title">인증 계정</h5>
                     <div class="input-group">
                         <input type="text" class="form-control" id="accountLiked" name="accountLiked" placeholder="인증계정" readonly="readonly">
                      </div>
-                  </div>
+                  </div> -->
                   
                   <div class="form-group text-center update-margin">
                   	<label>현재 캐시</label>
