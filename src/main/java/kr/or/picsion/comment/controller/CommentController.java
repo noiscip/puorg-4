@@ -34,7 +34,7 @@ public class CommentController {
 	public View insertComment(Comment comment, HttpSession session, Model model) {
 		System.out.println("insertComment 컨트롤");
 		User user = (User)session.getAttribute("user");	
-		List<String> commuserid = new ArrayList<String>();
+		List<User> commuserlist = commentService.commentuser(comment.getBrdNo());
 		comment.setUserNo(user.getUserNo());
 		comment.setTableNo(3);
 		int result = commentService.insertComment(comment);
@@ -46,11 +46,9 @@ public class CommentController {
 			System.out.println("댓글쓰기 실패");
 		}
 		List<Comment> comm = commentService.commentList(comment.getBrdNo());
-		for(Comment s : comm) {
-			commuserid.add(userService.userInfo(s.getUserNo()).getUserId());
-		}
+		
 		model.addAttribute("comment", comm);
-		model.addAttribute("commuserid", commuserid);
+		model.addAttribute("commuserlist", commuserlist);
 		return jsonview;
 	}
 	
