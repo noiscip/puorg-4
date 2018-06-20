@@ -18,6 +18,8 @@ import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.operation.dto.Operation;
+import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.operationapply.dto.OperationApply;
 import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
@@ -37,6 +39,9 @@ public class BoardController {
 	private OperationApplyService operationApplyService;
 	
 	@Autowired
+	private OperationService operationService;
+		
+	@Autowired
 	private UserService userService;
 	
 	@Autowired
@@ -51,14 +56,24 @@ public class BoardController {
 		List<Comment> comment = commentService.commentList(brdNo);		
 		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
 		List<String> applyid = new ArrayList<>();
+		Operation operation = operationService.selectOper(brdNo);
+		User operuser;
+if(operation!=null) {
+		System.out.println(operation);
+		operuser = userService.selectUserProfile(operation.getOperNo());
+}
+else {
+	operuser=null;
+}
 		System.out.println(list);
-		
 		for(Comment s : comment) {
 			commuserid.add(userService.userInfo(s.getUserNo()).getUserId());
 		}
 		for(OperationApply o : list) {
 			applyid.add(userService.userInfo(o.getOperUserNo()).getUserId());
 		}
+		System.out.println(operation);
+		model.addAttribute("operuser", operuser);
 		model.addAttribute("applylist", list);
 		model.addAttribute("applyid", applyid);
 		model.addAttribute("commuserid", commuserid);		
