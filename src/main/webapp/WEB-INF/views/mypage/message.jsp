@@ -92,7 +92,10 @@
 		//보낸 메시지함 카테고리 선택시 tag 클래스 생성
 		$('#receiveTag').click(function() {
 			$('#receiveTag').addClass('tag');
-			$('#sendTag').removeClass('tag')
+			$('#sendTag').removeClass('tag');
+			$('#receive').show();
+			$('#send').hide();
+			$('#selectInfoMsg').hide();
 			
 			console.log(this)
 		})		
@@ -101,6 +104,9 @@
 		$('#sendTag').click(function() {
 			$('#sendTag').addClass('tag');
 			$('#receiveTag').removeClass('tag');
+			$('#send').show();
+			$('#receive').hide();
+			$('#selectInfoMsg').hide();
 			
 			console.log(this)
 		})		
@@ -110,26 +116,92 @@
 			var userName = $('.selectMsg').val();
 			console.log(userName)
 			
+			//받은 메시지함에서 검색할 경우
 			if($('#receiveTag').hasClass('tag')){
 				console.log("리시브 여기온거?")
+				$('#receive').hide();
+				$('#send').hide();
 				
 				$.ajax({
 					url:"/picsion/message/receiveselect.ps",
 					data:{userName:userName},
 					success:function(data){
 						
+						var table="<thead><tr>"+
+									"<th>번호</th><th>보낸이</th><th>내용</th><th>받은 날짜</th><th>상태</th><th>삭제</th>"+
+						  		  "</tr></thead><tbody>";
+						
+						$('#selectMsgTab').empty();
+						/* obj=data.receiveSelect[index] */
+						$.each(data.receiveSelect, function(index,obj){
+							
+							if(obj.receiveMsgDel=="F"){
+								console.log("몇개나 가져오니?")
+								console.log(obj.msgNo);
+								table+="<tr>"+
+											"<td>"+obj.msgNo+"</td>"+
+											"<td>"+data.receiveSelInfo[index].userName+"</td>"+
+											"<td class='receiveMsgModal' data-toggle='modal' data-target='#myModal'>"+obj.msgContent+"</td>"+
+											"<td>"+data.receiveSelReg[index]+"</td>"+
+											"<td>";
+												if(obj.msgState=="F"){
+													table+="안읽음</td>";
+												}else{
+													table+="읽음</td>";
+												}
+												table+="<td><i class='material-icons receiveMsgDel' style='cursor: pointer;''>clear</i></td>"
+										+"</tr>";
+							}
+						});
+						table+="</tbody>";
+						
+						$('#selectMsgTab').append(table);
+						$('#selectInfoMsg').show();
 					}
 				});
-			}else{
+			//보낸 메시지함에서 검색할 경우 
+			}else if($('#sendTag').hasClass('tag')){
 				console.log("아니면 샌드온거?")
+				$('#receive').hide();
+				$('#send').hide();
 				
-				/* $.ajax({
-					url:"/picsion/message/sendselect",
-					data:data,
+				$.ajax({
+					url:"/picsion/message/sendselect.ps",
+					data:{userName:userName},
 					success:function(data){
 						
+						var table="<thead><tr>"+
+									"<th>번호</th><th>받은이</th><th>내용</th><th>보낸 날짜</th><th>상태</th><th>삭제</th>"+
+						  		  "</tr></thead><tbody>";
+						
+						$('#selectMsgTab').empty();
+						/* obj=data.receiveSelect[index] */
+						$.each(data.sendSelect, function(index,obj){
+							
+							if(obj.sendMsgDel=="F"){
+								console.log("몇개나 가져오니?")
+								console.log(obj.msgNo);
+								table+="<tr>"+
+											"<td>"+obj.msgNo+"</td>"+
+											"<td>"+data.sendSelInfo[index].userName+"</td>"+
+											"<td class='sendMsgModal' data-toggle='modal' data-target='#myModal'>"+obj.msgContent+"</td>"+
+											"<td>"+data.sendSelReg[index]+"</td>"+
+											"<td>";
+												if(obj.msgState=="F"){
+													table+="안읽음</td>";
+												}else{
+													table+="읽음</td>";
+												}
+												table+="<td><i class='material-icons sendMsgDel' style='cursor: pointer;''>clear</i></td>"
+										+"</tr>";
+							}
+						});
+						table+="</tbody>";
+						
+						$('#selectMsgTab').append(table);
+						$('#selectInfoMsg').show();
 					}
-				}); */
+				});
 				
 			}
 		})
@@ -221,9 +293,10 @@ width: 300px;
 }
 </style>
 
-<div class="page-header header-filter" data-parallax="true"<%-- style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');" --%>></div>
+<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
 	<div class="profile-content">
+		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
 			<li class="nav-item"><a class="nav-link" href="#">업로드</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
@@ -231,11 +304,8 @@ width: 300px;
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">거래/내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">요청/작업</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">정보 수정</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
 		</ul>
-		
-
-		<div class="container">
 			<div class="gallery text-center">
 				<div class="row">
 					<!-- <div class="col-md-12"> -->
@@ -265,7 +335,7 @@ width: 300px;
 						<div class="tab-pane active" id="receive">
 							<table class="table">
 							    <thead>
-							        <tr align="center">
+							        <tr >
 							            <th>번호</th>
 										<th>보낸이</th>
 										<th>내용</th>
@@ -278,7 +348,7 @@ width: 300px;
 							    	<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
 							    			<!-- 받은사람의 Del가 False인 경우만 메시지 리스트 가져오기 -->
 											<c:if test="${receiveMessage.receiveMsgDel eq 'F'}">
-												<tr class="url-tr" data-url="">
+												<tr>
 													<td>${receiveMessage.msgNo}</td>
 													<td>${receiveInfo[status.index].userName}</td>
 													<!-- 상세 메시지를 Modal에 보여주는 내용 -->
@@ -306,7 +376,7 @@ width: 300px;
 						<div class="tab-pane" id="send">
 							<table class="table">
 							    <thead>
-							        <tr align="center">
+							        <tr>
 							            <th>번호</th>
 										<th>받은이</th>
 										<th>내용</th>
@@ -319,7 +389,7 @@ width: 300px;
 							    	<c:forEach items="${sendList}" var="sendMessage" varStatus="status">
 							    			<!-- 받은사람의 Del가 False인 경우만 메시지 리스트 가져오기 -->
 											<c:if test="${sendMessage.sendMsgDel eq 'F'}">
-												<tr class="url-tr" data-url="">
+												<tr>
 													<td>${sendMessage.msgNo}</td>
 													<td>${sendInfo[status.index].userName}</td>
 													<!-- 상세 메시지를 Modal에 보여주는 내용 -->
@@ -342,6 +412,14 @@ width: 300px;
 							    </tbody>
 							</table>
 						</div>
+						
+						<!-- 검색한 메시지 정보들 가져오기 -->
+						<div id="selectInfoMsg">
+							<table class="table" id="selectMsgTab">
+								
+							</table>
+						</div>
+						
 					</div>
 					
 					</div>

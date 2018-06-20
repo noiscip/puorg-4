@@ -2,6 +2,7 @@ package kr.or.picsion.user.dao;
 
 import java.util.List;
 
+import kr.or.picsion.blame.dto.Blame;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
@@ -29,7 +30,7 @@ public interface UserDao {
 	public int updateAccount(int userNo, String accountNo, String portalSite);	 //이미 다른 포털의 계정이 등록되어 있다면 update
 	public User selectAccountNo(String accountNo, String portalSite);
 	public User selectAccountUserNo(int userNo);
-	
+
 	
 	//////////////////////////
 	List<User> getPicsionList();

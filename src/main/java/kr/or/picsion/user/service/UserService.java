@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.or.picsion.blame.dto.Blame;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dao.UserDao;
 import kr.or.picsion.user.dto.User;
@@ -205,4 +206,5 @@ public class UserService {
 		return userDao.selectAccountUserNo(userNo);
 	}
 	
+
 }

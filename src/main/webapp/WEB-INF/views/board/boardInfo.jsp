@@ -5,15 +5,11 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
-		$('#addreviewbutton').on(
-				"click",
-				function() {
-					
+		$('#addreviewbutton').on("click",function() {
 					console.log("click");
 					if ($('#reviewcontent').val().trim() == "") {
 						alert("리뷰 내용을 입력해주세요.");
 					} else {	
-
 						$.ajax({
 							url : "insertreview.ps",
 							type : "post",
@@ -23,17 +19,13 @@
 							},
 							success : function(data) {
 								var html="";
-								
 								$.each(data.comment,function(index,obj){
-									
 									html+=data.commuserid[index]+" : "+obj.cmtContent+"<br>";
 									html+="<hr style='margin-top: 5px; margin-bottom: 5px;'>";
 								}); 
-								
 								console.log(html);
 								$(".review").empty();
 								$(".review").append(html); 
-								
 							}
 						});	
 					}
@@ -64,17 +56,13 @@
 						url : "apply.ps",
 						type : "post",
 						data : {
-							
 							operApplyAppeal : $("#operApplyAppeal").val(),
 							operApplyPrice : $("#operApplyPrice").val(),
 							operApplyReg : $("#operApplyReg").val(),
 							requestUserNo : ${boardInfo.userNo},
 							brdNo : ${boardInfo.brdNo}
 						},
-						success : function(data) {
-							
-							
-						}
+						success : function(data) {}
 					});	
 				});
 		
@@ -121,17 +109,7 @@
 			$('#oApplyReg').val(operApplyReg);
 			$('#oApplyAppeal').val(operApplyAppeal);
 			$('#operApplyNo').val(operApplyNo);
-			
-			
-			
-			
 		});
-		
-		
-		
-		
-		
-		
 	});
 </script>
 

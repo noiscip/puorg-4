@@ -72,10 +72,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 사진 업로드 저장 시 태그 저장 -->
-	<insert id="insertTag" parameterType="Integer">
-	insert into TAG
-	values (#{picNo},#{tagContent})
-	</insert>
+	<insert id="insertTag" >
+    insert into TAG
+    values (#{param1},#{[param2]})
+    </insert>
+    
+    <!-- 태그 정보 -->
+    <select id="selectTag" resultType="String">
+    	SELECT tagContent FROM TAG WHERE picNo=#{picNo}
+    </select>
 	
 	<!--  사진 경로 뽑아내기? 
 	<select id="searchPath">

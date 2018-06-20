@@ -43,9 +43,9 @@ import com.google.protobuf.ByteString;
 @Controller
 public class AmazonTest {
 	
-	public List labelBag;
+	/*	public List<String> labelBag;
 	public String logocheck;
-	public String safecheck;
+	public String safecheck;*/
 	public String picturePath;
 	
 	@Autowired
@@ -58,21 +58,25 @@ public class AmazonTest {
 		return "mypage.upload";
 	}
 	
-	@RequestMapping("amazontest.ps")
-	public String aaaaa(MultipartHttpServletRequest filePath,Model model) {
-		fileUpload(filePath);
+	@RequestMapping(value = "amazontest.ps", method=RequestMethod.POST)
+	public View aaaaa(MultipartHttpServletRequest filePath,Model model) throws Exception {
+		String abc= fileUpload(filePath);
+		String logocheck=detectLogos(abc);
+		String safecheck=detectSafeSearch(abc);
+		List<String> labelBag=detectLabels(abc);
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
 		model.addAttribute("label", labelBag);
 		model.addAttribute("picPath",picturePath);
 		System.out.println("labelBag: "+labelBag);
-		return "mypage.upload";
+		return jsonview;
 	}
 	
-	public boolean fileUpload(MultipartHttpServletRequest mRequest) {
+	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
-		
-		String uploadPath = "C:\\file\\";
+		String filePathh="";
+		/*String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
+		String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -87,25 +91,15 @@ public class AmazonTest {
 			String originalFileName = mFile.getOriginalFilename();
 			System.out.println("오리진파일네임: "+originalFileName);
 			String saveFileName = originalFileName;//	우어어ㅓㅇ~~~~~~~~~~~~~~~
-			String filePathh = uploadPath + saveFileName;
+			filePathh = uploadPath + saveFileName;
 			
 			System.out.println("uploadPath: "+uploadPath);
 			System.out.println("saveFileName: "+saveFileName);
 			System.out.println("filePathh: "+filePathh);
-			
-			
-			try {
-				logocheck=detectLogos(filePathh);
-				safecheck=detectSafeSearch(filePathh);
-				labelBag=detectLabels(filePathh);
-//				picturePath = filePathh;
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
+			picturePath = "/assets/img/examples/"+saveFileName;
+			/*picturePath = filePathh;*/
+	
 			System.out.println("이것이!!! "+uploadPath + saveFileName);
-			
 			
 			if(saveFileName != null && !saveFileName.equals("")) {
 				/*if(saveFileName.toLowerCase().indexOf(".jpg")>0){
@@ -126,9 +120,11 @@ public class AmazonTest {
 					isSuccess = false;
 				}
 			} // if end
-		} // while end
-		
-		return isSuccess;
+			
+			
+		} 
+		System.out.println("완성 ?"+filePathh);
+		return filePathh;
 	} // fileUpload end
 	
 	

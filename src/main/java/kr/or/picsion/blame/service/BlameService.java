@@ -24,4 +24,10 @@ public class BlameService {
 		
 		return blameList;
 	}
+	
+	public List<Blame> complainSearch(String date) {
+		BlameDao blameDao = sqlSession.getMapper(BlameDao.class);
+		return blameDao.complainSearch(date);
+	}
+	
 }

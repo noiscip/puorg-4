@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
 import kr.or.picsion.comment.dto.Comment;
@@ -37,16 +38,19 @@ public class PictureController {
 	
 	@RequestMapping("picinfo.ps")
 	public String picInfo(Model model, int picNo, int userNo){
-		Picture picture = pictureService.picInfo(picNo); 			  //사진
+		Picture picture = pictureService.picInfo(picNo); 			  //클릭한 사진
 		User userInfo = userService.userInfo(userNo);    			  //사진 주인	
-		List<Comment> comment = commentService.picCommentList(picNo); //댓글 목록
+		List<Comment> commentList = commentService.picCommentList(picNo); //댓글 목록
 		List<User> commentUserList = new ArrayList<User>();           //댓글 작성자 목록
-		for(Comment c : comment) {
+		List<String> tagList = pictureService.selectTag(picNo);
+		for(Comment c : commentList) {
 			commentUserList.add(userService.userInfo(c.getUserNo()));
 		}
+		System.out.println(commentList);
+		model.addAttribute("tagList",tagList);
 		model.addAttribute("picture",picture);
 		model.addAttribute("userInfo",userInfo);
-		model.addAttribute("comment",comment);
+		model.addAttribute("commentList",commentList);
 		model.addAttribute("commentUserList",commentUserList);
 		return "picture.picinfo";
 	}
@@ -108,14 +112,16 @@ public class PictureController {
 		return jsonview;
 	}
 	
-	@RequestMapping(value="upload.ps",method=RequestMethod.POST)
-	public String insertPicture(Picture picture,HttpSession session) {
+	@RequestMapping("uploadAfter.ps")
+	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
+		picture.setTagContent(tag);
 		pictureService.insertPicture(picture, user.getUserNo());
 		System.out.println("내밑에뭐지");
 		System.out.println(picture);
 		System.out.println(picture.getTagContent());
-		return "studio.mystudio";
+		//model.addAttribute("pciture",picture);
+		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	
 }

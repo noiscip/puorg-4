@@ -37,7 +37,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.13:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.21:8090/picsion/message.ps") //테스트 용도 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -56,9 +56,9 @@
 					console.log("2번, 사진")
 				}else if(table == 3	){
 					console.log("3번, 보드")
+					url = "/picsion/notice/noticeComment.ps"
 				}else if(table == 4){
 					console.log("4번, 댓글")
-					console.log($('#userProfile'))
 					url = "/picsion/notice/noticeMsg.ps"
 				}else if(table == 5){
 					console.log("5번, 메시지")

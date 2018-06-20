@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<insert id="insertProfile">
-		INSERT INTO PROFILE (userNo) VALUES	(#{userNo})
+		INSERT INTO PROFILE (userNo,prPicture) VALUES	(#{userNo},'/assets/img/user.png')
 	</insert>
 	
 	<select id="selectUser" resultType="kr.or.picsion.user.dto.User">
@@ -138,4 +138,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from ACCOUNTLINKED where userNo = #{userNo}
 	</select>
 	
+
 </mapper>
