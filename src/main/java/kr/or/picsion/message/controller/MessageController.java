@@ -118,23 +118,49 @@ public class MessageController {
 	}
 	
 	
-	//보낸 메시지함에서 userName으로 메시지 검색
+	//받은 메시지함에서 userName으로 메시지 검색
 	@RequestMapping("receiveselect.ps")
-	public View receiveSelect(String userName, HttpSession session) {
+	public View receiveSelect(String userName, HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		
 		//받은 메시지에 대한 정보
-		/*List<Message> receiveSelect = messageService.receiveSelectList(user.getUserNo());
-		List<User> receiveInfo = messageService.receiveSelectInfo(user.getUserNo());
-		List<String> receiveMsgReg = new ArrayList<>();
+		List<Message> receiveSelect = messageService.selectReceiveMsg(user.getUserNo(), userName);
+		List<User> receiveSelInfo = messageService.selectReceiveInfo(user.getUserNo(), userName);
+		List<String> receiveSelReg = new ArrayList<>();
 		
 		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
-		for(Message m : receiveList) {
-			receiveMsgReg.add(reg.format(m.getMsgReg()));
-		}*/
+		for(Message m : receiveSelect) {
+			receiveSelReg.add(reg.format(m.getMsgReg()));
+		}
+		
+		model.addAttribute("receiveSelect", receiveSelect);
+		model.addAttribute("receiveSelInfo", receiveSelInfo);
+		model.addAttribute("receiveSelReg", receiveSelReg);
 		
 		return jsonview;
 	}
 	
+	
+	//보낸 메시지함에서 userName으로 메시지 검색
+	@RequestMapping("sendselect.ps")
+	public View sendSelect(String userName, HttpSession session, Model model) {
+		User user = (User)session.getAttribute("user");
+		
+		//보낸 메시지에 대한 정보
+		List<Message> sendSelect = messageService.selectSendMsg(user.getUserNo(), userName);
+		List<User> sendSelInfo = messageService.selectSendInfo(user.getUserNo(), userName);
+		List<String> sendSelReg = new ArrayList<>();
+		
+		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
+		for(Message m : sendSelect) {
+			sendSelReg.add(reg.format(m.getMsgReg()));
+		}
+		
+		model.addAttribute("sendSelect", sendSelect);
+		model.addAttribute("sendSelInfo", sendSelInfo);
+		model.addAttribute("sendSelReg", sendSelReg);
+		
+		return jsonview;
+	}
 	
 }
