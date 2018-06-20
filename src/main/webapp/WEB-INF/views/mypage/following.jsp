@@ -33,7 +33,7 @@
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
-			<li class="nav-item"><a class="nav-link" href="#">업로드</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
