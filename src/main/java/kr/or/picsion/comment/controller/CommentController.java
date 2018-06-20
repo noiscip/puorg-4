@@ -34,10 +34,10 @@ public class CommentController {
 	public View insertComment(Comment comment, HttpSession session, Model model) {
 		System.out.println("insertComment 컨트롤");
 		User user = (User)session.getAttribute("user");	
-		List<User> commuserlist = commentService.commentuser(comment.getBrdNo());
 		comment.setUserNo(user.getUserNo());
 		comment.setTableNo(3);
 		int result = commentService.insertComment(comment);
+		List<User> commuserlist = commentService.commentuser(comment.getBrdNo());
 		System.out.println(comment);
 		if(result==1) {
 			System.out.println("댓글쓰기 성공");
