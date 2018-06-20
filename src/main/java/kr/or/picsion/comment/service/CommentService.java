@@ -60,6 +60,12 @@ public class CommentService {
 		return commentdao.picCommentList(picNo);
 	}
 	
+	public List<User> picCommentUserList(int picNo){
+		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
+		return commentdao.picCommentUserList(picNo);
+	}
+	
+	
 	// 사진 댓글 쓰기 서비스
 	public int picInsertComment(Comment comment) {
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);

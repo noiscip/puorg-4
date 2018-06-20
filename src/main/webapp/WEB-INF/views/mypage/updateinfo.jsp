@@ -67,13 +67,13 @@
               <div class="row">
               	<div class="col-md-6 mr-auto text-center">
                   	<div class="form-group">
-                  		<img src="/picsion/assets/img/faces/card-profile1-square.jpg" alt="Circle Image" class="img-raised rounded-circle img-fluid update-pr"><br>
+                  		<img src="<%=request.getContextPath()%>${sessionScope.user.prPicture}" class="img-raised rounded-circle img-fluid update-pr"><br>
 			      		<button type="submit" class="btn btn-default update-btn-margin">프로필 수정</button>
                   	</div>
                     <div class="form-group">
                       <label>아이디</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" id="userId" name="userId" placeholder="${sessionScope.user.userId}" readonly="readonly">
+                        <input type="text" class="form-control" id="userId" name="userId" value="${sessionScope.user.userId}" readonly="readonly">
                       </div>
                     </div>
                     <div class="form-group">
@@ -103,11 +103,27 @@
 	                    <!-- <h5 class="info-title">계정 연동 여부</h5> -->
 	                      <div class="form-check">
 						      <label class="form-check-label">
-						          <input class="form-check-input" type="checkbox" value="" disabled checked>
+						      <c:choose>
+						      	<c:when test="${sessionScope.user.naver eq null && sessionScope.user.google eq null}">
+						      		<input class="form-check-input" type="checkbox" disabled>
+						          		계정 연동하셔야 사진을 등록할 수 있습니다. 
+						          <span class="form-check-sign">
+						              <span class="check"></span>
+						          </span>
+						      	</c:when>
+						      	<c:otherwise>
+						      		<input class="form-check-input" type="checkbox" disabled checked>
 						          		사진을 등록하실 수 있습니다. 
 						          <span class="form-check-sign">
 						              <span class="check"></span>
 						          </span>
+						      	</c:otherwise>
+						      </c:choose>
+						          <!-- <input class="form-check-input" type="checkbox" value="" disabled checked>
+						          		사진을 등록하실 수 있습니다. 
+						          <span class="form-check-sign">
+						              <span class="check"></span>
+						          </span> -->
 						      </label>
 						      <!-- 구글, 네이버 아이콘 만드는곳~~~ -->
 						      <div align="center" style="float: right">
@@ -129,7 +145,7 @@
                   	<label>현재 캐시</label>
                     <!-- <h5 class="info-title">현재 캐시</h5> -->
                     <div class="input-group">
-                        <input type="text" class="form-control" id="point" name="point" placeholder="10000" readonly="readonly">
+                        <input type="text" class="form-control" id="point" name="point" value="${sessionScope.user.point}" readonly="readonly">
                      </div>
                      <button type="submit" class="btn btn-default update-btn-margin">충전하기</button>
                   </div>
@@ -137,7 +153,7 @@
                   <div class="form-group update-margin">
                   	<label>자기 소개</label>
                     <div class="input-group form-default">
-                        <input type="text" class="form-control" id="prContent" name="prContent" placeholder="안녕하세요">
+                        <input type="text" class="form-control" id="prContent" name="prContent" value="${sessionScope.user.prContent}">
                      </div>
                   </div>
                   <div align="center">

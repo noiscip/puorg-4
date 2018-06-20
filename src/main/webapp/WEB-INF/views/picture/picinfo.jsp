@@ -21,6 +21,7 @@ $(document).ready(function() {
 			  success : function(data){
 				  var media="";
 			      $('#commentstart').empty();
+			      console.log("데이터들"+data);
 			      $.each(data.newcommentUserList,function(index,element){
 						media += "<div class='media'>"+
 					    "<a class='float-left' href='#pablo'>"+
