@@ -17,6 +17,9 @@ insert into OPERATIONAPPLY (operApplyAppeal,operApplyPrice,operApplyReg,requestU
 <select id="operationApplyList" resultType="kr.or.picsion.operationapply.dto.OperationApply">
 		select * from OPERATIONAPPLY where requestUserNo=#{param2} and brdNo=#{param1}
 </select>
+<select id="operationApplyNameList" resultType="String">
+		select u.userId from OPERATIONAPPLY o join USERS u on o.operUserNo=u.userNo where o.brdNo=#{brdNo}
+</select>
 
 
 </mapper>
