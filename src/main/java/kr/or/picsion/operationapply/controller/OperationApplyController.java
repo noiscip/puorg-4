@@ -37,22 +37,17 @@ public class OperationApplyController {
 		User user = (User)session.getAttribute("user");
 		System.out.println("insertoperation 컨트롤러");
 		operationApply.setOperUserNo(user.getUserNo());
-		System.out.println(operationApply);
 		int result = applyService.insertOperationApply(operationApply);
-		System.out.println(operationApply);
 		
 		if(result == 1) {
 			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 			
 			noticeMap.put("no", operationApply.getBrdNo());
-			noticeMap.put("operApplyNo", operationApply.getOperApplyNo());
-			noticeMap.put("receiveUserNo", operationApply.getOperUserNo());
-			noticeMap.put("sendUserNo", operationApply.getRequestUserNo());
-			noticeMap.put("table", "brdNo,operApplyNo");
+			noticeMap.put("addNo", operationApply.getOperApplyNo());
+			noticeMap.put("receiveUserNo", operationApply.getRequestUserNo());
+			noticeMap.put("sendUserNo", operationApply.getOperUserNo());
+			noticeMap.put("table", "brdNo, operApplyNo");
 			noticeMap.put("tableNo", 3);
-			
-			System.out.println("과아아앙아아아아아아앙아아아아아아아아여어어어어어어어어어어어어어언");
-			System.out.println(noticeMap.values());			
 			
 			noticeService.insertNotice(noticeMap);
 		}
