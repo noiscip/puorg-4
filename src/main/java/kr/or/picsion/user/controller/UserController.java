@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,16 +64,13 @@ public class UserController {
 		User loginUser = userService.login(user);
 		String result="";
 		if(loginUser != null) {
-			System.out.println("로그인 성공");
 			session.setAttribute("user", loginUser);
-			System.out.println(loginUser.getRoleNo());
 			if(loginUser.getRoleNo()==3) {
 				result = "redirect:/user/admin.ps";
 			}else {
 				result = "redirect:/home.ps";
 			}
 		}else {
-			System.out.println("로그인 실패");
 			result = "redirect:/user/login.ps";
 		}
 		return result;
@@ -82,9 +78,7 @@ public class UserController {
 	
 	@RequestMapping("logout.ps")
 	public String userLogout(HttpSession session) {
-		
 		session.invalidate();
-		
 		return "redirect:/home.ps";
 	}
 	
