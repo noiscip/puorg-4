@@ -56,23 +56,29 @@ public class NoticeService {
 			obj.add(no);
 			obj.add(sendUserNo);
 			
-			System.out.println(no.getTableNo());
 			int tableNo = no.getTableNo();
 			
 			if(tableNo == 2) {
+				System.out.println("사진");
 				Picture picture;
 			}else if(tableNo == 3) {
+				System.out.println("게시판");
 				Board board = boardService.selectBoard(no.getBrdNo());
 				obj.add(board);
 			}else if(tableNo == 4) {
+				System.out.println("댓글");
 				Comment comment = commentService.selectComment(no.getCmtNo());
 				if(comment.getTableNo() == 2) {
 					
 				}else {
-					
+					Board board = boardService.selectBoard(comment.getBrdNo());
 				}
 			}else if(tableNo == 5) {
+				System.out.println("메시지");
 				
+			}else if(tableNo == 6){
+				System.out.println("작업 수락");
+			
 			}else {
 				System.out.println("여기 올리가 없는데...");
 				
