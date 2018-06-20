@@ -18,6 +18,8 @@ import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.operation.dto.Operation;
+import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.operationapply.dto.OperationApply;
 import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
@@ -37,6 +39,9 @@ public class BoardController {
 	private OperationApplyService operationApplyService;
 	
 	@Autowired
+	private OperationService operationService;
+		
+	@Autowired
 	private UserService userService;
 	
 	@Autowired
@@ -47,21 +52,17 @@ public class BoardController {
 		System.out.println("보드인포 컨트롤");
 		User user = (User)session.getAttribute("user");
 		Board boardInfo = boardService.selectBoard(brdNo);
-		List<String> commuserid = new ArrayList<String>();
-		List<Comment> comment = commentService.commentList(brdNo);		
-		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
-		List<String> applyid = new ArrayList<>();
-		System.out.println(list);
 		
-		for(Comment s : comment) {
-			commuserid.add(userService.userInfo(s.getUserNo()).getUserId());
-		}
-		for(OperationApply o : list) {
-			applyid.add(userService.userInfo(o.getOperUserNo()).getUserId());
-		}
+		List<Comment> comment = commentService.commentList(brdNo);		
+		List<User> commentuser= commentService.commentuser(brdNo);
+		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
+		List<String> applyid = operationApplyService.operationApplyNameList(brdNo);
+		
+		
+
+		model.addAttribute("commentuser", commentuser);
 		model.addAttribute("applylist", list);
-		model.addAttribute("applyid", applyid);
-		model.addAttribute("commuserid", commuserid);		
+		model.addAttribute("applyid", applyid);		
 		model.addAttribute("boardInfo", boardInfo);
 		model.addAttribute("comment",comment);
 		return "board.boardInfo";

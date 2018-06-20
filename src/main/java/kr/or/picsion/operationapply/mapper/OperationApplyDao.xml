@@ -10,12 +10,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select operState from OPERATIONSTATE where operStateNo = #{operStateNo}
 </select>
 
-<insert id="insertOperationApply" parameterType="kr.or.picsion.operationapply.dto.OperationApply">
+<insert id="insertOperationApply" parameterType="kr.or.picsion.operationapply.dto.OperationApply" useGeneratedKeys="true" keyProperty="operApplyNo">
 insert into OPERATIONAPPLY (operApplyAppeal,operApplyPrice,operApplyReg,requestUserNo,brdNo,operUserNo)VALUES (#{operApplyAppeal},#{operApplyPrice},#{operApplyReg},#{requestUserNo},#{brdNo},#{operUserNo})
 </insert>
 
 <select id="operationApplyList" resultType="kr.or.picsion.operationapply.dto.OperationApply">
 		select * from OPERATIONAPPLY where requestUserNo=#{param2} and brdNo=#{param1}
+</select>
+<select id="operationApplyNameList" resultType="String">
+		select u.userId from OPERATIONAPPLY o join USERS u on o.operUserNo=u.userNo where o.brdNo=#{brdNo}
 </select>
 
 

@@ -1,6 +1,7 @@
 package kr.or.picsion.operationapply.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.View;
 
 import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.comment.dto.Comment;
+import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.operationapply.dto.OperationApply;
 import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
@@ -27,6 +29,8 @@ public class OperationApplyController {
 	@Autowired
 	private  OperationApplyService applyService;
 	
+	@Autowired
+	private NoticeService noticeService;
 	
 	@RequestMapping(value = "apply.ps")
 	public String insertOperationApply(OperationApply operationApply, HttpSession session) {
@@ -34,7 +38,25 @@ public class OperationApplyController {
 		System.out.println("insertoperation 컨트롤러");
 		operationApply.setOperUserNo(user.getUserNo());
 		System.out.println(operationApply);
-		applyService.insertOperationApply(operationApply);
+		int result = applyService.insertOperationApply(operationApply);
+		System.out.println(operationApply);
+		
+		if(result == 1) {
+			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+			
+			noticeMap.put("no", operationApply.getBrdNo());
+			noticeMap.put("operApplyNo", operationApply.getOperApplyNo());
+			noticeMap.put("receiveUserNo", operationApply.getOperUserNo());
+			noticeMap.put("sendUserNo", operationApply.getRequestUserNo());
+			noticeMap.put("table", "brdNo,operApplyNo");
+			noticeMap.put("tableNo", 3);
+			
+			System.out.println("과아아앙아아아아아아앙아아아아아아아아여어어어어어어어어어어어어어언");
+			System.out.println(noticeMap.values());			
+			
+			noticeService.insertNotice(noticeMap);
+		}
+		
 		return "board.boardInfo";
 	}
 	/*

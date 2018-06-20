@@ -100,6 +100,7 @@ public class UserService {
 		return userInfo;
 	}
 	
+	
 		
 		
 	//회원의 팔로워 리스트
