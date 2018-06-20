@@ -27,9 +27,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 요청글 댓글 쓰기  -->	
 	
-	<!-- 사진에 대한 댓글리스트 가져오기 -->
-	<select id="picCommentUserList" resultType="kr.or.picsion.comment.dto.User">
-		SELECT * FROM COMMENTS WHERE picNo=#{picNo}
+	<!-- 사진에 대한 댓글 사용자 리스트 가져오기 -->
+	<select id="picCommentUserList" resultType="kr.or.picsion.user.dto.User">
+		select u.userNo as userNo, u.userId as userId, u.userName as userName, p.prPicture as prPicture from COMMENTS c join USERS u on c.userNo=u.userNo 
+								join PROFILE p on c.userNo=p.userNo
+	 where c.picNo=#{picNo};
 	</select>
 	
 	<!-- 게시판 댓글 저장 -->
