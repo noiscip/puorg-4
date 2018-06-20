@@ -5,49 +5,54 @@
 <script>
 $(function(){
 	$('#newNotice').click(function(){
-		$('#noticeList').empty() 
-		$.ajax({
-			url: "/picsion/notice/notice.ps",
-			beforeSend : function () {
-				$('#noticeList').append('&nbsp&nbsp<img src="/picsion/assets/img/loading_bar3.gif" style="width : 130px" >')  
-			},
-			success : function (data) {
-				$('#noticeList').empty() 
-				var noticeMenu = '';
-				$.each(data.map, function(i, elt) {
-					console.log(elt)
-					noticeMenu += '<li class="divider"><a href="#">'
-					noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
-					noticeMenu += '"'+ elt[1].userName +'"'
-					var value = ''
-					if(elt[0].tableNo == 3){
-						noticeMenu += '님이 ' + elt[2].brdTitle
-						if(elt[0].operNo == 0){
-							value = elt[0].operNo
-							noticeMenu += ' 작업을 신청 하였습니다'
-						}else{
-							value = elt[0].operApplyNo
-							noticeMenu += ' 작업이 시작 되었습니다'
+		$('#noticeList').hide() 
+		
+		if($(this).closest('li').hasClass('show') != true){
+			$('#noticeList').show() 
+			$.ajax({
+				url: "/picsion/notice/notice.ps",
+				beforeSend : function () {
+					$('#noticeList').append('&nbsp&nbsp<img src="/picsion/assets/img/loading_bar3.gif" style="width : 130px" >')  
+				},
+				success : function (data) {
+					$('#noticeList').empty() 
+					var noticeMenu = '';
+					$.each(data.map, function(i, elt) {
+						console.log(elt)
+						noticeMenu += '<li class="divider"><a href="#">'
+						noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
+						noticeMenu += '"'+ elt[1].userName +'"'
+						var value = '' 
+						
+						if(elt[0].tableNo == 3){
+							noticeMenu += '님이 ' + elt[2].brdTitle
+							value = elt[0].brdNo + ','+  elt[0].tableNo
+							if(elt[0].operNo == 0){
+								noticeMenu += ' 작업을 신청 하였습니다'
+							}else{
+								noticeMenu += ' 작업을 수락 하였습니다'
+							}
+						}else if(elt[0].tableNo == 4){
+							value = elt[0].cmtNo + ','+ elt[0].tableNo
+						}else if(elt[0].tableNo == 5){
+							value = elt[0].msgNo + ','+ elt[0].tableNo
+							noticeMenu += '님이 메시지를 보냈습니다'
 						}
-					}else if(elt[0].tableNo == 4){
-						value = elt[0].cmtNo
-					}else if(elt[0].tableNo == 5){
-						value = elt[0].msgNo
-						noticeMenu += '님이 메시지를 보냈습니다'
-					}
-					noticeMenu += '<input type="hidden" value="'+value+'">'
-					noticeMenu += '</a></li>'
-				})
-				
-				$('#noticeList').append(noticeMenu)
-			}
-		})
+						noticeMenu += '<input type="hidden" value="'+value+'">'
+						noticeMenu += '</a></li>'
+					})
+					$('#noticeList').append(noticeMenu)
+				}
+			})
+		}
 	})
 	
 	
 	$(document).on('click','.divider',function(){
-		console.log($(this))
-		console.log(this)
+		console.log($(this).find('input')[0].value)
+		var value = ($(this).find('input')[0].value).split(',')
+		console.log(value.length)
+		
 	})
 	
 })
