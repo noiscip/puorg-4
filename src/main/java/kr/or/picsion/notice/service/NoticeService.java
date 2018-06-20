@@ -21,6 +21,7 @@ import kr.or.picsion.notice.dto.Notice;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -48,6 +49,9 @@ public class NoticeService {
 	
 	@Autowired
 	private OperationService operationService;
+	
+	@Autowired
+	private PictureService pictureService;
 	
 	public void insertNotice(Map<String, Object> noticeMap) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
@@ -77,7 +81,7 @@ public class NoticeService {
 			}else if(tableNo == 4) {
 				Comment comment = commentService.selectComment(no.getCmtNo());
 				if(comment.getTableNo() == 2) {
-					
+
 				}else {
 					Board board = boardService.selectBoard(comment.getBrdNo());
 				}
