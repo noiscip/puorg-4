@@ -130,6 +130,7 @@ public class UserController {
 		List<Integer> bookcheck = new ArrayList<Integer>();   //북마크 확인
 		List<Integer> likecount = new ArrayList<Integer>();   //좋아요 갯수
 		List<Integer> bookcount = new ArrayList<Integer>();   //북마크 갯수
+		
 		for(Picture p : followingPicList) {
 			likecheck.add(pictureService.respectConfirm(p.getPicNo(), user.getUserNo()));
 			bookcheck.add(pictureService.bookmarkConfirm(p.getPicNo(), user.getUserNo()));
