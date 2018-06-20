@@ -25,6 +25,17 @@
 	$(document).on("click", "#tagDel", function() {
 		$('#tagbtn').remove();
 	});
+	$(document).on("click", "#tagAdd", function() {
+		console.log("뚜뚜")
+		
+		if($('#tagAddName').val()==0){
+			alert("태그를 입력해주세요.");
+		}else{
+			$('#picTags').append("<input type='text' value="+$('#tagAddName').val()+" name='tag' data-role='tagsinput'>");
+			$('#tagAddName').val("");
+		}
+		
+	});
 </script>
 
 <style type="text/css">
@@ -70,7 +81,7 @@
 								</a>
 							</div>
 						</div>
-						<input type="submit" class="btn btn-primary btn-round" value="보내기">
+						<!-- <input type="submit" class="btn btn-primary btn-round" value="보내기"> -->
 					</form>
 				</div>
 
@@ -87,17 +98,23 @@
 								class="form-control" id="pictureDesc" name="picContent">
 						</div>
 
-
 						<!-- <form action=""> -->
 						<div id="picTags" class="form-group">
 							<label for="comment">Tags</label> <br>
+								<div id="loaderIcon">
 							
+								</div>
 						</div>
 						<!-- </form> -->
 				<%--	<div class="form-group">
 							<input type="text" name="picPath" value="${picPath}"> 
 						</div> --%>
+						<div id="tagA">
+						
+						</div>
 						<button type="submit" class="btn btn-primary">저장하기</button>
+						
+						<input type="text" id="taginputtest" value="ddd,fff,ggg" data-role="">
 					</form>
 				</div>
 			</div>
@@ -119,7 +136,7 @@
 				type :'POST',
 				success : function(data){
 					console.log(data)
-					
+					$("#loaderIcon").empty();
 					if(data.logo != null){
 					var logo =''
 						logo += '<div class="alert alert-warning">'
@@ -156,15 +173,23 @@
 					var tags = ''
 					$.each(data.label, function(i, elt) {
 						tags += '<input type="text" value="' + elt + '" data-role="tagsinput">'
-						tags += '<input type="text" style="display: none;" name="tag" value="' + elt + '">'
 					})
-					tags += '<input type="text" name="picPath" value="' + data.picPath + '">'
+					
 					$('#picTags').append(tags)
+					
+					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
+					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
+					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
+					$('#tagA').append(tags)
+					$('#taginputtest').attr("data-role","tagsinput");
 					console.log('와요?')
+					$("input[data-role=tagsinput]").tagsinput();
 				}
+			,beforeSend:function(){
+				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
+			}
 				
 			})
 		})
-
 	})
 </script>
