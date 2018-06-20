@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript">
 	//리뷰 쓰기
@@ -32,13 +33,12 @@
 											media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
 										}
 										media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
-											element.userName+"<small>· "+Date(data.comment[index].cmtReg)+"</small>"+
+											element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 										    "</h4><p>"+data.comment[index].cmtContent+"</p>"+
 										    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
 											"rel='tooltip' title='' data-original-title='보내버리기'> <i "+
 											"class='material-icons'>reply</i>신고</a></div></div>";
 									})
-									console.log(media);
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#newComment").val("");
@@ -222,8 +222,9 @@
 																	</a>
 																	<div class="media-body">
 																		<h4 class="media-heading">
-																			${commentuser[status.index].userId}<small>·
-																				Yesterday</small>
+																		
+																		${commentuser[status.index].userName} <small>· <fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${review1.cmtReg}" /></small>
+																		
 																		</h4>
 																		<p>${review1.cmtContent}</p>
 																		<div class="media-footer">
