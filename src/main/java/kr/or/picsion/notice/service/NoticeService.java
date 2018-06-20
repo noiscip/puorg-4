@@ -26,71 +26,68 @@ import kr.or.picsion.user.service.UserService;
 
 /**
  * @project Final_Picsion
- * @package kr.or.picsion.notice.service 
+ * @package kr.or.picsion.notice.service
  * @className NoticeService
  * @date 2018. 6. 14.
  */
 
 @Service
 public class NoticeService {
-	
+
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private BoardService boardService;
-	
+
 	@Autowired
 	private CommentService commentService;
-	
+
 	public void insertNotice(Map<String, Object> noticeMap) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 		noticeDao.insertNotice(noticeMap);
 	}
-	
-	public HashMap<Integer, Object> noticeList(int userNo){
+
+	public HashMap<Integer, Object> noticeList(int userNo) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
-		
+
 		List<Notice> noticeList = noticeDao.noticeList(userNo);
 		HashMap<Integer, Object> map = new HashMap<>();
 		int i = 0;
-		
+
 		for (Notice no : noticeList) {
 			List<Object> obj = new ArrayList<>();
-			System.out.println("uuuuuuu" + no.getSendUserNo());
 			User sendUserNo = userService.userInfo(no.getSendUserNo());
 			obj.add(no);
 			obj.add(sendUserNo);
-			
+
 			int tableNo = no.getTableNo();
-			
-			if(tableNo == 3) {
+
+			if (tableNo == 3) {
 				Board board = boardService.selectBoard(no.getBrdNo());
 				obj.add(board);
-			}else if(tableNo == 4) {
+			} else if (tableNo == 4) {
 				Comment comment = commentService.selectComment(no.getCmtNo());
-				if(comment.getTableNo() == 2) {
+				if (comment.getTableNo() == 2) {
 
-				}else {
+				} else {
 					Board board = boardService.selectBoard(comment.getBrdNo());
 				}
-			}else if(tableNo == 5) {
-				System.out.println("메시지");
 			}
 			map.put(i, obj);
 			i++;
 		}
-		
+
 		return map;
 	}
-	
+
 	public int readCheckCount(int userNo) {
-		
-			NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
-			
+
+		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
+
 		return noticeDao.readCheckCount(userNo);
 	}
 }

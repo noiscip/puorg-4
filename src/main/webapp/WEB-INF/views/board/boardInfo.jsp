@@ -5,6 +5,7 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
+		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 		$('#addreviewbutton').on("click",function() {
 					console.log("click");
 					if ($('#reviewcontent').val().trim() == "") {
@@ -18,10 +19,47 @@
 								cmtContent : $("#reviewcontent").val()
 							},
 							success : function(data) {
+								
+								
+								  var media="";
+							      $.each(data.commuserlist,function(index,element){
+										media += "<div class='media'>"+
+									    "<a class='float-left' href='#pablo'>"+
+										"<div class='avatar'>";
+										if(element.prPicture == null){
+											 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
+										}else{
+											media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
+										}
+										media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
+											element.userName+"<small>· "+Date(data.newcommentlist[index].cmtReg)+"</small>"+
+										    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p>"+
+										    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
+											"rel='tooltip' title='' data-original-title='보내버리기'> <i "+
+											"class='material-icons'>reply</i>신고</a></div></div>";
+									})
+									$(".review").empty();
+									$(".review").append(media); 									
+							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+							      	$("#newComment").val("");
+							     
+							  },
+							  error: function(){
+							   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
+							  }
+								
+								
+								
 								var html="";
 								$.each(data.comment,function(index,obj){
+									
+									
+									
 									html+=data.commuserid[index]+" : "+obj.cmtContent+"<br>";
 									html+="<hr style='margin-top: 5px; margin-bottom: 5px;'>";
+									
+									
+									
 								}); 
 								console.log(html);
 								$(".review").empty();
