@@ -199,10 +199,10 @@ public class UserController {
 		return "mypage.following";
 	}
 	
-	//정보 수정 페이지로 이동
+	//정보 수정 페이지로 이동 (회원의 정보 검색해서)
 	@RequestMapping("updateinfo.ps")
 	public String updatePage(HttpSession session) {
-		
+		User user = (User)session.getAttribute("user");
 		
 		return "mypage.updateinfo";
 	}
