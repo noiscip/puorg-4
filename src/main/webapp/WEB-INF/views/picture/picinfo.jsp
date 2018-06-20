@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -32,7 +33,7 @@ $(document).ready(function() {
 							media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
 						}
 						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
-							element.userName+"<small>· "+Date(data.newcommentlist[index].cmtReg)+"</small>"+
+							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p>"+
 						    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
 							"rel='tooltip' title='' data-original-title='보내버리기'> <i "+
@@ -106,7 +107,7 @@ $(document).ready(function() {
 										</div>
 										<div class="card-footer justify-content-center">
 											<button type="button" class="btn btn-default btn-sm"
-												data-toggle="modal" data-target="#exampleModal">메시지</button>
+												data-toggle="modal" data-target="#exampleModal"><i class="material-icons">mail</i> 메시지</button>
 											<button class="btn btn-primary btn-sm" id="follow">
 												<i class="material-icons" id="follow-icon">favorite</i> 팔로우 취소
 											</button>
@@ -184,7 +185,7 @@ $(document).ready(function() {
 										</a>
 										<div class="media-body">
 											<h4 class="media-heading">
-												${commentUserList[status.index].userName} <small>· ${comm.cmtReg}</small>
+												${commentUserList[status.index].userName} <small>· <fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${comm.cmtReg}" /></small>
 											</h4>
 											<p>${comm.cmtContent}</p>
 											<a href="#pablo" class="btn btn-primary btn-link float-right"
@@ -208,7 +209,6 @@ $(document).ready(function() {
 							<div id="collapseTwo" class="collapse show" role="tabpanel"
 								aria-labelledby="headingTwo" data-parent="#accordion" style="">
 								<div class="media media-post">
-								
 								 <c:choose>
 									<c:when test="${sessionScope.user eq null}">
 									<h3 class="category text-muted">로그인 후 이용가능합니다.</h3>
@@ -258,43 +258,6 @@ $(document).ready(function() {
 								</button>
 					</div>
 				
-				</div>
-			</div>
-		</div>
-		<div class="features text-center">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="info">
-						<div class="icon icon-info">
-							<i class="material-icons">local_shipping</i>
-						</div>
-						<h4 class="info-title">2 Days Delivery</h4>
-						<p>Divide details about your product or agency work into
-							parts. Write a few lines about each one. A paragraph describing a
-							feature will be enough.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="info">
-						<div class="icon icon-success">
-							<i class="material-icons">verified_user</i>
-						</div>
-						<h4 class="info-title">Refundable Policy</h4>
-						<p>Divide details about your product or agency work into
-							parts. Write a few lines about each one. A paragraph describing a
-							feature will be enough.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="info">
-						<div class="icon icon-rose">
-							<i class="material-icons">favorite</i>
-						</div>
-						<h4 class="info-title">Popular Item</h4>
-						<p>Divide details about your product or agency work into
-							parts. Write a few lines about each one. A paragraph describing a
-							feature will be enough.</p>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -432,4 +395,38 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document">
+        <div class="modal-content">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+                        <h4 class="card-title">Message</h4>
+                       
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="" action="">
+                        <p class="description text-center">메시지를 전하세요...</p>
+                        <div class="card-body">
+                            <div class="form-group label-floating bmd-form-group">
+                                <label class="form-control-label bmd-label-floating" for="message"> Your message</label>
+                                <textarea class="form-control" rows="6" id="message"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="#pablo" class="btn btn-primary btn-link btn-wd btn-lg">Send</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
