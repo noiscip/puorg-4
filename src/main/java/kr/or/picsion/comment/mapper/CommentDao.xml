@@ -23,6 +23,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 요청글 댓글 쓰기  -->	
 	
+	<!-- 사진에 대한 댓글리스트 가져오기 -->
+	<select id="picCommentUserList" resultType="kr.or.picsion.comment.dto.User">
+		SELECT * FROM COMMENTS WHERE picNo=#{picNo}
+	</select>
+	
 	<!-- 게시판 댓글 저장 -->
 	<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment">
 	insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})

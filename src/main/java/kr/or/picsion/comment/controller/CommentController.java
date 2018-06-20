@@ -57,11 +57,14 @@ public class CommentController {
 	@RequestMapping(value = "insertpiccomment.ps")
 	public View insertPicComment(Comment comment, HttpSession session, Model model, int picNo) {
 		commentService.picInsertComment(comment);
-		List<Comment> newcommentlist = commentService.picCommentList(picNo);
+		System.out.println("33");
+		List<Comment> newcommentlist = commentService.picCommentList(picNo); //댓글 목록
 		List<User> newcommentUserList = new ArrayList<User>();           //댓글 작성자 목록
+		System.out.println("11");
 		for(Comment c : newcommentlist) {
 			newcommentUserList.add(userService.userInfo(c.getUserNo()));
 		}
+		System.out.println("22");
 		model.addAttribute("newcommentUserList",newcommentUserList);
 		model.addAttribute("newcommentlist",newcommentlist);
 		return jsonview;
