@@ -108,7 +108,7 @@ $(function(){
 		                      <i class="material-icons">apps</i> Components
 		                  </a>
 		                  <div class="dropdown-menu dropdown-with-icons">
-		                    <a href="<%=request.getContextPath()%>/board.ps" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/board/board.ps" class="dropdown-item">
 		                        <i class="material-icons">list</i> 요청 게시판
 		                    </a>
 		                    <a href="<%=request.getContextPath()%>/upload.ps" class="dropdown-item">

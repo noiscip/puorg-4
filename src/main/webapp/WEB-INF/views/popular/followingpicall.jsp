@@ -89,19 +89,19 @@
 							<div>
 			                    <div class="counts hide-xs hide-sm ">
 			                    <c:choose>
-									<c:when test="${likecheck[status.index] eq 1}">
-										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite</i>${likecount[status.index]}</em>
+									<c:when test="${followinglistall.respectCheck eq 'T'}">
+										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite</i>${followinglistall.respectCount}</em>
 									</c:when>
 									<c:otherwise>
-										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite_border</i>${likecount[status.index]}</em>
+										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite_border</i>${followinglistall.respectCount}</em>
 									</c:otherwise>
 								</c:choose>
 								<c:choose>
-									<c:when test="${bookcheck[status.index] eq 1}">
-										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark</i>${bookcount[status.index]}</em>
+									<c:when test="${followinglistall.bookmarkCheck eq 'T'}">
+										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark</i>${followinglistall.bookmarkCount}</em>
 									</c:when>
 									<c:otherwise>
-										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark_border</i>${bookcount[status.index]}</em>
+										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark_border</i>${followinglistall.bookmarkCount}</em>
 									</c:otherwise>
 								</c:choose>
 			                    </div>

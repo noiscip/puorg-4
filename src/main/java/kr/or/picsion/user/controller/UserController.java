@@ -120,21 +120,7 @@ public class UserController {
 		User user = (User) session.getAttribute("user");
 		List<Picture> followingPicList = userService.listpic(user.getUserNo()); //팔로잉 최신 사진 리스트
 		List<User> followingPicListOwner = userService.listpicown(user.getUserNo()); //사진 주인 리스트
-		List<Integer> likecheck = new ArrayList<Integer>();   //좋아요 확인
-		List<Integer> bookcheck = new ArrayList<Integer>();   //북마크 확인
-		List<Integer> likecount = new ArrayList<Integer>();   //좋아요 갯수
-		List<Integer> bookcount = new ArrayList<Integer>();   //북마크 갯수
-		
-		for(Picture p : followingPicList) {
-			likecheck.add(pictureService.respectConfirm(p.getPicNo(), user.getUserNo()));
-			bookcheck.add(pictureService.bookmarkConfirm(p.getPicNo(), user.getUserNo()));
-			likecount.add(pictureService.respectCount(p.getPicNo())); 
-			bookcount.add(pictureService.bookmarkCount(p.getPicNo()));
-		}
-		model.addAttribute("likecount",likecount);
-		model.addAttribute("bookcount",bookcount);
-		model.addAttribute("likecheck",likecheck);
-		model.addAttribute("bookcheck", bookcheck);
+		System.out.println(followingPicList);
 		model.addAttribute("imagelistall", followingPicList);
 		model.addAttribute("ownlist",followingPicListOwner);
 		

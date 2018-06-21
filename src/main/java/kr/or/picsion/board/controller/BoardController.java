@@ -26,7 +26,7 @@ import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
 @Controller
-
+@RequestMapping("/board/")
 public class BoardController {
 
 	@Autowired
@@ -135,14 +135,9 @@ public class BoardController {
 		HashMap<String, Integer> map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
-		List<String> userid = new ArrayList<String>();
-		List<String> boardstate = new ArrayList<String>();
 		try {
 			list = boardService.boardList(map);
-			for(Board s : list) {
-				userid.add(userService.userInfo(s.getUserNo()).getUserId());
-				boardstate.add(operationApplyService.operationStatus(s.getOperStateNo()));
-			}
+			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,8 +148,6 @@ public class BoardController {
 		
 		
 		model.addAttribute("list", list);
-		model.addAttribute("userid", userid);
-		model.addAttribute("boardstate", boardstate);
 		model.addAttribute("pg", page);
 		model.addAttribute("allPage", allPage);
 		model.addAttribute("block", block);
