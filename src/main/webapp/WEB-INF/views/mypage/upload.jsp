@@ -32,6 +32,7 @@
 			alert("태그를 입력해주세요.");
 		}else{
 			$('#picTags').append("<input type='text' value="+$('#tagAddName').val()+" name='tag' data-role='tagsinput'>");
+			$("input[data-role=tagsinput]").tagsinput();
 			$('#tagAddName').val("");
 		}
 		
