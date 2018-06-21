@@ -19,7 +19,7 @@ $(function(){
 					var noticeMenu = '';
 					$.each(data.map, function(i, elt) {
 						console.log(elt)
-						noticeMenu += '<li class="divider"><a href="#">'
+						noticeMenu += '<li class="divider"><a>'
 						noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
 						noticeMenu += '"'+ elt[1].userName +'"'
 						var value = '' 

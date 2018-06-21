@@ -15,7 +15,6 @@ public interface UserDao {
 	public User selectUser(String user, Object userId);		//파라미터 값에따라 유동적으로 회원의 정보 검색
 	public User selectUserProfile(int userNo);
 	public List<Picture> bookmarkPicList(int userNo);	//내가 북마크한 사진 리스트
-	public List<Picture> respectPicList(int userNo);	//내가 좋아요한 사진 리스트
 	public List<User> followingUserList(int userNo);	//내가 따르는 회원 리스트 (팔로잉 회원들)
 	public List<User> followerUserList(int userNo);		//나를 따르는 회원 리스트 (팔로워 회원들)
 	public int followingConfirm(int userNo, int followingUserNo);	//팔로잉하고 있는지 확인

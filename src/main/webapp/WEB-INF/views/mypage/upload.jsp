@@ -22,9 +22,6 @@
 </head>
 
 <script type="text/javascript">
-	$(document).on("click", "#tagDel", function() {
-		$('#tagbtn').remove();
-	});
 	$(document).on("click", "#tagAdd", function() {
 		console.log("뚜뚜")
 		
@@ -32,6 +29,7 @@
 			alert("태그를 입력해주세요.");
 		}else{
 			$('#picTags').append("<input type='text' value="+$('#tagAddName').val()+" name='tag' data-role='tagsinput'>");
+			$("input[data-role=tagsinput]").tagsinput();
 			$('#tagAddName').val("");
 		}
 		
@@ -127,8 +125,6 @@
 						
 						</div>
 						<button type="submit" class="btn btn-primary">저장하기</button>
-						
-						<input type="text" id="taginputtest" value="ddd,fff,ggg" data-role="">
 					</form>
 				</div>
 			</div>
@@ -195,7 +191,7 @@
 					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
 					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
 					$('#tagA').append(tags)
-					$('#taginputtest').attr("data-role","tagsinput");
+					/* $('#taginputtest').attr("data-role","tagsinput"); */
 					console.log('와요?')
 					$("input[data-role=tagsinput]").tagsinput();
 				}
