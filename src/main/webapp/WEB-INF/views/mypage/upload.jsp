@@ -171,7 +171,7 @@
 						safe += 		'<div class="alert-icon">'
 						safe += 			'<i class="material-icons">warning</i>'
 						safe += 		'</div>'
-						safe += 		'<button type="button" class="close" data-dismiss="alert aria-label="Close">'
+						safe += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
 						safe += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
 						safe += 		'</button>'
 						safe += 		'<b>Warning Alert</b>' + data.safe
