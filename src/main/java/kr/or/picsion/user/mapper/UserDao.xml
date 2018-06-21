@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select po.userNo2 as userNo, po.picTitle as picTitle, po.picContent as picContent,po.picPath as picPath, po.picNo as picNo, po.picReg as picReg, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount from (SELECT f.userNo as userNo, f.followingUserNo as userNo2, u.userName as userName, p.picTitle as picTitle, p.picContent as picContent, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
       	FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
                    join PICTURE p on u.userNo = p.userNo
-                   where f.userNo = 20
+                   where f.userNo = #{userNo}
                    order by p.picReg) po left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo left join BOOKMARK b on po.picNo=b.picNo and po.userNo=b.userNo left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo;
 	</select>	
 	
