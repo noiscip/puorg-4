@@ -69,18 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2}
 	</delete>
 	
-	 <!-- 팔로잉 최신 사진 -->
-    <select id="followingUserPictureList" resultType="kr.or.picsion.picture.dto.Picture">
-    	SELECT f.followingUserNo as userNo, u.userName as userName, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
-      	FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
-                   join PICTURE p on u.userNo = p.userNo
-                   where f.userNo = #{userNo}
-                   order by p.picReg
-    </select> 
-    
-    
   
-     <!-- 팔로잉 최신 사진의 주인 --> 
+    <!-- 팔로잉 최신 사진의 주인 --> 
     <select id="followingUserPictureOwnerList" resultType="kr.or.picsion.user.dto.User">
     	SELECT f.followingUserNo as userNo, u.userName as userName, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
       	FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
@@ -89,6 +79,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                    order by p.picReg
     </select> 
    
+    <!-- 팔로잉 최신 사진 , 좋아요, 북마크 리스트  -->
+	<select id="followingUserPictureList" resultType="kr.or.picsion.picture.dto.Picture">
+	select po.userNo2 as userNo, po.picTitle as picTitle, po.picContent as picContent,po.picPath as picPath, po.picNo as picNo, po.picReg as picReg, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount from (SELECT f.userNo as userNo, f.followingUserNo as userNo2, u.userName as userName, p.picTitle as picTitle, p.picContent as picContent, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
+      	FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
+                   join PICTURE p on u.userNo = p.userNo
+                   where f.userNo = 20
+                   order by p.picReg) po left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo left join BOOKMARK b on po.picNo=b.picNo and po.userNo=b.userNo left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo;
+	</select>	
 	
 	<!-- 북마크한 사진 리스트 -->
 	<select id="bookmarkPicList" resultType="kr.or.picsion.picture.dto.Picture">
