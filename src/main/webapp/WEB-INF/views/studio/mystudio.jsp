@@ -20,8 +20,7 @@
 				  url : "/picsion/message/send.ps",
 				  data: data,
 				  success : function(){
-				      $('#msgContent').val("");
-				      send();
+
 				      $("#msgContent").val("");
 				      send(receiveUserNo,tableNo);
 				  },

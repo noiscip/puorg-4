@@ -46,6 +46,10 @@ public class NoticeService {
 	@Autowired
 	private CommentService commentService;
 
+	@Autowired
+	private PictureService pictureService;
+	
+	
 	public void insertNotice(Map<String, Object> noticeMap) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 		noticeDao.insertNotice(noticeMap);
@@ -71,11 +75,16 @@ public class NoticeService {
 				obj.add(board);
 			} else if (tableNo == 4) {
 				Comment comment = commentService.selectComment(no.getCmtNo());
+				obj.add(comment);
+				String title ="";
 				if (comment.getTableNo() == 2) {
-
+					Picture picture = pictureService.picInfo(comment.getPicNo());
+					title = picture.getPicTitle();
 				} else {
 					Board board = boardService.selectBoard(comment.getBrdNo());
+					title = board.getBrdTitle();
 				}
+				obj.add(title);
 			}
 			map.put(i, obj);
 			i++;
