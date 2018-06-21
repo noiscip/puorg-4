@@ -107,4 +107,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY msgReg DESC
 	</select>
 	
+	
+	<resultMap type="kr.or.picsion.user.dto.User" id="User">
+		<result column="userNo" property="userNo"/>
+		<result column="userId" property="userId"/>
+		<result column="userName" property="userName"/>
+		<result column="prPicture" property="prPicture"/>
+		<result column="prContent" property="prContent"/>
+	</resultMap>
+
+	<resultMap type="kr.or.picsion.message.dto.Message" id="Message">
+		<result column="msgNo" property="msgNo"/>
+		<result column="msgContent" property="msgContent"/>
+		<result column="msgReg" property="msgReg"/>
+		<result column="msgState" property="msgState"/>
+		<result column="sendMsgDel" property="sendMsgDel"/>
+		<result column="receiveMsgDel" property="receiveMsgDel"/>
+		<result column="sendUserNo" property="sendUserNo"/>
+		<result column="receiveUserNo" property="receiveUserNo"/>
+		<result column="tableNo" property="tableNo"/>
+		<collection property="user" resultMap="User"/>
+	</resultMap>
+
+
+	<!-- 보낸메시지,받은메시지 다 가져오기 -->
+	<select id="selectAll" resultMap="Message">
+		<!-- select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo where receiveUserNo = #{userNo}
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo where sendUserNo = #{userNo}
+		ORDER by msgReg -->
+		
+		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where receiveUserNo = #{userNo}
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where sendUserNo = #{userNo}
+		ORDER by msgReg
+	</select>
+	
 </mapper>

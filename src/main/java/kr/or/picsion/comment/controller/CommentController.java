@@ -23,6 +23,7 @@ import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
 @Controller
+@RequestMapping("/comment/")
 public class CommentController {
 
 	@Autowired

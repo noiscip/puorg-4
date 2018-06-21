@@ -61,6 +61,12 @@ public class MessageController {
 	public String receiveMessage(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		
+		List<Message> messageAll = messageService.messageAll(user.getUserNo());
+		System.out.println("리시브 메시지 와라~~~~~99-----------------------------------");
+		for (Message m : messageAll) {
+			System.out.println(m);
+		}
+		
 		//받은 메시지에 대한 정보
 		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
 		List<User> receiveInfo = messageService.receiveMessageInfo(user.getUserNo());
