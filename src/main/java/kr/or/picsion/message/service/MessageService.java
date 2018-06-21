@@ -10,6 +10,14 @@ import kr.or.picsion.message.dao.MessageDao;
 import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @author Bit
+ *
+ */
+/**
+ * @author Bit
+ *
+ */
 @Service
 public class MessageService {
 	
@@ -113,5 +121,11 @@ public class MessageService {
 		return sendSelectInfo;
 	}
 	
-	
+	//메시지 모두 가져오기
+	public List<Message> messageAll(int userNo){
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		List<Message> messageAll = messageDao.selectAll(userNo);
+		
+		return messageAll;
+	}
 }
