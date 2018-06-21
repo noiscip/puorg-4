@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <input type="hidden" value="${sessionScope.result}" id="result">
@@ -985,14 +986,13 @@ label.btn.btn-default.btn-circle.focus {
 								<div class="card-header card-header-image">
 									<a href="#pablo"> <img class="img"
 										src="<%=request.getContextPath()%>${fileInfo.picPath}">
-										<div class="card-title">${fileInfo.picReg}</div>
+										<div class="card-title"><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss a" value = "${fileInfo.picReg}" /></div>
 									</a>
 								</div>
 								<div class="card-body">
-									<h6 class="card-category text-info">Fashion</h6>
+									<h6 class="card-category text-info">${fileInfo.picTitle}</h6>
 									<p class="card-description">
-										<!-- Don&apos;t be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens&#x2019; bed design but the back is... -->
-										내용을 넣어주세요
+										${fileInfo.picContent}
 									</p>
 								</div>
 							</div>
