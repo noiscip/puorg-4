@@ -36,13 +36,28 @@ public class PictureController {
 	@Autowired
 	private CommentService commentService;
 	
+	//사진 상세 페이지
 	@RequestMapping("picinfo.ps")
-	public String picInfo(Model model, int picNo, int userNo){
-		Picture picture = pictureService.picInfo(picNo); 			  //클릭한 사진
-		User userInfo = userService.userInfo(userNo);    			  //사진 주인	
-		List<Comment> commentList = commentService.picCommentList(picNo); //댓글 목록
-		List<User> commentUserList = commentService.picCommentUserList(picNo); //댓글 유저 목록           //댓글 작성자 목록
+	public String picInfo(HttpSession session, Model model, int picNo){
+		User user = (User) session.getAttribute("user");					  //로그인 사용자
+		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
+		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인	
+		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
+		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
 		List<String> tagList = pictureService.selectTag(picNo);
+		int followResult = 0;
+		int respectresult = pictureService.respectConfirm(picNo, user.getUserNo()); //좋아요 하고 있는지 확인
+		int bookmarkresult = pictureService.bookmarkConfirm(picNo, user.getUserNo()); //북마크 하고 있는지 확인
+		int respectCount = pictureService.respectCount(picNo);						 //좋아요 갯수
+		int bookmarkCount = pictureService.bookmarkCount(picNo);					 //북마크 갯수
+		if(user.getUserNo() != userInfo.getUserNo()) {
+			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
+		}
+		model.addAttribute("respectCount",respectCount);
+		model.addAttribute("bookmarkCount",bookmarkCount);
+		model.addAttribute("respectresult",respectresult);
+		model.addAttribute("bookmarkresult",bookmarkresult);
+		model.addAttribute("followResult", followResult);
 		model.addAttribute("tagList",tagList);
 		model.addAttribute("picture",picture);
 		model.addAttribute("userInfo",userInfo);
