@@ -339,6 +339,4 @@ public class AmazonTest {
         return "이미지파일이름변경완료";
  
     }
-	
-
 }

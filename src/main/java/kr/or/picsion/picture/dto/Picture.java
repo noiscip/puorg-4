@@ -19,12 +19,17 @@ public class Picture {
 	private String resolution;
 	private Date photoDate;
 	private List<String> tagContent;
+	private String respectCheck;
+	private String bookmarkCheck;
+	private int respectCount;
+	private int bookmarkCount;
 
 	public Picture() {}
 
 	public Picture(int picNo, String picTitle, String picContent, Date picReg, String picPath, String picWater,
 			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolution, Date photoDate,
-			List<String> tagContent) {
+			List<String> tagContent, String respectCheck, String bookmarkCheck, int respectCount, int bookmarkCount) {
+		super();
 		this.picNo = picNo;
 		this.picTitle = picTitle;
 		this.picContent = picContent;
@@ -39,7 +44,12 @@ public class Picture {
 		this.resolution = resolution;
 		this.photoDate = photoDate;
 		this.tagContent = tagContent;
+		this.respectCheck = respectCheck;
+		this.bookmarkCheck = bookmarkCheck;
+		this.respectCount = respectCount;
+		this.bookmarkCount = bookmarkCount;
 	}
+
 
 	public int getPicNo() {
 		return picNo;
@@ -153,12 +163,46 @@ public class Picture {
 		this.tagContent = tagContent;
 	}
 
+	public String getRespectCheck() {
+		return respectCheck;
+	}
+
+	public void setRespectCheck(String respectCheck) {
+		this.respectCheck = respectCheck;
+	}
+
+	public String getBookmarkCheck() {
+		return bookmarkCheck;
+	}
+
+	public void setBookmarkCheck(String bookmarkCheck) {
+		this.bookmarkCheck = bookmarkCheck;
+	}
+
+	public int getRespectCount() {
+		return respectCount;
+	}
+
+	public void setRespectCount(int respectCount) {
+		this.respectCount = respectCount;
+	}
+
+	public int getBookmarkCount() {
+		return bookmarkCount;
+	}
+
+	public void setBookmarkCount(int bookmarkCount) {
+		this.bookmarkCount = bookmarkCount;
+	}
+
 	@Override
 	public String toString() {
 		return "Picture [picNo=" + picNo + ", picTitle=" + picTitle + ", picContent=" + picContent + ", picReg="
 				+ picReg + ", picPath=" + picPath + ", picWater=" + picWater + ", picHit=" + picHit + ", picPrice="
 				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolution="
-				+ resolution + ", photoDate=" + photoDate + ", tagContent=" + tagContent + "]";
+				+ resolution + ", photoDate=" + photoDate + ", tagContent=" + tagContent + ", respectCheck="
+				+ respectCheck + ", bookmarkCheck=" + bookmarkCheck + ", respectCount=" + respectCount
+				+ ", bookmarkCount=" + bookmarkCount + "]";
 	}
-
+	
 }

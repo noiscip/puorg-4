@@ -19,23 +19,24 @@ $(function(){
 					var noticeMenu = '';
 					$.each(data.map, function(i, elt) {
 						console.log(elt)
-						noticeMenu += '<li class="divider"><a href="#">'
+						noticeMenu += '<li class="divider"><a>'
 						noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
 						noticeMenu += '"'+ elt[1].userName +'"'
 						var value = '' 
 						
 						if(elt[0].tableNo == 3){
+							value = elt[0].tableNo + ','+  elt[0].brdNo
 							noticeMenu += '님이 ' + elt[2].brdTitle
-							value = elt[0].brdNo + ','+  elt[0].tableNo
-							if(elt[0].operNo == 0){
-								noticeMenu += ' 작업을 신청 하였습니다'
-							}else{
-								noticeMenu += ' 작업을 수락 하였습니다'
-							}
+							noticeMenu += ((elt[0].operNo ==0)? ' 작업을 신청 하였습니다':' 작업을 수락 하였습니다' )
 						}else if(elt[0].tableNo == 4){
-							value = elt[0].cmtNo + ','+ elt[0].tableNo
+							if(elt[2].tableNo == 2){
+								value = elt[2].tableNo + ','+ elt[2].picNo								
+							}else if(elt[2].tableNo == 3){
+								value = elt[2].tableNo + ','+ elt[2].brdNo
+							}
+							noticeMenu += '님이 ' + elt[3].title + '글에 댓글을 달았습니다'
 						}else if(elt[0].tableNo == 5){
-							value = elt[0].msgNo + ','+ elt[0].tableNo
+							value = elt[0].tableNo + ','+ elt[0].msgNo
 							noticeMenu += '님이 메시지를 보냈습니다'
 						}
 						noticeMenu += '<input type="hidden" value="'+value+'">'
@@ -52,6 +53,14 @@ $(function(){
 		console.log($(this).find('input')[0].value)
 		var value = ($(this).find('input')[0].value).split(',')
 		console.log(value.length)
+		
+		if(value[0] == 2){
+			self.location = '/picsion/picture/picinfo.ps?picNo=' + value[1]
+		}else if(value[0] == 3){
+			self.location = '/picsion/board/boardInfo.ps?brdNo=' + value[1]
+		}else if(value[0] == 5){
+			
+		}
 		
 	})
 	
@@ -99,7 +108,7 @@ $(function(){
 		                      <i class="material-icons">apps</i> Components
 		                  </a>
 		                  <div class="dropdown-menu dropdown-with-icons">
-		                    <a href="<%=request.getContextPath()%>/board.ps" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/board/board.ps" class="dropdown-item">
 		                        <i class="material-icons">list</i> 요청 게시판
 		                    </a>
 		                    <a href="<%=request.getContextPath()%>/upload.ps" class="dropdown-item">
