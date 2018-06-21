@@ -29,7 +29,7 @@
 								<tr>
 									<td class="text-center">${n.brdNo}</td>
 									<td class="text-center"><a
-										href="/board/boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a></td>
+										href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a></td>
 									<td class="text-center">${n.userName}</td>
 									<td class="text-center">${n.brdReg}</td>
 									<td class="text-center">${n.operState}</td>
@@ -47,10 +47,10 @@
 											<!-- 처음 이전 링크 -->
 											<c:if test="${pg>block}">
 												<!-- 5>10 : false / 15>10 : true -->
-												<li class="page-item"><a href="/board/board.ps?pg=1"
+												<li class="page-item"><a href="<%=request.getContextPath()%>/board/board.ps?pg=1"
 													class="page-link">◀◀</a></li>
 												<li class="page-item"><a
-													href="/board/board.ps?pg=${fromPage-1}" class="page-link">◀</a></li>
+													href="<%=request.getContextPath()%>/board/board.ps?pg=${fromPage-1}" class="page-link">◀</a></li>
 											</c:if>
 											<c:if test="${pg<=block}">
 												<!-- 5<=10 :true / 15<=10:false -->
@@ -66,7 +66,7 @@
 													</span></li>
 												</c:if>
 												<c:if test="${i!=pg}">
-													<li class="page-item"><a href="/board/board.ps?pg=${i}"
+													<li class="page-item"><a href="<%=request.getContextPath()%>/board/board.ps?pg=${i}"
 														class="page-link">${i}</a></li>
 												</c:if>
 											</c:forEach>
@@ -74,9 +74,9 @@
 											<!-- 다음, 이후 -->
 											<c:if test="${toPage<allPage}">
 												<!-- 20<21 : true -->
-												<li class="page-item"><a href="/board/board.ps?pg=${toPage+1}"
+												<li class="page-item"><a href="<%=request.getContextPath()%>/board/board.ps?pg=${toPage+1}"
 													class="page-link">▶</a></li>
-												<li class="page-item"><a href="/board/board.ps?pg=${allPage}"
+												<li class="page-item"><a href="<%=request.getContextPath()%>/board/board.ps?pg=${allPage}"
 													class="page-link">▶▶</a></li>
 
 											</c:if>
