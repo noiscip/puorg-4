@@ -196,87 +196,87 @@
 									</div>
 
 									<div class="col-md-6 col-sm-6">
-											<h3 class="title">작업 메시지함</h3>
-											<!-- <h3 class="main-price">$335</h3> -->
-											<div id="accordion" role="tablist">
+										<h3 class="title">작업 메시지함</h3>
+										<!-- <h3 class="main-price">$335</h3> -->
+										<div id="accordion" role="tablist">
 
-												<div class="card card-collapse">
+											<div class="card card-collapse">
 
-													<div id="collapseThree" class="collapse show"
-														role="tabpanel" aria-labelledby="headingThree"
-														data-parent="#accordion"
-														style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
-														<div class="card-body" id="reviewcontents">
+												<div id="collapseThree" class="collapse show"
+													role="tabpanel" aria-labelledby="headingThree"
+													data-parent="#accordion"
+													style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
+													<div class="card-body" id="reviewcontents">
 
-															<c:forEach var="review1" items="${comment}"
-																varStatus="status">
+														<c:forEach var="review1" items="${comment}"
+															varStatus="status">
 
-																<div class="media">
-																	<a class="float-left"
-																		href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
-																		<div class="avatar">
-																			<img class="media-object" alt="Tim Picture"
-																				src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
-																		</div>
-																	</a>
-																	<div class="media-body">
-																		<h4 class="media-heading">
+															<div class="media">
+																<a class="float-left"
+																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
+																	<div class="avatar">
+																		<img class="media-object" alt="Tim Picture"
+																			src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
+																	</div>
+																</a>
+																<div class="media-body">
+																	<h4 class="media-heading">
 
-																			${commentuser[status.index].userName} <small>·
-																				<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
-																					value="${review1.cmtReg}" />
-																			</small>
+																		${commentuser[status.index].userName} <small>·
+																			<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
+																				value="${review1.cmtReg}" />
+																		</small>
 
-																		</h4>
-																		<p>${review1.cmtContent}</p>
-																		<div class="media-footer">
-																			<a href="#pablo"
-																				class="btn btn-primary btn-link float-right"
-																				rel="tooltip" title="" data-original-title="보내버리기">
-																				<i class="material-icons">reply</i> 신고
-																			</a>
-																		</div>
+																	</h4>
+																	<p>${review1.cmtContent}</p>
+																	<div class="media-footer">
+																		<a href="#pablo"
+																			class="btn btn-primary btn-link float-right"
+																			rel="tooltip" title="" data-original-title="보내버리기">
+																			<i class="material-icons">reply</i> 신고
+																		</a>
 																	</div>
 																</div>
+															</div>
 
-															</c:forEach>
+														</c:forEach>
 
-														</div>
 													</div>
 												</div>
-												<div class="card card-collapse">
-													<div class="card-header" role="tab" id="headingTwo">
-														<h5 class="mb-0">
-															<a>Input Comment</a>
-														</h5>
-													</div>
-													<div id="collapseTwo" class="collapse show" role="tabpanel"
-														aria-labelledby="headingTwo" data-parent="#accordion"
-														style="">
-														<div class="media media-post">
-															<a class="author float-left" href="#pablo">
-																<div class="avatar">
-																	<img class="media-object" alt="64x64"
-																		src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
-																</div>
-															</a>
-															<div class="media-body">
-																<div class="form-group label-floating bmd-form-group">
-																	<label class="form-control-label bmd-label-floating"
-																		for="exampleBlogPost"> 댓글을 달아보세요...</label>
-																	<textarea class="form-control" rows="5"
-																		id="reviewcontent"></textarea>
-																</div>
-																<div class="media-footer">
-																	<a href="#pablo"
-																		class="btn btn-primary btn-round btn-wd float-right"
-																		id="addreviewbutton">Post Comment</a>
-																</div>
+											</div>
+											<div class="card card-collapse">
+												<div class="card-header" role="tab" id="headingTwo">
+													<h5 class="mb-0">
+														<a>Input Comment</a>
+													</h5>
+												</div>
+												<div id="collapseTwo" class="collapse show" role="tabpanel"
+													aria-labelledby="headingTwo" data-parent="#accordion"
+													style="">
+													<div class="media media-post">
+														<a class="author float-left" href="#pablo">
+															<div class="avatar">
+																<img class="media-object" alt="64x64"
+																	src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
+															</div>
+														</a>
+														<div class="media-body">
+															<div class="form-group label-floating bmd-form-group">
+																<label class="form-control-label bmd-label-floating"
+																	for="exampleBlogPost"> 댓글을 달아보세요...</label>
+																<textarea class="form-control" rows="5"
+																	id="reviewcontent"></textarea>
+															</div>
+															<div class="media-footer">
+																<a href="#pablo"
+																	class="btn btn-primary btn-round btn-wd float-right"
+																	id="addreviewbutton">Post Comment</a>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
+										</div>
 
 									</div>
 								</div>
@@ -286,7 +286,8 @@
 				</c:when>
 			</c:choose>
 
-
+<c:choose>
+		<c:when test="${boardInfo.userNo eq user.userNo}">
 			<table class="table">
 				<thead>
 					<tr>
@@ -297,8 +298,7 @@
 				</thead>
 				<tbody>
 
-					<c:choose>
-						<c:when test="${boardInfo.userNo eq user.userNo}">
+						
 							<div class="apply">
 								<c:forEach var="apply" items="${applylist}" varStatus="status">
 
@@ -316,15 +316,21 @@
 
 								</c:forEach>
 							</div>
-						</c:when>
-						<c:otherwise>
-							<button type="button" class="btn btn-default btn-sm"
-								data-toggle="modal" data-target="#exampleModal">신청하기</button>
-						</c:otherwise>
-					</c:choose>
+						
 
 				</tbody>
+				
 			</table>
+			</c:when>
+				<c:otherwise>						
+					<button type="button" class="btn btn-default btn-sm"
+					data-toggle="modal" data-target="#exampleModal">신청하기</button>
+				</c:otherwise>
+	</c:choose>
+
+
+
+
 
 
 
