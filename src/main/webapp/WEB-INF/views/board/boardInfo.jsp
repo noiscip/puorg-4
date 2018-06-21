@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script type="text/javascript">
 	//리뷰 쓰기
@@ -196,7 +196,6 @@
 									</div>
 
 									<div class="col-md-6 col-sm-6">
-										<div id="re" style="text-align: center;">
 											<h3 class="title">작업 메시지함</h3>
 											<!-- <h3 class="main-price">$335</h3> -->
 											<div id="accordion" role="tablist">
@@ -222,9 +221,12 @@
 																	</a>
 																	<div class="media-body">
 																		<h4 class="media-heading">
-																		
-																		${commentuser[status.index].userName} <small>· <fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${review1.cmtReg}" /></small>
-																		
+
+																			${commentuser[status.index].userName} <small>·
+																				<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
+																					value="${review1.cmtReg}" />
+																			</small>
+
 																		</h4>
 																		<p>${review1.cmtContent}</p>
 																		<div class="media-footer">
@@ -275,7 +277,6 @@
 													</div>
 												</div>
 											</div>
-										</div>
 
 									</div>
 								</div>

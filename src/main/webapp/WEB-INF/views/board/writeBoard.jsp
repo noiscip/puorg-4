@@ -24,7 +24,7 @@
       	<div class="container">
 			<div class="row">
           		<div class="col-md-12 ml-auto mr-auto">
-          			<form action="writeboard.ps" method="post">
+          			<form action="<%=request.getContextPath()%>/board/writeboard.ps" method="post">
           			
 					<textarea style="height: 1000px" rows="10" cols="60" name="brdContent" id="brdContent"></textarea>
 					
