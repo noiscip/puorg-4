@@ -133,7 +133,7 @@
 	});
 </script>
 
-
+<input type="hidden" value="${brdInfo.tableNo},brdNo,${brdInfo.brdNo}" id="info">
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>

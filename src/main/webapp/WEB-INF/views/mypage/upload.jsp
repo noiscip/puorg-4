@@ -182,7 +182,7 @@
 					
 					var tags = ''
 					$.each(data.label, function(i, elt) {
-						tags += '<input type="text" value="' + elt + '" data-role="tagsinput">'
+						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
 					})
 					
 					$('#picTags').append(tags)

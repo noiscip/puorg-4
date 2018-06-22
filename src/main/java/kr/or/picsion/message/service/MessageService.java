@@ -128,4 +128,12 @@ public class MessageService {
 		
 		return messageAll;
 	}
+	
+	//한 회원과 주고받은 메시지 리스트 뽑아오기 6.22
+	public List<Message> messageList(int myUserNo, int userNo){
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		List<Message> messageList = messageDao.msgList(myUserNo, userNo);
+		
+		return messageList;
+	}
 }
