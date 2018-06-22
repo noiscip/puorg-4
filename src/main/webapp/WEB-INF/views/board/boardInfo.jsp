@@ -43,7 +43,7 @@
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#newComment").val("");
 							     
-							  },
+							  }, 
 							  error: function(){
 							   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
 							  }

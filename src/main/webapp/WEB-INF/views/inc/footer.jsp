@@ -30,13 +30,14 @@
 					console.log($('#loginUserNo').val())
 				}
 				
-				function blame(userNo,tableNo,no){
+				function blame(){
 					
 					
 					
 				}
 				$('#blameBtn').click(function(){
-					
+					var userNo = ${userinfo.userNo}
+					console.log('하하하하하하하')
 					
 					
 					
