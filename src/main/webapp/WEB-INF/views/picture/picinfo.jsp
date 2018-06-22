@@ -128,10 +128,10 @@ $(document).ready(function() {
 	//댓글 쓰기
 	$(document).on('click','#commentbtn',function(){
 		console.log($('#scrolldown').children()[0].innerHTML);
-		$('#scrolldown').children()[0].innerHTML++;
 		if($('#newComment').val()==''){
 			alert("댓글 내용이 없습니다.");
 		}else{
+		$('#scrolldown').children()[0].innerHTML++;
 		var tableNo = 2; 
 		var data= {cmtContent:$("#newComment").val(), 
 					userNo:loginuser, 
