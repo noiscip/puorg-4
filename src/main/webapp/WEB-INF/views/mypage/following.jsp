@@ -38,7 +38,7 @@
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">요청/작업</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
 		</ul>
 			<div class="gallery text-center">
