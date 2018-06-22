@@ -98,7 +98,7 @@
 			<div class="form-group">
 			    <label class="label-control">날짜 선택</label>
 			    <input id="datePicker" type="text" class="form-control datetimepicker"/>
-			    <button id="purchaseSearch">검색</button><button id="allUser">전체 조회</button>
+			    <button id="purchaseSearch">검색</button><button id="allPurchase">전체 조회</button>
 			</div>
 			<table border="3">
 				<thead>
