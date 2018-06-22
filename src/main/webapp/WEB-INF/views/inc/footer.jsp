@@ -30,16 +30,17 @@
 					console.log($('#loginUserNo').val())
 				}
 				
-				function blame(){
-					
-					
-					
-				}
-				$('#blameBtn').click(function(){
-					var userNo = ${userinfo.userNo}
+				$('#blaSend').click(function(){
+					var userNo = $('#userInfo').val()
 					console.log('하하하하하하하')
+					console.log(userNo)
+					var blaContent = $('#blaContent').val()
+					console.log(blaContent)
 					
 					
+					$.ajax({
+						
+					})
 					
 				})
 			
@@ -113,10 +114,34 @@
 			
 		  	
 		  	
-		  	
-		  	
 		</script>
 	</head>
+
+<!-- 메시지 Modal -->
+<div class="modal fade" id="reportModal" tabindex="1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">신고하기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+	    <div class="form-group">
+	    	<label for="exampleFormControlTextarea1">내용</label>
+	    	<textarea class="form-control" id="blaContent" name="blaContent" rows="3" placeholder="최대 25자까지 가능"></textarea>
+	    </div>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" id="blaSend" data-dismiss="modal">보내기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
 		
 	<body>
 		<footer class="text-center">
