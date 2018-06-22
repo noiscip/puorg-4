@@ -55,9 +55,9 @@ public class CommentService {
 		return result;
 	}
 	
-	// 댓글 전부 삭제 서비스
+	// 작업 수락시 해당 게시물 댓글 리셋
     public int deleteAllComment(int brdNo) {
-        System.out.println("deleteComment 서비스 ");            
+        System.out.println("deleteAllComment 서비스 ");            
         CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
         int result = commentdao.deleteAllComment(brdNo);
         return result;
