@@ -11,6 +11,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       select u.*,us.userId as userId, us.userName as userName, o.operState as operState  from (select * from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select * from BOARD order by brdNo DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RN where RN.ROWNUM >= #{start} and RN.ROWNUM  &lt;= #{end}) u join USERS us on u.userNo=us.userNo join OPERATIONSTATE o on u.operStateNo=o.operStateNo order by ROWNUM
  </select>
  
+ <!-- operationList(내 작업 게시판 리스트) -->
+ <select id="operationBoardList" parameterType="Integer" 
+                           resultType="kr.or.picsion.board.dto.Board"> 
+      select  b.brdNo as brdNo, b.brdTitle as brdTitle, b.brdContent as brdContent, b.brdExpectPrice as brdExpectPrice, b.brdExpectEndDate as brdExpectEndDate, b.copyright as copyright, o.operStartReg as brdReg,b.userNo as userNo, b.tableNo as tableNo, u.userId as userID, u.userName as userName, op.operState as operState from (select * from OPERATION where operatorNo=#{userNo}) o join BOARD b on o.brdNo=b.brdNo join USERS u on o.requesterNo = u.userNo join OPERATIONSTATE op on b.operStateNo=op.operStateNo order by o.operStartReg desc;
+ </select>
+<!-- requestListv(내 요청 게시판 리스트) -->
+ <select id="requestBoardList" parameterType="Integer" 
+                           resultType="kr.or.picsion.board.dto.Board">
+     select b2.brdNo as brdNo, b2.brdTitle as brdTitle, b2.brdContent as brdContent, b2.brdExpectPrice as brdExpectPrice, b2.brdExpectEndDate as brdExpectEndDate, b2.copyright as copyright, b2.brdReg as brdReg,b2.operNo as userNo, b2.tableNo as tableNo, u.userName as userName, u.userId as userId, os.operState as operState from (select b.*, o.operNo as operNo from (select * from BOARD where userNo=#{userNo}) b left join OPERATION o on b.brdNo=o.brdNo) b2 left join USERS u on b2.operNo=u.userNo join OPERATIONSTATE os on b2.operStateNo=os.operStateNo;
+ </select>
 
 <!-- getBoardCount(글 전체 건수) -->
  <select id="getBoardCount" resultType="Integer">

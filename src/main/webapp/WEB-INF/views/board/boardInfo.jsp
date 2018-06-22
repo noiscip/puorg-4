@@ -103,7 +103,7 @@
 						}, 
 						success : function(data) {
 							console.log(data.check);
-							location.href="boardInfo.ps?brdNo="+brdNo;
+							location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
 						}
 					});	
 				});

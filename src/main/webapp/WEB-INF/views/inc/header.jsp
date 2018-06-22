@@ -126,7 +126,7 @@ $(function(){
 		                    <a href="#" class="dropdown-item">
 		                        <i class="material-icons">shop_two</i>거래내역
 		                    </a>
-		                    <a href="#" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/operation/operequest.ps" class="dropdown-item">
 		                        <i class="material-icons">description</i>요청/작업
 		                    </a>
 		                    <a href="<%=request.getContextPath()%>/user/updateinfo.ps" class="dropdown-item">
