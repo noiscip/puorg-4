@@ -48,6 +48,32 @@
 		
 	  })
 	  
+	  $('#allPurchase').click(function(){
+			purchaseFindAll()
+		})
+	  function purchaseFindAll(){
+		  $.ajax({
+				url:"/picsion/purchase/adminAllPurchase.ps",
+				success: function (data) {
+					console.log(data)
+					var table = ''
+					$.each(data.purchaseList, function(i,elt){
+					console.log(elt)
+					
+					table += '<tr>'
+					table += '<td>' + elt.picNo + '</td>'
+					table += '<td>' + elt.purchaseUserNo + '</td>'
+					table += '<td>' + elt.saleUserNo + '</td>'
+					table += '<td>' + moment(elt.purchaseReg).format('YYYY-MM-DD, H:mm:ss') + '</td>'
+					table += '</tr>'
+					})
+					
+					$('#tableBody').empty()
+					$('#tableBody').append(table) 
+					
+				}
+			})
+	  }
   })
 </script>
 

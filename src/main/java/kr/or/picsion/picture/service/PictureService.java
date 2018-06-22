@@ -94,6 +94,13 @@ public class PictureService {
 		return result;
 	}
 	
+	//사진작가의 인기순 사진리스트
+	public List<Picture> photograherRespectPicList(int userNo){
+		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
+		List<Picture> list = picturedao.photograherRespectPicList(userNo);
+		return list;
+	}
+	
 	//사진업로드 저장
     public void insertPicture(Picture picture, int userNo) {
         HashMap<String, Object> picmap = new HashMap<String, Object>();
@@ -109,6 +116,13 @@ public class PictureService {
         System.out.println(picture.toString());
 
     }
+    //워터마크 사진 저장
+    public int updateWater(String picWater,int picNo) {
+    	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	int result = pictureDao.updateWater(picWater, picNo);
+    	return result;
+    }
+    
     
     //태그 리스트
     public List<String> selectTag(int picNo){

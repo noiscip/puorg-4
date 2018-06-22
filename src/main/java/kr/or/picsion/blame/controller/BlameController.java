@@ -43,4 +43,15 @@ public class BlameController {
 		
 		return jsonview;
 	}
+	
+	@RequestMapping("adminAllComplain.ps")
+	public View allComplain(Model model) {
+		
+		List<Blame> blameList = blameService.complain();
+		model.addAttribute("blameList",blameList);
+		return jsonview;
+	}
+	
+	
+	
 }
