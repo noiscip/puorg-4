@@ -1,5 +1,6 @@
 package kr.or.picsion.operation.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -33,6 +34,15 @@ public class OperationService {
 			OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 			Operation operation = operationDao.selectOper(brdNo);
 				
+			return operation;
+		}
+	// 작업 찾기list 
+		public List<Operation> operBoardList(HashMap<String, Integer> map) {
+
+			System.out.println("operBoardList 서비스 시작 ");
+			OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+			List<Operation> operation = operationDao.operBoardList(map);
+			System.out.println("operBoardList 서비스 끝");
 			return operation;
 		}
 }

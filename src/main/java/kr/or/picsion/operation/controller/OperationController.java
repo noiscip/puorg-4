@@ -2,6 +2,8 @@ package kr.or.picsion.operation.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +16,10 @@ import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperationService;
+import kr.or.picsion.user.dto.User;
 
 @Controller
+@RequestMapping("/operation/")
 public class OperationController {
 
 	@Autowired
@@ -64,4 +68,20 @@ public class OperationController {
 		return jsonview	;
 	}
 		
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value="operequest.ps")
+	public String OperationApplyok(HttpSession session, Model model) {
+		User user = (User)session.getAttribute("user");
+		
+		return "mypage.operequest";
+	}
+	
+	
+	
+	
 }

@@ -1,8 +1,14 @@
 package kr.or.picsion.message.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -60,6 +66,48 @@ public class MessageController {
 	@RequestMapping("receivemessage.ps")
 	public String receiveMessage(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
+		
+		List<Message> messageAll = messageService.messageAll(user.getUserNo());
+		System.out.println("리시브 메시지 와라~~~~~99-----------------------------------");
+			
+		Map<Integer, Message> map = new HashMap<>();
+		
+		//메시지 검색해서 가져온거 id 중복제거를 하고 가장 최신 메시지만 담음
+		for (Message m : messageAll) {
+			map.put(m.getReceiveUserNo(), m);
+			map.put(m.getSendUserNo(), m);
+		}
+		
+		List<Message> recentMsg = new ArrayList<>();
+		
+		Set<Map.Entry<Integer, Message>> ent = map.entrySet();
+		Iterator<Map.Entry<Integer, Message>> i = ent.iterator();
+		while(i.hasNext()) {
+			Map.Entry<Integer, Message> ma = i.next();
+			recentMsg.add(ma.getValue());
+		}
+		
+		Collections.sort(recentMsg, new Comparator<Message>() {
+			@Override
+			public int compare(Message o1, Message o2) {
+				if (o1.getMsgNo() < o2.getMsgNo()) {
+					return 1;
+				} else if (o1.getMsgNo() > o2.getMsgNo()) {
+					return -1;
+				}else {
+					return 0;
+				}
+			}
+		});
+		
+		
+		
+		
+		for (Message m : recentMsg) {
+			System.out.println(m);
+		}
+		
+		
 		
 		//받은 메시지에 대한 정보
 		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
@@ -173,5 +221,6 @@ public class MessageController {
 		
 		return jsonview;
 	}
-	
+
+
 }

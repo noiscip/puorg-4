@@ -4,7 +4,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.or.picsion.purchase.dao.PurchaseDao">
-<select id="purchaseList" resultType="kr.or.picsion.purchase.dto.Purchase">
-select * from PURCHASE
-</select>
+	<select id="purchaseList" resultType="kr.or.picsion.purchase.dto.Purchase">
+		select * from PURCHASE
+	</select>
+	
+	<select id="purchaseSearch" resultType="kr.or.picsion.purchase.dto.Purchase">
+		select * from PURCHASE where purchaseReg > #{date}
+	</select>
+	
 </mapper>

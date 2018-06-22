@@ -234,6 +234,17 @@
 	height:180px;
 }
 
+/* 메시지함 신고버튼, 삭제버튼 여백 삭제 */
+.message-margin-del{
+	margin: 5px;
+	padding: 5px;
+}
+
+/* 메시지함 보더? */
+.message-border{
+	border: 1px red solid;
+	border-radius:10px;
+}
 
 .container-2{
   width: 300px;
@@ -303,10 +314,10 @@ width: 300px;
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">요청/작업</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
 		</ul>
-			<div class="gallery text-center">
+			<div class="gallery ">
 				<div class="row">
 					<!-- <div class="col-md-12"> -->
 					<!-- <div class="col-md-3" align="left">style="margin-bottom: 15px"
@@ -329,9 +340,39 @@ width: 300px;
 			           </form>
 					</div> -->
 					
-					<div class="col-md-6">
+					<div class="col-md-7">
 						
-						
+						<div class="card card-collapse">
+							<div class="card-header" role="tab" id="headingThree">
+								<h5 class="mb-0">
+									<a>Message</a>
+								</h5>
+							</div>
+							<div id="collapseThree" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="max-height: 700px; overflow-x: hidden; overflow-y: inherit;">
+								<div id="commentstart" class="card-body">
+									<!--  -->
+									<%-- <c:forEach items=""> --%>
+										<div class="media" style="border: 1px red solid; border-radius:10px;">
+											<a class="float-left" href="#pablo">
+												<div class="avatar">
+												  <img class="media-object" alt="64x64" src="/picsion/assets/img/faces/card-profile1-square.jpg">
+												</div>
+											</a>
+											<div class="media-body">
+												<h4 class="media-heading">
+													윤근 <small>· 2018-06-20, 08:08:50</small>
+												</h4>
+												<p>대대댓</p>
+												<a href="" class="btn btn-rose btn-link float-right message-margin-del"><i class="material-icons receiveMsgDel" style="cursor: pointer;">clear</i>삭제</a>
+												<a href="#pablo" class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" title="" data-original-title="보내버리기"> <i class="material-icons">reply</i> 신고
+												</a>
+											</div>
+										</div>
+									<%-- </c:forEach> --%>
+									
+								</div>
+							</div>
+						</div>
 						<form class="form-inline">
 							<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						    	메시지함 선택

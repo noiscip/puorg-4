@@ -28,8 +28,23 @@
 							<c:forEach items="${list}" var="n" varStatus="status">
 								<tr>
 									<td class="text-center">${n.brdNo}</td>
-									<td class="text-center"><a
-										href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a></td>
+									<td class="text-center">
+									<c:choose>
+										<c:when test="${n.operStateNo eq 2}">
+											<c:choose>
+												<c:when test="${operlist[status.index].requesterNo eq sessionScope.user.userNo || operlist[status.index].operatorNo eq sessionScope.user.userNo}">
+													<a href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a>
+												</c:when>
+												<c:otherwise>
+													<a>${n.brdTitle}</a>
+												</c:otherwise>
+											</c:choose>
+										</c:when>
+										<c:otherwise>
+											<a href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a>		
+										</c:otherwise>
+									</c:choose>
+									</td>
 									<td class="text-center">${n.userName}</td>
 									<td class="text-center">${n.brdReg}</td>
 									<td class="text-center">${n.operState}</td>

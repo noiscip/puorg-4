@@ -20,7 +20,7 @@ import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/operationApply/")
 public class OperationApplyController {
 
 	@Autowired
