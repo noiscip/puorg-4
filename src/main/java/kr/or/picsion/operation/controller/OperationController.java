@@ -16,6 +16,7 @@ import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperationService;
 
 @Controller
+@RequestMapping("/operation/")
 public class OperationController {
 
 	@Autowired

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript">
 	$(function() {
@@ -26,6 +27,7 @@
 			/* 삭제 ajax */
 		})
 
+		/* 유저 1명 검색*/
 		$('#searchbtn').click(function(){
 			console.log($('#search').val())
 			
@@ -39,7 +41,7 @@
 						table += '<td>' + data.searchUser.userId+ '</td>'
 						table += '<td>' + data.searchUser.userName+ '</td>'
 						table += '<td>' + data.searchUser.point+ '</td>'
-						table += '<td>' + data.searchUser.userReg+ '</td>'
+						table += '<td>' + moment(data.searchUser.userReg).format('YYYY-MM-DD, H:mm:ss') + '</td>'
 						table += '<td><button class="btn btn-primary btn-link" title="userDelete" id="'+data.searchUser.userNo+'">삭제</button></td>'
 						table += '</tr>'
 					
@@ -56,6 +58,7 @@
 		
 	})
 
+	/* 유저 전체 검색*/
 	function userFindAll() {
 		$.ajax({
 			url : "/picsion/user/adminAllUser.ps",
@@ -69,7 +72,7 @@
 						table += '<td>' + elt.userId+ '</td>'
 						table += '<td>' + elt.userName+ '</td>'
 						table += '<td>' + elt.point+ '</td>'
-						table += '<td>' + elt.userReg+ '</td>'
+						table += '<td>' + moment(elt.userReg).format('YYYY-MM-DD, H:mm:ss')+ '</td>'
 						table += '<td><button class="btn btn-primary btn-link" title="userDelete" id="'+elt.userNo+'">삭제</button></td>'
 						table += '</tr>'
 					})
@@ -96,7 +99,7 @@
 					href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글
 						관리</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="<%=request.getContextPath()%>/user/adminPurchase.ps">매출
+					href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출
 						내역</a></li>
 				<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminPurchase.ps">통계</a></li>
 			</ul>
@@ -123,7 +126,7 @@
 							<td>${admin.userId}</td>
 							<td>${admin.userName}</td>
 							<td>${admin.point}</td>
-							<td>${admin.userReg}</td>
+							<td><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${admin.userReg}" /></td>
 							<td><button class="btn btn-primary btn-link" title="userDelete" id="${admin.userNo}">삭제</button></td>
 						</tr>
 					</c:forEach>
