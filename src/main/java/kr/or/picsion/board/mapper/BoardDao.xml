@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                            resultType="kr.or.picsion.board.dto.Board">
       select u.*,us.userId as userId, us.userName as userName, o.operState as operState  from (select * from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select * from BOARD order by brdNo DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RN where RN.ROWNUM >= #{start} and RN.ROWNUM  &lt;= #{end}) u join USERS us on u.userNo=us.userNo join OPERATIONSTATE o on u.operStateNo=o.operStateNo order by ROWNUM
  </select>
-
+ 
 
 <!-- getBoardCount(글 전체 건수) -->
  <select id="getBoardCount" resultType="Integer">

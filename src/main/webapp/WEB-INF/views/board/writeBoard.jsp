@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript">
 					 $(function(){
 						$('.datetimepicker').datetimepicker({
@@ -17,33 +17,72 @@
 						    }
 						});
 					 });
-					</script>   
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
-   	<div class="profile-content">
-      	<div class="container">
-			<div class="row">
-          		<div class="col-md-12 ml-auto mr-auto">
-          			<form action="<%=request.getContextPath()%>/board/writeboard.ps" method="post">
-          			
-					<textarea style="height: 1000px" rows="10" cols="60" name="brdContent" id="brdContent"></textarea>
-					
-					<script type="text/javascript">
-						CKEDITOR.replace('brdContent');
 					</script>
+<div class="page-header header-filter" data-parallax="true"
+	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
+<div class="main main-raised">
+	<div class="profile-content">
+		<div class="container">
+
+			<form action="<%=request.getContextPath()%>/board/writeboard.ps"
+				method="post">
+				<div class="row">
 					
-					<div class="form-group">
-					    <label class="label-control">희망 완료 날짜</label>
-					    <input type="text" class="form-control datetimepicker" name = "brdExpectEndDate"/>
+					<div class="col-md-6 ml-auto mr-auto">
+						<div class="form-group">
+	                      <label class="label-control">제목</label>
+	                      <div class="input-group">
+	                        <input type="text" class="form-control" name="brdTitle">
+	                      </div>
+	                    </div>
+	                </div>
+	                <div class="col-md-6 ml-auto mr-auto">
+						<div class="form-group">
+	                      <label class="label-control">희망 완료 날짜</label> <input type="text"
+								class="	form-control datetimepicker" name="brdExpectEndDate" />
+	                    </div>
+	                </div>
+	                <div class="col-md-6 ml-auto mr-auto">
+						<div class="form-group">
+	                      <label for="exampleFormControlSelect1">저작권 양도 여부</label>
+						    <select class="form-control" id="exampleFormControlSelect1" name="copyright">
+						      <option>T</option>
+						      <option>F</option>
+						    </select>
+
+	                    </div>
+	                </div>
+					<div class="col-md-6 ml-auto mr-auto">
+						<div class="form-group">
+	                      <label class="label-control">희망 구매 가격</label>
+	                      <div class="input-group">
+	                        <input type="text" class="form-control" name="brdExpectPrice">
+	                      </div>
+	                    </div>
+	                </div>
+					
+					
+					
+					<div class="col-md-12 ml-auto mr-auto">
+						<textarea style="height: 1000px" rows="10" cols="60"
+							name="brdContent" id="brdContent"></textarea>
+
+						<script type="text/javascript">
+						CKEDITOR.replace('brdContent');
+						</script>
 					</div>
-					<div class="form-group">
-					 <label class="label-control">제목</label><input type="text" name="brdTitle">
-					 <label class="label-control">true</label><input type="text" name="copyright">
-					<input type="submit" value="글 작성">
+					<div class="col-md-12 ml-auto mr-auto" style="text-align:right;">
+					<button type="submit" class="btn btn-primary btn-round">
+							<i class="material-icons">edit</i> 글 쓰기
+					</button>
 					</div>
-					</form>
+					
 				</div>
-			</div>
+				
+					
+				
+			</form>
+
 		</div>
 	</div>
 </div>

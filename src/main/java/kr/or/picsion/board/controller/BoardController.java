@@ -98,6 +98,7 @@ public class BoardController {
 	public String boardList(Model model, String pg) {
 		System.out.println("요청게시판 컨트롤러");
 		List<Board> list=new ArrayList<Board>();
+		List<Operation> operlist=new ArrayList<Operation>();
 		int total=0;
 		
 		int page = 1;
@@ -137,6 +138,7 @@ public class BoardController {
 		map.put("end", end);
 		try {
 			list = boardService.boardList(map);
+			operlist=operationService.operBoardList(map);
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -145,14 +147,16 @@ public class BoardController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println(operlist);
 		
 		model.addAttribute("list", list);
+		model.addAttribute("operlist", operlist);
 		model.addAttribute("pg", page);
 		model.addAttribute("allPage", allPage);
 		model.addAttribute("block", block);
 		model.addAttribute("fromPage", fromPage);
 		model.addAttribute("toPage", toPage);	
+		System.out.println("뷰단 보내기");
 		return "board.board";
 	}
 	

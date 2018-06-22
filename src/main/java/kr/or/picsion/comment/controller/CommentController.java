@@ -1,6 +1,7 @@
 package kr.or.picsion.comment.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -12,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
 import kr.or.picsion.board.dto.Board;
+import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.notice.service.NoticeService;
+import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
 @Controller
+@RequestMapping("/comment/")
 public class CommentController {
 
 	@Autowired
@@ -29,6 +35,14 @@ public class CommentController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private NoticeService noticeService;
+	
+	@Autowired
+	private PictureService pictureService;
+	
+	@Autowired
+	private BoardService boardService;
 
 	@RequestMapping(value = "insertreview.ps")
 	public View insertComment(Comment comment, HttpSession session, Model model) {
@@ -39,8 +53,25 @@ public class CommentController {
 		int result = commentService.insertComment(comment);
 		List<User> commuserlist = commentService.commentuser(comment.getBrdNo());
 		System.out.println(comment);
+		
 		if(result==1) {
 			System.out.println("댓글쓰기 성공");
+				int receiveUser = 0;
+			if(comment.getTableNo() == 2) {
+				receiveUser = pictureService.picInfo(comment.getPicNo()).getUserNo();
+			}else if (comment.getTableNo() == 3) {
+				receiveUser = boardService.selectBoard(comment.getBrdNo()).getUserNo();
+			}
+			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+			
+			noticeMap.put("no", comment.getBrdNo());
+			noticeMap.put("addNo", comment.getCmtNo());
+			noticeMap.put("sendUserNo", comment.getUserNo());
+			noticeMap.put("receiveUserNo", receiveUser);
+			noticeMap.put("table", "brdNo, cmtNo");
+			noticeMap.put("tableNo", comment.getTableNo());
+			
+			noticeService.insertNotice(noticeMap);
 		}
 		else {
 			System.out.println("댓글쓰기 실패");

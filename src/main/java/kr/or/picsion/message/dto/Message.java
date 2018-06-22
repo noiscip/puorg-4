@@ -1,6 +1,9 @@
 package kr.or.picsion.message.dto;
 
 import java.util.Date;
+import java.util.List;
+
+import kr.or.picsion.user.dto.User;
 
 public class Message {
 
@@ -13,11 +16,13 @@ public class Message {
 	private int sendUserNo;
 	private int receiveUserNo;
 	private int tableNo;
-
+	private List<User> user;
+	
 	public Message() {}
 
 	public Message(int msgNo, String msgContent, Date msgReg, String msgState, String sendMsgDel, String receiveMsgDel,
-			int sendUserNo, int receiveUserNo, int tableNo) {
+			int sendUserNo, int receiveUserNo, int tableNo, List<User> user) {
+		super();
 		this.msgNo = msgNo;
 		this.msgContent = msgContent;
 		this.msgReg = msgReg;
@@ -27,7 +32,9 @@ public class Message {
 		this.sendUserNo = sendUserNo;
 		this.receiveUserNo = receiveUserNo;
 		this.tableNo = tableNo;
+		this.user = user;
 	}
+
 
 	public String getSendMsgDel() {
 		return sendMsgDel;
@@ -101,10 +108,22 @@ public class Message {
 		this.tableNo = tableNo;
 	}
 
+	public List<User> getUser() {
+		return user;
+	}
+
+	public void setUser(List<User> user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
 		return "Message [msgNo=" + msgNo + ", msgContent=" + msgContent + ", msgReg=" + msgReg + ", msgState="
 				+ msgState + ", sendMsgDel=" + sendMsgDel + ", receiveMsgDel=" + receiveMsgDel + ", sendUserNo="
-				+ sendUserNo + ", receiveUserNo=" + receiveUserNo + ", tableNo=" + tableNo + "]";
+				+ sendUserNo + ", receiveUserNo=" + receiveUserNo + ", tableNo=" + tableNo + ", user=" + user + "]";
 	}
+
+
+
+	
 }
