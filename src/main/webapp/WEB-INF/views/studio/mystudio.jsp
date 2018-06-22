@@ -65,7 +65,7 @@
 		height:50px;
 	}
 </style>
-
+<input type="hidden" value="${userinfo.tableNo},${userinfo.userNo}" id="userInfo">
 
   <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
   <div class="main main-raised">
@@ -87,7 +87,7 @@
               
               <c:if test="${sessionScope.user.userNo ne userinfo.userNo}">
 	              <div align="right" style="float: right;">
-	              	<button class="btn btn-primary btn-sm" id="blameBtn">신고</button>
+	              	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
 				  	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModal">메시지</button>
 				  	<button class="btn btn-primary btn-sm" id="follow">
 				  		<c:choose>
