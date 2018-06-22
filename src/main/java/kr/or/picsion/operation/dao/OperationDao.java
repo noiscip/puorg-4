@@ -12,4 +12,6 @@ public interface OperationDao {
 	public List<Operation> selectOperation(int userNo);
 	public Operation selectOper(int brdNo);
 	public List<Operation> operBoardList(HashMap<String, Integer> map);
+	public List<Operation> operationList(int userNo);
+	public List<Operation> requestList(int userNo);	
 }

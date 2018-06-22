@@ -94,6 +94,13 @@ public class PictureService {
 		return result;
 	}
 	
+	//사진작가의 인기순 사진리스트
+	public List<Picture> photograherRespectPicList(int userNo){
+		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
+		List<Picture> list = picturedao.photograherRespectPicList(userNo);
+		return list;
+	}
+	
 	//사진업로드 저장
     public void insertPicture(Picture picture, int userNo) {
         HashMap<String, Object> picmap = new HashMap<String, Object>();

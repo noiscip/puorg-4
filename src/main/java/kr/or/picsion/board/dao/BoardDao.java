@@ -14,4 +14,6 @@ public interface BoardDao {
 	public Board selectBoard(int brdNo);
 	public List<Board> writerBoard(int userNo);
 	public int getBoardCount();
+	public List<Board> operationBoardList(int userNo);
+	public List<Board> requestBoardList(int userNo);
 }

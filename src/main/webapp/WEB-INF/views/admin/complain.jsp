@@ -20,7 +20,7 @@
 		    }
 		});
 
-
+	
 	  $('#complainSearch').click(function(){
 		  var datePicker = $('#datePicker')[0].value
 		console.log(datePicker)
@@ -50,9 +50,42 @@
 			}
 		})
 		
-	  })	  
+	  })	
+	  
+	  $('#allBlame').click(function(){
+			blameFindAll()
+		})
+	  
+		function blameFindAll(){
+		  $.ajax({
+				url:"/picsion/blame/adminAllComplain.ps",
+				success: function (data) {
+					console.log(data.blameList)
+					var table = ''
+					$.each(data.blameList, function(i,elt){
+						table += '<tr>'
+						table += '<td>' + elt.blaNo + '</td>'
+						table += '<td>' + elt.blaUserNo + '</td>'
+						table += '<td>' + elt.blaContent+ '</td>'
+						table += '<td>' + moment(elt.blaReg).format('YYYY-MM-DD, H:mm:ss') + '</td>'
+						table += '<td>' + elt.tableNo + '</td>'
+						table += '<td>' + elt.brdNo + '</td>'
+						table += '<td>' + elt.cmtNo + '</td>'
+						table += '<td>' + elt.picNo + '</td>'
+						table += '<td>' + elt.userNo + '</td>'
+						table += '</tr>'
+					})
+					
+					$('#tableBody').empty()
+					$('#tableBody').append(table)
+					
+				}
+			})
+	  }
 	  
   } );
+  
+  
   </script>
 
 <div class="page-header header-filter clear-filter purple-filter"

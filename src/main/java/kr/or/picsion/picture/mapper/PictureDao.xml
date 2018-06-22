@@ -89,6 +89,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	SELECT tagContent FROM TAG WHERE picNo=#{picNo}
     </select>
 	
+	<!-- 작가의 인기순(좋아요) 사진 리스트 -->
+	<select id="photograherRespectPicList" resultType="kr.or.picsion.picture.dto.Picture">
+	select p.*,ifnull(r.c,0) as respectCount from PICTURE p 
+	left join (select picNo, count(*) as c from RESPECT GROUP by picNo) r on p.picNo=r.picNo 
+	where p.userNo=#{userNo} order by r.c desc, p.picReg asc;
+	</select>
+	
+	
 	<!--  사진 경로 뽑아내기? 
 	<select id="searchPath">
 		select picPath

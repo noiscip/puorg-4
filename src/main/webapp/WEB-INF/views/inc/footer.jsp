@@ -30,16 +30,32 @@
 					console.log($('#loginUserNo').val())
 				}
 				
-				function blame(){
-					
-					
-					
-				}
-				$('#blameBtn').click(function(){
-					var userNo = ${userinfo.userNo}
-					console.log('하하하하하하하')
-					
-					
+				$('#blaSend').click(function(){
+					var info = $('#info').val().split(',')
+					var blaContent = $('#blaContent').val()
+					if(info.length == 3){
+					console.log(info[1])
+					var no = info[1]
+					var data = {
+								blaContent : blaContent,
+								tableNo : info[0],
+								table : info[1],
+								no : info[2]
+								}
+					}
+					console.log(data)
+					$.ajax({
+						url : "/picsion/blame/complainInsert.ps",
+						data : {
+									blaContent : blaContent,
+									tableNo : info[0],
+									table : info[1],
+									no : info[2]
+								},
+						success : function(data){
+							console.log(data)
+						}
+					})
 					
 				})
 			
@@ -113,10 +129,34 @@
 			
 		  	
 		  	
-		  	
-		  	
 		</script>
 	</head>
+
+<!-- 메시지 Modal -->
+<div class="modal fade" id="reportModal" tabindex="1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">신고하기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+	    <div class="form-group">
+	    	<label for="exampleFormControlTextarea1">내용</label>
+	    	<textarea class="form-control" id="blaContent" name="blaContent" rows="3" placeholder="최대 25자까지 가능"></textarea>
+	    </div>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" id="blaSend" data-dismiss="modal">보내기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
 		
 	<body>
 		<footer class="text-center">

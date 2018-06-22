@@ -45,4 +45,19 @@ public class OperationService {
 			System.out.println("operBoardList 서비스 끝");
 			return operation;
 		}
+		
+		// 내 작업 리스트
+				public List<Operation> operationList(int userNo) {
+
+					System.out.println("operationList 서비스 시작 ");
+					OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+					return operationDao.operationList(userNo);
+				}
+		// 내 요청 리스트
+				public List<Operation> requestList(int userNo) {
+
+					System.out.println("requestList 서비스 시작 ");
+					OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+					return operationDao.requestList(userNo);
+				}
 }

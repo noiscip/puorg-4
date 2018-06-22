@@ -6,12 +6,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="kr.or.picsion.blame.dao.BlameDao">
 
 	<select id="blameList" resultType="kr.or.picsion.blame.dto.Blame">
-	select * from BLAME
-	
+		select * from BLAME
 	</select>
 	
 	<select id="complainSearch" resultType="kr.or.picsion.blame.dto.Blame">
 		select * from BLAME where blaReg > #{date}
-	
 	</select>
+	
+	<insert id="complainInsert">
+		insert into BLAME (blaUserNo, blaContent, tableNo, ${param2})
+					VALUES (#{param1.blaUserNo}, #{param1.blaContent}, #{param1.tableNo},#{param3})
+	</insert>
 </mapper>

@@ -43,4 +43,12 @@ public class PurchaseController {
 		
 		return jsonview;
 	}
+	
+	@RequestMapping("adminAllPurchase.ps")
+	public View allPurchase(Model model) {
+		
+		List<Purchase> purchaseList = purchaseService.purchaseList();
+		model.addAttribute("purchaseList",purchaseList);
+		return jsonview;
+	}
 }

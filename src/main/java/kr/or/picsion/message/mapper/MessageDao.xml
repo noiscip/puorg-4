@@ -147,4 +147,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER by msgReg
 	</select>
 	
+	
+	<!-- 보낸메시지,받은메시지 다 가져오기 -->
+	<select id="msgList" resultMap="Message">
+		<!-- select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo where receiveUserNo = #{userNo}
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo where sendUserNo = #{userNo}
+		ORDER by msgReg -->
+		
+		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where receiveUserNo = #{param1} AND sendUserNo=#{param2}
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where sendUserNo = #{param1} AND receiveUserNo=#{param2}
+		ORDER by msgReg
+	</select>
+	
 </mapper>
