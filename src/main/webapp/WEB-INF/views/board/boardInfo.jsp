@@ -6,14 +6,14 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
-		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+		/* $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight); */
 		$('#addreviewbutton').on("click",function() {
 					console.log("click");
 					if ($('#reviewcontent').val().trim() == "") {
 						alert("리뷰 내용을 입력해주세요.");
 					} else {	
 						$.ajax({
-							url : "insertreview.ps",
+							url : "/picsion/comment/insertreview.ps",
 							type : "post",
 							data : {
 								brdNo : ${boardInfo.brdNo},
@@ -43,7 +43,7 @@
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#newComment").val("");
 							     
-							  },
+							  }, 
 							  error: function(){
 							   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
 							  }
@@ -73,7 +73,7 @@
 		console.log("apply클릭");
 		
 					$.ajax({
-						url : "apply.ps",
+						url : "/picsion/operationApply/apply.ps",
 						type : "post",
 						data : {
 							operApplyAppeal : $("#operApplyAppeal").val(),
@@ -91,7 +91,7 @@
 			var brdNo=${boardInfo.brdNo};
 			var requesterNo=${boardInfo.userNo};
 					$.ajax({
-						url : "operok.ps",
+						url : "/picsion/operation/operok.ps",
 						type : "post",
 						data : {	
 							requesterNo : requesterNo,
@@ -286,47 +286,52 @@
 				</c:when>
 			</c:choose>
 
-<c:choose>
-		<c:when test="${boardInfo.userNo eq user.userNo}">
-			<table class="table">
-				<thead>
-					<tr>
-						<th class="text-center">작업신청자</th>
-						<th class="text-center">금액</th>
-						<th class="text-center">마감 날짜</th>
-					</tr>
-				</thead>
-				<tbody>
+			<c:choose>
+				<c:when
+					test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo ne 2}">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="text-center">작업신청자</th>
+								<th class="text-center">금액</th>
+								<th class="text-center">마감 날짜</th>
+							</tr>
+						</thead>
+						<tbody>
 
-						
-							<div class="apply">
-								<c:forEach var="apply" items="${applylist}" varStatus="status">
-
-									<tr class="applyModal" style="cursor: pointer;"
-										data-toggle="modal" data-target="#operModal"
-										operApplyNo="${apply.operApplyNo}"
-										operUserNo="${apply.operUserNo}"
-										operApplyAppeal="${apply.operApplyAppeal}">
-										<td class="text-center">${applyid[status.index]}</td>
-										<td class="text-center">${apply.operApplyPrice}</td>
-										<td class="text-center">${apply.operApplyReg}</td>
-
+							<c:choose>
+								<c:when test="${empty applylist}">
+									<tr>
+										<td colspan="3" style="text-align: center;">신청자가 없습니다.</td>
 									</tr>
+								</c:when>
+								<c:otherwise>
+									<div class="apply">
+										<c:forEach var="apply" items="${applylist}" varStatus="status">
+											<tr class="applyModal" style="cursor: pointer;"
+												data-toggle="modal" data-target="#operModal"
+												operApplyNo="${apply.operApplyNo}"
+												operUserNo="${apply.operUserNo}"
+												operApplyAppeal="${apply.operApplyAppeal}">
+												<td class="text-center">${applyid[status.index]}</td>
+												<td class="text-center">${apply.operApplyPrice}</td>
+												<td class="text-center">${apply.operApplyReg}</td>
+											</tr>
+										</c:forEach>
+									</div>
+								</c:otherwise>
+							</c:choose>
 
+						</tbody>
 
-								</c:forEach>
-							</div>
-						
-
-				</tbody>
-				
-			</table>
-			</c:when>
-				<c:otherwise>						
+					</table>
+				</c:when>
+				<c:when
+					test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
 					<button type="button" class="btn btn-default btn-sm"
-					data-toggle="modal" data-target="#exampleModal">신청하기</button>
-				</c:otherwise>
-	</c:choose>
+						data-toggle="modal" data-target="#exampleModal">신청하기</button>
+				</c:when>
+			</c:choose>
 
 
 

@@ -1,10 +1,11 @@
-package kr.or.picsion.upload.controller;
+package kr.or.picsion.utils.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +28,12 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
@@ -64,6 +70,9 @@ public class AmazonTest {
 		String logocheck=detectLogos(abc);
 		String safecheck=detectSafeSearch(abc);
 		List<String> labelBag=detectLabels(abc);
+		
+
+		
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
 		model.addAttribute("label", labelBag);
@@ -75,14 +84,14 @@ public class AmazonTest {
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
 		String filePathh="";
-		String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
-		/*String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
+		/*String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
+		String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
-		
+
 		Iterator<String> iter = mRequest.getFileNames();
 		System.out.println(iter);
 		while(iter.hasNext()) {
@@ -109,9 +118,38 @@ public class AmazonTest {
 					saveFileName = saveFileName + "_" + System.currentTimeMillis();
 				}
 				try {
-					mFile.transferTo(new File(uploadPath + saveFileName));
+					File newFile = new File(uploadPath + saveFileName);
+					mFile.transferTo(newFile);
 //					uploadObject(saveFileName); // s3에 들어가는 단계~~~~~~~~~~~~~~~~~~~~~~~
-					isSuccess = true;				
+					isSuccess = true;		
+					
+					Metadata metadata;
+					System.out.println("업로드에서 메타 출력전--------------------------------------------------------");
+					try {
+						metadata = ImageMetadataReader.readMetadata(newFile);
+
+
+						for (Directory directory : metadata.getDirectories()) {
+						    for (Tag tag : directory.getTags()) {
+						        System.out.format("[%s] - %s = %s \n",
+						            directory.getName(), tag.getTagName(), tag.getDescription());
+						    }
+						    if (directory.hasErrors()) {
+						        for (String error : directory.getErrors()) {
+						            System.err.format("ERROR: %s", error);
+						        }
+						    }
+						    System.out.println("bbbb");
+						    System.out.println(directory);
+						}
+
+
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					System.out.println("업로드에서 메타 출력후-----------------------------------------------------------");
+										
+					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
 					isSuccess = false;

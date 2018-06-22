@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 
  <script>
   $( function() {
@@ -18,7 +20,7 @@
 		    }
 		});
 
-
+	
 	  $('#complainSearch').click(function(){
 		  var datePicker = $('#datePicker')[0].value
 		console.log(datePicker)
@@ -30,9 +32,10 @@
 				var table = ''
 				$.each(data.blameList, function(i,elt){
 					table += '<tr>'
+					table += '<td>' + elt.blaNo + '</td>'
 					table += '<td>' + elt.blaUserNo + '</td>'
 					table += '<td>' + elt.blaContent+ '</td>'
-					table += '<td>' + elt.blaReg + '</td>'
+					table += '<td>' + moment(elt.blaReg).format('YYYY-MM-DD, H:mm:ss') + '</td>'
 					table += '<td>' + elt.tableNo + '</td>'
 					table += '<td>' + elt.brdNo + '</td>'
 					table += '<td>' + elt.cmtNo + '</td>'
@@ -47,10 +50,42 @@
 			}
 		})
 		
-	  })
+	  })	
 	  
+	  $('#allBlame').click(function(){
+			blameFindAll()
+		})
+	  
+		function blameFindAll(){
+		  $.ajax({
+				url:"/picsion/blame/adminAllComplain.ps",
+				success: function (data) {
+					console.log(data.blameList)
+					var table = ''
+					$.each(data.blameList, function(i,elt){
+						table += '<tr>'
+						table += '<td>' + elt.blaNo + '</td>'
+						table += '<td>' + elt.blaUserNo + '</td>'
+						table += '<td>' + elt.blaContent+ '</td>'
+						table += '<td>' + moment(elt.blaReg).format('YYYY-MM-DD, H:mm:ss') + '</td>'
+						table += '<td>' + elt.tableNo + '</td>'
+						table += '<td>' + elt.brdNo + '</td>'
+						table += '<td>' + elt.cmtNo + '</td>'
+						table += '<td>' + elt.picNo + '</td>'
+						table += '<td>' + elt.userNo + '</td>'
+						table += '</tr>'
+					})
+					
+					$('#tableBody').empty()
+					$('#tableBody').append(table)
+					
+				}
+			})
+	  }
 	  
   } );
+  
+  
   </script>
 
 <div class="page-header header-filter clear-filter purple-filter"
@@ -65,7 +100,7 @@
 		<ul class="nav nav-pills nav-pills-rose">
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
 		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글 관리</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminPurchase.ps">매출 내역</a></li>
+		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출 내역</a></li>
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminPurchase.ps">통계</a></li>
 		</ul>
 		
@@ -74,7 +109,7 @@
 			<div class="form-group">
 			    <label class="label-control">날짜 선택</label>
 			    <input id="datePicker" type="text" class="form-control datetimepicker"/>
-			    <button id="complainSearch">검색</button>
+			    <button id="complainSearch">검색</button><button id="allBlame">전체 조회</button>
 			</div>
 			<table border="3">
 				<thead>
@@ -98,7 +133,7 @@
 							<td>${complain.blaNo}</td>
 							<td>${complain.blaUserNo}</td>
 							<td>${complain.blaContent}</td>
-							<td>${complain.blaReg}</td>
+							<td><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${complain.blaReg}" /></td>
 							<td>${complain.tableNo}</td>	
 							<td>${complain.brdNo}</td>
 							<td>${complain.cmtNo}</td>
