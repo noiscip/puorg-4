@@ -30,8 +30,25 @@
 					console.log($('#loginUserNo').val())
 				}
 				
+				function blame(){
+					
+					
+					
+				}
+				$('#blameBtn').click(function(){
+					var userNo = ${userinfo.userNo}
+					console.log('하하하하하하하')
+					
+					
+					
+				})
+			
+				
 			});
 			
+		  
+		  
+		  //////WEB SOCKET/////
 		  	var wsocket
 		  
 			function connect(){
@@ -81,19 +98,24 @@
 			  console.log("여기는 클로즈 이벤트")
 			}
 		  
-		  function send(receiveUser,tableNo) {
+		  	function send(receiveUser,tableNo) {
 			  	console.log("send오긴해?")
 			  	var loginUser = $('#loginUserNo').val()
 			  
 		        wsocket.send(loginUser+":"+receiveUser+":4");
 		    }
-		  
-		  //top으로
-		  function topFunction() {
+			//////WEB SOCKET/////
+		  	//top으로
+		  	function topFunction() {
 			    document.body.scrollTop = 0;
 			    document.documentElement.scrollTop = 0;
 			}
-		  </script>
+			
+		  	
+		  	
+		  	
+		  	
+		</script>
 	</head>
 		
 	<body>
