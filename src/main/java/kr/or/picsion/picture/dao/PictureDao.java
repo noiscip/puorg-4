@@ -8,6 +8,7 @@ import kr.or.picsion.picture.dto.Picture;
 public interface PictureDao {
 	public int insertPicture(HashMap<String, Object> picmap);
 	public int insertTag(int picNo,String tag);////////////////////////////뀨?
+	public int updateWater(String picWater,int picNo); // 워터마크 사진 저장
 	public List<String> selectTag(int picNo);  			//태그 리스트
 	public int searchPath(int picNo);////////////////////////////뀨?
 	public int deletePicture(int picNo);

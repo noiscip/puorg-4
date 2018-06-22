@@ -109,6 +109,13 @@ public class PictureService {
         System.out.println(picture.toString());
 
     }
+    //워터마크 사진 저장
+    public int updateWater(String picWater,int picNo) {
+    	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	int result = pictureDao.updateWater(picWater, picNo);
+    	return result;
+    }
+    
     
     //태그 리스트
     public List<String> selectTag(int picNo){
