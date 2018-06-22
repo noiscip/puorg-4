@@ -83,6 +83,7 @@ public class CommentController {
 		return jsonview;
 	}
 	
+	//사진 댓글 입력
 	@RequestMapping(value = "insertpiccomment.ps")
 	public View insertPicComment(Comment comment, Model model, int picNo) {
 		commentService.picInsertComment(comment);
@@ -90,6 +91,14 @@ public class CommentController {
 		List<User> newcommentUserList = commentService.picCommentUserList(picNo); //댓글 유저 목록
 		model.addAttribute("newcommentUserList",newcommentUserList);
 		model.addAttribute("newcommentlist",newcommentlist);
+		return jsonview;
+	}
+	
+	//댓글 삭제
+	@RequestMapping("deletecomment.ps")
+	public View delComment(int cmtNo, Model model) {
+		int result = commentService.deleteComment(cmtNo);
+		model.addAttribute("result", result);
 		return jsonview;
 	}
 	
