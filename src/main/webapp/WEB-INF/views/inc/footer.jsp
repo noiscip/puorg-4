@@ -31,15 +31,20 @@
 				}
 				
 				$('#blaSend').click(function(){
-					var userNo = $('#userInfo').val()
-					console.log('하하하하하하하')
-					console.log(userNo)
+					var info = $('#info').val().split(',')
 					var blaContent = $('#blaContent').val()
-					console.log(blaContent)
-					
-					
+					var data = {
+								blaContent : blaContent,
+								tableNo : info[0],
+								info[1] : info[2]
+								}
+					console.log(data)
 					$.ajax({
-						
+						url : "/picsion/blame/complainInsert.ps",
+						data : data,
+						success : function(data){
+							console.log(data)
+						}
 					})
 					
 				})

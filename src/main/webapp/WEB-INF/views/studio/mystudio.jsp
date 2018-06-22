@@ -65,7 +65,7 @@
 		height:50px;
 	}
 </style>
-<input type="hidden" value="${userinfo.tableNo},${userinfo.userNo}" id="userInfo">
+<input type="hidden" value="${userinfo.tableNo},userNo,${userinfo.userNo}" id="info">
 
   <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
   <div class="main main-raised">
