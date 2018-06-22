@@ -97,15 +97,7 @@
 	</head>
 		
 	<body>
-	<!-- footer -->
-	
 		<footer class="text-center">
-<!-- 			<form action="amazontest.ps" enctype="multipart/form-data" method="post">
-				
-				<input type="file" name="filePath">
-				
-				<input type="submit" class="btn btn-primary btn-round" value="보내기">
-			</form> -->
 		  <a title="Go to top" onclick="topFunction()">
 		   <i class="fas fa-angle-up fa-2x"></i>
 		  </a><br><br>
