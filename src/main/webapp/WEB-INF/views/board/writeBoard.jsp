@@ -71,9 +71,11 @@
 						CKEDITOR.replace('brdContent');
 						</script>
 					</div>
+					<div class="col-md-12 ml-auto mr-auto" style="text-align:right;">
 					<button type="submit" class="btn btn-primary btn-round">
 							<i class="material-icons">edit</i> 글 쓰기
 					</button>
+					</div>
 					
 				</div>
 				

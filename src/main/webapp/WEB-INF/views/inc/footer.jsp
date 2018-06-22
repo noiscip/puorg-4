@@ -30,8 +30,24 @@
 					console.log($('#loginUserNo').val())
 				}
 				
+				function blame(userNo,tableNo,no){
+					
+					
+					
+				}
+				$('#blameBtn').click(function(){
+					
+					
+					
+					
+				})
+			
+				
 			});
 			
+		  
+		  
+		  //////WEB SOCKET/////
 		  	var wsocket
 		  
 			function connect(){
@@ -81,31 +97,28 @@
 			  console.log("여기는 클로즈 이벤트")
 			}
 		  
-		  function send(receiveUser,tableNo) {
+		  	function send(receiveUser,tableNo) {
 			  	console.log("send오긴해?")
 			  	var loginUser = $('#loginUserNo').val()
 			  
 		        wsocket.send(loginUser+":"+receiveUser+":4");
 		    }
-		  
-		  //top으로
-		  function topFunction() {
+			//////WEB SOCKET/////
+		  	//top으로
+		  	function topFunction() {
 			    document.body.scrollTop = 0;
 			    document.documentElement.scrollTop = 0;
 			}
-		  </script>
+			
+		  	
+		  	
+		  	
+		  	
+		</script>
 	</head>
 		
 	<body>
-	<!-- footer -->
-	
 		<footer class="text-center">
-<!-- 			<form action="amazontest.ps" enctype="multipart/form-data" method="post">
-				
-				<input type="file" name="filePath">
-				
-				<input type="submit" class="btn btn-primary btn-round" value="보내기">
-			</form> -->
 		  <a title="Go to top" onclick="topFunction()">
 		   <i class="fas fa-angle-up fa-2x"></i>
 		  </a><br><br>
