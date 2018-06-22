@@ -208,23 +208,23 @@ $(document).ready(function() {
 				<div class="col-md-6 col-sm-6">
 					<div class="card card-blog">
 						<div class="card-header card-header-image">
-							<a href="" data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"
 								src="<%=request.getContextPath()%>/${picture.picPath}">
 								<div class="card-title">
 								<c:choose>
 								<c:when test="${respectresult eq 1}">
-										<span><i id="like" value="${picture.picNo}" class="material-icons">favorite</i>${respectCount}</span>
+										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite</i>${respectCount}</span>
 								</c:when>
 								<c:otherwise>
-										<span><i id="like" value="${picture.picNo}" class="material-icons">favorite_border</i>${respectCount}</span>
+										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite_border</i>${respectCount}</span>
 								</c:otherwise>
 								</c:choose>
 								<c:choose>
 								<c:when test="${bookmarkresult eq 1}">
-										<span><i id="down" value="${picture.picNo}" class="material-icons">bookmark</i>${bookmarkCount}</span>
+										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark</i>${bookmarkCount}</span>
 								</c:when>
 								<c:otherwise>
-										<span><i id="down" value="${picture.picNo}" class="material-icons">bookmark_border</i>${bookmarkCount}</span>
+										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark_border</i>${bookmarkCount}</span>
 								</c:otherwise>
 								</c:choose>
 								</div>
@@ -439,134 +439,37 @@ $(document).ready(function() {
 		<div class="related-products">
 			<h3 class="title text-center">You may also be interested in:</h3>
 			<div class="row">
-				<div class="col-sm-6 col-md-3">
+			<c:forEach var="rList" items="${respectList}" begin="0" end="3" varStatus="status">
+			<div class="col-sm-6 col-md-3">
 					<div class="card card-product">
 						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg&quot;); opacity: 1;"></div>
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${rList.picNo}">
+							<img class="img" src="<%=request.getContextPath()%>${rList.picPath}"></a>
+							<div class="colored-shadow"	style="background-image: url(&quot;<%=request.getContextPath()%>${rList.picPath}&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">
-							<h6 class="card-category text-rose">Trending</h6>
+							<h6 class="card-category text-rose">Popular</h6>
 							<h4 class="card-title">
-								<a href="#pablo">Dolce &amp; Gabbana</a>
+								${rList.picTitle}
 							</h4>
-							<div class="card-description">Dolce &amp; Gabbana's 'Greta'
-								tote has been crafted in Italy from hard-wearing red
-								textured-leather.</div>
+							<div class="card-description"> ${rList.picContent}
 						</div>
-						<div class="card-footer justify-content-between">
+						<div class="card-footer justify-content-center">
 							<div class="price">
-								<h4>$1,459</h4>
+								<span style="cursor: " class="btn btn-just-icon btn-link btn-rose">
+									<i class="material-icons">favorite</i>
+								</span> 
 							</div>
 							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link btn-rose"
-									data-original-title="Saved to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
+								<span class="btn btn-just-icon btn-link btn-rose">
+									${rList.respectCount}
+								</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="card card-product">
-						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg&quot;); opacity: 1;"></div>
-						</div>
-						<div class="card-body">
-							<h6 class="card-category text-muted">Popular</h6>
-							<h4 class="card-title">
-								<a href="#pablo">Balmain</a>
-							</h4>
-							<div class="card-description">Balmain's mid-rise skinny
-								jeans are cut with stretch to ensure they retain their
-								second-skin fit but move comfortably.</div>
-						</div>
-						<div class="card-footer justify-content-between">
-							<div class="price">
-								<h4>$459</h4>
-							</div>
-							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link"
-									data-original-title="Save to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="card card-product">
-						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg&quot;); opacity: 1;"></div>
-						</div>
-						<div class="card-body">
-							<h6 class="card-category text-muted">Popular</h6>
-							<h4 class="card-title">
-								<a href="#pablo">Balenciaga</a>
-							</h4>
-							<div class="card-description">Balenciaga's black
-								textured-leather wallet is finished with the label's iconic
-								'Giant' studs. This is where you can...</div>
-						</div>
-						<div class="card-footer justify-content-between">
-							<div class="price">
-								<h4>$590</h4>
-							</div>
-							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link btn-rose"
-									data-original-title="Saved to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="card card-product">
-						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg&quot;); opacity: 1;"></div>
-						</div>
-						<div class="card-body">
-							<h6 class="card-category text-rose">Trending</h6>
-							<h4 class="card-title">
-								<a href="#pablo">Dolce &amp; Gabbana</a>
-							</h4>
-							<div class="card-description">Dolce &amp; Gabbana's 'Greta'
-								tote has been crafted in Italy from hard-wearing red
-								textured-leather.</div>
-						</div>
-						<div class="card-footer justify-content-between">
-							<div class="price">
-								<h4>$1,459</h4>
-							</div>
-							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link btn-default"
-									data-original-title="Save to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
+			</div>
+			</c:forEach>
 			</div>
 		</div>
 	</div>

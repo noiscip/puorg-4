@@ -45,6 +45,7 @@ public class PictureController {
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
 		List<String> tagList = pictureService.selectTag(picNo);
+		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
 		int followResult = 0;
 		int respectresult = pictureService.respectConfirm(picNo, user.getUserNo()); //좋아요 하고 있는지 확인
 		int bookmarkresult = pictureService.bookmarkConfirm(picNo, user.getUserNo()); //북마크 하고 있는지 확인
@@ -53,6 +54,7 @@ public class PictureController {
 		if(user.getUserNo() != userInfo.getUserNo()) {
 			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
 		}
+		model.addAttribute("respectList",respectPhotoList);
 		model.addAttribute("respectCount",respectCount);
 		model.addAttribute("bookmarkCount",bookmarkCount);
 		model.addAttribute("respectresult",respectresult);
