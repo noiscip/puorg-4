@@ -15,5 +15,6 @@ public interface CommentDao {
 	public List<User> picCommentUserList(int picNo); //사진에 대한 댓글 유저리스트
 	public int picInsertComment(Comment comment);	//사진에 댓글 저장
 	public int deleteComment(int cmtNo);			//댓글 삭제
+	public int deleteAllComment(int brdNo);
 	public Comment selectComment(int cmtNo);
 }

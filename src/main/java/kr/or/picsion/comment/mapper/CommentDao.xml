@@ -39,7 +39,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="picInsertComment" parameterType="kr.or.picsion.comment.dto.Comment">
 	insert into COMMENTS (cmtContent,userNo,picNo,tableNo) values (#{cmtContent},#{userNo},#{picNo},#{tableNo})
 	</insert>
-	
+	<!-- 작업중 댓글 삭제  -->    
+    <delete id="deleteAllComment" parameterType="Integer">
+        delete from COMMENTS where brdNo=#{brdNo}
+    </delete>
 	<!-- 댓글 삭제  -->	
 	<delete id="deleteComment" parameterType="Integer">
 		delete from COMMENTS where cmtNo =#{cmtNo}
