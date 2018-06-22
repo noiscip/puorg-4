@@ -62,14 +62,49 @@ public class MessageController {
 		return jsonview;
 	}
 	
-	//받은 메시지 리스트 
+	//메시지 리스트  6.21
 	@RequestMapping("receivemessage.ps")
 	public String receiveMessage(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		
 		List<Message> messageAll = messageService.messageAll(user.getUserNo());
 		System.out.println("리시브 메시지 와라~~~~~99-----------------------------------");
-			
+		
+		/*	
+		Map<Integer, Message> receiveMap = new HashMap<>();
+		Map<Integer, Message> sendMap = new HashMap<>();
+		
+		List<Message> receiveMsg = new ArrayList<>();
+		List<Message> sendMsg = new ArrayList<>();
+		
+		//검색해온 메시지를 내가 받은 메시지인지, 보낸 메시지인지 구분해서 map에 담음
+		for(Message m : messageAll) {
+			if(m.getReceiveUserNo()==user.getUserNo()) {
+				receiveMap.put(m.getMsgNo(), m);
+			}else if(m.getSendUserNo()==user.getUserNo()){
+				sendMap.put(m.getMsgNo(), m);
+			}
+		}
+		
+		//잘 들어갔는지 확인
+		System.out.println("***************이용~");
+		Iterator<Integer> receivekey = receiveMap.keySet().iterator();
+		while ( receivekey.hasNext() ) {
+		    Integer key = receivekey.next();
+		    System.out.println("key : " + key +" / value : " + receiveMap.get(key));
+		}   
+
+		System.out.println("띄용!!!!!!!!!!!!!!!");
+		Iterator<Integer> sendkey = sendMap.keySet().iterator();
+		while(sendkey.hasNext()) {
+			Integer key = sendkey.next();
+			System.out.println("key : " + key +" / value : " + sendMap.get(key));
+		}*/
+		
+		
+		
+		
+		/////////////////////////////////////////////////////
 		Map<Integer, Message> map = new HashMap<>();
 		
 		//메시지 검색해서 가져온거 id 중복제거를 하고 가장 최신 메시지만 담음
@@ -77,6 +112,10 @@ public class MessageController {
 			map.put(m.getReceiveUserNo(), m);
 			map.put(m.getSendUserNo(), m);
 		}
+		
+		System.out.println(map.keySet());
+		map.remove(user.getUserNo());
+		System.out.println(map.keySet());
 		
 		List<Message> recentMsg = new ArrayList<>();
 		
@@ -100,15 +139,15 @@ public class MessageController {
 			}
 		});
 		
-		
+		model.addAttribute("recentMsg", recentMsg);
 		
 		
 		for (Message m : recentMsg) {
 			System.out.println(m);
 		}
+		//////////////////////////////////////////////////////////
 		
-		
-		
+		/*
 		//받은 메시지에 대한 정보
 		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
 		List<User> receiveInfo = messageService.receiveMessageInfo(user.getUserNo());
@@ -134,12 +173,24 @@ public class MessageController {
 		
 		model.addAttribute("sendList", sendList);
 		model.addAttribute("sendInfo", sendInfo);
-		model.addAttribute("sendMsgReg", sendMsgReg);
-		
+		model.addAttribute("sendMsgReg", sendMsgReg);*/
 		/*model.addAttribute("receiveMap", receiveMap);*/
 		
+		System.out.println("박주검나시러~~");
 		return "mypage.message";
 	}
+	
+	//한 회원과 주고받은 메시지 리스트 뽑아오기 6.22
+	@RequestMapping("msglist.ps")
+	public View messageList(int userNo, HttpSession session, Model model) {
+		User user = (User)session.getAttribute("user");
+		List<Message> msgList = messageService.messageList(user.getUserNo(), userNo);
+		
+		model.addAttribute("msgList", msgList);
+		
+		return jsonview;
+	}
+	
 	
 	//메시지 확인시 messageState update
 	@RequestMapping("stateup.ps")

@@ -1,9 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script type="text/javascript">
 	$(function(){
+		
+		//메시지 리스트 가져오기
+		$('.msgList').click(function(){
+			var userNo = $(this).data("no");
+			console.log("오호 ~ " + userNo)
+			
+			$.ajax({
+				url:"/picsion/message/msglist.ps",
+				data:{userNo:userNo},
+				success : function(data){
+					console.log(data.msgList)
+				}
+			})
+			
+		})
+		
+		
+		
+		
 		//받은 메시지를 읽었을 때 메시지 상태 비동기로 update
 		$(document).on('click', '.receiveMsgModal', function(){
 			var msgNo=$(this).parent()[0].children[0].innerText;
@@ -246,6 +266,34 @@
 	border-radius:10px;
 }
 
+
+/* 메시지창  상단 너비 잡는거*/
+.message-header{
+	max-width: 600px;
+}
+
+/* ****** */
+
+/* media-body */
+.media-body-custom{
+	width:70%;
+}
+
+/* form-width */
+.form-sendmsg{
+	width:250px;
+}
+
+/* 메시지 뿌려주는 곳 */
+.form-msg-body{
+	max-height: 550px;
+	overflow-x:hidden;
+	overflow-y: auto;
+}
+
+
+
+
 .container-2{
   width: 300px;
   vertical-align: middle;
@@ -340,8 +388,7 @@ width: 300px;
 			           </form>
 					</div> -->
 					
-					<div class="col-md-7">
-						
+					<div class="col-md-5">
 						<div class="card card-collapse">
 							<div class="card-header" role="tab" id="headingThree">
 								<h5 class="mb-0">
@@ -351,28 +398,33 @@ width: 300px;
 							<div id="collapseThree" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="max-height: 700px; overflow-x: hidden; overflow-y: inherit;">
 								<div id="commentstart" class="card-body">
 									<!--  -->
-									<%-- <c:forEach items=""> --%>
-										<div class="media" style="border: 1px red solid; border-radius:10px;">
+									<c:forEach items="${recentMsg}" var="recentMsg2">
+										<div class="media"> <!-- style="border: 1px red solid; border-radius:10px;" -->
 											<a class="float-left" href="#pablo">
 												<div class="avatar">
-												  <img class="media-object" alt="64x64" src="/picsion/assets/img/faces/card-profile1-square.jpg">
+												  <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${recentMsg2.user[0].userNo}"><img class="media-object" src="<%=request.getContextPath()%>${recentMsg2.user[0].prPicture}"></a>
 												</div>
 											</a>
-											<div class="media-body">
+											<div class="media-body media-body-custom">
+												<%-- <input type="hidden" value="${recentMsg2.user[0].userNo}" class="hiddenNo"> --%>
+												<%-- <input type="hidden" value="${recentMsg2.sendUserNo}" class="hiddenSe"> --%>
 												<h4 class="media-heading">
-													윤근 <small>· 2018-06-20, 08:08:50</small>
+													${recentMsg2.user[0].userName} <small>· <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${recentMsg2.msgReg}" /></small>
 												</h4>
-												<p>대대댓</p>
-												<a href="" class="btn btn-rose btn-link float-right message-margin-del"><i class="material-icons receiveMsgDel" style="cursor: pointer;">clear</i>삭제</a>
-												<a href="#pablo" class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" title="" data-original-title="보내버리기"> <i class="material-icons">reply</i> 신고
+												<p class="msgList" style="cursor: pointer;" data-no="${recentMsg2.user[0].userNo}">${recentMsg2.msgContent}</p>
+												<a class="btn btn-rose btn-link float-right message-margin-del"><i class="material-icons receiveMsgDel">clear</i>삭제</a>
+												<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" title="" data-original-title="보내버리기"> <i class="material-icons">reply</i> 신고
 												</a>
 											</div>
 										</div>
-									<%-- </c:forEach> --%>
+									</c:forEach>
 									
 								</div>
 							</div>
 						</div>
+						
+						
+						
 						<form class="form-inline">
 							<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						    	메시지함 선택
@@ -480,6 +532,106 @@ width: 300px;
 					</div>
 					
 					</div>
+
+					<div class="col-md-7">
+							<div class="modal-dialog modal-login message-header" role="document">
+								<div class="modal-content">
+									<div class="card card-signup card-plain">
+										<div class="modal-header">
+										
+										<!-- ㄴ어라ㅣ너ㅣㅏㄹ어ㅣ나ㅓㅇ리ㅏ너ㅣㅇ러ㅏㅣㄴ -->
+											<div class="card-header card-header-primary text-center" style="margin-top: 0px;">
+												<h4 class="card-title">Message</h4>
+											</div>
+										</div>
+										
+										<div class="modal-body form-msg-body">
+											
+											<div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+												    <div class="arrow"></div>
+												    <div class="popover-body">
+												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+												    </div>
+										    </div>
+										    
+											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
+						                        <div class="arrow"></div>
+						                        <div class="popover-body">
+						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+						                        </div>
+						                    </div>
+						                    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+												    <div class="arrow"></div>
+												    <div class="popover-body">
+												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+												    </div>
+										    </div>
+										    
+											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
+						                        <div class="arrow"></div>
+						                        <div class="popover-body">
+						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+						                        </div>
+						                    </div>
+						                    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+												    <div class="arrow"></div>
+												    <div class="popover-body">
+												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+												    </div>
+										    </div>
+										    
+											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
+						                        <div class="arrow"></div>
+						                        <div class="popover-body">
+						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+						                        </div>
+						                    </div>
+						                    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+												    <div class="arrow"></div>
+												    <div class="popover-body">
+												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+												    </div>
+										    </div>
+										    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+												    <div class="arrow"></div>
+												    <div class="popover-body">
+												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+												    </div>
+										    </div>
+										    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+												    <div class="arrow"></div>
+												    <div class="popover-body">
+												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+												    </div>
+										    </div>
+											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
+						                        <div class="arrow"></div>
+						                        <div class="popover-body">
+						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+						                        </div>
+						                    </div>
+										</div>
+										
+										<div class="modal-footer justify-content-center">
+											<form class="form" method="" action="">
+												<div class="card-body">
+													<div class="form-group label-floating bmd-form-group">
+														<label class="form-control-label bmd-label-floating"
+															for="message"> Your message</label>
+														<textarea class="form-control form-sendmsg" rows="3" id="msgContent"
+															name="msgContent"></textarea>
+													</div>
+												</div>
+											</form>
+											<button type="button"
+												class="btn btn-primary btn-link btn-wd btn-lg" id="messageSend"
+												data-dismiss="modal">Send</button>
+										</div>
+									</div>
+								</div>
+							</div>
+					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -503,21 +655,3 @@ width: 300px;
     </div>
   </div>
 </div>
-
-<!-- 메시지 삭제 Modal -->
-<!-- <div class="modal fade" id="msgDelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-    
-      <div class="modal-body">
-        	정말 삭제하시겠습니까?
-      </div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="msgDel">삭제</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-      </div>
-    </div>
-  </div>
-</div>
- -->
