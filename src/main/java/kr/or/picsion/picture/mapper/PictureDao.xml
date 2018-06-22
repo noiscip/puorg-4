@@ -65,11 +65,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertPicture" parameterType="hashmap">		
 	insert into PICTURE
 	 (picNo, picTitle, picContent, picPath, picWater, picPrice, userNo)
-	values (#{picture.picNo},#{picture.picTitle},#{picture.picContent},#{picture.picPath},"test",100,#{userNo})
+	values (#{picture.picNo},#{picture.picTitle},#{picture.picContent},#{picture.picPath},#{picture.picWater},100,#{userNo})
 	 <selectKey keyProperty="picture.picNo" resultType="Integer" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
 	</insert>
+	
+	<!-- 사진 워터마크 저장 -->
+	<update id="updateWater">
+	update PICTURE
+	set picWater=#{param1}
+	where picNo=#{param2}
+	</update>
 	
 	<!-- 사진 업로드 저장 시 태그 저장 -->
 	<insert id="insertTag" >
