@@ -1,24 +1,49 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+
+<style>
+/* 메시지함 신고버튼, 삭제버튼 여백 삭제 */
+.message-margin-del{
+	margin: 5px;
+	padding: 5px;
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 	
+	var loginuser = ${sessionScope.user.userNo};
+	var userInfoNo = ${userInfo.userNo};
+	
+	//댓글창 스크롤 가장 하단으로 내리기
+	$(document).on('click','#scrolldown',function(){
+		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+	})
+	
+	//댓글 텍스트 입력 클릭시 스크롤 하단으로 내리기
+	$(document).on('click','#newComment',function(){
+		if($('#scrolldown').attr("aria-expanded")=='false'){
+			$('#scrolldown').click();
+		}
+	})
+	
+	//메시지 모달 종료시 내용 삭제
 	$(document).on('click','#modaloff',function(){
 		 $('#msgContent').val("");
 	})
-	/* 메시지 보내기 비동기 처리 */
+	
+	//메시지 보내기 비동기 처리
 	$(document).on('click','#messageSend',function(){
 		if($('#msgContent').val()==''){
 			alert("메시지 내용이 없습니다.");
 		}else{
 		var tableNo = 4;
 		var data= {msgContent:$("#msgContent").val(), 
-					sendUserNo:${sessionScope.user.userNo}, 
-					receiveUserNo:${userInfo.userNo}
+					sendUserNo:loginuser, 
+					receiveUserNo:userInfoNo
 				   };
 		
 		$.ajax({
@@ -37,9 +62,12 @@ $(document).ready(function() {
 		}
 	})
 	
+	
+	
+	//팔로우 하기, 취소
 	$(document).on('click','#follow',function(){
-			var data = {userNo:${sessionScope.user.userNo}, 
-						followingUserNo:${userInfo.userNo}};			
+			var data = {userNo : loginuser, 
+						followingUserNo : userInfoNo};			
 			$.ajax({
 				  url : "/picsion/user/following.ps",
 				  data: data,
@@ -54,9 +82,10 @@ $(document).ready(function() {
 				  }
 			});
 		}) 
-		
+	
+	//사진 좋아요
 	$(document).on('click','#like',function(){
-		var data = {userNo : ${sessionScope.user.userNo},
+		var data = {userNo : loginuser,
 			    picNo : $(this).attr("value")};
 		var respect =  $(this);
 		var rpa = $(this).parent();
@@ -75,8 +104,9 @@ $(document).ready(function() {
 		 }) 
 	})
 	
+	//사진 북마크
 	$(document).on('click','#down',function(){
-		var data = {userNo : ${sessionScope.user.userNo},
+		var data = {userNo : loginuser,
 			    picNo : $(this).attr("value")};
 		var bookmark = $(this);
 		var bpa = $(this).parent();
@@ -95,15 +125,16 @@ $(document).ready(function() {
 		 }) 
 	})
 	
-	
+	//댓글 쓰기
 	$(document).on('click','#commentbtn',function(){
-		
+		console.log($('#scrolldown').children()[0].innerHTML);
+		$('#scrolldown').children()[0].innerHTML++;
 		if($('#newComment').val()==''){
 			alert("댓글 내용이 없습니다.");
 		}else{
 		var tableNo = 2; 
 		var data= {cmtContent:$("#newComment").val(), 
-					userNo:${sessionScope.user.userNo}, 
+					userNo:loginuser, 
 					picNo:${picture.picNo},
 					tableNo : tableNo
 				   };
@@ -125,8 +156,9 @@ $(document).ready(function() {
 						}
 						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
-						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a href='#pablo' class='btn btn-primary btn-link float-right'"+
-							"rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a></div></div>";
+						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
+						    "<i class='material-icons'>clear</i>삭제</a>"+
+							"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i>신고</a></div></div>";
 					})
 					$('#commentstart').append(media);
 			       	$('a[rel=tooltip]').tooltip();
@@ -139,6 +171,25 @@ $(document).ready(function() {
 			  }
 		});
 		}
+	})
+	
+	//댓글 삭제
+	$(document).on('click', '#commentDel', function(){
+		var commbody = $(this).parent().parent();
+		var cmtNo = $(this).attr("value");
+		 $.ajax({
+			url:"/picsion/comment/deletecomment.ps",
+			data:{cmtNo:cmtNo},
+			success:function(data){
+				if(data.result==1){
+				$(commbody).remove();
+				$('#scrolldown').children()[0].innerHTML--;
+				alert("댓글 삭제 완료")
+				}else{
+					alert("댓글 삭제 실패")
+				}
+			}
+		}); 
 	})
 	
 });
@@ -157,23 +208,23 @@ $(document).ready(function() {
 				<div class="col-md-6 col-sm-6">
 					<div class="card card-blog">
 						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"
 								src="<%=request.getContextPath()%>/${picture.picPath}">
 								<div class="card-title">
 								<c:choose>
 								<c:when test="${respectresult eq 1}">
-										<span><i id="like" value="${picture.picNo}" class="material-icons">favorite</i>${respectCount}</span>
+										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite</i>${respectCount}</span>
 								</c:when>
 								<c:otherwise>
-										<span><i id="like" value="${picture.picNo}" class="material-icons">favorite_border</i>${respectCount}</span>
+										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite_border</i>${respectCount}</span>
 								</c:otherwise>
 								</c:choose>
 								<c:choose>
 								<c:when test="${bookmarkresult eq 1}">
-										<span><i id="down" value="${picture.picNo}" class="material-icons">bookmark</i>${bookmarkCount}</span>
+										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark</i>${bookmarkCount}</span>
 								</c:when>
 								<c:otherwise>
-										<span><i id="down" value="${picture.picNo}" class="material-icons">bookmark_border</i>${bookmarkCount}</span>
+										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark_border</i>${bookmarkCount}</span>
 								</c:otherwise>
 								</c:choose>
 								</div>
@@ -246,12 +297,12 @@ $(document).ready(function() {
 					<!-- <h3 class="main-price">$335</h3> -->
 					<div id="accordion" role="tablist">
 						<div class="card card-collapse">
-							<div class="card-header" role="tab" id="headingOne">
+							<div class="card-header" id="headingOne">
 								<h5 class="mb-0">
 									<a>Content</a>
 								</h5>
 							</div>
-							<div id="collapseOne" class="collapse show" role="tabpanel"
+							<div id="collapseOne"  role="tabpanel"
 								aria-labelledby="headingOne" data-parent="#accordion" style="">
 								<div class="card-body">
 									<p>${picture.picContent}</p>
@@ -259,12 +310,12 @@ $(document).ready(function() {
 							</div>
 						</div>
 						<div class="card card-collapse">
-							<div class="card-header" role="tab" id="headingTwo">
+							<div class="card-header" id="headingTwo">
 								<h5 class="mb-0">
 									<a>Tag</a>
 								</h5>
 							</div>
-							<div id="collapseTwo" class="collapse show" role="tabpanel"
+							<div id="collapseTwo"  role="tabpanel"
 								aria-labelledby="headingTwo" data-parent="#accordion" style="">
 								<div class="card-body">
 									<c:forEach var="tag" items="${tagList}">
@@ -276,10 +327,13 @@ $(document).ready(function() {
 						<div class="card card-collapse">
 							<div class="card-header" role="tab" id="headingThree">
 								<h5 class="mb-0">
-									<a>Comment</a>
+								<a id="scrolldown" class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                 Comment : <span>${fn:length(commentList)}</span> 
+                                 <i class="material-icons">keyboard_arrow_down</i>
+                                 </a>
 								</h5>
 							</div>
-							<div id="collapseThree" class="collapse show" role="tabpanel"
+							<div id="collapseThree" class="collapse" role="tabpanel"
 								aria-labelledby="headingThree" data-parent="#accordion"
 								style="max-height: 250px; overflow-x: hidden; overflow-y: inherit;">
 								<div id="commentstart" class="card-body">
@@ -288,9 +342,7 @@ $(document).ready(function() {
 											<h3 class="category text-muted">아직 댓글이 없습니다.</h3>
 										</c:when>
 										<c:otherwise>
-											<c:forEach var="comm" items="${commentList}"
-												varStatus="status">
-
+											<c:forEach var="comm" items="${commentList}" varStatus="status">
 												<div class="media">
 													<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentUserList[status.index].userNo}">
 														<div class="avatar">
@@ -307,17 +359,15 @@ $(document).ready(function() {
 															</c:choose>
 														</div>
 													</a>
-													<div class="media-body">
+													<div style="width: 70%;" class="media-body">
 														<h4 class="media-heading">${commentUserList[status.index].userName}<small>·
 																<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
 																	value="${comm.cmtReg}" />
 															</small>
 														</h4>
 														<p>${comm.cmtContent}</p>
-														<a href="#pablo"
-															class="btn btn-primary btn-link float-right"
-															rel="tooltip" data-original-title="보내버리기"><i
-															class="material-icons">reply</i> 신고</a>
+														<a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a>
+														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기"><i	class="material-icons">reply</i>신고</a>
 													</div>
 												</div>
 											</c:forEach>
@@ -332,7 +382,7 @@ $(document).ready(function() {
 									<a>Input Comment</a>
 								</h5>
 							</div>
-							<div id="collapseTwo" class="collapse show" role="tabpanel"
+							<div id="collapseTwo" role="tabpanel"
 								aria-labelledby="headingTwo" data-parent="#accordion" style="">
 								<div class="media media-post">
 									<c:choose>
@@ -357,8 +407,7 @@ $(document).ready(function() {
 												<div class="form-group label-floating bmd-form-group">
 													<label class="form-control-label bmd-label-floating"
 														for="exampleBlogPost"> 댓글을 달아보세요...</label>
-													<textarea id="newComment" class="form-control" rows="5"
-														id="exampleBlogPost"></textarea>
+													<textarea id="newComment" class="form-control" rows="5"></textarea>
 												</div>
 												<div class="media-footer">
 													<button type="button" id="commentbtn"
@@ -390,134 +439,37 @@ $(document).ready(function() {
 		<div class="related-products">
 			<h3 class="title text-center">You may also be interested in:</h3>
 			<div class="row">
-				<div class="col-sm-6 col-md-3">
+			<c:forEach var="rList" items="${respectList}" begin="0" end="3" varStatus="status">
+			<div class="col-sm-6 col-md-3">
 					<div class="card card-product">
 						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-1.jpg&quot;); opacity: 1;"></div>
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${rList.picNo}">
+							<img class="img" src="<%=request.getContextPath()%>${rList.picPath}"></a>
+							<div class="colored-shadow"	style="background-image: url(&quot;<%=request.getContextPath()%>${rList.picPath}&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">
-							<h6 class="card-category text-rose">Trending</h6>
+							<h6 class="card-category text-rose">Popular</h6>
 							<h4 class="card-title">
-								<a href="#pablo">Dolce &amp; Gabbana</a>
+								${rList.picTitle}
 							</h4>
-							<div class="card-description">Dolce &amp; Gabbana's 'Greta'
-								tote has been crafted in Italy from hard-wearing red
-								textured-leather.</div>
+							<div class="card-description"> ${rList.picContent}
 						</div>
-						<div class="card-footer justify-content-between">
+						<div class="card-footer justify-content-center">
 							<div class="price">
-								<h4>$1,459</h4>
+								<span style="cursor: " class="btn btn-just-icon btn-link btn-rose">
+									<i class="material-icons">favorite</i>
+								</span> 
 							</div>
 							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link btn-rose"
-									data-original-title="Saved to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
+								<span class="btn btn-just-icon btn-link btn-rose">
+									${rList.respectCount}
+								</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="card card-product">
-						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-3.jpg&quot;); opacity: 1;"></div>
-						</div>
-						<div class="card-body">
-							<h6 class="card-category text-muted">Popular</h6>
-							<h4 class="card-title">
-								<a href="#pablo">Balmain</a>
-							</h4>
-							<div class="card-description">Balmain's mid-rise skinny
-								jeans are cut with stretch to ensure they retain their
-								second-skin fit but move comfortably.</div>
-						</div>
-						<div class="card-footer justify-content-between">
-							<div class="price">
-								<h4>$459</h4>
-							</div>
-							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link"
-									data-original-title="Save to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="card card-product">
-						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-4.jpg&quot;); opacity: 1;"></div>
-						</div>
-						<div class="card-body">
-							<h6 class="card-category text-muted">Popular</h6>
-							<h4 class="card-title">
-								<a href="#pablo">Balenciaga</a>
-							</h4>
-							<div class="card-description">Balenciaga's black
-								textured-leather wallet is finished with the label's iconic
-								'Giant' studs. This is where you can...</div>
-						</div>
-						<div class="card-footer justify-content-between">
-							<div class="price">
-								<h4>$590</h4>
-							</div>
-							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link btn-rose"
-									data-original-title="Saved to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="card card-product">
-						<div class="card-header card-header-image">
-							<a href="#pablo"> <img class="img"
-								src="<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg">
-							</a>
-							<div class="colored-shadow"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/assets/img/examples/studio-2.jpg&quot;); opacity: 1;"></div>
-						</div>
-						<div class="card-body">
-							<h6 class="card-category text-rose">Trending</h6>
-							<h4 class="card-title">
-								<a href="#pablo">Dolce &amp; Gabbana</a>
-							</h4>
-							<div class="card-description">Dolce &amp; Gabbana's 'Greta'
-								tote has been crafted in Italy from hard-wearing red
-								textured-leather.</div>
-						</div>
-						<div class="card-footer justify-content-between">
-							<div class="price">
-								<h4>$1,459</h4>
-							</div>
-							<div class="stats">
-								<button type="button" rel="tooltip" title=""
-									class="btn btn-just-icon btn-link btn-default"
-									data-original-title="Save to Wishlist">
-									<i class="material-icons">favorite</i>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
+			</div>
+			</c:forEach>
 			</div>
 		</div>
 	</div>
@@ -526,7 +478,7 @@ $(document).ready(function() {
 
 
 
-
+<!-- 메시지 모달 -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="">
 	<div class="modal-dialog modal-login" role="document">
 		<div class="modal-content">
@@ -562,4 +514,17 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+</div>
+
+<!-- 사진 확대 모달 -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+     <div class="card card-blog">
+    <div class="card-header card-header-image">
+            <img class="img" src="<%=request.getContextPath()%>/${picture.picPath}">
+    </div>
+</div>
+    </div>
+  </div>
 </div>
