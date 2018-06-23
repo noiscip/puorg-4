@@ -18,6 +18,7 @@
     <!-- CSS Files -->
     <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" />
+    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css" rel="stylesheet" />
     <!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--   Core JS Files   -->
