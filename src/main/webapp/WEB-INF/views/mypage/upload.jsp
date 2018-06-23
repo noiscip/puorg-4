@@ -22,18 +22,17 @@
 </head>
 
 <script type="text/javascript">
-	$(document).on("click", "#tagAdd", function() {
-		console.log("뚜뚜")
-		
-		if($('#tagAddName').val()==0){
-			alert("태그를 입력해주세요.");
-		}else{
-			$('#picTags').append("<input type='text' value="+$('#tagAddName').val()+" name='tag' data-role='tagsinput'>");
-			$("input[data-role=tagsinput]").tagsinput();
-			$('#tagAddName').val("");
-		}
-		
-	});
+$(document).on("click", "#tagAdd", function() {
+    if($('#tagAddName').val()==0){
+        alert("태그를 입력해주세요.");
+    }else{
+        $('#picTags').append("<input type='text' value="+$('#tagAddName').val()+" name='tag' data-role='tagsinput'>");
+        $("input[data-role=tagsinput]").tagsinput();
+        $('#tagAddName').val("");
+    }
+    
+});
+
 </script>
 
 <style type="text/css">

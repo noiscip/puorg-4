@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<!--data table -->
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+
 
 
 <style type="text/css">
@@ -11,7 +18,13 @@
 	padding-bottom: 30px;
 }
 </style>
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#datatable').DataTable();
+    $('#datatable2').DataTable();
+} );
 
+</script>
 
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
@@ -27,8 +40,96 @@
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
 		</ul>
 			<div class="gallery ">
-				<div class="row">
+			<form class="form-inline">
+							<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						    	요청/작업 리스트
+							</a>
+							<ul class="nav dropdown-menu" role="tablist">
+								<li class="nav-item"><a class="nav-link tag" id="receiveTag" href="#request" role="tab" data-toggle="tab">나의 요청 리스트</a></li>
+								<li class="nav-item"><a class="nav-link" id="sendTag" href="#operation" role="tab" data-toggle="tab">나의 작업 리스트</a></li>
+							</ul>			               
+			 </form>
+		<div class="tab-content tab-space">
+						<!-- ******* 요청  리스트 ******* -->
+				<div class="tab-pane active" id="request">
+					 <table id="datatable" class="table" style="text-align:center">
+		                <thead>
+		                    <tr class="info">
+		                        <th>#</th>
+		                        <th>작업자</th>
+		                        <th>제목</th>
+		                        <th>금액</th>
+		                        <th>시작날짜</th>
+		                        <th>완료예정 날짜</th> 
+		                        <th>작업 상태</th>                        
+		                    </tr>
+		                </thead>
+		                <!-- 데이터가 한건도 없는 경우  -->
+		                <tbody>
+		                    <c:forEach var="item" items="${requestBoardList}" varStatus="status">
+		                        <tr id="${item.brdNo}">
+		                            <td>${item.brdNo}</td>
+		                            <td>${item.userName}</td>		                            
+		                            <td><a href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${item.brdNo}">${item.brdTitle}</a></td>
+		                            <td>${item.brdExpectPrice}</td>
+		                            <td>
+		                            <small>
+		                            ·<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${item.brdReg}"/>
+		                            </small>
+		                            </td>
+		                            <td>		                            
+		                            <small>
+		                            ·<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${item.brdExpectEndDate}"/>
+		                            </small>
+		                            </td>
+		                            <td>${item.operState}</td>
+		                        </tr>
+		                    </c:forEach>
+		                </tbody>
+		            </table>
 				</div>
+			
+				<!-- ******* 작업 리스트 ****** -->
+				<div class="tab-pane" id="operation">
+							
+							<table id="datatable2" class="table" style="text-align:center">
+	                <thead>
+	                    <tr class="info">
+	                        <th>#</th>
+	                        <th>작업자</th>
+	                        <th>제목</th>
+	                        <th>금액</th>
+	                        <th>날짜</th>
+	                        <th>완료예정 날짜</th> 
+	                        <th>작업 상태</th>                        
+	                    </tr>
+	                </thead>
+	                <!-- 데이터가 한건도 없는 경우  -->
+	                <tbody> 
+	                    <c:forEach var="item" items="${operationBoardList}" varStatus="status">
+	                        <tr id="${item.brdNo}">
+	                            <td>${item.brdNo}</td>
+	                            <td>${item.userName}</td>
+	                            <td><a href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${item.brdNo}">${item.brdTitle}</a></td>
+	                            <td>${item.brdExpectPrice}</td>
+	                            <td>	                            
+	                             <small>
+		                            ·<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${item.brdReg}"/>
+		                         </small>
+	                            </td>
+	                            <td>		                            
+		                            <small>
+		                            ·<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${item.brdExpectEndDate}"/>
+		                            </small>
+		                        </td>
+	                            <td>${item.operState}</td>
+	                        </tr>
+	                    </c:forEach>
+	                </tbody>
+	            </table>
+							
+				</div>	
+					
 			</div>
 		</div>
 	</div>

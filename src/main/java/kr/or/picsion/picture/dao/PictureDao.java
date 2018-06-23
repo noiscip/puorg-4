@@ -1,9 +1,11 @@
 ﻿package kr.or.picsion.picture.dao;
 
+
 import java.util.HashMap;
 import java.util.List;
 
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.user.dto.User;
 
 public interface PictureDao {
 	public int insertPicture(HashMap<String, Object> picmap);
@@ -15,7 +17,8 @@ public interface PictureDao {
 	public int updatePicture(Picture picture);
 	public List<Picture> pictureList();
 	public Picture selectPicture(int picNo);			//사진 상세
-	public List<Picture> writerPicture(int userNo);		//userNo로 스튜디오에서 사진 불러오기
+	public List<Picture> studioPicList(int userNo, int myuserNo);//userNo로 스튜디오에서 사진 불러오기
+	public List<User> studioOwnerList(int userNo); 		//마이스튜디오 주인
 	public List<Picture> searchPicture(String word);
 	public void respectDelete(int picNo, int userNo);	//사진 좋아요 삭제
 	public void bookmarkDelete(int picNo, int userNo);	//사진 북마크 삭제

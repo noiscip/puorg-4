@@ -146,5 +146,9 @@ public class UserService {
 		return userDao.selectAccountNo(accountNo,field);
 	}
 	
+	public int updateRole(int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		return userDao.updateRole(userNo);
+	}
 
 }

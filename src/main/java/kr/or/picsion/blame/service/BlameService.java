@@ -30,4 +30,9 @@ public class BlameService {
 		return blameDao.complainSearch(date);
 	}
 	
+	public int complainInsert(Blame blame,String table, int no) {
+		BlameDao blameDao = sqlSession.getMapper(BlameDao.class);
+		return blameDao.complainInsert(blame,table,no);
+	}
+	
 }

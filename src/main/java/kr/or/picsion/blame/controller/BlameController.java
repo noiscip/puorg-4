@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.View;
 
 import kr.or.picsion.blame.dto.Blame;
 import kr.or.picsion.blame.service.BlameService;
+import kr.or.picsion.user.dto.User;
 
 @Controller
 @RequestMapping("/blame/")
@@ -49,6 +52,20 @@ public class BlameController {
 		
 		List<Blame> blameList = blameService.complain();
 		model.addAttribute("blameList",blameList);
+		return jsonview;
+	}
+	
+	@RequestMapping("complainInsert.ps")
+	public View complainInsert(Blame blame,String table,int no, HttpSession session, Model model) {
+		System.out.println("하ㅣ하");
+		System.out.println(table);
+		System.out.println(no);
+		
+		User user = (User)session.getAttribute("user");
+		blame.setBlaUserNo(user.getUserNo());
+		int result = blameService.complainInsert(blame,table,no);
+		model.addAttribute("result", result);
+		
 		return jsonview;
 	}
 	
