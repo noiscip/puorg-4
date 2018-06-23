@@ -75,9 +75,13 @@ public class OperationController {
 	
 	
 	@RequestMapping(value="operequest.ps")
-	public String OperationApplyok(HttpSession session, Model model) {
-		User user = (User)session.getAttribute("user");
+	public String OperationApplyok(HttpSession session, Model model, String pg, String operStateNo) {
+		User user = (User)session.getAttribute("user");	
 		
+		model.addAttribute("requestList",operationService.requestList(user.getUserNo()));
+		model.addAttribute("requestBoardList",boardService.requestBoardList(user.getUserNo()));
+		model.addAttribute("operationList",operationService.operationList(user.getUserNo()));
+		model.addAttribute("operationBoardList",boardService.operationBoardList(user.getUserNo()));
 		return "mypage.operequest";
 	}
 	

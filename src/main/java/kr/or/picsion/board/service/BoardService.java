@@ -75,4 +75,20 @@ public class BoardService {
 			boarddao.insertBoard(board);
 			System.out.println("글쓰기 완료");
 		}
+		
+		
+		
+		//내 작업 게시판 리스트
+				public List<Board> operationBoardList(int userNo){
+					BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+					System.out.println("operationBoardList 서비스 시작 ");
+					return boarddao.operationBoardList(userNo);
+				}
+		//내 요청 게시판 리스트
+				public List<Board> requestBoardList(int userNo){
+					BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+					System.out.println("requestBoardList 서비스 시작 ");
+					return boarddao.requestBoardList(userNo);
+				}
+		
 }

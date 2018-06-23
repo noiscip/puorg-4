@@ -85,7 +85,7 @@ $(document).ready(function() {
 	
 	//사진 좋아요
 	$(document).on('click','#like',function(){
-		var data = {userNo : loginuser,
+		var data = {userNo : loginuse,
 			    picNo : $(this).attr("value")};
 		var respect =  $(this);
 		var rpa = $(this).parent();
@@ -128,10 +128,10 @@ $(document).ready(function() {
 	//댓글 쓰기
 	$(document).on('click','#commentbtn',function(){
 		console.log($('#scrolldown').children()[0].innerHTML);
-		$('#scrolldown').children()[0].innerHTML++;
 		if($('#newComment').val()==''){
 			alert("댓글 내용이 없습니다.");
 		}else{
+		$('#scrolldown').children()[0].innerHTML++;
 		var tableNo = 2; 
 		var data= {cmtContent:$("#newComment").val(), 
 					userNo:loginuser, 
@@ -196,10 +196,10 @@ $(document).ready(function() {
 
 </script>
 <div class="page-header header-filter" data-parallax="true"
-	filter-color="rose"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
 </div>
 
+<input type="hidden" value="${picture.tableNo},picNo,${picture.picNo}" id="info">
 
 <div class="section section-gray">
 	<div class="container">
@@ -208,8 +208,7 @@ $(document).ready(function() {
 				<div class="col-md-6 col-sm-6">
 					<div class="card card-blog">
 						<div class="card-header card-header-image">
-							<a data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"
-								src="<%=request.getContextPath()%>/${picture.picPath}">
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"	src="<%=request.getContextPath()%>/${picture.picPath}">
 								<div class="card-title">
 								<c:choose>
 								<c:when test="${respectresult eq 1}">
@@ -413,6 +412,7 @@ $(document).ready(function() {
 													<button type="button" id="commentbtn"
 														class="btn btn-primary btn-round btn-wd float-right">Post
 														Comment</button>
+														<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
 												</div>
 											</div>
 										</c:otherwise>

@@ -84,8 +84,8 @@ public class AmazonTest {
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
 		String filePathh="";
-		/*String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
-		String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
+		String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
+		/*String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -167,7 +167,7 @@ public class AmazonTest {
 	
 	
 	
-	
+	/*
 	public void uploadObject(String file) {
 		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
 		String SECRET_KEY = "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\r\n";
@@ -176,6 +176,7 @@ public class AmazonTest {
         String stringObjKeyName = file;
         String fileObjKeyName = file;
         String fileName = "/file/" + fileObjKeyName;
+        String a3path="";
         
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
         try {
@@ -194,6 +195,7 @@ public class AmazonTest {
             metadata.addUserMetadata("x-amz-meta-title", "someTitle");
             request.setMetadata(metadata);
             s3Client.putObject(request);
+            System.out.println("이거 뭘까?"+s3Client.getBucketLocation(bucketName)); //s3 파일경로인가?
             System.out.println("s3 주소는 "+fileName);
         }
         catch(AmazonServiceException e) {
@@ -206,13 +208,12 @@ public class AmazonTest {
             // couldn't parse the response from Amazon S3.
             e.printStackTrace();
         }
-	}
+        a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName;
+	}*/
 	
 	public static List<String> detectLabels(String filePath) throws Exception {
 	    List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
-	    System.out.println("여기가 진짜 문제?1");
 	    Image image = getImage(filePath);
-	    System.out.println("여기가 진짜 문제?2");
 	    List<String> test= new ArrayList<String>();
 	    
 	    Feature feature = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).build();
@@ -255,7 +256,7 @@ public class AmazonTest {
 	            // For full list of available annotations, see http://g.co/cloud/vision/docs
 	            for (EntityAnnotation annotation : res.getLogoAnnotationsList()) {
 	            	if(annotation.getDescription()!=null) {
-	            		logoExist="로고 있음";
+	            		logoExist="사진에서 로고가 발견되었습니다.";
 	            	}else {
 	            		logoExist=null;
 	            	}

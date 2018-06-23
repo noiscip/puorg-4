@@ -1,6 +1,5 @@
 ﻿package kr.or.picsion.picture.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.picsion.picture.dao.PictureDao;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.user.dto.User;
 
 @Service
 public class PictureService {
@@ -27,16 +27,20 @@ public class PictureService {
 	}
 	
 	
-	
-	//내 계정의 사진 불러오기
-	public List<Picture> myPicList(int userNo){
+	//스튜디오 사진 불러오기
+	public List<Picture> studioPicList(int userNo, int myuserNo){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		
-		List<Picture> list = new ArrayList<Picture>();
-		list = picDao.writerPicture(userNo);
-		
+		List<Picture> list = picDao.studioPicList(userNo, myuserNo);
 		return list;
 	}
+	//스튜디오 주인
+	public List<User> studioOwnerList(int userNo){
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		List<User> list = picDao.studioOwnerList(userNo);
+		return list;
+	}
+	
+	
 	
 	//사진 좋아요 증가
 	public void increaseRespect(int picNo, int userNo){

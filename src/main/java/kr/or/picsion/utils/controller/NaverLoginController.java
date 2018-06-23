@@ -62,6 +62,7 @@ public class NaverLoginController {
 		}else { //유저가 존재 한다면 계정 연동
 			if(userService.selectAccountNo(accountNo,NAVER) == null) { //네이버 등록이 안되어 있다면
 				userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
+				userService.updateRole(user.getUserNo());
 				session.setAttribute("user", userService.userInfo(user.getUserNo()));
 			}else { //네이버 등록이 되어 있다면
 				session.setAttribute("result", "F");
