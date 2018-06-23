@@ -4,10 +4,16 @@
 
 <script>
 $(function(){
+	var isRun =false
 	$('#newNotice').click(function(){
 		$('#noticeList').hide() 
-		
+
+		if(isRun == true) {
+       		return;
+  	  	}
+    
 		if($(this).closest('li').hasClass('show') != true){
+	    	isRun = true;
 			$('#noticeList').show() 
 			$.ajax({
 				url: "/picsion/notice/notice.ps",
@@ -43,6 +49,7 @@ $(function(){
 						noticeMenu += '</a></li>'
 					})
 					$('#noticeList').append(noticeMenu)
+					isRun =false
 				}
 			})
 		}
