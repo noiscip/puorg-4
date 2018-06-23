@@ -16,6 +16,42 @@
 				data:{userNo:userNo},
 				success : function(data){
 					console.log(data.msgList)
+					
+					$.each(data.msgList, function(index, obj){
+						if(obj.receiveNo==${sessionScope.user.userNo}){
+							
+						}else if(){
+							
+						}
+					})
+					
+					
+					/* var table="<thead><tr>"+
+								"<th>번호</th><th>보낸이</th><th>내용</th><th>받은 날짜</th><th>상태</th><th>삭제</th>"+
+					  		    "</tr></thead><tbody>";
+		
+					$('#selectMsgTab').empty();
+					$.each(data.receiveSelect, function(index,obj){
+						
+						if(obj.receiveMsgDel=="F"){
+							console.log("몇개나 가져오니?")
+							console.log(obj.msgNo);
+							table+="<tr>"+
+										"<td>"+obj.msgNo+"</td>"+
+										"<td>"+data.receiveSelInfo[index].userName+"</td>"+
+										"<td class='receiveMsgModal' data-toggle='modal' data-target='#myModal'>"+obj.msgContent+"</td>"+
+										"<td>"+data.receiveSelReg[index]+"</td>"+
+										"<td>";
+											if(obj.msgState=="F"){
+												table+="안읽음</td>";
+											}else{
+												table+="읽음</td>";
+											}
+											table+="<td><i class='material-icons receiveMsgDel' style='cursor: pointer;''>clear</i></td>"
+									+"</tr>";
+						}
+					});
+					table+="</tbody>"; */
 				}
 			})
 			
