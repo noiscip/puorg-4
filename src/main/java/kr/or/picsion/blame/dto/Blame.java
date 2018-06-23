@@ -5,7 +5,7 @@ import java.util.Date;
 public class Blame {
 
 	private int blaNo;
-	private String blaUserNo;
+	private int blaUserNo;
 	private String blaContent;
 	private Date blaReg;
 	private int tableNo;
@@ -13,11 +13,12 @@ public class Blame {
 	private int cmtNo;
 	private int picNo;
 	private int userNo;
+	private int msgNo;
 
 	public Blame() {}
 
-	public Blame(int blaNo, String blaUserNo, String blaContent, Date blaReg, int tableNo, int brdNo, int cmtNo,
-			int picNo, int userNo) {
+	public Blame(int blaNo, int blaUserNo, String blaContent, Date blaReg, int tableNo, int brdNo, int cmtNo,
+			int picNo, int userNo, int msgNo) {
 		this.blaNo = blaNo;
 		this.blaUserNo = blaUserNo;
 		this.blaContent = blaContent;
@@ -27,6 +28,7 @@ public class Blame {
 		this.cmtNo = cmtNo;
 		this.picNo = picNo;
 		this.userNo = userNo;
+		this.msgNo = msgNo;
 	}
 
 	public int getBlaNo() {
@@ -37,11 +39,11 @@ public class Blame {
 		this.blaNo = blaNo;
 	}
 
-	public String getBlaUserNo() {
+	public int getBlaUserNo() {
 		return blaUserNo;
 	}
 
-	public void setBlaUserNo(String blaUserNo) {
+	public void setBlaUserNo(int blaUserNo) {
 		this.blaUserNo = blaUserNo;
 	}
 
@@ -101,11 +103,19 @@ public class Blame {
 		this.userNo = userNo;
 	}
 
+	public int getMsgNo() {
+		return msgNo;
+	}
+
+	public void setMsgNo(int msgNo) {
+		this.msgNo = msgNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Blame [blaNo=" + blaNo + ", blaUserNo=" + blaUserNo + ", blaContent=" + blaContent + ", blaReg="
 				+ blaReg + ", tableNo=" + tableNo + ", brdNo=" + brdNo + ", cmtNo=" + cmtNo + ", picNo=" + picNo
-				+ ", userNo=" + userNo + "]";
+				+ ", userNo=" + userNo + ", msgNo=" + msgNo + "]";
 	}
 
 }

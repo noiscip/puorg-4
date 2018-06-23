@@ -26,4 +26,16 @@ select * from OPERATION where brdNo=#{brdNo}
  </select>
 
 
+<!-- operationList(내 작업 정보 리스트) -->
+ <select id="operationList" parameterType="Integer" 
+                           resultType="kr.or.picsion.operation.dto.Operation">      
+      select * from OPERATION where operatorNo=#{userNo} order by operStartReg desc
+ </select>
+
+<!-- requestListv(내 요청 정보 리스트) -->
+ <select id="requestList" parameterType="Integer" 
+                           resultType="kr.or.picsion.operation.dto.Operation">
+      select * from OPERATION where requesterNo=#{userNo} order by operStartReg desc
+ </select>
+ 
 </mapper>

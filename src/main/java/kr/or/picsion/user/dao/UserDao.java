@@ -25,5 +25,5 @@ public interface UserDao {
 	public int insertAccount(int userNo);    //회원 계정 연동
 	public int updateAccount(int userNo, String accountNo, String portalSite);	 //이미 다른 포털의 계정이 등록되어 있다면 update
 	public User selectAccountNo(String accountNo, String portalSite);
-
+	public int updateRole(int userNo); //계정 연동 되었을 경우 권한 업데이트
 }

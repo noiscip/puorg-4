@@ -85,7 +85,7 @@ $(document).ready(function() {
 	
 	//사진 좋아요
 	$(document).on('click','#like',function(){
-		var data = {userNo : loginuser,
+		var data = {userNo : loginuse,
 			    picNo : $(this).attr("value")};
 		var respect =  $(this);
 		var rpa = $(this).parent();
@@ -199,6 +199,7 @@ $(document).ready(function() {
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
 </div>
 
+<input type="hidden" value="${picture.tableNo},picNo,${picture.picNo}" id="info">
 
 <div class="section section-gray">
 	<div class="container">
@@ -411,6 +412,7 @@ $(document).ready(function() {
 													<button type="button" id="commentbtn"
 														class="btn btn-primary btn-round btn-wd float-right">Post
 														Comment</button>
+														<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
 												</div>
 											</div>
 										</c:otherwise>

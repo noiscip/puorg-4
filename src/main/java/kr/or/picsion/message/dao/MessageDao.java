@@ -14,7 +14,8 @@ public interface MessageDao {
 	public List<User> receiveMessageUserInfo(int receiveUserNo);	//받은 메시지 보낸사람 리스트
 	public List<Message> sendMessageList(int sendUserNo);	//보낸 메시지 리스트
 	public List<User> sendMessageUserInfo(int sendUserNo);	//보낸 메시지 받은사람 리스트
-	public List<Message> selectAll(int userNo);		//모든 메시지 가져오기 (받은, 보낸)
+	public List<Message> selectAll(int userNo);				//모든 메시지 가져오기 (받은, 보낸)
+	public List<Message> msgList(int myUserNo, int userNo);	//한 회원과 대화한 메시지 리스트 가져오기
 	
 	public List<Message> selectReceiveMsg(int receiveUserNo, String userName);		//받은 메시지 검색한 메시지 리스트
 	public List<User> selectReceiveInfo(int receiveUserNo, String userName);		//받은 메시지 검색한 정보
