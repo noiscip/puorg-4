@@ -5,9 +5,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="kr.or.picsion.picture.dao.PictureDao">
 
-  	<select id="writerPicture" resultType="kr.or.picsion.picture.dto.Picture">
-		SELECT * FROM PICTURE WHERE userNo=#{userNo}
+	<!-- 마이 스튜디오 사진 , 좋아요, 북마크 리스트 -->
+	<select id="studioPicList" resultType="kr.or.picsion.picture.dto.Picture">
+	select p.*, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount
+	from (select * from PICTURE where userNo=#{param1}) p 
+	join USERS u on p.userNo=u.userNo 
+	left join (select * from RESPECT where userNo=#{param2}) r on p.picNo=r.picNo 
+	left join (select * from BOOKMARK where userNo=#{param2}) b on p.picNo=b.picNo 
+	left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
+	left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo;
 	</select>
+	
+	<!-- 마이 스튜디오 사진 주인 리스트 -->
+	<select id="studioOwnerList" resultType="kr.or.picsion.user.dto.User">
+	select u.userName
+	from (select * from PICTURE where userNo=#{userNo}) p join USERS u on p.userNo=u.userNo;
+	</select>
+	
 	
 	<!-- 사진 정보 -->
 	<select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">
