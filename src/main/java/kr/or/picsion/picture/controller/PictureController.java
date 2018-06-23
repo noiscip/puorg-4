@@ -13,6 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;
@@ -174,8 +183,15 @@ public class PictureController {
 		}else {
 			System.out.println("워터마크 생성 실패");
 		}
+		
+		//s3 저장
+		String saveFileName =picture.getPicPath().split("/")[4];
+		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
+		uploadObject(saveFileName);
+		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
+	//워터마크 입히기
 	public static void addTextWatermark(String text, String type, File source, File destination) throws IOException {
         BufferedImage image = ImageIO.read(source);
 
@@ -202,5 +218,48 @@ public class PictureController {
         ImageIO.write(watermarked, type, destination);
         w.dispose();
     }
+	//s3에 저장하기
+	public void uploadObject(String file) {
+		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
+		String SECRET_KEY = "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\r\n";
+	  	String clientRegion = "ap-northeast-2";
+        String bucketName = "picsion/img";
+        String stringObjKeyName = file;
+        String fileObjKeyName = file;
+        String fileName = "D:/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
+        String a3path="";
+        
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+        try {
+        	AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                    .withRegion(clientRegion)
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                    .build();
+        
+            // Upload a text string as a new object.
+            s3Client.putObject(bucketName, stringObjKeyName, "Uploaded String Object");
+            
+            // Upload a file as a new object with ContentType and title specified.
+            PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, new File(fileName));
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("plain/text");
+            metadata.addUserMetadata("x-amz-meta-title", "someTitle");
+            request.setMetadata(metadata);
+            s3Client.putObject(request);
+            System.out.println("이거 뭘까?"+s3Client.getBucketLocation(bucketName)); //s3 파일경로인가?
+            System.out.println("s3 주소는 "+fileName);
+        }
+        catch(AmazonServiceException e) {
+            // The call was transmitted successfully, but Amazon S3 couldn't process 
+            // it, so it returned an error response.
+            e.printStackTrace();
+        }
+        catch(SdkClientException e) {
+            // Amazon S3 couldn't be contacted for a response, or the client
+            // couldn't parse the response from Amazon S3.
+            e.printStackTrace();
+        }
+        a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName;
+	}
 }
 

@@ -133,7 +133,7 @@
 	});
 </script>
 
-<input type="hidden" value="${brdInfo.tableNo},brdNo,${brdInfo.brdNo}" id="info">
+<input type="hidden" value="${boardInfo.tableNo},brdNo,${boardInfo.brdNo}" id="info">
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -271,6 +271,7 @@
 																<a href="#pablo"
 																	class="btn btn-primary btn-round btn-wd float-right"
 																	id="addreviewbutton">Post Comment</a>
+																<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
 															</div>
 														</div>
 													</div>

@@ -14,19 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="complainInsert">
-		insert into BLAME (blaUserNo, blaContent, tableNo, 
-							<if test="tableNo == 1">userNo</if>
-							<if test="tableNo == 2">picNo</if>
-							<if test="tableNo == 3">brdNo</if>
-							<if test="tableNo == 4">cmtNo</if>
-							<if test="tableNo == 5">msgNo</if>
-							)
-					VALUES (#{blaUserNo}, #{blaContent}, #{tableNo},
-							<if test="tableNo == 1">#{userNo}</if>					
-							<if test="tableNo == 2">#{picNo}</if>					
-							<if test="tableNo == 3">#{brdNo}</if>					
-							<if test="tableNo == 4">#{cmtNo}</if>					
-							<if test="tableNo == 5">#{msgNo}</if>					
-						)
+		insert into BLAME (blaUserNo, blaContent, tableNo, ${param2})
+					VALUES (#{param1.blaUserNo}, #{param1.blaContent}, #{param1.tableNo},#{param3})
 	</insert>
 </mapper>

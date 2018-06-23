@@ -131,6 +131,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from ACCOUNTLINKED where userNo = #{userNo}
 	</select>
 	
+	<update id="updateRole">
+		update USERS
+		   set roleNo = 2
+		 where userNo = #{userNo}
+	</update>
 	
 	
 
