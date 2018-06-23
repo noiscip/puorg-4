@@ -6,8 +6,9 @@
 <script type="text/javascript">
 	
 	$(function() {
-		var sendUserNo = ${user.userNo}
-		var receiveUserNo = ${userinfo.userNo}
+		var sendUserNo = ${user.userNo};
+		var receiveUserNo = ${userinfo.userNo};
+		var loginUserNo = ${sessionScope.user.userNo};
 		/* 메시지 보내기 비동기 처리 */
 		$('#messageSend').click(function(){
 			var tableNo = 4;
@@ -49,6 +50,48 @@
 				  }
 			});
 		}) 
+		
+		$(document).on('click','#like',function(){
+		var data = {userNo : loginUserNo,
+			    picNo : $(this).attr("value")};
+		var respect =  $(this);
+		var rpa = $(this).parent();
+		 $.ajax({
+			url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
+			data : data,
+			success : function(data){
+				if(data.result==1){
+					  $(respect)[0].innerHTML = 'favorite_border';
+					  $(rpa)[0].childNodes[1].nodeValue--;
+				  }else{
+					  $(respect)[0].innerHTML = 'favorite';
+					  $(rpa)[0].childNodes[1].nodeValue++;
+				  }
+			}
+		 }) 
+	})
+	
+	$(document).on('click','#down',function(){
+		var data = {userNo : loginUserNo,
+			    picNo : $(this).attr("value")};
+		var bookmark = $(this);
+		var bpa = $(this).parent();
+		 $.ajax({
+			url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
+			data : data,
+			success : function(data){
+				if(data.result==1){
+					  $(bookmark)[0].innerHTML = 'bookmark_border';
+					  $(bpa)[0].childNodes[1].nodeValue--;
+				  }else{
+					  $(bookmark)[0].innerHTML = 'bookmark';
+					  $(bpa)[0].childNodes[1].nodeValue++;
+				  }
+			}
+		 }) 
+	})
+		
+		
 		
 	})
 </script>
@@ -144,9 +187,46 @@
         </div>
         
         <div class="tab-content tab-space">
-          <div class="tab-pane active text-center gallery" id="studio">
+          <div class="tab-pane active" id="studio">
             <div class="row">
             
+            
+            <div id="gallery">
+				<div class="flex_grid credits">
+					<c:forEach items="${piclist}" var="studioPic" varStatus="status">
+						<div class="item" data-w="640" data-h="426"
+							style="width: 255px; height: 300px; display: block;">
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}"> <img class="rounded img-size"
+								src="<%=request.getContextPath()%>/${studioPic.picPath}"
+								alt="">
+							</a>
+							<div>
+			                    <div class="counts hide-xs hide-sm ">
+			                    <c:choose>
+									<c:when test="${studioPic.respectCheck eq 'T'}">
+										<em><i id="like" value="${studioPic.picNo}" class="material-icons">favorite</i>${studioPic.respectCount}</em>
+									</c:when>
+									<c:otherwise>
+										<em><i id="like" value="${studioPic.picNo}" class="material-icons">favorite_border</i>${studioPic.respectCount}</em>
+									</c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${studioPic.bookmarkCheck eq 'T'}">
+										<em><i id="down" value="${studioPic.picNo}" class="material-icons">bookmark</i>${studioPic.bookmarkCount}</em>
+									</c:when>
+									<c:otherwise>
+										<em><i id="down" value="${studioPic.picNo}" class="material-icons">bookmark_border</i>${studioPic.bookmarkCount}</em>
+									</c:otherwise>
+								</c:choose>
+			                    </div>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${studioPic.userNo}">${ownerList[status.index].userName}</a>
+               				</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+            
+            <%-- 
               	<!-- DB에서 이미지 불러와서 해당 이미지의 상세페이지 요청 -->
               	<c:forEach items="${piclist}" var="pic">
               		<div class="col-md-3" >
@@ -154,7 +234,7 @@
 	                		<img src="<%=request.getContextPath()%>${pic.picPath}" class="rounded img-size">
 	                	</a>
                 	</div>
-              	</c:forEach>
+              	</c:forEach> --%>
             
             </div>
           </div>

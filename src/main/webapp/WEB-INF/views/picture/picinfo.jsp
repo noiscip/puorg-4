@@ -196,7 +196,6 @@ $(document).ready(function() {
 
 </script>
 <div class="page-header header-filter" data-parallax="true"
-	filter-color="rose"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
 </div>
 
@@ -209,8 +208,7 @@ $(document).ready(function() {
 				<div class="col-md-6 col-sm-6">
 					<div class="card card-blog">
 						<div class="card-header card-header-image">
-							<a data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"
-								src="<%=request.getContextPath()%>/${picture.picPath}">
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"	src="<%=request.getContextPath()%>/${picture.picPath}">
 								<div class="card-title">
 								<c:choose>
 								<c:when test="${respectresult eq 1}">

@@ -1,6 +1,5 @@
 ﻿package kr.or.picsion.picture.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
@@ -30,17 +28,10 @@ import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.font.GlyphVector;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -100,20 +91,20 @@ public class PictureController {
 	@RequestMapping("mystudio.ps")
 	public String myStudio(HttpSession session, Model model, int userNo){
 		
-		User user = (User) session.getAttribute("user");
-		
-		User userInfo = userService.userInfo(userNo);
-		List<Picture> picList = pictureService.myPicList(userNo);
-		List<User> followerList = userService.followerUserList(userNo);
+		User user = (User) session.getAttribute("user"); //로그인 사용자
+		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), userNo); //스튜디오 사진리스트
+		List<User> ownerList = pictureService.studioOwnerList(userNo);
+ 		List<User> followerList = userService.followerUserList(userNo);
 		List<User> followingList = userService.followingUserList(userNo);
 		int followResult = 0;
-		
 		if(user.getUserNo() != userNo) {
-			followResult = userService.followingConfirm(user.getUserNo(), userNo);
+			followResult = userService.followingConfirm(userNo,user.getUserNo());
 		}
-		
+		System.out.println(picList);
 		model.addAttribute("userinfo", userInfo);
 		model.addAttribute("piclist", picList);
+		model.addAttribute("ownerList",ownerList);
 		model.addAttribute("followerlist", followerList);
 		model.addAttribute("followinglist", followingList);
 		model.addAttribute("followResult", followResult);
