@@ -80,7 +80,7 @@ $(document).ready(function() {
 						  $('#follow')[0].childNodes[2].data = '팔로우 취소'; 
 					  }
 				  }
-			});
+			})
 		}) 
 	
 	//사진 좋아요
@@ -169,7 +169,7 @@ $(document).ready(function() {
 			  error: function(){
 			   	  alert("댓글 보내는 도중 오류가 발생했습니다.");
 			  }
-		});
+		})
 		}
 	})
 	
@@ -189,10 +189,10 @@ $(document).ready(function() {
 					alert("댓글 삭제 실패")
 				}
 			}
-		}); 
+		}) 
 	})
 	
-});
+})
 
 </script>
 <div class="page-header header-filter" data-parallax="true"

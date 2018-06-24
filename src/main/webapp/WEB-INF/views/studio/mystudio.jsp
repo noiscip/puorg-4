@@ -197,7 +197,7 @@
 						<div class="item" data-w="640" data-h="426"
 							style="width: 255px; height: 300px; display: block;">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}"> <img class="rounded img-size"
-								src="<%=request.getContextPath()%>/${studioPic.picPath}"
+								src="<%=request.getContextPath()%>${studioPic.picPath}"
 								alt="">
 							</a>
 							<div>
