@@ -295,5 +295,10 @@ public class MessageController {
 		return jsonview;
 	}
 
-
+	@RequestMapping("messageNotice.ps")
+	public String messageNotice(int userNo) {
+		System.out.println("---------------------------------");
+		System.out.println(userNo);
+		return "redirect:/message/receivemessage.ps";
+	}
 }

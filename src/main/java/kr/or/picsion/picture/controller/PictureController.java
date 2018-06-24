@@ -135,7 +135,7 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), userNo); //스튜디오 사진리스트
+		List<Picture> picList = pictureService.studioPicList(userNo, user.getUserNo()); //스튜디오 사진리스트
 		List<User> ownerList = pictureService.studioOwnerList(userNo);
  		List<User> followerList = userService.followerUserList(userNo);
 		List<User> followingList = userService.followingUserList(userNo);
