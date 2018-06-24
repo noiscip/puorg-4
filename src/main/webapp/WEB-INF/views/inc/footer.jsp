@@ -76,7 +76,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.21:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.36:8090/picsion/message.ps") //테스트 용도 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -89,32 +89,44 @@
 				var table = evt.data.split(':')[2]
 				var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
 				var url = "";
-
-				if(table == 1){
-					console.log("1번, 유저 ")
-				}else if (table == 2){
-					console.log("2번, 사진")
-				}else if(table == 3	){
-					console.log("3번, 보드")
-					url = "/picsion/notice/noticeComment.ps"
-				}else if(table == 4){
-					console.log("4번, 댓글")
-					url = "/picsion/notice/noticeMsg.ps"
-				}else if(table == 5){
-					console.log("5번, 메시지")
-				}else if(table == 6){
-					console.log("6번, 작업 수락")
-				}
 				
-				$.ajax({
-					url:url,
-					async: false,
-					success: function (data) {
-						if (data.count > 0 && $('#newNotice').length == 0){
-							$('#userProfile').append(newMessage)
-						}
+		  		if(evt.data.split(':')[3] != null){
+                    $.ajax({
+                    	url:"/picsion/message/readmsg.ps",
+                    	data: {	userNo: evt.data.split(':')[1],
+                    			msgNo: evt.data.split(':')[3]
+                    	},
+                        success: function (data) {
+                            
+                        }
+                    })
+                } else{
+					if(table == 1){
+						console.log("1번, 유저 ")
+					}else if (table == 2){
+						console.log("2번, 사진")
+					}else if(table == 3	){
+						console.log("3번, 보드")
+						url = "/picsion/notice/noticeComment.ps"
+					}else if(table == 4){
+						console.log("4번, 댓글")
+						url = "/picsion/notice/noticeMsg.ps"
+					}else if(table == 5){
+						console.log("5번, 메시지")
+					}else if(table == 6){
+						console.log("6번, 작업 수락")
 					}
-				})
+					
+					$.ajax({
+						url:url,
+						async: false,
+						success: function (data) {
+							if (data.count > 0 && $('#newNotice').length == 0){
+								$('#userProfile').append(newMessage)
+							}
+						}
+					})
+                }
 				
 				
 		 	}

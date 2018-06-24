@@ -64,17 +64,14 @@ public class NoticeService {
 		Map<String,Notice> overlap = new HashMap<>();
 		
 		for (Notice no : noticeList) {
-			System.out.println("포문을 돌려보자");
 			if(no.getTableNo() == 5) {
 				String key = no.getTableNo() +","+no.getSendUserNo();
 				
 				if(overlap.get(key) == null ) {
 					overlap.put(key, no);
 				}else {
-					System.out.println("여기들ㅇ옴???");
 					continue;
 				}
-				System.out.println("하하하하하하");
 			}
 			List<Object> obj = new ArrayList<>();
 			System.out.println(no);

@@ -22,7 +22,7 @@ public interface MessageDao {
 	public List<Message> selectSendMsg(int receiveUserNo, String userName);		//받은 메시지 검색한 메시지 리스트
 	public List<User> selectSendInfo(int receiveUserNo, String userName);		//받은 메시지 검색한 정보
 	
-	public Message selectMessgae(int msgNo);
+	public Message selectMessage(int msgNo);	//msgNo로 메시지 정보 검색
 	
 	public int messageState(int msgNo);			//메시지 읽었을 때 상태 update
 	
