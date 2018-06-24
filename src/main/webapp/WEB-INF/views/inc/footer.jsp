@@ -30,25 +30,36 @@
 					console.log($('#loginUserNo').val())
 				}
 				
-				$('#blaSend').click(function(){
-					var info = $('#info').val().split(',')
-					var blaContent = $('#blaContent').val()
-					var data = 	{
-									blaContent : blaContent,
-									tableNo : info[0],
-									userNo : info[1],
-									brdNo : info[2],
-									picNo : info[3]
-								}
-					console.log(data)
-					blameController(data)
-				})
+				//신고하기/////////////////////////////////////////////////////////////////
+			$('#blaSend').click(function(){
+				var info = $('#info').val().split(',')
+				var blaContent = $('#blaContent').val()
+				var data = 	{
+								blaContent : blaContent,
+								tableNo : info[0],
+								userNo : info[1],
+								brdNo : info[2],
+								picNo : info[3]
+							}
+				blameController(data)
+			})
 			
-				
+			$(document).on('click','a[data-original-title=보내버리기]',function(){
+				var info = (this.id).split(',')
+				var content = this.parentNode.children[1].innerHTML
+				var data = {
+								tableNo : info[0],
+								userNo : info[1],
+								brdNo : info[2],
+								picNo : info[3],
+								cmtNo : info[4],
+								blaContent : content
+							}
+				blameController(data)
+				})
 			});
 			
-		  function blameController(data) {
-			  console.log('여긴??')
+		  	function blameController(data) {
 			  $.ajax({
 					url : "/picsion/blame/complainInsert.ps",
 					data : data,
@@ -57,9 +68,9 @@
 					}
 				})
 			}
+			//신고하기/////////////////////////////////////////////////////////////////
 		  
-		  
-		  //////WEB SOCKET/////
+		  	//////WEB SOCKET/////
 		  	var wsocket
 		  
 			function connect(){
@@ -74,6 +85,7 @@
 			}
 		  	function onMessage(evt){
 		  		console.log("onMessage 실행")
+		  		
 				var table = evt.data.split(':')[2]
 				var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
 				var url = "";
@@ -104,6 +116,7 @@
 					}
 				})
 				
+				
 		 	}
 		  	function onClose(evt) {
 			  console.log("여기는 클로즈 이벤트")
@@ -113,7 +126,7 @@
 			  	console.log("send오긴해?")
 			  	var loginUser = $('#loginUserNo').val()
 			  
-		        wsocket.send(loginUser+":"+receiveUser+":4");
+		        wsocket.send(loginUser+":"+receiveUser+":"+tableNo);
 		    }
 			//////WEB SOCKET/////
 		  	//top으로

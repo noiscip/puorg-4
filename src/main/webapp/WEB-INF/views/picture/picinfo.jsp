@@ -160,7 +160,7 @@ $(document).ready(function() {
 							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
 						    "<i class='material-icons'>clear</i>삭제</a>"+
-							"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기' id='" + data.newcommentlist[index].tableNo + ","+element.userNo+","+picNo+","+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>reply</i>신고</a></div></div>";
+							"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기' id='" + data.newcommentlist[index].tableNo + ","+element.userNo+",0,"+picNo+","+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>reply</i>신고</a></div></div>";
 					}) 
 					$('#commentstart').append(media);
 			       	$('a[rel=tooltip]').tooltip();
@@ -175,7 +175,7 @@ $(document).ready(function() {
 		}
 	})
 	
-	$(document).on('click','a[data-original-title=보내버리기]',function(){
+	/* $(document).on('click','a[data-original-title=보내버리기]',function(){
 		var info = (this.id).split(',')
 		console.log(info)
 		console.log(this.parentNode.children[1].innerHTML)
@@ -188,31 +188,28 @@ $(document).ready(function() {
 						blaContent : content
 					}
 		console.log(data)
-		
-		
-		
-	})
+	}) */
 	
 	//댓글 삭제
 	$(document).on('click', '#commentDel', function(){
-		var commbody = $(this).parent().parent();
-		var cmtNo = $(this).attr("value");
+		var commbody = $(this).parent().parent()
+		var cmtNo = $(this).attr("value")
 		 $.ajax({
 			url:"/picsion/comment/deletecomment.ps",
 			data:{cmtNo:cmtNo},
 			success:function(data){
 				if(data.result==1){
-				$(commbody).remove();
-				$('#scrolldown').children()[0].innerHTML--;
+				$(commbody).remove()
+				$('#scrolldown').children()[0].innerHTML--
 				alert("댓글 삭제 완료")
 				}else{
 					alert("댓글 삭제 실패")
 				}
 			}
-		}); 
+		})
 	})
 	
-});
+})
 
 </script>
 <div class="page-header header-filter" data-parallax="true"
@@ -386,7 +383,7 @@ $(document).ready(function() {
 														</h4>
 														<p>${comm.cmtContent}</p>
 														<a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a>
-														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기"  id="${comm.tableNo},${comm.userNo},${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a>
+														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a>
 													</div>
 												</div>
 											</c:forEach>
