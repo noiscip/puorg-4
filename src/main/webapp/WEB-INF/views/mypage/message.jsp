@@ -22,20 +22,6 @@
 			abb(userNo,myNo,msgUser)
 		})
 		
-		/* $('.msgList').click(function(){
-			console.log($(this).closest('.media'))
-			userListDiv = $(this).closest('.media')
-			var userNo = $(this).data("no");
-			var msgUser = ($(this).parent()[0].children[0].innerText).split(" ")[0];
-			
-			console.log("오호 ~ " + userNo)
-			console.log(myNo);
-			console.log(msgUser)
-			
-			abb(userNo,myNo,msgUser)
-		}) */
-		
-		
 		//메시지 보내고, 메시지 대화창에 보낸 메시지 append, 회원 대화 목록 div에서 해당 div remove후 다시 append
 		$(document).on('click', '.messageSend', function(){
 			console.log("메시지 보내기 되는거야?")
@@ -78,7 +64,10 @@
 					$('#commentstart').prepend(userList);
 					
 					var tableNo=5+":"+data.message.msgNo;
-					send(myNo,tableNo);
+					console.log("문자*-------******************")
+					console.log(receiveUserNo)
+					console.log(tableNo)
+					send(receiveUserNo,tableNo);
 				},
 				error: function(){
 				   	alert("메시지 보내는 도중 오류가 발생했습니다.");
