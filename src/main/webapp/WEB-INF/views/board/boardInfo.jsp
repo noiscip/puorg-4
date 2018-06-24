@@ -133,7 +133,7 @@
 	});
 </script>
 
-<input type="hidden" value="${boardInfo.tableNo},brdNo,${boardInfo.brdNo}" id="info">
+<input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>

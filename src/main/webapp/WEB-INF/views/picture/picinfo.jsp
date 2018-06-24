@@ -17,7 +17,7 @@ $(document).ready(function() {
 	
 	var loginuser = ${sessionScope.user.userNo};
 	var userInfoNo = ${userInfo.userNo};
-	
+	var picNo = ${picture.picNo}
 	//댓글창 스크롤 가장 하단으로 내리기
 	$(document).on('click','#scrolldown',function(){
 		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
@@ -135,7 +135,7 @@ $(document).ready(function() {
 		var tableNo = 2; 
 		var data= {cmtContent:$("#newComment").val(), 
 					userNo:loginuser, 
-					picNo:${picture.picNo},
+					picNo:picNo,
 					tableNo : tableNo
 				   };
 		
@@ -145,7 +145,9 @@ $(document).ready(function() {
 			  success : function(data){
 				  var media="";
 			      $('#commentstart').empty();
+			      console.log(data)
 			      $.each(data.newcommentUserList,function(index,element){
+			    	  console.log(element)
 						media += "<div class='media'>"+
 					    "<a class='float-left' href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+element.userNo+"'>"+
 						"<div class='avatar'>";
@@ -158,8 +160,8 @@ $(document).ready(function() {
 							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
 						    "<i class='material-icons'>clear</i>삭제</a>"+
-							"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i>신고</a></div></div>";
-					})
+							"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기' id='" + data.newcommentlist[index].tableNo + ","+element.userNo+","+picNo+","+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>reply</i>신고</a></div></div>";
+					}) 
 					$('#commentstart').append(media);
 			       	$('a[rel=tooltip]').tooltip();
 			        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
@@ -171,6 +173,24 @@ $(document).ready(function() {
 			  }
 		});
 		}
+	})
+	
+	$(document).on('click','a[data-original-title=보내버리기]',function(){
+		var info = (this.id).split(',')
+		console.log(info)
+		console.log(this.parentNode.children[1].innerHTML)
+		var content = this.parentNode.children[1].innerHTML
+		var data = {
+						tableNo : info[0],
+						userNo : info[1],
+						picNo : info[2],
+						cmtNo : info[3],
+						blaContent : content
+					}
+		console.log(data)
+		
+		
+		
 	})
 	
 	//댓글 삭제
@@ -199,7 +219,7 @@ $(document).ready(function() {
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
 </div>
 
-<input type="hidden" value="${picture.tableNo},picNo,${picture.picNo}" id="info">
+<input type="hidden" value="${picture.tableNo},${picture.userNo},0,${picture.picNo}" id="info">
 
 <div class="section section-gray">
 	<div class="container">
@@ -366,7 +386,7 @@ $(document).ready(function() {
 														</h4>
 														<p>${comm.cmtContent}</p>
 														<a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a>
-														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기"><i	class="material-icons">reply</i>신고</a>
+														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기"  id="${comm.tableNo},${comm.userNo},${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a>
 													</div>
 												</div>
 											</c:forEach>

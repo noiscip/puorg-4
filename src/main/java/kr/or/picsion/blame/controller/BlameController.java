@@ -56,16 +56,14 @@ public class BlameController {
 	}
 	
 	@RequestMapping("complainInsert.ps")
-	public View complainInsert(Blame blame,String table,int no, HttpSession session, Model model) {
-		System.out.println("하ㅣ하");
-		System.out.println(table);
-		System.out.println(no);
+	public View complainInsert(Blame blame, HttpSession session, Model model) {
 		
 		User user = (User)session.getAttribute("user");
 		blame.setBlaUserNo(user.getUserNo());
-		int result = blameService.complainInsert(blame,table,no);
-		model.addAttribute("result", result);
+		System.out.println(blame);
+		int result = blameService.complainInsert(blame);
 		
+		model.addAttribute("result", result);
 		return jsonview;
 	}
 	

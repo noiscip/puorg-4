@@ -33,35 +33,30 @@
 				$('#blaSend').click(function(){
 					var info = $('#info').val().split(',')
 					var blaContent = $('#blaContent').val()
-					if(info.length == 3){
-					console.log(info[1])
-					var no = info[1]
-					var data = {
-								blaContent : blaContent,
-								tableNo : info[0],
-								table : info[1],
-								no : info[2]
-								}
-					}
-					console.log(data)
-					$.ajax({
-						url : "/picsion/blame/complainInsert.ps",
-						data : {
+					var data = 	{
 									blaContent : blaContent,
 									tableNo : info[0],
-									table : info[1],
-									no : info[2]
-								},
-						success : function(data){
-							console.log(data)
-						}
-					})
-					
+									userNo : info[1],
+									brdNo : info[2],
+									picNo : info[3]
+								}
+					console.log(data)
+					blameController(data)
 				})
 			
 				
 			});
 			
+		  function blameController(data) {
+			  console.log('여긴??')
+			  $.ajax({
+					url : "/picsion/blame/complainInsert.ps",
+					data : data,
+					success : function(data){
+						console.log(data)
+					}
+				})
+			}
 		  
 		  
 		  //////WEB SOCKET/////
