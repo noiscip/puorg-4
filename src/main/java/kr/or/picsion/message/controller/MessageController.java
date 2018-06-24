@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +21,7 @@ import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.message.service.MessageService;
 import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.user.dto.User;
+import kr.or.picsion.user.service.UserService;
 
 @Controller
 @RequestMapping("/message/")
@@ -36,11 +36,14 @@ public class MessageController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	@Autowired
+	private UserService userService;
+	
 	//메시지 보내기
 	@RequestMapping("send.ps")
-	public View messageSend(Message message) {
-				
+	public View messageSend(Message message, Model model) {
 		int result = messageService.sendMessage(message);
+		User userinfo = userService.userInfo(message.getReceiveUserNo());
 		
 		if(result != 0) {
 			System.out.println("메시지 보내기 성공!");
@@ -53,6 +56,9 @@ public class MessageController {
 			noticeMap.put("table", "msgNo");
 			noticeMap.put("tableNo", message.getTableNo());
 			
+			model.addAttribute("message", message);
+			model.addAttribute("userinfo", userinfo);
+			
 			noticeService.insertNotice(noticeMap);
 		}else {
 			System.out.println("메시지 보내기 실패");
@@ -61,6 +67,20 @@ public class MessageController {
 		
 		return jsonview;
 	}
+	
+	//메시지 읽어오기 (socket)
+	@RequestMapping("readmsg.ps")
+	public View messageRead(Message message, Model model) {
+		User userInfo = userService.userInfo(message.getSendUserNo());
+		Message msgInfo = messageService.messageInfo(message.getMsgNo());
+		
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("msgInfo", msgInfo);
+		
+		return jsonview;
+	}
+	
+	
 	
 	//메시지 리스트  6.21
 	@RequestMapping("receivemessage.ps")
