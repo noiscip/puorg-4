@@ -1,13 +1,26 @@
 ﻿package kr.or.picsion.picture.controller;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
@@ -19,32 +32,22 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.simpleworkflow.flow.worker.SynchronousActivityTaskPoller;
 
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.dto.Tag;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
-
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
- 
-import javax.imageio.ImageIO;
 
 @Controller
 @RequestMapping("/picture/")
 public class PictureController {
 
    	@Autowired
-    	private View jsonview;
+    private View jsonview;
 
   	@Autowired
 	private PictureService pictureService;
@@ -85,6 +88,31 @@ public class PictureController {
 		model.addAttribute("commentList",commentList);
 		model.addAttribute("commentUserList",commentUserList);
 		return "picture.picinfo";
+	}
+	
+	//헤더 검색창 태그 리스트
+	@RequestMapping(value="searchpicture.ps",method=RequestMethod.POST)
+	public View searchPicList(Model model, HttpServletRequest request) {
+		String tagParam = request.getParameter("tagParam");
+		System.out.println("이게?"+tagParam);
+		List<Tag> searchTagList = pictureService.searchTag(tagParam);
+		List<String> uuu = new ArrayList<String>();
+		for(Tag t : searchTagList) {
+			uuu.add(t.getTagContent());
+		}
+		model.addAttribute("searchTagList", uuu);
+		return jsonview;
+	}
+	
+	//태그 or 검색 관련 사진 리스트
+	@RequestMapping("tagpicList.ps")
+	public String searchTagPicList(Model model, String tag) {
+		System.out.println("이건?"+tag);
+		List<Picture> tagpicList = pictureService.searchTagPicList(tag);
+		model.addAttribute("tagpicList",tagpicList);
+		model.addAttribute("tag",tag);
+		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
+		return "popular.tagpicturepage";
 	}
 	
 	//Studio 페이지 이동(userNo 값 받아서)  회원 팔로잉,팔로워,업로드한 사진,팔로잉한 회원인지 확인 결과 불러오기 
