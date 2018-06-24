@@ -139,11 +139,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo 
 								 join PROFILE p ON p.userNo = u.userNo
-		where receiveUserNo = #{userNo}
+		where receiveUserNo = #{userNo} AND receiveMsgDel='F'
 		union all
 		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
 								 join PROFILE p ON p.userNo = u.userNo
-		where sendUserNo = #{userNo}
+		where sendUserNo = #{userNo} AND sendMsgDel ='F'
 		ORDER by msgReg
 	</select>
 	
@@ -157,11 +157,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo 
 								 join PROFILE p ON p.userNo = u.userNo
-		where receiveUserNo = #{param1} AND sendUserNo=#{param2}
+		where receiveUserNo = #{param1} AND sendUserNo=#{param2} AND receiveMsgDel='F'
 		union all
 		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
 								 join PROFILE p ON p.userNo = u.userNo
-		where sendUserNo = #{param1} AND receiveUserNo=#{param2}
+		where sendUserNo = #{param1} AND receiveUserNo=#{param2} AND sendMsgDel ='F'
 		ORDER by msgReg
 	</select>
 	
