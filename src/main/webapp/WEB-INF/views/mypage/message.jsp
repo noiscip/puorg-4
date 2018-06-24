@@ -4,56 +4,39 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script type="text/javascript">
+
 	$(function(){
+		var myNo = $('#loginUserNo').val();
 		
-		//메시지 리스트 가져오기
+		if($('#hi').val()!=null){
+			console.log($('#hi').val())
+			var userNo = $('#hi').val();
+			var msgUser = '777';
+			
+			console.log("오호~~ ~ " + userNo)
+			console.log(myNo);
+			console.log(msgUser)
+			
+			abb(userNo,myNo,msgUser)
+		}
+		
+		//해당 유저와 대화 메시지 리스트 가져오기
 		$('.msgList').click(function(){
 			var userNo = $(this).data("no");
-			console.log("오호 ~ " + userNo)
+			var msgUser = ($(this).parent()[0].children[0].innerText).split(" ")[0];
 			
-			$.ajax({
-				url:"/picsion/message/msglist.ps",
-				data:{userNo:userNo},
-				success : function(data){
-					console.log(data.msgList)
-					
-					$.each(data.msgList, function(index, obj){
-						if(obj.receiveNo==${sessionScope.user.userNo}){
-							
-						}else if(){
-							
-						}
-					})
-					
-					
-					/* var table="<thead><tr>"+
-								"<th>번호</th><th>보낸이</th><th>내용</th><th>받은 날짜</th><th>상태</th><th>삭제</th>"+
-					  		    "</tr></thead><tbody>";
+			console.log("오호 ~ " + userNo)
+			console.log(myNo);
+			console.log(msgUser)
+			
+			abb(userNo,myNo,msgUser)
+		})
 		
-					$('#selectMsgTab').empty();
-					$.each(data.receiveSelect, function(index,obj){
-						
-						if(obj.receiveMsgDel=="F"){
-							console.log("몇개나 가져오니?")
-							console.log(obj.msgNo);
-							table+="<tr>"+
-										"<td>"+obj.msgNo+"</td>"+
-										"<td>"+data.receiveSelInfo[index].userName+"</td>"+
-										"<td class='receiveMsgModal' data-toggle='modal' data-target='#myModal'>"+obj.msgContent+"</td>"+
-										"<td>"+data.receiveSelReg[index]+"</td>"+
-										"<td>";
-											if(obj.msgState=="F"){
-												table+="안읽음</td>";
-											}else{
-												table+="읽음</td>";
-											}
-											table+="<td><i class='material-icons receiveMsgDel' style='cursor: pointer;''>clear</i></td>"
-									+"</tr>";
-						}
-					});
-					table+="</tbody>"; */
-				}
-			})
+		
+		//메시지 보내기
+		$(document).on('click', '.messageSend', function(){
+			console.log("메시지 보내기 되는거야?")
+			
 			
 		})
 		
@@ -82,25 +65,6 @@
 				}
 			})
 			
-			/* tr로 묶었을때... */
-			/* var msgNo=$(this)[0].children[0].innerText;
-			var msgState=$(this)[0].children[4].innerText;
-			var msgChange=$(this)[0].children[4];
-			
-			$('.modal-body').empty();
-			$('.modal-body').append("<h5>메시지 내용</h5>"+$(this)[0].children[2].innerText);
-			
-			$.ajax({
-				url:"/picsion/message/stateup.ps",
-				data:{	msgNo:msgNo,
-						msgState:msgState
-					 },
-				success : function(data){
-					  if(data.result==1){
-						  msgChange.innerText='읽음';
-					  }
-				}
-			}); */
 		})
 		
 		//받은 메시지함에서 삭제 버튼 눌렀을때  메시지 삭제
@@ -263,7 +227,58 @@
 		})
 		
 	})
-
+	
+function abb(userNo,myNo,msgUser) {
+	$.ajax({
+		url:"/picsion/message/msglist.ps",
+		data:{userNo:userNo},
+		success : function(data){
+			$('#msgContent-show').empty();
+			var msgContent="<div class='modal-dialog modal-login message-header'>"+
+						   "<div class='modal-content'>"+
+						   "<div class='card card-signup card-plain'>"+
+						   "<div class='modal-header'>"+
+						   "<div class='card-header card-header-primary text-center message-header-user'>"+
+						   "<h4 class='card-title'>"+msgUser+"</h4>"+
+						   "</div></div><div class='modal-body form-msg-body'>";
+						   
+			$.each(data.msgList, function(index, obj){
+				
+				if(obj.receiveUserNo==myNo){
+					msgContent+="<div class='popover bs-popover-right bs-popover-right-docs message-receive'>"+
+				    	 	 	"<div class='arrow'></div>"+
+				    	 	 	"<div class='popover-body'>"+
+				      			"<p class='msg-content-p'>"+obj.msgContent+"</p>"+
+				      			"<p class='msg-reg-p' align='right'><small>"+moment(obj.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
+				    			"</div></div>";
+				}else if(obj.sendUserNo==myNo){
+					msgContent+="<div class='popover bs-popover-left bs-popover-left-docs message-send'>"+
+		                        "<div class='arrow'></div>"+
+		                        "<div class='popover-body'>"+
+		                        "<p class='msg-content-p'>"+obj.msgContent+"</p>"+
+		                        "<p class='msg-reg-p' align='right'><small>"+moment(obj.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
+		                        "</div></div>";
+				}
+			})
+			msgContent+="</div>"+
+						"<div class='modal-footer justify-content-center'>"+
+							"<form class='form' action='/picsion/message/msg.ps'>"+
+						"<input type='hidden' name='receiveUserNo' id='receiveUserNo' value='"+userNo+"'>"+
+							"<div class='card-body'>"+
+								"<div class='form-group label-floating bmd-form-group'>"+
+									"<label class='form-control-label bmd-label-floating sendMsgCon' for='message'> Your message</label>"+
+									"<textarea class='form-control form-sendmsg' rows='3' name='msgContent' id='msgContent'></textarea>"+
+								"</div>"+
+							"</div>"+
+							"<button type='submit' class='btn btn-primary btn-link btn-wd btn-lg messageSend'>Send</button>"+
+							"</form>"+
+						"</div></div></div></div>";
+			
+			$('#msgContent-show').append(msgContent);
+			$('#msgContent-show').show();
+		}
+	})
+}
 </script>
 
 <style>
@@ -309,6 +324,35 @@
 }
 
 /* ****** */
+
+/* 메시지창 어떤 유저와 대화하는지 헤더 여백 */
+.message-header-user{
+	margin-top: 0px;
+}
+
+/* 받은 메시지 스타일 */
+.message-receive{
+	position: relative;
+	margin-top: 20px;
+}
+
+/* 메시지 말풍선내 내용 여백 */
+.msg-content-p{
+	margin-bottom: 15px;
+}
+
+/* 메시지 날짜 표시 여백 */
+.msg-reg-p{
+	margin-bottom: 0px;
+}
+
+/* 보낸 메시지 스타일 */
+.message-send{
+	position: relative; 
+	margin-left: 280px; 
+	margin-top: 20px;
+}
+
 
 /* media-body */
 .media-body-custom{
@@ -387,7 +431,7 @@ width: 300px;
   color: #93a2ad;
 }
 </style>
-
+<input type="hidden" value="${sessionScope.Hi}" id="hi">
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
 	<div class="profile-content">
@@ -403,26 +447,6 @@ width: 300px;
 		</ul>
 			<div class="gallery ">
 				<div class="row">
-					<!-- <div class="col-md-12"> -->
-					<!-- <div class="col-md-3" align="left">style="margin-bottom: 15px"
-						<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					    	메시지함 선택
-						</a>
-						<ul class="nav dropdown-menu" role="tablist">
-							<li class="nav-item"><a class="nav-link tag" id="receiveTag" href="#receive" role="tab" data-toggle="tab">받은 메시지</a></li>
-							<li class="nav-item"><a class="nav-link" id="sendTag" href="#send" role="tab" data-toggle="tab">보낸 메시지</a></li>
-						</ul>
-					</div>
-					<div class="col-md-6">
-					</div>
-					<div class="col-md-3" align="right">
-                        <form class="form-inline">
-			                 <div class="form-group has-default bmd-form-group" style="padding-top:0; margin-top: 10px">
-	                            <input type="text" class="form-control selectMsg" placeholder="userName 검색">
-			                 </div>
-			                 <i class="material-icons" style="cursor: pointer; margin-top: 10px" id="searchBtn">search</i>
-			           </form>
-					</div> -->
 					
 					<div class="col-md-5">
 						<div class="card card-collapse">
@@ -442,9 +466,7 @@ width: 300px;
 												</div>
 											</a>
 											<div class="media-body media-body-custom">
-												<%-- <input type="hidden" value="${recentMsg2.user[0].userNo}" class="hiddenNo"> --%>
-												<%-- <input type="hidden" value="${recentMsg2.sendUserNo}" class="hiddenSe"> --%>
-												<h4 class="media-heading">
+												<h4 class="media-heading msgUserName">
 													${recentMsg2.user[0].userName} <small>· <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${recentMsg2.msgReg}" /></small>
 												</h4>
 												<p class="msgList" style="cursor: pointer;" data-no="${recentMsg2.user[0].userNo}">${recentMsg2.msgContent}</p>
@@ -474,173 +496,80 @@ width: 300px;
 			                 </div>
 			                 <i class="material-icons" style="cursor: pointer; margin-top: 10px;" id="searchBtn">search</i>
 			           </form>
-			           
-					<div class="tab-content tab-space">
-						<!-- ******* 받은 메시지 테이블 ******* -->
-						<div class="tab-pane active" id="receive">
-							<table class="table">
-							    <thead>
-							        <tr>
-							            <th style="width: 5%">번호</th>
-										<th style="width: 10%">보낸이</th>
-										<th style="width: 60%">내용</th>
-										<th style="width: 10%">받은 날짜</th>
-										<th style="width: 10%">상태</th>
-										<th style="width: 5%">삭제</th>
-							        </tr>
-							    </thead>
-							    <tbody>
-							    	<c:forEach items="${receiveList}" var="receiveMessage" varStatus="status">
-							    			<!-- 받은사람의 Del가 False인 경우만 메시지 리스트 가져오기 -->
-											<c:if test="${receiveMessage.receiveMsgDel eq 'F'}">
-												<tr>
-													<td>${receiveMessage.msgNo}</td>
-													<td>${receiveInfo[status.index].userName}</td>
-													<!-- 상세 메시지를 Modal에 보여주는 내용 -->
-													<td class="receiveMsgModal" data-toggle="modal" data-target="#myModal">${receiveMessage.msgContent}</td>
-													<td>${receiveMsgReg[status.index]}</td>
-													<td>
-														<c:choose>
-															<c:when test="${receiveMessage.msgState eq 'F'}">
-																안읽음
-															</c:when>
-															<c:otherwise>
-																읽음
-															</c:otherwise>
-														</c:choose>
-													</td>
-													<td><i class="material-icons receiveMsgDel" style="cursor: pointer;">clear</i></td>
-												</tr>
-											</c:if>
-									</c:forEach>
-							    </tbody>
-							</table>
-						</div>
-						
-						<!-- ******* 보낸 메시지 테이블 ******* -->
-						<div class="tab-pane" id="send">
-							<table class="table">
-							    <thead>
-							        <tr>
-							            <th style="width: 5%">번호</th>
-										<th style="width: 10%">받은이</th>
-										<th style="width: 60%">내용</th>
-										<th style="width: 10%">보낸 날짜</th>
-										<th style="width: 10%">상태</th>
-										<th style="width: 5%">삭제</th>
-							        </tr>
-							    </thead>
-							    <tbody>
-							    	<c:forEach items="${sendList}" var="sendMessage" varStatus="status">
-							    			<!-- 받은사람의 Del가 False인 경우만 메시지 리스트 가져오기 -->
-											<c:if test="${sendMessage.sendMsgDel eq 'F'}">
-												<tr>
-													<td>${sendMessage.msgNo}</td>
-													<td>${sendInfo[status.index].userName}</td>
-													<!-- 상세 메시지를 Modal에 보여주는 내용 -->
-													<td class="sendMsgModal" data-toggle="modal" data-target="#myModal">${sendMessage.msgContent}</td>
-													<td>${sendMsgReg[status.index]}</td>
-													<td>
-														<c:choose>
-															<c:when test="${sendMessage.msgState eq 'F'}">
-																안읽음
-															</c:when>
-															<c:otherwise>
-																읽음
-															</c:otherwise>
-														</c:choose>
-													</td>
-													<td><i class="material-icons sendMsgDel" style="cursor: pointer;">clear</i></td>
-												</tr>
-											</c:if>
-									</c:forEach>
-							    </tbody>
-							</table>
-						</div>
-						
-						<!-- 검색한 메시지 정보들 가져오기 -->
-						<div id="selectInfoMsg">
-							<table class="table" id="selectMsgTab">
-								
-							</table>
-						</div>
-						
-					</div>
-					
 					</div>
 
-					<div class="col-md-7">
-							<div class="modal-dialog modal-login message-header" role="document">
+					<div class="col-md-7" id="msgContent-show">
+							<!-- <div class="modal-dialog modal-login message-header">
 								<div class="modal-content">
 									<div class="card card-signup card-plain">
 										<div class="modal-header">
-										
-										<!-- ㄴ어라ㅣ너ㅣㅏㄹ어ㅣ나ㅓㅇ리ㅏ너ㅣㅇ러ㅏㅣㄴ -->
-											<div class="card-header card-header-primary text-center" style="margin-top: 0px;">
+											<div class="card-header card-header-primary text-center message-header-user">
 												<h4 class="card-title">Message</h4>
 											</div>
 										</div>
 										
 										<div class="modal-body form-msg-body">
 											
-											<div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+											<div class="popover bs-popover-right bs-popover-right-docs message-receive">
+												    <div class="arrow"></div>
+												    <div class="popover-body">
+												      <p class="msg-content-p">Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+												      <p class="msg-reg-p" align="right"><small>06-23, 15:42</small></p>
+												    </div>
+										    </div>
+										    
+											<div class="popover bs-popover-left bs-popover-left-docs message-send">
+						                        <div class="arrow"></div>
+						                        <div class="popover-body">
+						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+						                            <p align="right"><small>06-23, 15:42</small></p>
+						                        </div>
+						                    </div>
+						                    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
 												    <div class="arrow"></div>
 												    <div class="popover-body">
 												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
 												    </div>
 										    </div>
 										    
-											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
+											<div class="popover bs-popover-left bs-popover-left-docs message-send">
 						                        <div class="arrow"></div>
 						                        <div class="popover-body">
 						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
 						                        </div>
 						                    </div>
-						                    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+						                    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
 												    <div class="arrow"></div>
 												    <div class="popover-body">
 												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
 												    </div>
 										    </div>
 										    
-											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
+											<div class="popover bs-popover-left bs-popover-left-docs message-send">
 						                        <div class="arrow"></div>
 						                        <div class="popover-body">
 						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
 						                        </div>
 						                    </div>
-						                    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+						                    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
 												    <div class="arrow"></div>
 												    <div class="popover-body">
 												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
 												    </div>
 										    </div>
-										    
-											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
-						                        <div class="arrow"></div>
-						                        <div class="popover-body">
-						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-						                        </div>
-						                    </div>
-						                    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+										    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
 												    <div class="arrow"></div>
 												    <div class="popover-body">
 												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
 												    </div>
 										    </div>
-										    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
+										    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
 												    <div class="arrow"></div>
 												    <div class="popover-body">
 												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
 												    </div>
 										    </div>
-										    <div class="popover bs-popover-right bs-popover-right-docs" style="position: relative; margin-top: 20px;">
-												    <div class="arrow"></div>
-												    <div class="popover-body">
-												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-												    </div>
-										    </div>
-											<div class="popover bs-popover-left bs-popover-left-docs" style="position: relative; margin-left: 280px; margin-top: 20px;">
+											<div class="popover bs-popover-left bs-popover-left-docs message-send">
 						                        <div class="arrow"></div>
 						                        <div class="popover-body">
 						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
@@ -665,7 +594,7 @@ width: 300px;
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 					</div>
 					
 				</div>

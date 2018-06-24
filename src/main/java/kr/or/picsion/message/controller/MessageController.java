@@ -36,6 +36,94 @@ public class MessageController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	//
+	@RequestMapping("msg.ps")
+	public String messageConfirm(Message message, HttpSession session, Model model) {
+		
+		System.out.println("메시지컨펌 컨트롤러~~~~~~~~~"+message);
+		session.setAttribute("Hi", message.getReceiveUserNo());
+		User user = (User)session.getAttribute("user");
+		
+		List<Message> messageAll = messageService.messageAll(user.getUserNo());
+		System.out.println("리시브 메시지 와라~~~~~99-----------------------------------");
+		
+		
+		/////////////////////////////////////////////////////
+		Map<Integer, Message> map = new HashMap<>();
+		
+		//메시지 검색해서 가져온거 id 중복제거를 하고 가장 최신 메시지만 담음
+		for (Message m : messageAll) {
+			map.put(m.getReceiveUserNo(), m);
+			map.put(m.getSendUserNo(), m);
+		}
+		
+		System.out.println(map.keySet());
+		map.remove(user.getUserNo());
+		System.out.println(map.keySet());
+		
+		List<Message> recentMsg = new ArrayList<>();
+		
+		Set<Map.Entry<Integer, Message>> ent = map.entrySet();
+		Iterator<Map.Entry<Integer, Message>> i = ent.iterator();
+		while(i.hasNext()) {
+			Map.Entry<Integer, Message> ma = i.next();
+			recentMsg.add(ma.getValue());
+		}
+		
+		Collections.sort(recentMsg, new Comparator<Message>() {
+			@Override
+			public int compare(Message o1, Message o2) {
+				if (o1.getMsgNo() < o2.getMsgNo()) {
+					return 1;
+				} else if (o1.getMsgNo() > o2.getMsgNo()) {
+					return -1;
+				}else {
+					return 0;
+				}
+			}
+		});
+		
+		model.addAttribute("recentMsg", recentMsg);
+		
+		
+		for (Message m : recentMsg) {
+			System.out.println(m);
+		}
+		//////////////////////////////////////////////////////////
+		
+		/*
+		//받은 메시지에 대한 정보
+		List<Message> receiveList = messageService.receiveMessageList(user.getUserNo());
+		List<User> receiveInfo = messageService.receiveMessageInfo(user.getUserNo());
+		List<String> receiveMsgReg = new ArrayList<>();
+		
+		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
+		for(Message m : receiveList) {
+			receiveMsgReg.add(reg.format(m.getMsgReg()));
+		}
+		
+		//보낸 메시지에 대한 정보
+		List<Message> sendList = messageService.sendMessageList(user.getUserNo());
+		List<User> sendInfo = messageService.sendMessageInfo(user.getUserNo());
+		List<String> sendMsgReg = new ArrayList<>();
+		
+		for(Message m : sendList) {
+			sendMsgReg.add(reg.format(m.getMsgReg()));
+		}
+		
+		model.addAttribute("receiveList", receiveList);
+		model.addAttribute("receiveInfo", receiveInfo);
+		model.addAttribute("receiveMsgReg", receiveMsgReg);
+		
+		model.addAttribute("sendList", sendList);
+		model.addAttribute("sendInfo", sendInfo);
+		model.addAttribute("sendMsgReg", sendMsgReg);*/
+		/*model.addAttribute("receiveMap", receiveMap);*/
+		
+		System.out.println("박주검나시러~~");
+		return "mypage.message";
+	}
+	
 	//메시지 보내기
 	@RequestMapping("send.ps")
 	public View messageSend(Message message) {
