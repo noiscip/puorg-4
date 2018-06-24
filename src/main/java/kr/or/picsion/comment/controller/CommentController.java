@@ -88,15 +88,15 @@ public class CommentController {
 		int receiveUser = pictureService.picInfo(comment.getPicNo()).getUserNo();
 		HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 		
-		noticeMap.put("no", comment.getBrdNo());
+		noticeMap.put("no", comment.getPicNo());
 		noticeMap.put("addNo", comment.getCmtNo());
 		noticeMap.put("sendUserNo", comment.getUserNo());
 		noticeMap.put("receiveUserNo", receiveUser);
-		noticeMap.put("table", "brdNo, cmtNo");
+		noticeMap.put("table", "picNo, cmtNo");
 		noticeMap.put("tableNo", 4);
 		
 		noticeService.insertNotice(noticeMap);
-		
+		System.out.println("ㅇㅇㅇ");
 		model.addAttribute("newcommentUserList",newcommentUserList);
 		model.addAttribute("newcommentlist",newcommentlist);
 		return jsonview;
