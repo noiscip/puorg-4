@@ -38,6 +38,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where p.picNo = t.picNo;
 	</select>
 	
+	<!-- 사진 태그 검색 페이지 주인 리스트 -->
+	<select id="searchTagUserList" parameterType="String" resultType="kr.or.picsion.user.dto.User">
+	select u.userNo as userNo, u.userName as userName, t.tagContent as tagContent from PICTURE p
+	left join USERS u on p.userNo=u.userNo
+	left join (select * from TAG where tagContent like '${value}%') t on p.picNo=t.picNo
+	where p.picNo = t.picNo;
+	</select>
+	
 	
 	<!-- 사진 정보 -->
 	<select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">

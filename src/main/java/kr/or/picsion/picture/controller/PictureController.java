@@ -61,7 +61,14 @@ public class PictureController {
 	//사진 상세 페이지
 	@RequestMapping("picinfo.ps")
 	public String picInfo(HttpSession session, Model model, int picNo){
-		User user = (User) session.getAttribute("user");					  //로그인 사용자
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
+		
 		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인	
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
@@ -104,12 +111,14 @@ public class PictureController {
 		return jsonview;
 	}
 	
-	//태그 or 검색 관련 사진 리스트
+	//태그 검색 페이지 사진, 유저 리스트
 	@RequestMapping("tagpicList.ps")
 	public String searchTagPicList(Model model, String tag) {
 		System.out.println("이건?"+tag);
 		List<Picture> tagpicList = pictureService.searchTagPicList(tag);
+		List<User> tagUserList = pictureService.searchTagUserList(tag);
 		model.addAttribute("tagpicList",tagpicList);
+		model.addAttribute("tagUserList",tagUserList);
 		model.addAttribute("tag",tag);
 		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
 		return "popular.tagpicturepage";
@@ -118,8 +127,13 @@ public class PictureController {
 	//Studio 페이지 이동(userNo 값 받아서)  회원 팔로잉,팔로워,업로드한 사진,팔로잉한 회원인지 확인 결과 불러오기 
 	@RequestMapping("mystudio.ps")
 	public String myStudio(HttpSession session, Model model, int userNo){
-		
-		User user = (User) session.getAttribute("user"); //로그인 사용자
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
 		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), userNo); //스튜디오 사진리스트
 		List<User> ownerList = pictureService.studioOwnerList(userNo);
