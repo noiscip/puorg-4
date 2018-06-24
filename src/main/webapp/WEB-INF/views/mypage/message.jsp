@@ -8,18 +8,6 @@
 	$(function(){
 		var myNo = $('#loginUserNo').val();
 		
-		if($('#hi').val()!=null){
-			console.log($('#hi').val())
-			var userNo = $('#hi').val();
-			var msgUser = '777';
-			
-			console.log("오호~~ ~ " + userNo)
-			console.log(myNo);
-			console.log(msgUser)
-			
-			abb(userNo,myNo,msgUser)
-		}
-		
 		//해당 유저와 대화 메시지 리스트 가져오기
 		$('.msgList').click(function(){
 			var userNo = $(this).data("no");
@@ -262,16 +250,15 @@ function abb(userNo,myNo,msgUser) {
 			})
 			msgContent+="</div>"+
 						"<div class='modal-footer justify-content-center'>"+
-							"<form class='form' action='/picsion/message/msg.ps'>"+
-						"<input type='hidden' name='receiveUserNo' id='receiveUserNo' value='"+userNo+"'>"+
+							"<form class='form'>"+
 							"<div class='card-body'>"+
 								"<div class='form-group label-floating bmd-form-group'>"+
 									"<label class='form-control-label bmd-label-floating sendMsgCon' for='message'> Your message</label>"+
 									"<textarea class='form-control form-sendmsg' rows='3' name='msgContent' id='msgContent'></textarea>"+
 								"</div>"+
 							"</div>"+
-							"<button type='submit' class='btn btn-primary btn-link btn-wd btn-lg messageSend'>Send</button>"+
 							"</form>"+
+							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend'>Send</button>"+
 						"</div></div></div></div>";
 			
 			$('#msgContent-show').append(msgContent);
@@ -431,7 +418,6 @@ width: 300px;
   color: #93a2ad;
 }
 </style>
-<input type="hidden" value="${sessionScope.Hi}" id="hi">
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
 	<div class="profile-content">
