@@ -51,6 +51,7 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 		int receiveUserNo = Integer.valueOf(info[1]);
 		
 		if(users.get(receiveUserNo) != null) {
+			System.out.println(receiveUserNo + "번한테 보냈어?");
 			users.get(receiveUserNo).sendMessage(message);   
 		}
 	}

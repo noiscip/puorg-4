@@ -93,11 +93,35 @@
 		  		if(evt.data.split(':')[3] != null){
                     $.ajax({
                     	url:"/picsion/message/readmsg.ps",
-                    	data: {	userNo: evt.data.split(':')[1],
+                    	data: {	sendUserNo: evt.data.split(':')[0],
                     			msgNo: evt.data.split(':')[3]
                     	},
-                        success: function (data) {
-                            
+                        success: function(data) {
+                        	console.log(data)
+                        	var msg = "<div class='popover bs-popover-right bs-popover-right-docs message-receive'>"+
+					                      "<div class='arrow'></div>"+
+					                      "<div class='popover-body'>"+
+						                      "<p class='msg-content-p'>"+data.msgInfo.msgContent+"</p>"+
+						                      "<p class='msg-reg-p' align='right'><small>"+moment(data.msgInfo.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
+					                      "</div></div>";
+							$('#msg-body').append(msg);
+							$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+							
+							<%-- 
+							userListDiv.remove();
+							var userList = "<div class='media'>"+
+										   "<a class='float-left'>"+
+										   		"<div class='avatar'>"+
+										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'></a>"+
+										   		"</div></a>"+
+										   	"<div class='media-body media-body-custom'>"+
+										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
+										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
+										   		"<a class='btn btn-rose btn-link float-right message-margin-del'><i class='material-icons receiveMsgDel'>clear</i>삭제</a>"+
+										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
+										   	"</div></div>";
+										   	
+							$('#commentstart').prepend(userList); --%>
                         }
                     })
                 } else{

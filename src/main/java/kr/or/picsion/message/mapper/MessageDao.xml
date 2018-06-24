@@ -165,4 +165,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER by msgReg
 	</select>
 	
+	<!-- 메시지 번호로 메시지 정보 -->
+	<select id="selectMessage" resultType="kr.or.picsion.message.dto.Message">
+		select * from MESSAGES where msgNo=#{msgNo}
+	</select>
 </mapper>

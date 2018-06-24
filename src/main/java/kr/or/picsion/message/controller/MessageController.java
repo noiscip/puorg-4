@@ -72,10 +72,12 @@ public class MessageController {
 	
 	//메시지 읽어오기 (socket)
 	@RequestMapping("readmsg.ps")
-	public View messageRead(Message message, Model model) {
+	public View messageRead(HttpSession session, Message message, Model model) {
+		System.out.println("리드메시지 컨트롤러~");
+		System.out.println(message);
 		User userInfo = userService.userInfo(message.getSendUserNo());
 		Message msgInfo = messageService.messageInfo(message.getMsgNo());
-		
+		System.out.println("********"+msgInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("msgInfo", msgInfo);
 		
