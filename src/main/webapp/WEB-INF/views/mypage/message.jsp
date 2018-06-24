@@ -7,9 +7,11 @@
 
 	$(function(){
 		var myNo = $('#loginUserNo').val();
-		
+		var userListDiv;
 		//해당 유저와 대화 메시지 리스트 가져오기
-		$('.msgList').click(function(){
+		$(document).on('click', '.msgList', function(){
+			console.log($(this).closest('.media'))
+			userListDiv = $(this).closest('.media')
 			var userNo = $(this).data("no");
 			var msgUser = ($(this).parent()[0].children[0].innerText).split(" ")[0];
 			
@@ -20,13 +22,71 @@
 			abb(userNo,myNo,msgUser)
 		})
 		
+		/* $('.msgList').click(function(){
+			console.log($(this).closest('.media'))
+			userListDiv = $(this).closest('.media')
+			var userNo = $(this).data("no");
+			var msgUser = ($(this).parent()[0].children[0].innerText).split(" ")[0];
+			
+			console.log("오호 ~ " + userNo)
+			console.log(myNo);
+			console.log(msgUser)
+			
+			abb(userNo,myNo,msgUser)
+		}) */
 		
-		//메시지 보내기
+		
+		//메시지 보내고, 메시지 대화창에 보낸 메시지 append, 회원 대화 목록 div에서 해당 div remove후 다시 append
 		$(document).on('click', '.messageSend', function(){
 			console.log("메시지 보내기 되는거야?")
+			var msgContent = $('#msgContent').val();
+			var receiveUserNo = $(this).data("no");
 			
+			console.log(msgContent)
+			console.log(receiveUserNo)
 			
+			$.ajax({
+				url:"/picsion/message/send.ps",
+				data:{	msgContent:msgContent,
+						sendUserNo:myNo,
+						receiveUserNo:receiveUserNo
+				},
+				success: function(data){
+					var msg = "<div class='popover bs-popover-left bs-popover-left-docs message-send'>"+
+		                      "<div class='arrow'></div>"+
+		                      "<div class='popover-body'>"+
+			                      "<p class='msg-content-p'>"+data.message.msgContent+"</p>"+
+			                      "<p class='msg-reg-p' align='right'><small>"+moment(data.message.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
+		                      "</div></div>";
+					$('#msg-body').append(msg);
+					$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+					/* $('#msgContent').text().empty(); */
+					
+					userListDiv.remove();
+					var userList = "<div class='media'>"+
+								   "<a class='float-left'>"+
+								   		"<div class='avatar'>"+
+								   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'></a>"+
+								   		"</div></a>"+
+								   	"<div class='media-body media-body-custom'>"+
+								   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
+								   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
+								   		"<a class='btn btn-rose btn-link float-right message-margin-del'><i class='material-icons receiveMsgDel'>clear</i>삭제</a>"+
+								   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
+								   	"</div></div>";
+								   	
+					$('#commentstart').prepend(userList);
+					
+					var tableNo=5+":"+data.message.msgNo;
+					send(myNo,tableNo);
+				},
+				error: function(){
+				   	alert("메시지 보내는 도중 오류가 발생했습니다.");
+				}
+			})
 		})
+		
+		
 		
 		
 		
@@ -228,7 +288,7 @@ function abb(userNo,myNo,msgUser) {
 						   "<div class='modal-header'>"+
 						   "<div class='card-header card-header-primary text-center message-header-user'>"+
 						   "<h4 class='card-title'>"+msgUser+"</h4>"+
-						   "</div></div><div class='modal-body form-msg-body'>";
+						   "</div></div><div class='modal-body form-msg-body' id='msg-body'>";
 						   
 			$.each(data.msgList, function(index, obj){
 				
@@ -258,10 +318,11 @@ function abb(userNo,myNo,msgUser) {
 								"</div>"+
 							"</div>"+
 							"</form>"+
-							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend'>Send</button>"+
+							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend' data-no='"+userNo+"'>Send</button>"+
 						"</div></div></div></div>";
 			
 			$('#msgContent-show').append(msgContent);
+			$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
 			$('#msgContent-show').show();
 		}
 	})
@@ -446,7 +507,7 @@ width: 300px;
 									<!--  -->
 									<c:forEach items="${recentMsg}" var="recentMsg2">
 										<div class="media"> <!-- style="border: 1px red solid; border-radius:10px;" -->
-											<a class="float-left" href="#pablo">
+											<a class="float-left">
 												<div class="avatar">
 												  <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${recentMsg2.user[0].userNo}"><img class="media-object" src="<%=request.getContextPath()%>${recentMsg2.user[0].prPicture}"></a>
 												</div>

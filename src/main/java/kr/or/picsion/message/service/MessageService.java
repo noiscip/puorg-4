@@ -136,4 +136,12 @@ public class MessageService {
 		
 		return messageList;
 	}
+	
+	//메시지번호로 메시지 검색
+	public Message messageInfo(int msgNo) {
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		Message msginfo= messageDao.selectMessage(msgNo);
+				
+		return msginfo;
+	}
 }

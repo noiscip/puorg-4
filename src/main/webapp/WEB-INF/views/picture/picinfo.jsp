@@ -15,7 +15,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	var loginuser = ${sessionScope.user.userNo};
+	var loginUserNo = $('#loginUserNo').val();
 	var userInfoNo = ${userInfo.userNo};
 	var picNo = ${picture.picNo}
 	//댓글창 스크롤 가장 하단으로 내리기
@@ -42,7 +42,7 @@ $(document).ready(function() {
 		}else{
 		var tableNo = 4;
 		var data= {msgContent:$("#msgContent").val(), 
-					sendUserNo:loginuser, 
+					sendUserNo:loginUserNo, 
 					receiveUserNo:userInfoNo
 				   };
 		
@@ -66,7 +66,7 @@ $(document).ready(function() {
 	
 	//팔로우 하기, 취소
 	$(document).on('click','#follow',function(){
-			var data = {userNo : loginuser, 
+			var data = {userNo : loginUserNo, 
 						followingUserNo : userInfoNo};			
 			$.ajax({
 				  url : "/picsion/user/following.ps",
@@ -85,44 +85,50 @@ $(document).ready(function() {
 	
 	//사진 좋아요
 	$(document).on('click','#like',function(){
-		var data = {userNo : loginuse,
-			    picNo : $(this).attr("value")};
-		var respect =  $(this);
-		var rpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(respect)[0].innerHTML = 'favorite_border';
-					  $(rpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(respect)[0].innerHTML = 'favorite';
-					  $(rpa)[0].childNodes[1].nodeValue++;
-				  }
-			}
-		 }) 
+		if(loginUserNo == 0){
+		}else{
+			var data = {userNo : loginUserNo,
+				    picNo : $(this).attr("value")};
+			var respect =  $(this);
+			var rpa = $(this).parent();
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
+				data : data,
+				success : function(data){
+					if(data.result==1){
+						  $(respect)[0].innerHTML = 'favorite_border';
+						  $(rpa)[0].childNodes[1].nodeValue--;
+					  }else{
+						  $(respect)[0].innerHTML = 'favorite';
+						  $(rpa)[0].childNodes[1].nodeValue++;
+					  }
+				}
+			 }) 
+		}
 	})
 	
 	//사진 북마크
 	$(document).on('click','#down',function(){
-		var data = {userNo : loginuser,
-			    picNo : $(this).attr("value")};
-		var bookmark = $(this);
-		var bpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(bookmark)[0].innerHTML = 'bookmark_border';
-					  $(bpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(bookmark)[0].innerHTML = 'bookmark';
-					  $(bpa)[0].childNodes[1].nodeValue++;
-				  }
-			}
-		 }) 
+		if(loginUserNo == 0){
+		}else{
+			var data = {userNo : loginUserNo,
+				    picNo : $(this).attr("value")};
+			var bookmark = $(this);
+			var bpa = $(this).parent();
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
+				data : data,
+				success : function(data){
+					if(data.result==1){
+						  $(bookmark)[0].innerHTML = 'bookmark_border';
+						  $(bpa)[0].childNodes[1].nodeValue--;
+					  }else{
+						  $(bookmark)[0].innerHTML = 'bookmark';
+						  $(bpa)[0].childNodes[1].nodeValue++;
+					  }
+				}
+			 }) 
+		}
 	})
 	
 	//댓글 쓰기
@@ -134,7 +140,7 @@ $(document).ready(function() {
 		$('#scrolldown').children()[0].innerHTML++;
 		var tableNo = 2; 
 		var data= {cmtContent:$("#newComment").val(), 
-					userNo:loginuser, 
+					userNo:loginUserNo, 
 					picNo:picNo,
 					tableNo : tableNo
 				   };
@@ -199,11 +205,11 @@ $(document).ready(function() {
 			data:{cmtNo:cmtNo},
 			success:function(data){
 				if(data.result==1){
-				$(commbody).remove()
-				$('#scrolldown').children()[0].innerHTML--
-				alert("댓글 삭제 완료")
+				$(commbody).remove();
+				$('#scrolldown').children()[0].innerHTML--;
+				alert("댓글 삭제 완료");
 				}else{
-					alert("댓글 삭제 실패")
+					alert("댓글 삭제 실패");
 				}
 			}
 

@@ -4,46 +4,54 @@
 
 
 <script type="text/javascript">
-	
-	
+	var loginUserNo = $('#loginUserNo').val();
+
 	$(document).on('click','#like',function(){
-		var data = {userNo : ${sessionScope.user.userNo},
-			    picNo : $(this).attr("value")};
-		var respect =  $(this);
-		var rpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(respect)[0].innerHTML = 'favorite_border';
-					  $(rpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(respect)[0].innerHTML = 'favorite';
-					  $(rpa)[0].childNodes[1].nodeValue++;
-				  }
-			}
-		 }) 
+		if(loginUserNo == 0){
+		}else{
+			var data = {userNo : loginUserNo,
+				    picNo : $(this).attr("value")};
+			var respect =  $(this);
+			var rpa = $(this).parent();
+			console.log($('#loginUserNo').val());
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
+				data : data,
+				success : function(data){
+					if(data.result==1){
+						  $(respect)[0].innerHTML = 'favorite_border';
+						  $(rpa)[0].childNodes[1].nodeValue--;
+					  }else{
+						  $(respect)[0].innerHTML = 'favorite';
+						  $(rpa)[0].childNodes[1].nodeValue++;
+					  }
+				}
+			 }) 
+		}
 	})
 	
 	$(document).on('click','#down',function(){
-		var data = {userNo : ${sessionScope.user.userNo},
-			    picNo : $(this).attr("value")};
-		var bookmark = $(this);
-		var bpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(bookmark)[0].innerHTML = 'bookmark_border';
-					  $(bpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(bookmark)[0].innerHTML = 'bookmark';
-					  $(bpa)[0].childNodes[1].nodeValue++;
-				  }
-			}
-		 }) 
+		if(loginUserNo == 0){
+			
+		}else{
+			var data = {userNo : loginUserNo,
+				    picNo : $(this).attr("value")};
+			var bookmark = $(this);
+			var bpa = $(this).parent();
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
+				data : data,
+				success : function(data){
+					if(data.result==1){
+						  $(bookmark)[0].innerHTML = 'bookmark_border';
+						  $(bpa)[0].childNodes[1].nodeValue--;
+					  }else{
+						  $(bookmark)[0].innerHTML = 'bookmark';
+						  $(bpa)[0].childNodes[1].nodeValue++;
+					  }
+				}
+			 }) 
+		}
 	}) 
 </script>
 
@@ -99,7 +107,7 @@
 									</c:otherwise>
 								</c:choose>
 			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=1"></a>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${tagUserList[status.index].userNo}">${tagUserList[status.index].userName}</a>
                				</div>
 						</div>
 					</c:forEach>

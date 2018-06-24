@@ -34,11 +34,19 @@ public class PictureService {
 		return list;
 	}
 	
+	//태그 검색된 사진 리스트
 	public List<Picture> searchTagPicList(String tag){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
 		List<Picture> list = picDao.searchTagPicList(tag);
 		return list;
 	}
+	
+	//태그 검색된 사진 주인 리스트
+	public List<User> searchTagUserList(String tag){
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		List<User> list = picDao.searchTagUserList(tag);
+		return list;
+	} 
 	
 	//스튜디오 사진 불러오기
 	public List<Picture> studioPicList(int userNo, int myuserNo){

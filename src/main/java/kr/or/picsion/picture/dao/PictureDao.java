@@ -32,5 +32,6 @@ public interface PictureDao {
 	public List<Picture> photograherRespectPicList(int userNo); //작가의 인기순 사진리스트
 	public List<Tag> searchTag(String value);	        //검색 태그 리스트
 	public List<Picture> searchTagPicList(String value);//태그 사진 리스트
+	public List<User> searchTagUserList(String value); //태그 사진 주인 리스트
 }
 
