@@ -6,14 +6,13 @@
 <script type="text/javascript">
 	
 	$(function() {
-		var sendUserNo = ${user.userNo};
 		var receiveUserNo = ${userinfo.userNo};
-		var loginUserNo = ${sessionScope.user.userNo};
+		var loginUserNo = $('#loginUserNo').val();
 		/* 메시지 보내기 비동기 처리 */
 		$('#messageSend').click(function(){
 			var tableNo = 4;
 			var data= {msgContent:$("#msgContent").val(), 
-						sendUserNo:sendUserNo, 
+						sendUserNo:loginUserNo, 
 						receiveUserNo:receiveUserNo
 					   };
 			
@@ -33,7 +32,7 @@
 		
 		/* 팔로우가 되있으면 팔로우 취소 처리, 팔로우가 안되있으면 팔로잉 처리 (비동기)*/
 		$('#follow').click(function(){
-			var data = {userNo:sendUserNo, 
+			var data = {userNo:loginUserNo, 
 						followingUserNo:receiveUserNo};			
 			$.ajax({
 				  url : "/picsion/user/following.ps",
@@ -52,43 +51,49 @@
 		}) 
 		
 		$(document).on('click','#like',function(){
-		var data = {userNo : loginUserNo,
-			    picNo : $(this).attr("value")};
-		var respect =  $(this);
-		var rpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(respect)[0].innerHTML = 'favorite_border';
-					  $(rpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(respect)[0].innerHTML = 'favorite';
-					  $(rpa)[0].childNodes[1].nodeValue++;
-				  }
+			if(loginUserNo == 0){
+			}else{
+				var data = {userNo : loginUserNo,
+					    picNo : $(this).attr("value")};
+				var respect =  $(this);
+				var rpa = $(this).parent();
+				 $.ajax({
+					url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
+					data : data,
+					success : function(data){
+						if(data.result==1){
+							  $(respect)[0].innerHTML = 'favorite_border';
+							  $(rpa)[0].childNodes[1].nodeValue--;
+						  }else{
+							  $(respect)[0].innerHTML = 'favorite';
+							  $(rpa)[0].childNodes[1].nodeValue++;
+						  }
+					}
+				 }) 
 			}
-		 }) 
 	})
 	
 	$(document).on('click','#down',function(){
-		var data = {userNo : loginUserNo,
-			    picNo : $(this).attr("value")};
-		var bookmark = $(this);
-		var bpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(bookmark)[0].innerHTML = 'bookmark_border';
-					  $(bpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(bookmark)[0].innerHTML = 'bookmark';
-					  $(bpa)[0].childNodes[1].nodeValue++;
-				  }
-			}
-		 }) 
+		if(loginUserNo == 0){
+		}else{
+			var data = {userNo : loginUserNo,
+				    picNo : $(this).attr("value")};
+			var bookmark = $(this);
+			var bpa = $(this).parent();
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
+				data : data,
+				success : function(data){
+					if(data.result==1){
+						  $(bookmark)[0].innerHTML = 'bookmark_border';
+						  $(bpa)[0].childNodes[1].nodeValue--;
+					  }else{
+						  $(bookmark)[0].innerHTML = 'bookmark';
+						  $(bpa)[0].childNodes[1].nodeValue++;
+					  }
+				}
+			 }) 
+		}
 	})
 		
 		
@@ -108,7 +113,8 @@
 		height:50px;
 	}
 </style>
-<input type="hidden" value="${userinfo.tableNo},userNo,${userinfo.userNo}" id="info">
+
+<input type="hidden" value="${userinfo.tableNo},${userinfo.userNo},0,0" id="info">
 
   <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
   <div class="main main-raised">
@@ -128,6 +134,10 @@
               	</c:choose>
               </div>
               
+              <c:choose>
+              <c:when test="${sessionScope.user eq null}">
+              </c:when>
+              <c:otherwise>
               <c:if test="${sessionScope.user.userNo ne userinfo.userNo}">
 	              <div align="right" style="float: right;">
 	              	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
@@ -144,6 +154,8 @@
 					</button>
 				  </div>
 			  </c:if>
+              </c:otherwise>
+              </c:choose>
 			  
               <div class="name">
                 <h3 class="title">${userinfo.userName}</h3>
@@ -197,7 +209,7 @@
 						<div class="item" data-w="640" data-h="426"
 							style="width: 255px; height: 300px; display: block;">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}"> <img class="rounded img-size"
-								src="<%=request.getContextPath()%>/${studioPic.picPath}"
+								src="<%=request.getContextPath()%>${studioPic.picPath}"
 								alt="">
 							</a>
 							<div>

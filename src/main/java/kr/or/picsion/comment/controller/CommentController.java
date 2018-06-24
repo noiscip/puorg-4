@@ -56,12 +56,7 @@ public class CommentController {
 		
 		if(result==1) {
 			System.out.println("댓글쓰기 성공");
-				int receiveUser = 0;
-			if(comment.getTableNo() == 2) {
-				receiveUser = pictureService.picInfo(comment.getPicNo()).getUserNo();
-			}else if (comment.getTableNo() == 3) {
-				receiveUser = boardService.selectBoard(comment.getBrdNo()).getUserNo();
-			}
+			int receiveUser = boardService.selectBoard(comment.getBrdNo()).getUserNo();
 			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 			
 			noticeMap.put("no", comment.getBrdNo());
@@ -69,7 +64,7 @@ public class CommentController {
 			noticeMap.put("sendUserNo", comment.getUserNo());
 			noticeMap.put("receiveUserNo", receiveUser);
 			noticeMap.put("table", "brdNo, cmtNo");
-			noticeMap.put("tableNo", comment.getTableNo());
+			noticeMap.put("tableNo", 4);
 			
 			noticeService.insertNotice(noticeMap);
 		}
@@ -89,6 +84,19 @@ public class CommentController {
 		commentService.picInsertComment(comment);
 		List<Comment> newcommentlist = commentService.picCommentList(picNo); //댓글 목록
 		List<User> newcommentUserList = commentService.picCommentUserList(picNo); //댓글 유저 목록
+		
+		int receiveUser = pictureService.picInfo(comment.getPicNo()).getUserNo();
+		HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+		
+		noticeMap.put("no", comment.getBrdNo());
+		noticeMap.put("addNo", comment.getCmtNo());
+		noticeMap.put("sendUserNo", comment.getUserNo());
+		noticeMap.put("receiveUserNo", receiveUser);
+		noticeMap.put("table", "brdNo, cmtNo");
+		noticeMap.put("tableNo", 4);
+		
+		noticeService.insertNotice(noticeMap);
+		
 		model.addAttribute("newcommentUserList",newcommentUserList);
 		model.addAttribute("newcommentlist",newcommentlist);
 		return jsonview;

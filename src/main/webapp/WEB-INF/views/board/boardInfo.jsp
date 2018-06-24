@@ -20,7 +20,7 @@
 								cmtContent : $("#reviewcontent").val()
 							},
 							success : function(data) {
-								
+								console.log(data)
 								$("#reviewcontents").empty();
 								  var media="";
 							      $.each(data.commuserlist,function(index,element){
@@ -36,12 +36,12 @@
 											element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 										    "</h4><p>"+data.comment[index].cmtContent+"</p>"+
 										    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
-											"rel='tooltip' title='' data-original-title='보내버리기'> <i "+
+											"rel='tooltip' title='' data-original-title='보내버리기' id='" + data.comment[index].tableNo + ","+element.userNo+","+data.comment[index].brdNo+",0,"+data.comment[index].cmtNo+"' > <i "+
 											"class='material-icons'>reply</i>신고</a></div></div>";
 									})
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
-							      	$("#newComment").val("");
+							      	$("#reviewcontent").val("");
 							     
 							  }, 
 							  error: function(){
@@ -133,7 +133,7 @@
 	});
 </script>
 
-<input type="hidden" value="${boardInfo.tableNo},brdNo,${boardInfo.brdNo}" id="info">
+<input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -229,13 +229,12 @@
 
 																	</h4>
 																	<p>${review1.cmtContent}</p>
-																	<div class="media-footer">
-																		<a href="#pablo"
-																			class="btn btn-primary btn-link float-right"
-																			rel="tooltip" title="" data-original-title="보내버리기">
-																			<i class="material-icons">reply</i> 신고
-																		</a>
-																	</div>
+																	<a href="#pablo"
+																		class="btn btn-primary btn-link float-right"
+																		rel="tooltip" title="" data-original-title="보내버리기"
+																		 id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																		<i class="material-icons">reply</i> 신고
+																	</a>
 																</div>
 															</div>
 

@@ -4,10 +4,8 @@
 
 
 <script type="text/javascript">
-$(function() {
 	var loginUserNo = $('#loginUserNo').val();
 
-	
 	$(document).on('click','#like',function(){
 		if(loginUserNo == 0){
 		}else{
@@ -15,6 +13,7 @@ $(function() {
 				    picNo : $(this).attr("value")};
 			var respect =  $(this);
 			var rpa = $(this).parent();
+			console.log($('#loginUserNo').val());
 			 $.ajax({
 				url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
 				data : data,
@@ -33,6 +32,7 @@ $(function() {
 	
 	$(document).on('click','#down',function(){
 		if(loginUserNo == 0){
+			
 		}else{
 			var data = {userNo : loginUserNo,
 				    picNo : $(this).attr("value")};
@@ -52,9 +52,7 @@ $(function() {
 				}
 			 }) 
 		}
-	})
-	
-})
+	}) 
 </script>
 
 <style type="text/css">
@@ -72,50 +70,44 @@ $(function() {
 		<div class="container">
 		
 			<div class="row">
-				<div class="col-md-6 ml-auto mr-auto">
-					<div class="profile-tabs">
-						<ul class="nav nav-pills nav-pills-icons justify-content-center"
-							role="tablist">
-
-							<li class="nav-item"><a class="nav-link"
-								href="<%=request.getContextPath()%>/home.ps"> <i
-									class="material-icons">keyboard_backspace</i> 돌아가기
-							</a></li>
-
-						</ul>
-					</div>
+				<div class="col-md-12 ml-auto mr-auto">
+					<select class="selectpicker " data-style="select-with-transition" title="#${tag}" data-size="7">
+					    <option value="1">#TEST1</option>
+					    <option value="2">#TEST2</option>
+					    <option value="3">#TEST3</option>
+					</select>
 				</div>
 			</div> 
 			<div id="gallery">
 				<div class="flex_grid credits">
-					<c:forEach items="${imagelistall}" var="followinglistall"
+					<c:forEach items="${tagpicList}" var="tagpic"
 						varStatus="status">
 						<div class="item" data-w="640" data-h="426"
 							style="width: 255px; height: 300px; display: block;">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}"> <img class="rounded img-size"
-								src="<%=request.getContextPath()%>/${followinglistall.picPath}"
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${tagpic.picNo}"> <img class="rounded img-size"
+								src="<%=request.getContextPath()%>/${tagpic.picPath}"
 								alt="">
 							</a>
 							<div>
 			                    <div class="counts hide-xs hide-sm ">
 			                    <c:choose>
-									<c:when test="${followinglistall.respectCheck eq 'T'}">
-										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite</i>${followinglistall.respectCount}</em>
+									<c:when test="${tagpic.respectCheck eq 'T'}">
+										<em><i id="like" value="${tagpic.picNo}" class="material-icons">favorite</i>${tagpic.respectCount}</em>
 									</c:when>
 									<c:otherwise>
-										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite_border</i>${followinglistall.respectCount}</em>
+										<em><i id="like" value="${tagpic.picNo}" class="material-icons">favorite_border</i>${tagpic.respectCount}</em>
 									</c:otherwise>
 								</c:choose>
 								<c:choose>
-									<c:when test="${followinglistall.bookmarkCheck eq 'T'}">
-										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark</i>${followinglistall.bookmarkCount}</em>
+									<c:when test="${tagpic.bookmarkCheck eq 'T'}">
+										<em><i id="down" value="${tagpic.picNo}" class="material-icons">bookmark</i>${tagpic.bookmarkCount}</em>
 									</c:when>
 									<c:otherwise>
-										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark_border</i>${followinglistall.bookmarkCount}</em>
+										<em><i id="down" value="${tagpic.picNo}" class="material-icons">bookmark_border</i>${tagpic.bookmarkCount}</em>
 									</c:otherwise>
 								</c:choose>
 			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${ownlist[status.index].userNo}">${ownlist[status.index].userName}</a>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${tagUserList[status.index].userNo}">${tagUserList[status.index].userName}</a>
                				</div>
 						</div>
 					</c:forEach>

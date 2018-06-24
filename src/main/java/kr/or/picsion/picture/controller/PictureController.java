@@ -1,13 +1,26 @@
 ﻿package kr.or.picsion.picture.controller;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
 
@@ -19,32 +32,22 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.simpleworkflow.flow.worker.SynchronousActivityTaskPoller;
 
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.dto.Tag;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
-
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
- 
-import javax.imageio.ImageIO;
 
 @Controller
 @RequestMapping("/picture/")
 public class PictureController {
 
    	@Autowired
-    	private View jsonview;
+    private View jsonview;
 
   	@Autowired
 	private PictureService pictureService;
@@ -58,7 +61,14 @@ public class PictureController {
 	//사진 상세 페이지
 	@RequestMapping("picinfo.ps")
 	public String picInfo(HttpSession session, Model model, int picNo){
-		User user = (User) session.getAttribute("user");					  //로그인 사용자
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
+		
 		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인	
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
@@ -87,11 +97,43 @@ public class PictureController {
 		return "picture.picinfo";
 	}
 	
+	//헤더 검색창 태그 리스트
+	@RequestMapping(value="searchpicture.ps",method=RequestMethod.POST)
+	public View searchPicList(Model model, HttpServletRequest request) {
+		String tagParam = request.getParameter("tagParam");
+		System.out.println("이게?"+tagParam);
+		List<Tag> searchTagList = pictureService.searchTag(tagParam);
+		List<String> uuu = new ArrayList<String>();
+		for(Tag t : searchTagList) {
+			uuu.add(t.getTagContent());
+		}
+		model.addAttribute("searchTagList", uuu);
+		return jsonview;
+	}
+	
+	//태그 검색 페이지 사진, 유저 리스트
+	@RequestMapping("tagpicList.ps")
+	public String searchTagPicList(Model model, String tag) {
+		System.out.println("이건?"+tag);
+		List<Picture> tagpicList = pictureService.searchTagPicList(tag);
+		List<User> tagUserList = pictureService.searchTagUserList(tag);
+		model.addAttribute("tagpicList",tagpicList);
+		model.addAttribute("tagUserList",tagUserList);
+		model.addAttribute("tag",tag);
+		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
+		return "popular.tagpicturepage";
+	}
+	
 	//Studio 페이지 이동(userNo 값 받아서)  회원 팔로잉,팔로워,업로드한 사진,팔로잉한 회원인지 확인 결과 불러오기 
 	@RequestMapping("mystudio.ps")
 	public String myStudio(HttpSession session, Model model, int userNo){
-		
-		User user = (User) session.getAttribute("user"); //로그인 사용자
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
 		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), userNo); //스튜디오 사진리스트
 		List<User> ownerList = pictureService.studioOwnerList(userNo);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.picsion.picture.dao.PictureDao;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.dto.Tag;
 import kr.or.picsion.user.dto.User;
 
 @Service
@@ -26,6 +27,26 @@ public class PictureService {
 		return picture;
 	}
 	
+	//태그 검색 리스트
+	public List<Tag> searchTag(String tagParam){
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		List<Tag> list = picDao.searchTag(tagParam);
+		return list;
+	}
+	
+	//태그 검색된 사진 리스트
+	public List<Picture> searchTagPicList(String tag){
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		List<Picture> list = picDao.searchTagPicList(tag);
+		return list;
+	}
+	
+	//태그 검색된 사진 주인 리스트
+	public List<User> searchTagUserList(String tag){
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		List<User> list = picDao.searchTagUserList(tag);
+		return list;
+	} 
 	
 	//스튜디오 사진 불러오기
 	public List<Picture> studioPicList(int userNo, int myuserNo){

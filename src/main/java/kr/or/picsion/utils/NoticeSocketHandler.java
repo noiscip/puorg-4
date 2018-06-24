@@ -49,7 +49,7 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 		String[] info = message.getPayload().split(":");
 		
 		int receiveUserNo = Integer.valueOf(info[1]);
-	
+		
 		if(users.get(receiveUserNo) != null) {
 			users.get(receiveUserNo).sendMessage(message);   
 		}

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
@@ -15,9 +15,9 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	var loginuser = ${sessionScope.user.userNo};
+	var loginUserNo = $('#loginUserNo').val();
 	var userInfoNo = ${userInfo.userNo};
-	
+	var picNo = ${picture.picNo}
 	//댓글창 스크롤 가장 하단으로 내리기
 	$(document).on('click','#scrolldown',function(){
 		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
@@ -42,7 +42,7 @@ $(document).ready(function() {
 		}else{
 		var tableNo = 4;
 		var data= {msgContent:$("#msgContent").val(), 
-					sendUserNo:loginuser, 
+					sendUserNo:loginUserNo, 
 					receiveUserNo:userInfoNo
 				   };
 		
@@ -66,7 +66,7 @@ $(document).ready(function() {
 	
 	//팔로우 하기, 취소
 	$(document).on('click','#follow',function(){
-			var data = {userNo : loginuser, 
+			var data = {userNo : loginUserNo, 
 						followingUserNo : userInfoNo};			
 			$.ajax({
 				  url : "/picsion/user/following.ps",
@@ -80,49 +80,55 @@ $(document).ready(function() {
 						  $('#follow')[0].childNodes[2].data = '팔로우 취소'; 
 					  }
 				  }
-			});
+			})
 		}) 
 	
 	//사진 좋아요
 	$(document).on('click','#like',function(){
-		var data = {userNo : loginuse,
-			    picNo : $(this).attr("value")};
-		var respect =  $(this);
-		var rpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(respect)[0].innerHTML = 'favorite_border';
-					  $(rpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(respect)[0].innerHTML = 'favorite';
-					  $(rpa)[0].childNodes[1].nodeValue++;
-				  }
-			}
-		 }) 
+		if(loginUserNo == 0){
+		}else{
+			var data = {userNo : loginUserNo,
+				    picNo : $(this).attr("value")};
+			var respect =  $(this);
+			var rpa = $(this).parent();
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
+				data : data,
+				success : function(data){
+					if(data.result==1){
+						  $(respect)[0].innerHTML = 'favorite_border';
+						  $(rpa)[0].childNodes[1].nodeValue--;
+					  }else{
+						  $(respect)[0].innerHTML = 'favorite';
+						  $(rpa)[0].childNodes[1].nodeValue++;
+					  }
+				}
+			 }) 
+		}
 	})
 	
 	//사진 북마크
 	$(document).on('click','#down',function(){
-		var data = {userNo : loginuser,
-			    picNo : $(this).attr("value")};
-		var bookmark = $(this);
-		var bpa = $(this).parent();
-		 $.ajax({
-			url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
-			data : data,
-			success : function(data){
-				if(data.result==1){
-					  $(bookmark)[0].innerHTML = 'bookmark_border';
-					  $(bpa)[0].childNodes[1].nodeValue--;
-				  }else{
-					  $(bookmark)[0].innerHTML = 'bookmark';
-					  $(bpa)[0].childNodes[1].nodeValue++;
-				  }
-			}
-		 }) 
+		if(loginUserNo == 0){
+		}else{
+			var data = {userNo : loginUserNo,
+				    picNo : $(this).attr("value")};
+			var bookmark = $(this);
+			var bpa = $(this).parent();
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
+				data : data,
+				success : function(data){
+					if(data.result==1){
+						  $(bookmark)[0].innerHTML = 'bookmark_border';
+						  $(bpa)[0].childNodes[1].nodeValue--;
+					  }else{
+						  $(bookmark)[0].innerHTML = 'bookmark';
+						  $(bpa)[0].childNodes[1].nodeValue++;
+					  }
+				}
+			 }) 
+		}
 	})
 	
 	//댓글 쓰기
@@ -134,8 +140,8 @@ $(document).ready(function() {
 		$('#scrolldown').children()[0].innerHTML++;
 		var tableNo = 2; 
 		var data= {cmtContent:$("#newComment").val(), 
-					userNo:loginuser, 
-					picNo:${picture.picNo},
+					userNo:loginUserNo, 
+					picNo:picNo,
 					tableNo : tableNo
 				   };
 		
@@ -145,7 +151,9 @@ $(document).ready(function() {
 			  success : function(data){
 				  var media="";
 			      $('#commentstart').empty();
+			      console.log(data)
 			      $.each(data.newcommentUserList,function(index,element){
+			    	  console.log(element)
 						media += "<div class='media'>"+
 					    "<a class='float-left' href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+element.userNo+"'>"+
 						"<div class='avatar'>";
@@ -158,8 +166,8 @@ $(document).ready(function() {
 							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
 						    "<i class='material-icons'>clear</i>삭제</a>"+
-							"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i>신고</a></div></div>";
-					})
+							"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기' id='" + data.newcommentlist[index].tableNo + ","+element.userNo+",0,"+picNo+","+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>reply</i>신고</a></div></div>";
+					}) 
 					$('#commentstart').append(media);
 			       	$('a[rel=tooltip]').tooltip();
 			        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
@@ -169,14 +177,29 @@ $(document).ready(function() {
 			  error: function(){
 			   	  alert("댓글 보내는 도중 오류가 발생했습니다.");
 			  }
-		});
+		})
 		}
 	})
 	
+	/* $(document).on('click','a[data-original-title=보내버리기]',function(){
+		var info = (this.id).split(',')
+		console.log(info)
+		console.log(this.parentNode.children[1].innerHTML)
+		var content = this.parentNode.children[1].innerHTML
+		var data = {
+						tableNo : info[0],
+						userNo : info[1],
+						picNo : info[2],
+						cmtNo : info[3],
+						blaContent : content
+					}
+		console.log(data)
+	}) */
+	
 	//댓글 삭제
 	$(document).on('click', '#commentDel', function(){
-		var commbody = $(this).parent().parent();
-		var cmtNo = $(this).attr("value");
+		var commbody = $(this).parent().parent()
+		var cmtNo = $(this).attr("value")
 		 $.ajax({
 			url:"/picsion/comment/deletecomment.ps",
 			data:{cmtNo:cmtNo},
@@ -184,22 +207,24 @@ $(document).ready(function() {
 				if(data.result==1){
 				$(commbody).remove();
 				$('#scrolldown').children()[0].innerHTML--;
-				alert("댓글 삭제 완료")
+				alert("댓글 삭제 완료");
 				}else{
-					alert("댓글 삭제 실패")
+					alert("댓글 삭제 실패");
 				}
 			}
-		}); 
+
+		})
+
 	})
 	
-});
+})
 
 </script>
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
 </div>
 
-<input type="hidden" value="${picture.tableNo},picNo,${picture.picNo}" id="info">
+<input type="hidden" value="${picture.tableNo},${picture.userNo},0,${picture.picNo}" id="info">
 
 <div class="section section-gray">
 	<div class="container">
@@ -366,7 +391,7 @@ $(document).ready(function() {
 														</h4>
 														<p>${comm.cmtContent}</p>
 														<a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a>
-														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기"><i	class="material-icons">reply</i>신고</a>
+														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a>
 													</div>
 												</div>
 											</c:forEach>

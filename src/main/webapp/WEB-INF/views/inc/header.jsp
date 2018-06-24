@@ -71,10 +71,31 @@ $(function(){
 		
 	})
 	
-})
+	//검색 태그 autocomplete
+	$("#searchAll").autocomplete({
+					matchContains: true,
+					source : function(request, response) {
+						$.ajax({
+							type : 'post',
+							url : "/picsion/picture/searchpicture.ps",
+							dataType : "json",
+							//request.term = $("#autocomplete").val() 
+							data : {tagParam : request.term},
+							success : function(data) {
+								 response(data.searchTagList);
+							}
+						});
+					},
+					//조회를 위한 최소글자수 
+					minLength : 1,
+					select : function(event, ui) {
+						// 만약 검색리스트에서 선택하였을때 선택한 데이터에 의한 이벤트발생 
+					}
+				});
 
+})
 </script>
-<input type="hidden" value="${sessionScope.user.userNo}" id="loginUserNo">
+<input type="hidden" value='<c:choose><c:when test="${sessionScope.user eq null}">0</c:when><c:otherwise>${sessionScope.user.userNo}</c:otherwise></c:choose>' id="loginUserNo">
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
@@ -86,9 +107,9 @@ $(function(){
         </button>
       </div>
       <div class="collapse navbar-collapse">
-      	<form class="form-inline">
+      	<form action="/picsion/picture/tagpicList.ps" class="form-inline">
                  <div class="form-group has-default bmd-form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                       <input type="text" name="tag" id="searchAll" class="form-control" placeholder="Search">
                  </div>
                  <button type="submit" class="btn btn-white btn-raised btn-fab btn-fab-mini btn-round">
                     <i class="material-icons">search</i>
