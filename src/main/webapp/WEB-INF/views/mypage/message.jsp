@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-
+<input type="hidden" value="${sessionScope.msgNotice}" id="msgNotice">
 <script type="text/javascript">
 
 	$(function(){
@@ -24,6 +24,12 @@
 			abb(userNo,myNo,msgUser)
 		})
 		
+		if($('#msgNotice').val() != "" ){
+			var sendUser = $('#msgNotice').val().split(',')
+			abb(sendUser[0],myNo,sendUser[1])
+			<%session.removeAttribute("msgNotice");%>
+			
+		}
 		//메시지 보내고, 메시지 대화창에 보낸 메시지 append, 회원 대화 목록 div에서 해당 div remove후 다시 append
 		$(document).on('click', '.messageSend', function(){
 			console.log("메시지 보내기 되는거야?")
@@ -474,7 +480,7 @@ width: 300px;
   color: #93a2ad;
 }
 </style>
-<input type="hidden" value="${sessionScope.msgNotice}" id="msgNotice">
+
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
 	<div class="profile-content">
