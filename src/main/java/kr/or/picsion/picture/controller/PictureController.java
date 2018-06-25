@@ -114,9 +114,16 @@ public class PictureController {
 	
 	//태그 검색 페이지 사진, 유저 리스트
 	@RequestMapping("tagpicList.ps")
-	public String searchTagPicList(Model model, String tag) {
+	public String searchTagPicList(HttpSession session, Model model, String tag) {
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
 		System.out.println("이건?"+tag);
-		List<Picture> tagpicList = pictureService.searchTagPicList(tag);
+		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
 		List<User> tagUserList = pictureService.searchTagUserList(tag);
 		model.addAttribute("tagpicList",tagpicList);
 		model.addAttribute("tagUserList",tagUserList);
