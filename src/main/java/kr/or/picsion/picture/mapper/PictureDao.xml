@@ -28,13 +28,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 사진 태그 검색 페이지 -->
-	<select id="searchTagPicList" parameterType="String" resultType="kr.or.picsion.picture.dto.Picture">
+	<select id="searchTagPicList" resultType="kr.or.picsion.picture.dto.Picture">
 	select p.*, t.tagContent as tagContent, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p 
-	left join (select * from RESPECT where userNo=#{userNo}) r on p.picNo=r.picNo 
-	left join (select * from BOOKMARK where userNo=#{userNo}) b on p.picNo=b.picNo 
+	left join (select * from RESPECT where userNo=#{param1}) r on p.picNo=r.picNo 
+	left join (select * from BOOKMARK where userNo=#{param1}) b on p.picNo=b.picNo 
 	left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
 	left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo
-	left join (select * from TAG where tagContent like '${value}%') t on p.picNo=t.picNo
+	left join (select * from TAG where tagContent like '${param2}%') t on p.picNo=t.picNo
 	where p.picNo = t.picNo;
 	</select>
 	
