@@ -313,7 +313,7 @@ function abb(userNo,myNo,msgUser) {
 								"</div>"+
 							"</div>"+
 							"</form>"+
-							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend' data-name='"+msgUser+"'>Send</button>"+
+							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend' data-no='"+userNo+"'>Send</button>"+
 						"</div></div></div></div>";
 			
 			$('#msgContent-show').append(msgContent);
