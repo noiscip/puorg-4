@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import kr.or.picsion.picture.dto.Picture;
-import kr.or.picsion.picture.dto.Tag;
 import kr.or.picsion.user.dto.User;
 
 public interface PictureDao {
@@ -30,8 +29,8 @@ public interface PictureDao {
 	public int respectIncrease(int picNo, int userNo);	//사진 좋아요 증가
 	public void bookmarkIncrease(int picNo, int userNo);//사진 북마크 증가(생성)
 	public List<Picture> photograherRespectPicList(int userNo); //작가의 인기순 사진리스트
-	public List<Tag> searchTag(String value);	        //검색 태그 리스트
-	public List<Picture> searchTagPicList(String value);//태그 사진 리스트
+	public List<String> searchTag(String value);	        //검색 태그 리스트
+	public List<Picture> searchTagPicList(int userNo, String value);//태그 사진 리스트
 	public List<User> searchTagUserList(String value); //태그 사진 주인 리스트
 }
 

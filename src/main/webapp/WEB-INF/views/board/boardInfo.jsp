@@ -6,9 +6,16 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
+		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+		var myNo = $('#loginUserNo').val();
+		var receiveUserNo=${operation.requesterNo}; 
+		if(myNo==receiveUserNo){
+			receiveUserNo=${operation.operatorNo};
+		}
 		/* $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight); */
 		$('#addreviewbutton').on("click",function() {
 					console.log("click");
+					var cmtcon=$("#reviewcontent").val();
 					if ($('#reviewcontent').val().trim() == "") {
 						alert("리뷰 내용을 입력해주세요.");
 					} else {	
@@ -17,10 +24,10 @@
 							type : "post",
 							data : {
 								brdNo : ${boardInfo.brdNo},
-								cmtContent : $("#reviewcontent").val()
+								cmtContent : cmtcon
 							},
 							success : function(data) {
-								console.log(data)
+								console.log(data.addcomment);
 								$("#reviewcontents").empty();
 								  var media="";
 							      $.each(data.commuserlist,function(index,element){
@@ -42,6 +49,8 @@
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#reviewcontent").val("");
+							      	var tableNo=4+":"+data.addcomment.cmtNo;
+									send(receiveUserNo,tableNo);
 							     
 							  }, 
 							  error: function(){
@@ -133,7 +142,9 @@
 	});
 </script>
 
-<input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
+<input type="hidden"
+	value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0"
+	id="info">
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -232,7 +243,7 @@
 																	<a href="#pablo"
 																		class="btn btn-primary btn-link float-right"
 																		rel="tooltip" title="" data-original-title="보내버리기"
-																		 id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																		id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
 																		<i class="material-icons">reply</i> 신고
 																	</a>
 																</div>
@@ -270,7 +281,8 @@
 																<a href="#pablo"
 																	class="btn btn-primary btn-round btn-wd float-right"
 																	id="addreviewbutton">Post Comment</a>
-																<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
+																<button class="btn btn-primary btn-sm"
+																	data-toggle="modal" data-target="#reportModal">신고</button>
 															</div>
 														</div>
 													</div>

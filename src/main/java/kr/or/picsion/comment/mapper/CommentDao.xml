@@ -32,7 +32,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 게시판 댓글 저장 -->
 	<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment" useGeneratedKeys="true" keyProperty="cmtNo">
-		insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})
+		insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})	
+		<selectKey keyProperty="cmtNo,cmtReg" resultType="hashmap" order="AFTER">
+			SELECT cmtNo, cmtReg from COMMENTS where cmtNo = LAST_INSERT_ID()
+		</selectKey>
 	</insert>
 
 	<!-- 사진에 대한 댓글 저장 -->	
