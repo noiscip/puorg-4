@@ -7,6 +7,10 @@
 	//리뷰 쓰기
 	$(function() {
 		var myNo = $('#loginUserNo').val();
+		var receiveUserNo=${operation.requesterNo}; 
+		if(myNo==receiveUserNo){
+			receiveUserNo=${operation.operatorNo};
+		}
 		/* $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight); */
 		$('#addreviewbutton').on("click",function() {
 					console.log("click");
@@ -44,8 +48,8 @@
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#reviewcontent").val("");
-							      	var tableNo=5+":"+data;
-									send(myNo,tableNo);
+							      	var tableNo=4+":"+cmtcon;
+									send(receiveUserNo,tableNo);
 							     
 							  }, 
 							  error: function(){
@@ -137,7 +141,9 @@
 	});
 </script>
 
-<input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
+<input type="hidden"
+	value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0"
+	id="info">
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -236,7 +242,7 @@
 																	<a href="#pablo"
 																		class="btn btn-primary btn-link float-right"
 																		rel="tooltip" title="" data-original-title="보내버리기"
-																		 id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																		id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
 																		<i class="material-icons">reply</i> 신고
 																	</a>
 																</div>
@@ -274,7 +280,8 @@
 																<a href="#pablo"
 																	class="btn btn-primary btn-round btn-wd float-right"
 																	id="addreviewbutton">Post Comment</a>
-																<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
+																<button class="btn btn-primary btn-sm"
+																	data-toggle="modal" data-target="#reportModal">신고</button>
 															</div>
 														</div>
 													</div>
