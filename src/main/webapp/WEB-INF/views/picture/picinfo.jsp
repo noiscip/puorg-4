@@ -292,6 +292,7 @@ $(document).ready(function() {
 												<c:when test="${sessionScope.user eq null}">
 												</c:when>
 												<c:otherwise>
+												<c:if test="${sessionScope.user.userNo ne userInfo.userNo}">
 													<button type="button" class="btn btn-default btn-sm"
 														data-toggle="modal" data-target="#exampleModal">
 														<i class="material-icons"> mail</i> 메시지
@@ -306,6 +307,7 @@ $(document).ready(function() {
 											  			</c:otherwise>
 											  		</c:choose>
 													</button>
+												</c:if>
 												</c:otherwise>
 											</c:choose>
 										</div>

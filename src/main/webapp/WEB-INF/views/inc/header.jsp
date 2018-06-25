@@ -82,6 +82,7 @@ $(function(){
 							//request.term = $("#autocomplete").val() 
 							data : {tagParam : request.term},
 							success : function(data) {
+								console.log(data.searchTagList);
 								 response(data.searchTagList);
 							}
 						});
