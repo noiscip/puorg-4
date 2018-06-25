@@ -225,7 +225,7 @@ public class PictureController {
 		//s3 저장
 		String saveFileName =picture.getPicPath().split("/")[4];
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-		uploadObject(saveFileName);
+//		uploadObject(saveFileName);
 		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
