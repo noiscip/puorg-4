@@ -32,14 +32,14 @@ $(function(){
 						var value = '' 
 						
 						if(elt[0].tableNo == 3){
-							value = elt[0].tableNo + ','+  elt[0].brdNo
+							value = elt[0].tableNo + ','+  elt[0].brdNo + ',' + elt[0].noticeNo
 							noticeMenu += '님이 ' + elt[2].brdTitle
 							noticeMenu += ((elt[0].operNo ==0)? ' 작업을 신청 하였습니다':' 작업을 수락 하였습니다' )
 						}else if(elt[0].tableNo == 4){
 							if(elt[2].tableNo == 2){
-								value = elt[2].tableNo + ','+ elt[2].picNo								
+								value = elt[2].tableNo + ','+ elt[2].picNo + ',' + elt[0].noticeNo
 							}else if(elt[2].tableNo == 3){
-								value = elt[2].tableNo + ','+ elt[2].brdNo
+								value = elt[2].tableNo + ','+ elt[2].brdNo + ', '+ elt[0].noticeNo
 							}
 							noticeMenu += '님이 ' + elt[3] + '글에 댓글을 달았습니다'
 						}else if(elt[0].tableNo == 5){
@@ -58,15 +58,33 @@ $(function(){
 	
 	
 	$(document).on('click','.divider',function(){
-		console.log($(this).find('input')[0].value)
 		var value = ($(this).find('input')[0].value).split(',')
-		console.log(value.length)
-		
+
 		if(value[0] == 2){
+			$.ajax({
+				url : "/picsion/notice/readCheck.ps",
+				data : {
+						noticeNo: value[2]
+				}
+			})
 			self.location = '/picsion/picture/picinfo.ps?picNo=' + value[1]
 		}else if(value[0] == 3){
+			$.ajax({
+				url : "/picsion/notice/readCheck.ps",
+				data : {
+						noticeNo: value[2]
+				}
+			})
 			self.location = '/picsion/board/boardInfo.ps?brdNo=' + value[1]
 		}else if(value[0] == 5){
+			$.ajax({
+				url : "/picsion/notice/readCheck.ps",
+				data : {
+						receiveUserNo : $('#loginUserNo').val(),
+						sendUserNo : value[1],
+						tableNo : value[0]
+				}
+			})
 			self.location = '/picsion/message/messageNotice.ps?userNo=' + value[1]
 		}
 		

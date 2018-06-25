@@ -76,7 +76,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.36:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.32:8090/picsion/message.ps") //테스트 용도 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -91,8 +91,44 @@
 				var sendUserNo = evt.data.split(':')[0]
 				var removeDiv = $('#commentstart').find('p[data-no='+sendUserNo+']').closest('.media');
 				var url = "";
+				if(table=4 && evt.data.split(':')[3] != null){
+					
+					
+				console.log("메시지 받았다");
 				
-		  		if(evt.data.split(':')[3] != null){
+					 $.ajax({
+                    	url:"/picsion/comment/readreview.ps",
+                    	data: {	
+                    			cmtNo: evt.data.split(':')[3]
+                    	},
+                        success: function(data) {
+                        	console.log(data);
+                    		console.log(data.addcomment);
+							  var media="";
+						      
+									media += "<div class='media'>"+
+								    "<a class='float-left' href='#pablo'>"+
+									"<div class='avatar'>";
+									if(data.userinfo.prPicture == null){
+										 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
+									}else{
+										media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'>";
+									}
+									media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
+									data.userinfo.userName+"<small>· "+moment(data.receivecomment.cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
+									    "</h4><p>"+data.receivecomment.cmtContent+"</p>"+
+									    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
+										"rel='tooltip' title='' data-original-title='보내버리기' id='" + data.receivecomment.tableNo + ","+data.userinfo.userNo+","+data.receivecomment.brdNo+",0,"+data.receivecomment.cmtNo+"' > <i "+
+										"class='material-icons'>reply</i>신고</a></div></div>";
+								
+								$("#reviewcontents").append(media); 									
+						        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+						      	$("#reviewcontent").val("");                        	
+                        
+                        }
+                        }); 
+				}
+				else if(table=5 && evt.data.split(':')[3] != null){
 		  			
 		  			
                     $.ajax({

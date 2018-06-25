@@ -60,43 +60,40 @@ public class NoticeService {
 
 		List<Notice> noticeList = noticeDao.noticeList(userNo);
 		HashMap<Integer, Object> map = new HashMap<>();
-		int i = 0;
 		Map<String,Notice> overlap = new HashMap<>();
-		
+		int i = 0;
+		String key="";
 		for (Notice no : noticeList) {
-			if(no.getTableNo() == 5) {
-				String key = no.getTableNo() +","+no.getSendUserNo();
-				
-				if(overlap.get(key) == null ) {
-					overlap.put(key, no);
-				}else {
-					continue;
-				}
-			}
 			List<Object> obj = new ArrayList<>();
-			System.out.println(no);
-			User sendUserNo = userService.userInfo(no.getSendUserNo());
 			obj.add(no);
-			obj.add(sendUserNo);
+			obj.add(userService.userInfo(no.getSendUserNo()));
 
 			int tableNo = no.getTableNo();
-
 			if (tableNo == 3) {
-				Board board = boardService.selectBoard(no.getBrdNo());
-				obj.add(board);
+				key = tableNo + ","+ no.getBrdNo()+ ","+no.getOperApplyNo()+","+no.getOperNo();						
+				obj.add(boardService.selectBoard(no.getBrdNo()));
 			} else if (tableNo == 4) {
 				Comment comment = commentService.selectComment(no.getCmtNo());
 				obj.add(comment);
 				String title ="";
 				if (comment.getTableNo() == 2) {
-					Picture picture = pictureService.picInfo(comment.getPicNo());
-					title = picture.getPicTitle();
+					key = tableNo+","+comment.getTableNo()+","+no.getPicNo()+","+no.getSendUserNo();
+					title = pictureService.picInfo(comment.getPicNo()).getPicTitle();
 				} else {
-					Board board = boardService.selectBoard(comment.getBrdNo());
-					title = board.getBrdTitle();
+					key = tableNo+","+comment.getTableNo()+","+no.getBrdNo()+","+no.getSendUserNo();
+					title = boardService.selectBoard(comment.getBrdNo()).getBrdTitle();
 				}
 				obj.add(title);
+			} else if(tableNo == 5) {
+				key = tableNo +","+no.getSendUserNo();
 			}
+			
+			if(overlap.get(key) == null ) {
+				overlap.put(key, no);
+			}else {
+				continue;
+			}
+			
 			map.put(i, obj);
 			i++;
 		}
@@ -109,5 +106,10 @@ public class NoticeService {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 
 		return noticeDao.readCheckCount(userNo);
+	}
+	
+	public int readCheck(Notice notice) {
+		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
+		return noticeDao.readCheck(notice);
 	}
 }
