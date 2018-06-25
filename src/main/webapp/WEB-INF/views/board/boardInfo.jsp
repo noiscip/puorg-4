@@ -6,9 +6,11 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
+		var myNo = $('#loginUserNo').val();
 		/* $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight); */
 		$('#addreviewbutton').on("click",function() {
 					console.log("click");
+					var cmtcon=$("#reviewcontent").val();
 					if ($('#reviewcontent').val().trim() == "") {
 						alert("리뷰 내용을 입력해주세요.");
 					} else {	
@@ -17,7 +19,7 @@
 							type : "post",
 							data : {
 								brdNo : ${boardInfo.brdNo},
-								cmtContent : $("#reviewcontent").val()
+								cmtContent : cmtcon
 							},
 							success : function(data) {
 								console.log(data)
@@ -42,6 +44,8 @@
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#reviewcontent").val("");
+							      	var tableNo=5+":"+data;
+									send(myNo,tableNo);
 							     
 							  }, 
 							  error: function(){
