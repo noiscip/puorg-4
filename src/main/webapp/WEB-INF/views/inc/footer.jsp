@@ -76,7 +76,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.36:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -125,25 +125,9 @@
                         }
                     })
                 } else{
-					if(table == 1){
-						console.log("1번, 유저 ")
-					}else if (table == 2){
-						console.log("2번, 사진")
-					}else if(table == 3	){
-						console.log("3번, 보드")
-						url = "/picsion/notice/noticeComment.ps"
-					}else if(table == 4){
-						console.log("4번, 댓글")
-						url = "/picsion/notice/noticeMsg.ps"
-					}else if(table == 5){
-						console.log("5번, 메시지")
-					}else if(table == 6){
-						console.log("6번, 작업 수락")
-					}
 					
 					$.ajax({
-						url:url,
-						async: false,
+						url : "/picsion/notice/noticeMsg.ps",
 						success: function (data) {
 							if (data.count > 0 && $('#newNotice').length == 0){
 								$('#userProfile').append(newMessage)

@@ -70,7 +70,7 @@ public class PictureController {
 		}
 		
 		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
-		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인	
+		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
 		List<String> tagList = pictureService.selectTag(picNo);
@@ -107,15 +107,23 @@ public class PictureController {
 		for(Tag t : searchTagList) {
 			uuu.add(t.getTagContent());
 		}
+		System.out.println(uuu);
 		model.addAttribute("searchTagList", uuu);
 		return jsonview;
 	}
 	
 	//태그 검색 페이지 사진, 유저 리스트
 	@RequestMapping("tagpicList.ps")
-	public String searchTagPicList(Model model, String tag) {
+	public String searchTagPicList(HttpSession session, Model model, String tag) {
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
 		System.out.println("이건?"+tag);
-		List<Picture> tagpicList = pictureService.searchTagPicList(tag);
+		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
 		List<User> tagUserList = pictureService.searchTagUserList(tag);
 		model.addAttribute("tagpicList",tagpicList);
 		model.addAttribute("tagUserList",tagUserList);
@@ -135,13 +143,13 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userNo, user.getUserNo()); //스튜디오 사진리스트
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo()); //스튜디오 사진리스트
 		List<User> ownerList = pictureService.studioOwnerList(userNo);
  		List<User> followerList = userService.followerUserList(userNo);
 		List<User> followingList = userService.followingUserList(userNo);
 		int followResult = 0;
 		if(user.getUserNo() != userNo) {
-			followResult = userService.followingConfirm(userNo,user.getUserNo());
+			followResult = userService.followingConfirm(user.getUserNo(),userInfo.getUserNo());
 		}
 		System.out.println(picList);
 		model.addAttribute("userinfo", userInfo);
@@ -200,6 +208,10 @@ public class PictureController {
 		
 		String waterText = "PICSION";
 		File input = new File(upath);
+		File dir = new File("D:\\fileWater\\");
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
 		File output = new File("D:/fileWater/"+user.getUserNo()+"000"+picture.getPicNo()+".jpg");
 		System.out.println("워터마크되나?"+output.getPath());
 		// adding text as overlay to an image
@@ -220,7 +232,7 @@ public class PictureController {
 		//s3 저장
 		String saveFileName =picture.getPicPath().split("/")[4];
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-		uploadObject(saveFileName);
+//		uploadObject(saveFileName);
 		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}

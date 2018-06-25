@@ -35,9 +35,9 @@ public class PictureService {
 	}
 	
 	//태그 검색된 사진 리스트
-	public List<Picture> searchTagPicList(String tag){
+	public List<Picture> searchTagPicList(int userNo, String tag){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<Picture> list = picDao.searchTagPicList(tag);
+		List<Picture> list = picDao.searchTagPicList(userNo, tag);
 		return list;
 	}
 	
