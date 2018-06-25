@@ -29,51 +29,57 @@
 			
 			removeDiv = $('#commentstart').find('p[data-no='+receiveUserNo+']').closest('.media');
 			
-			$.ajax({
-				url:"/picsion/message/send.ps",
-				data:{	msgContent:msgContent,
-						sendUserNo:myNo,
-						receiveUserNo:receiveUserNo
-				},
-				success: function(data){
-					
-					removeDiv.remove();
-					$('#msgContent').val().remove();
-					
-					if($('.messageSend').data("no")==receiveUserNo && $('#msgContent-show').hasClass('msg-show')){
-						/* 메시지 뿌려주고, 스크롤 고정 */
-						var msg = "<div class='popover bs-popover-left bs-popover-left-docs message-send'>"+
-			                      "<div class='arrow'></div>"+
-			                      "<div class='popover-body'>"+
-				                      "<p class='msg-content-p'>"+data.message.msgContent+"</p>"+
-				                      "<p class='msg-reg-p' align='right'><small>"+moment(data.message.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
-			                      "</div></div>";
-						$('#msg-body').append(msg);
-						$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+			if(msgContent==""){
+				alert("메시지 내용을 입력하세요!");
+			}else{
+				$.ajax({
+					url:"/picsion/message/send.ps",
+					data:{	msgContent:msgContent,
+							sendUserNo:myNo,
+							receiveUserNo:receiveUserNo
+					},
+					success: function(data){
+						$('#msgContent').val('');
+						removeDiv.remove();
 						
-						/* userList div 삭제하고, 뿌려주기 */
-						var userList = "<div class='media'>"+
-									   "<a class='float-left'>"+
-									   		"<div class='avatar'>"+
-									   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'></a>"+
-									   		"</div></a>"+
-									   	"<div class='media-body media-body-custom'>"+
-									   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
-									   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
-									   		"<a class='btn btn-rose btn-link float-right message-margin-del'><i class='material-icons receiveMsgDel'>clear</i>삭제</a>"+
-									   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
-									   	"</div></div>";
-									   	
-						$('#commentstart').prepend(userList);
-						
-						var tableNo=5+":"+data.message.msgNo;
-						send(receiveUserNo,tableNo);
+						if($('.messageSend').data("no")==receiveUserNo && $('#msgContent-show').hasClass('msg-show')){
+							
+							/* 메시지 뿌려주고, 스크롤 고정 */
+							var msg = "<div class='popover bs-popover-left bs-popover-left-docs message-send'>"+
+				                      "<div class='arrow'></div>"+
+				                      "<div class='popover-body'>"+
+					                      "<p class='msg-content-p'>"+data.message.msgContent+"</p>"+
+					                      "<p class='msg-reg-p' align='right'><small>"+moment(data.message.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
+				                      "</div></div>";
+							$('#msg-body').append(msg);
+							$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+							
+							/* userList div 삭제하고, 뿌려주기 */
+							var userList = "<div class='media'>"+
+										   "<a class='float-left'>"+
+										   		"<div class='avatar'>"+
+										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'></a>"+
+										   		"</div></a>"+
+										   	"<div class='media-body media-body-custom'>"+
+										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
+										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
+										   		"<a class='btn btn-rose btn-link float-right message-margin-del'><i class='material-icons receiveMsgDel'>clear</i>삭제</a>"+
+										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
+										   	"</div></div>";
+										   	
+							$('#commentstart').prepend(userList);
+							
+							var tableNo=5+":"+data.message.msgNo;
+							send(receiveUserNo,tableNo);
+						}
+					},
+					error: function(){
+					   	alert("메시지 보내는 도중 오류가 발생했습니다.");
 					}
-				},
-				error: function(){
-				   	alert("메시지 보내는 도중 오류가 발생했습니다.");
-				}
-			})
+				})
+				
+			}
+			
 		})
 		
 		
@@ -301,12 +307,9 @@ function abb(userNo,myNo,msgUser) {
 			msgContent+="</div>"+
 						"<div class='modal-footer justify-content-center'>"+
 							"<form class='form'>"+
-							"<div class='card-body'>"+
 								"<div class='form-group label-floating bmd-form-group'>"+
-									"<label class='form-control-label bmd-label-floating sendMsgCon' for='message'>Your Message..</label>"+
-									"<textarea class='form-control form-sendmsg' rows='3' name='msgContent' id='msgContent'></textarea>"+
+									"<textarea class='form-control form-sendmsg' rows='3' name='msgContent' id='msgContent' placeholder='Your Message..'></textarea>"+
 								"</div>"+
-							"</div>"+
 							"</form>"+
 							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend' data-no='"+userNo+"' data-name='"+msgUser+"'>Send</button>"+
 						"</div></div></div></div>";

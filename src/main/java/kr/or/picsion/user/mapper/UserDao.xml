@@ -40,10 +40,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 회원의 팔로워 리스트 (나를 따르는 회원)-->
 	<select id="followerUserList" resultType="kr.or.picsion.user.dto.User">
-		SELECT f.userNo as userNo, p.prPicture, p.prContent
+		SELECT f.userNo as userNo, u.userId as userId, u.userName as userName, p.prPicture, p.prContent
+		FROM FOLLOW f JOIN PROFILE p ON f.userNo=p.userNo
+					  JOIN USERS u ON f.userNo=u.userNo
+		WHERE f.followingUserNo=#{userNo}
+		
+		<!-- SELECT f.userNo as userNo, p.prPicture, p.prContent
 		FROM FOLLOW f JOIN PROFILE p
 		ON f.userNo=p.userNo
-		WHERE f.followingUserNo=#{userNo}
+		WHERE f.followingUserNo=#{userNo} -->
 	</select>
 	
 	<!-- 회원의 팔로잉 리스트 (내가 따르는 회원) -->
