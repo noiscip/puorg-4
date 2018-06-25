@@ -8,6 +8,7 @@
 	$(function(){
 		var myNo = $('#loginUserNo').val();
 		var userListDiv;
+		
 		//해당 유저와 대화 메시지 리스트 가져오기
 		$(document).on('click', '.msgList', function(){
 			console.log($(this).closest('.media'))
@@ -28,6 +29,9 @@
 			var msgContent = $('#msgContent').val();
 			var receiveUserNo = $(this).data("no");
 			
+			var msgDiv = $(this).data("name");
+			
+			console.log("*****")
 			console.log(msgContent)
 			console.log(receiveUserNo)
 			
@@ -49,6 +53,7 @@
 					/* $('#msgContent').text().empty(); */
 					
 					userListDiv.remove();
+					
 					var userList = "<div class='media'>"+
 								   "<a class='float-left'>"+
 								   		"<div class='avatar'>"+
@@ -307,7 +312,7 @@ function abb(userNo,myNo,msgUser) {
 								"</div>"+
 							"</div>"+
 							"</form>"+
-							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend' data-no='"+userNo+"'>Send</button>"+
+							"<button type='button' class='btn btn-primary btn-link btn-wd btn-lg messageSend' data-name='"+msgUser+"'>Send</button>"+
 						"</div></div></div></div>";
 			
 			$('#msgContent-show').append(msgContent);
@@ -502,8 +507,8 @@ width: 300px;
 												</div>
 											</a>
 											<div class="media-body media-body-custom">
-												<h4 class="media-heading msgUserName">
-													${recentMsg2.user[0].userName} <small>· <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${recentMsg2.msgReg}" /></small>
+												<h4 class="media-heading msgUserName" data-name="${recentMsg2.user[0].userName}">
+													${recentMsg2.user[0].userName}<small> · <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${recentMsg2.msgReg}" /></small>
 												</h4>
 												<p class="msgList" style="cursor: pointer;" data-no="${recentMsg2.user[0].userNo}">${recentMsg2.msgContent}</p>
 												<a class="btn btn-rose btn-link float-right message-margin-del"><i class="material-icons receiveMsgDel">clear</i>삭제</a>
@@ -535,102 +540,7 @@ width: 300px;
 					</div>
 
 					<div class="col-md-7" id="msgContent-show">
-							<!-- <div class="modal-dialog modal-login message-header">
-								<div class="modal-content">
-									<div class="card card-signup card-plain">
-										<div class="modal-header">
-											<div class="card-header card-header-primary text-center message-header-user">
-												<h4 class="card-title">Message</h4>
-											</div>
-										</div>
-										
-										<div class="modal-body form-msg-body">
-											
-											<div class="popover bs-popover-right bs-popover-right-docs message-receive">
-												    <div class="arrow"></div>
-												    <div class="popover-body">
-												      <p class="msg-content-p">Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-												      <p class="msg-reg-p" align="right"><small>06-23, 15:42</small></p>
-												    </div>
-										    </div>
-										    
-											<div class="popover bs-popover-left bs-popover-left-docs message-send">
-						                        <div class="arrow"></div>
-						                        <div class="popover-body">
-						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-						                            <p align="right"><small>06-23, 15:42</small></p>
-						                        </div>
-						                    </div>
-						                    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
-												    <div class="arrow"></div>
-												    <div class="popover-body">
-												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-												    </div>
-										    </div>
-										    
-											<div class="popover bs-popover-left bs-popover-left-docs message-send">
-						                        <div class="arrow"></div>
-						                        <div class="popover-body">
-						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-						                        </div>
-						                    </div>
-						                    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
-												    <div class="arrow"></div>
-												    <div class="popover-body">
-												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-												    </div>
-										    </div>
-										    
-											<div class="popover bs-popover-left bs-popover-left-docs message-send">
-						                        <div class="arrow"></div>
-						                        <div class="popover-body">
-						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-						                        </div>
-						                    </div>
-						                    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
-												    <div class="arrow"></div>
-												    <div class="popover-body">
-												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-												    </div>
-										    </div>
-										    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
-												    <div class="arrow"></div>
-												    <div class="popover-body">
-												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-												    </div>
-										    </div>
-										    <div class="popover bs-popover-right bs-popover-right-docs message-receive">
-												    <div class="arrow"></div>
-												    <div class="popover-body">
-												      <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-												    </div>
-										    </div>
-											<div class="popover bs-popover-left bs-popover-left-docs message-send">
-						                        <div class="arrow"></div>
-						                        <div class="popover-body">
-						                            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-						                        </div>
-						                    </div>
-										</div>
-										
-										<div class="modal-footer justify-content-center">
-											<form class="form" method="" action="">
-												<div class="card-body">
-													<div class="form-group label-floating bmd-form-group">
-														<label class="form-control-label bmd-label-floating"
-															for="message"> Your message</label>
-														<textarea class="form-control form-sendmsg" rows="3" id="msgContent"
-															name="msgContent"></textarea>
-													</div>
-												</div>
-											</form>
-											<button type="button"
-												class="btn btn-primary btn-link btn-wd btn-lg" id="messageSend"
-												data-dismiss="modal">Send</button>
-										</div>
-									</div>
-								</div>
-							</div> -->
+							
 					</div>
 					
 				</div>
