@@ -162,6 +162,15 @@ $(document).on("click", "#tagAdd", function() {
 						
 						$('h1').after(logo)
 					}
+ 					/*얼굴감지*/
+					var ctx = ''
+					var ctx = document.getElementByName('filePath').getContext('2d');
+						if(data.face != null){
+							ctx.strokeStyle="#FF0000";
+							
+							ctx.strokeRect(data.face["0"].x_0,data.face["0"].y_1,data.face["0"].width,data.face["0"].height);
+							
+						}
 					
 					var safe = ''
 					if(data.safe != null){

@@ -76,7 +76,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.32:8090/picsion/message.ps") //테스트 용도 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -88,40 +88,85 @@
 		  		
 				var table = evt.data.split(':')[2]
 				var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
+				var sendUserNo = evt.data.split(':')[0]
+				var removeDiv = $('#commentstart').find('p[data-no='+sendUserNo+']').closest('.media');
 				var url = "";
+				if(table=4 && evt.data.split(':')[3] != null){
+					
+					
+				console.log("메시지 받았다");
 				
-		  		if(evt.data.split(':')[3] != null){
+					 $.ajax({
+                    	url:"/picsion/comment/readreview.ps",
+                    	data: {	
+                    			cmtNo: evt.data.split(':')[3]
+                    	},
+                        success: function(data) {
+                        	console.log(data);
+                    		console.log(data.addcomment);
+							  var media="";
+						      
+									media += "<div class='media'>"+
+								    "<a class='float-left' href='#pablo'>"+
+									"<div class='avatar'>";
+									if(data.userinfo.prPicture == null){
+										 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
+									}else{
+										media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'>";
+									}
+									media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
+									data.userinfo.userName+"<small>· "+moment(data.receivecomment.cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
+									    "</h4><p>"+data.receivecomment.cmtContent+"</p>"+
+									    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
+										"rel='tooltip' title='' data-original-title='보내버리기' id='" + data.receivecomment.tableNo + ","+data.userinfo.userNo+","+data.receivecomment.brdNo+",0,"+data.receivecomment.cmtNo+"' > <i "+
+										"class='material-icons'>reply</i>신고</a></div></div>";
+								
+								$("#reviewcontents").append(media); 									
+						        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+						      	$("#reviewcontent").val("");                        	
+                        
+                        }
+                        }); 
+				}
+				else if(table=5 && evt.data.split(':')[3] != null){
+		  			
+		  			
                     $.ajax({
                     	url:"/picsion/message/readmsg.ps",
-                    	data: {	sendUserNo: evt.data.split(':')[0],
+                    	data: {	sendUserNo: sendUserNo,
                     			msgNo: evt.data.split(':')[3]
                     	},
                         success: function(data) {
                         	console.log(data)
-                        	var msg = "<div class='popover bs-popover-right bs-popover-right-docs message-receive'>"+
-					                      "<div class='arrow'></div>"+
-					                      "<div class='popover-body'>"+
-						                      "<p class='msg-content-p'>"+data.msgInfo.msgContent+"</p>"+
-						                      "<p class='msg-reg-p' align='right'><small>"+moment(data.msgInfo.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
-					                      "</div></div>";
-							$('#msg-body').append(msg);
-							$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+                        	
+                        	/* 현재 연 메시지창이 보낸사람이 맞는지 확인해서 메시지 뿌려주기  */
+                        	if($('.messageSend').data("no")==sendUserNo && $('#msgContent-show').hasClass('msg-show')){
+	                        	var msg = "<div class='popover bs-popover-right bs-popover-right-docs message-receive'>"+
+						                      "<div class='arrow'></div>"+
+						                      "<div class='popover-body'>"+
+							                      "<p class='msg-content-p'>"+data.msginfo.msgContent+"</p>"+
+							                      "<p class='msg-reg-p' align='right'><small>"+moment(data.msginfo.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
+						                      "</div></div>";
+								$('#msg-body').append(msg);
+								$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+                        	}
+							removeDiv.remove();
 							
-							<%-- 
-							userListDiv.remove();
 							var userList = "<div class='media'>"+
 										   "<a class='float-left'>"+
 										   		"<div class='avatar'>"+
 										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'></a>"+
 										   		"</div></a>"+
 										   	"<div class='media-body media-body-custom'>"+
-										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
-										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
+										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.msginfo.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
+										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.msginfo.msgContent+"</p>"+
 										   		"<a class='btn btn-rose btn-link float-right message-margin-del'><i class='material-icons receiveMsgDel'>clear</i>삭제</a>"+
 										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
 										   	"</div></div>";
 										   	
-							$('#commentstart').prepend(userList); --%>
+							$('#commentstart').prepend(userList);
+								
+                        	
                         }
                     })
                 } else{
