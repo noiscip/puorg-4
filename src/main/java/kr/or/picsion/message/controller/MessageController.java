@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
+import com.amazonaws.services.appstream.model.Session;
+
 import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.message.service.MessageService;
 import kr.or.picsion.notice.service.NoticeService;
@@ -296,9 +298,12 @@ public class MessageController {
 	}
 
 	@RequestMapping("messageNotice.ps")
-	public String messageNotice(int userNo) {
+	public String messageNotice(HttpSession session,int userNo) {
 		System.out.println("---------------------------------");
 		System.out.println(userNo);
+		User user = userService.userInfo(userNo);
+		String msgUser = user.getUserNo() + "," + user.getUserName();
+		session.setAttribute("msgNotice", msgUser);
 		return "redirect:/message/receivemessage.ps";
 	}
 }
