@@ -161,8 +161,9 @@ public class UserController {
 		User user = (User)session.getAttribute("user");
 		System.out.println(user.getUserNo());
 		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo());
-		
+		List<User> bookmarkPicUserList = userService.bookmarkPicUserList(user.getUserNo());
 		model.addAttribute("bookmarkPicList", bookmarkPicList);
+		model.addAttribute("bookmarkPicUserList",bookmarkPicUserList);
 		
 		return "mypage.bookmark";
 	}

@@ -81,19 +81,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
     <!-- 팔로잉 최신 사진 , 좋아요, 북마크 리스트  -->
 	<select id="followingUserPictureList" resultType="kr.or.picsion.picture.dto.Picture">
-	select po.userNo2 as userNo, po.picTitle as picTitle, po.picContent as picContent,po.picPath as picPath, po.picNo as picNo, po.picReg as picReg, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount from (SELECT f.userNo as userNo, f.followingUserNo as userNo2, u.userName as userName, p.picTitle as picTitle, p.picContent as picContent, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
-      	FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
-                   join PICTURE p on u.userNo = p.userNo
-                   where f.userNo = #{userNo}
-                   order by p.picReg) po left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo left join BOOKMARK b on po.picNo=b.picNo and po.userNo=b.userNo left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo;
+		select po.userNo2 as userNo, po.picTitle as picTitle, po.picContent as picContent,po.picPath as picPath, po.picNo as picNo, po.picReg as picReg, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount from (SELECT f.userNo as userNo, f.followingUserNo as userNo2, u.userName as userName, p.picTitle as picTitle, p.picContent as picContent, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg
+	    FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
+	                   join PICTURE p on u.userNo = p.userNo
+	                   where f.userNo = #{userNo}) po left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo left join BOOKMARK b on po.picNo=b.picNo and po.userNo=b.userNo left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo
+		order by po.picReg;
 	</select>	
 	
 	<!-- 북마크한 사진 리스트 -->
 	<select id="bookmarkPicList" resultType="kr.or.picsion.picture.dto.Picture">
-		SELECT p.*
-		FROM PICTURE p JOIN BOOKMARK b 
-			ON p.picNo = b.picNo
-		WHERE b.userNo=#{userNo}
+		select po.*, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount 
+		from (SELECT p.picNo, b.userNo, p.picPath, p.picTitle, p.picReg FROM PICTURE p JOIN BOOKMARK b ON p.picNo = b.picNo	WHERE b.userNo=#{userNo}) po
+		left join BOOKMARK b on po.picNo = b.picNo and po.userNo=b.userNo
+		left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo 
+		left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo 
+		left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo 
+		order by po.picReg;
+	</select>
+	
+	<!-- 북마크 사진 주인 리스트 -->
+	<select id="bookmarkPicUserList" resultType="kr.or.picsion.user.dto.User">
+	select po.*, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount 
+	from (SELECT p.picNo, p.userNo, p.picPath, p.picTitle, p.picReg, u.userName FROM PICTURE p JOIN BOOKMARK b ON p.picNo = b.picNo join USERS u on p.userNo=u.userNo	WHERE b.userNo=#{userNo}) po
+	left join BOOKMARK b on po.picNo = b.picNo and po.userNo=b.userNo
+	left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo 
+	left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo 
+	left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo 
+	order by po.picReg;
 	</select>
 	
 	<!-- 좋아요한 사진 리스트 -->

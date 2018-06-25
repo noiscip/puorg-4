@@ -345,7 +345,7 @@ $(document).ready(function() {
 								aria-labelledby="headingTwo" data-parent="#accordion" style="">
 								<div class="card-body">
 									<c:forEach var="tag" items="${tagList}">
-										<a href="#pablo"> #${tag} </a>
+										<a href="<%=request.getContextPath()%>/picture/tagpicList.ps?tag=${tag}"> #${tag} </a>
 									</c:forEach>
 								</div>
 							</div>
