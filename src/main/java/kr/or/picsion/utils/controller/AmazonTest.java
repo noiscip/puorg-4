@@ -39,12 +39,15 @@ import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
 import com.google.cloud.vision.v1.EntityAnnotation;
+import com.google.cloud.vision.v1.FaceAnnotation;
 import com.google.cloud.vision.v1.Feature;
 import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.ImageSource;
 import com.google.cloud.vision.v1.SafeSearchAnnotation;
 import com.google.protobuf.ByteString;
+
+import kr.or.picsion.picture.dto.Face;
 
 @Controller
 public class AmazonTest {
@@ -70,13 +73,14 @@ public class AmazonTest {
 		String logocheck=detectLogos(abc);
 		String safecheck=detectSafeSearch(abc);
 		List<String> labelBag=detectLabels(abc);
-		
+		List<Face> faceList = detectFaces(abc);
 
-		
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
 		model.addAttribute("label", labelBag);
 		model.addAttribute("picPath",picturePath);
+		model.addAttribute("face",faceList);
+		
 		System.out.println("labelBag: "+labelBag);
 		return jsonview;
 	}
@@ -298,6 +302,46 @@ public class AmazonTest {
 			}
 			return safeExist;
 		}
+	}
+	public static List<Face> detectFaces(String filePath) throws Exception {
+	    List<AnnotateImageRequest> requests = new ArrayList<>();
+
+	    Image image = getImage(filePath);
+	    
+	    List<Face> facePoly = new ArrayList<>();
+
+	    Feature feature = Feature.newBuilder().setType(Feature.Type.FACE_DETECTION).build();
+	    AnnotateImageRequest request =
+	            AnnotateImageRequest.newBuilder().addFeatures(feature).setImage(image).build();
+	    requests.add(request);
+
+	    try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
+	        BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
+	        List<AnnotateImageResponse> responses = response.getResponsesList();
+
+	        for (AnnotateImageResponse res : responses) {
+	            if (res.hasError()) {
+	                System.out.println("Error: " + res.getError().getMessage());
+//	                return;
+	            }
+
+	            // For full list of available annotations, see http://g.co/cloud/vision/docs
+	            for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
+	                System.out.println(
+	                        "position: %s" + annotation.getBoundingPoly() + "\n");
+//	                faceXY+=annotation.getBoundingPoly();
+	                System.out.println("왼상?"+annotation.getBoundingPoly().getVertices(0));
+	                System.out.println("오상?"+annotation.getBoundingPoly().getVertices(1));
+	                System.out.println("오하?"+annotation.getBoundingPoly().getVertices(2));
+	                System.out.println("왼하?"+annotation.getBoundingPoly().getVertices(3));
+	                facePoly.add(new Face((int)annotation.getBoundingPoly().getVertices(0).getX(),
+	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getX(),
+	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getY(),
+	                			 		  (int)annotation.getBoundingPoly().getVertices(2).getY()));
+	            }
+	        }
+	        return facePoly;
+	    }
 	}
 	
 	private static Image getImage(String filePath) throws IOException {
