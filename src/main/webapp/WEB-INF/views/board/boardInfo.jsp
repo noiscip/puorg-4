@@ -6,6 +6,7 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
+		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 		var myNo = $('#loginUserNo').val();
 		var receiveUserNo=${operation.requesterNo}; 
 		if(myNo==receiveUserNo){
@@ -26,7 +27,7 @@
 								cmtContent : cmtcon
 							},
 							success : function(data) {
-								console.log(data)
+								console.log(data.addcomment);
 								$("#reviewcontents").empty();
 								  var media="";
 							      $.each(data.commuserlist,function(index,element){
@@ -48,7 +49,7 @@
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#reviewcontent").val("");
-							      	var tableNo=4+":"+cmtcon;
+							      	var tableNo=4+":"+data.addcomment.cmtNo;
 									send(receiveUserNo,tableNo);
 							     
 							  }, 

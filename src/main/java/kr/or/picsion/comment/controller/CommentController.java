@@ -16,6 +16,7 @@ import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
@@ -74,10 +75,23 @@ public class CommentController {
 		List<Comment> comm = commentService.commentList(comment.getBrdNo());
 		
 		model.addAttribute("comment", comm);
+		model.addAttribute("addcomment", comment);
 		model.addAttribute("commuserlist", commuserlist);
 		return jsonview;
 	}
-	
+	//socket receive대상에게 매시지 보내주기
+	@RequestMapping(value = "readreview.ps")
+	public View readreview(Comment comment, Model model) {
+		System.out.println("readreview 컨트롤");
+		System.out.println(comment);
+		Comment receivecomment = commentService.selectComment(comment.getCmtNo());
+		User userinfo = userService.userInfo(receivecomment.getUserNo());
+		System.out.println(userinfo);
+		System.out.println(receivecomment);
+		model.addAttribute("userinfo", userinfo);
+		model.addAttribute("receivecomment", receivecomment);
+		return jsonview;
+	}
 	//사진 댓글 입력
 	@RequestMapping(value = "insertpiccomment.ps")
 	public View insertPicComment(Comment comment, Model model, int picNo) {
