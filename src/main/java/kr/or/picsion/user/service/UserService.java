@@ -111,11 +111,15 @@ public class UserService {
 	//회원의 북마크 리스트
 	public List<Picture> bookmarkPicList(int userNo){
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		
-		List<Picture> bookmarkList = new ArrayList<Picture>();
-		bookmarkList=userDao.bookmarkPicList(userNo);
-		
+		List<Picture> bookmarkList = userDao.bookmarkPicList(userNo);
 		return bookmarkList;
+	}
+	
+	//회원의 북마크 사진 주인 리스트
+	public List<User> bookmarkPicUserList(int userNo){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> bookmarkPicUserList =userDao.bookmarkPicUserList(userNo);
+		return bookmarkPicUserList;
 	}
 	
 	//회원 탈퇴
