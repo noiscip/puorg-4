@@ -2,10 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
  <script>
   $( function() {
+	  $('#datatable').DataTable();
 	  $('.datetimepicker').datetimepicker({
 		    icons: {
 		        time: "fa fa-clock-o",
@@ -111,7 +112,7 @@
 			    <input id="datePicker" type="text" class="form-control datetimepicker"/>
 			    <button id="complainSearch">검색</button><button id="allBlame">전체 조회</button>
 			</div>
-			<table border="3">
+			<table border="3" id="datatable">
 				<thead>
 					<tr>
 						<th>신고 번호</th>

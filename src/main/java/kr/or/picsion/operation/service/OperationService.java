@@ -24,6 +24,7 @@ public class OperationService {
 		System.out.println(operation);
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		int result = operationDao.insertOperation(operation);
+		System.out.println("insertOperation 서비스  끝");
 		
 		return result;
 	}
@@ -37,11 +38,11 @@ public class OperationService {
 			return operation;
 		}
 	// 작업 찾기list 
-		public List<Operation> operBoardList(HashMap<String, Integer> map) {
+		public List<Operation> operBoardList() {
 
 			System.out.println("operBoardList 서비스 시작 ");
 			OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
-			List<Operation> operation = operationDao.operBoardList(map);
+			List<Operation> operation = operationDao.operBoardList();
 			System.out.println("operBoardList 서비스 끝");
 			return operation;
 		}

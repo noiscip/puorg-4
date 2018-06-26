@@ -9,8 +9,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <insert id="insertOperation" parameterType="kr.or.picsion.operation.dto.Operation">
 	insert into OPERATION (operApplyNo, operPrice, operEndReg, requesterNo, operatorNo, brdNo) values (#{operApplyNo},#{operPrice},#{operEndReg},#{requesterNo},#{operatorNo},#{brdNo})
-	<selectKey keyProperty="operNo,tableNo" resultType="hashmap" order="AFTER">
-		SELECT operNo, tableNo from OPERATION where operNo = LAST_INSERT_ID()
+	<selectKey keyProperty="operNo" resultType="hashmap" order="AFTER">
+		SELECT operNo from OPERATION where operNo = LAST_INSERT_ID()
 	</selectKey>
 </insert>
 
@@ -20,9 +20,9 @@ select * from OPERATION where brdNo=#{brdNo}
 
 
 <!-- operBoardList(전체조회) -->
- <select id="operBoardList" parameterType="hashmap" 
+ <select id="operBoardList" 
                            resultType="kr.or.picsion.operation.dto.Operation">
-      select oper.* from (select * from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select * from BOARD order by brdNo DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RN where RN.ROWNUM >= #{start} and RN.ROWNUM  &lt;= #{end}) bo left join OPERATION oper on bo.brdNo=oper.brdNo;
+      select bo.*,oper.* from BOARD bo left join OPERATION oper on bo.brdNo=oper.brdNo  order by bo.brdNo desc
  </select>
 
 
