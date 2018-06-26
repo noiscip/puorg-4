@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.notice.dto.Notice;
 import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.user.dto.User;
 
@@ -68,6 +69,11 @@ public class NoticeController {
 		return jsonview;
 	}
 	
+	@RequestMapping("readCheck.ps")
+	public View readCheck(Notice notice, Model model) {
+		noticeService.readCheck(notice);
+		return jsonview;
+	}
 	
 	
 }

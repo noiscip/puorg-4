@@ -37,7 +37,6 @@ import com.amazonaws.services.simpleworkflow.flow.worker.SynchronousActivityTask
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;
-import kr.or.picsion.picture.dto.Tag;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
@@ -97,18 +96,24 @@ public class PictureController {
 		return "picture.picinfo";
 	}
 	
+	//워드 차트 태그 리스트
+	@RequestMapping("tagList.ps")
+	public View wordChartList(Model model) {
+		List<String> wordChartList = pictureService.wordChartList();
+		model.addAttribute("wordChartList",wordChartList);
+		System.out.println(wordChartList);
+		return jsonview;
+		
+	}
+	
 	//헤더 검색창 태그 리스트
 	@RequestMapping(value="searchpicture.ps",method=RequestMethod.POST)
 	public View searchPicList(Model model, HttpServletRequest request) {
 		String tagParam = request.getParameter("tagParam");
 		System.out.println("이게?"+tagParam);
-		List<Tag> searchTagList = pictureService.searchTag(tagParam);
-		List<String> uuu = new ArrayList<String>();
-		for(Tag t : searchTagList) {
-			uuu.add(t.getTagContent());
-		}
-		System.out.println(uuu);
-		model.addAttribute("searchTagList", uuu);
+		List<String> searchTagList = pictureService.searchTag(tagParam);
+		System.out.println(searchTagList);
+		model.addAttribute("searchTagList", searchTagList);
 		return jsonview;
 	}
 	
@@ -122,7 +127,8 @@ public class PictureController {
 		else {
 			user.setUserNo(0);
 		}
-		System.out.println("이건?"+tag);
+		System.out.println("이건 값이 없나?"+tag);
+		
 		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
 		List<User> tagUserList = pictureService.searchTagUserList(tag);
 		model.addAttribute("tagpicList",tagpicList);

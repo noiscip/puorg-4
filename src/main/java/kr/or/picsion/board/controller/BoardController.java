@@ -52,14 +52,16 @@ public class BoardController {
 		System.out.println("보드인포 컨트롤");
 		User user = (User)session.getAttribute("user");
 		Board boardInfo = boardService.selectBoard(brdNo);
-		
+		Operation operation = new Operation();
 		List<Comment> comment = commentService.commentList(brdNo);		
 		List<User> commentuser= commentService.commentuser(brdNo);
 		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
 		List<String> applyid = operationApplyService.operationApplyNameList(brdNo);
-		
-		
-
+		if(boardInfo.getOperStateNo()==2) {
+			operation=operationService.selectOper(brdNo);
+		}
+		System.out.println(operation);
+		model.addAttribute("operation", operation);
 		model.addAttribute("commentuser", commentuser);
 		model.addAttribute("applylist", list);
 		model.addAttribute("applyid", applyid);		

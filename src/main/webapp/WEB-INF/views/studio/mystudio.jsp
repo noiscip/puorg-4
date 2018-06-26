@@ -238,16 +238,6 @@
 				</div>
 			</div>
             
-            <%-- 
-              	<!-- DB에서 이미지 불러와서 해당 이미지의 상세페이지 요청 -->
-              	<c:forEach items="${piclist}" var="pic">
-              		<div class="col-md-3" >
-	              		<a href="">  <!-- *******이미지 상세페이지로 이동******** -->
-	                		<img src="<%=request.getContextPath()%>${pic.picPath}" class="rounded img-size">
-	                	</a>
-                	</div>
-              	</c:forEach> --%>
-            
             </div>
           </div>
           
@@ -260,12 +250,12 @@
           				<c:when test="${follow.prPicture eq null}">
           					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
           					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}">
-          						<img title="" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
+          						<img src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img" data-toggle="tooltip" data-placement="top" title="${follow.userName}">
           					</a>
           				</c:when>
           				<c:otherwise>
           					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}">
-          						<img title="" src="<%=request.getContextPath()%>${follow.prPicture}" class="rounded user-img">
+          						<img src="<%=request.getContextPath()%>${follow.prPicture}" class="rounded user-img" data-toggle="tooltip" data-placement="top" title="${follow.userName}">
           					</a>
           				</c:otherwise>
           			</c:choose>
@@ -281,12 +271,12 @@
           			<c:choose>
           				<c:when test="${following.prPicture eq null}">
           					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
-          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
+          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="tooltip" data-placement="top" title="${following.userName}">
           						<img title="${following.userId}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
           					</a>
           				</c:when>
           				<c:otherwise>
-          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
+          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="tooltip" data-placement="top" title="${following.userName}">
           						<img title="${following.userId}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded user-img">
           					</a>
           				</c:otherwise>
@@ -294,7 +284,6 @@
           		</c:forEach>
           		</form>
             </div>
-            
           </div>
         </div>
       </div>

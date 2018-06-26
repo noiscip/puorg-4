@@ -4,6 +4,7 @@
 
 <script>
 $(function(){
+	
 	var isRun =false
 	$('#newNotice').click(function(){
 		$('#noticeList').hide() 
@@ -31,14 +32,14 @@ $(function(){
 						var value = '' 
 						
 						if(elt[0].tableNo == 3){
-							value = elt[0].tableNo + ','+  elt[0].brdNo
+							value = elt[0].tableNo + ','+  elt[0].brdNo + ',' + elt[0].noticeNo
 							noticeMenu += '님이 ' + elt[2].brdTitle
 							noticeMenu += ((elt[0].operNo ==0)? ' 작업을 신청 하였습니다':' 작업을 수락 하였습니다' )
 						}else if(elt[0].tableNo == 4){
 							if(elt[2].tableNo == 2){
-								value = elt[2].tableNo + ','+ elt[2].picNo								
+								value = elt[2].tableNo + ','+ elt[2].picNo + ',' + elt[0].noticeNo
 							}else if(elt[2].tableNo == 3){
-								value = elt[2].tableNo + ','+ elt[2].brdNo
+								value = elt[2].tableNo + ','+ elt[2].brdNo + ', '+ elt[0].noticeNo
 							}
 							noticeMenu += '님이 ' + elt[3] + '글에 댓글을 달았습니다'
 						}else if(elt[0].tableNo == 5){
@@ -57,15 +58,33 @@ $(function(){
 	
 	
 	$(document).on('click','.divider',function(){
-		console.log($(this).find('input')[0].value)
 		var value = ($(this).find('input')[0].value).split(',')
-		console.log(value.length)
-		
+
 		if(value[0] == 2){
+			$.ajax({
+				url : "/picsion/notice/readCheck.ps",
+				data : {
+						noticeNo: value[2]
+				}
+			})
 			self.location = '/picsion/picture/picinfo.ps?picNo=' + value[1]
 		}else if(value[0] == 3){
+			$.ajax({
+				url : "/picsion/notice/readCheck.ps",
+				data : {
+						noticeNo: value[2]
+				}
+			})
 			self.location = '/picsion/board/boardInfo.ps?brdNo=' + value[1]
 		}else if(value[0] == 5){
+			$.ajax({
+				url : "/picsion/notice/readCheck.ps",
+				data : {
+						receiveUserNo : $('#loginUserNo').val(),
+						sendUserNo : value[1],
+						tableNo : value[0]
+				}
+			})
 			self.location = '/picsion/message/messageNotice.ps?userNo=' + value[1]
 		}
 		
@@ -73,8 +92,10 @@ $(function(){
 	
 	//검색 태그 autocomplete
 	$("#searchAll").autocomplete({
+		          
 					matchContains: true,
 					source : function(request, response) {
+						if($('#searchAll').val()!=''){
 						$.ajax({
 							type : 'post',
 							url : "/picsion/picture/searchpicture.ps",
@@ -83,16 +104,28 @@ $(function(){
 							data : {tagParam : request.term},
 							success : function(data) {
 								console.log(data.searchTagList);
-								 response(data.searchTagList);
+								response(data.searchTagList);
 							}
 						});
+						}
 					},
 					//조회를 위한 최소글자수 
 					minLength : 1,
 					select : function(event, ui) {
-						// 만약 검색리스트에서 선택하였을때 선택한 데이터에 의한 이벤트발생 
-					}
+						console.log(ui.item.value);
+						$('#searchAll').val(ui.item.value);
+						$('form[class="form-inline"]').submit();
+					},
 				});
+	
+	/* $(document).on('click','#submitbtn',function(){
+		if($('#searchAll').val()==''){
+			alert("검색 내용이 없습니다");
+		}else{
+			$('form[class="form-inline"]').submit();
+		}
+		
+	}) */
 
 })
 </script>
@@ -110,14 +143,13 @@ $(function(){
       <div class="collapse navbar-collapse">
       	<form action="/picsion/picture/tagpicList.ps" class="form-inline">
                  <div class="form-group has-default bmd-form-group">
-                       <input type="text" name="tag" id="searchAll" class="form-control" placeholder="Search">
+                       <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
-                 <button type="submit" class="btn btn-white btn-raised btn-fab btn-fab-mini btn-round">
+                 <button id="submitbtn" class="btn btn-white btn-raised btn-fab btn-fab-mini btn-round">
                     <i class="material-icons">search</i>
                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
-
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">

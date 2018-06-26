@@ -86,7 +86,7 @@
 							style="width: 255px; height: 300px; display: block;">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${tagpic.picNo}"> <img class="rounded img-size"
 								src="<%=request.getContextPath()%>/${tagpic.picPath}"
-								alt="">
+								alt="No Image">
 							</a>
 							<div>
 			                    <div class="counts hide-xs hide-sm ">

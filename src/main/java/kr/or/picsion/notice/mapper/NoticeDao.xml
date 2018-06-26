@@ -18,4 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from NOTICE where receiveUserNo = #{userNo} and readCheck ='F' order by noticeNo desc
 	</select>
 	
+	<update id="readCheck">
+		update NOTICE
+		   set readCheck='T'
+		 where <if test="noticeNo != 0">noticeNo = #{noticeNo}</if>
+		 	   <if test="noticeNo == 0">receiveUserNo=#{receiveUserNo} AND tableNo=#{tableNo} AND sendUserNo=#{sendUserNo}</if>
+		 	   
+	</update>
 </mapper>
