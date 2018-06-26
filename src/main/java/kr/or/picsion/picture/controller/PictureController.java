@@ -96,6 +96,16 @@ public class PictureController {
 		return "picture.picinfo";
 	}
 	
+	//워드 차트 태그 리스트
+	@RequestMapping("tagList.ps")
+	public View wordChartList(Model model) {
+		List<String> wordChartList = pictureService.wordChartList();
+		model.addAttribute("wordChartList",wordChartList);
+		System.out.println(wordChartList);
+		return jsonview;
+		
+	}
+	
 	//헤더 검색창 태그 리스트
 	@RequestMapping(value="searchpicture.ps",method=RequestMethod.POST)
 	public View searchPicList(Model model, HttpServletRequest request) {

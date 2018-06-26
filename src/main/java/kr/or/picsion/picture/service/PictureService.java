@@ -22,8 +22,14 @@ public class PictureService {
 	public Picture picInfo(int picNo) {
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
 		Picture picture = picDao.selectPicture(picNo);
-		
 		return picture;
+	}
+	
+	//워드 차트 태그 리스트
+	public List<String> wordChartList(){
+		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
+		List<String> list = picDao.wordChartList();
+		return list;
 	}
 	
 	//태그 검색 리스트

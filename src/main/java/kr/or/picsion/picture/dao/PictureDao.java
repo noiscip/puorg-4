@@ -32,5 +32,6 @@ public interface PictureDao {
 	public List<String> searchTag(String value);	        //검색 태그 리스트
 	public List<Picture> searchTagPicList(int userNo, String value);//태그 사진 리스트
 	public List<User> searchTagUserList(String value); //태그 사진 주인 리스트
+	public List<String> wordChartList();  		 	   //워드 차트 태그 리스트
 }
 
