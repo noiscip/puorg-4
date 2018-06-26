@@ -6,11 +6,16 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
+		if(${boardInfo.operStateNo}==2){
 		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+		}
 		var myNo = $('#loginUserNo').val();
+		if(${operation.operNo} != 0)
+		{
 		var receiveUserNo=${operation.requesterNo}; 
-		if(myNo==receiveUserNo){
-			receiveUserNo=${operation.operatorNo};
+			if(myNo==receiveUserNo){
+					receiveUserNo=${operation.operatorNo};
+				}
 		}
 		/* $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight); */
 		$('#addreviewbutton').on("click",function() {
@@ -111,6 +116,7 @@
 							operApplyNo : $("#operApplyNo").val()
 						}, 
 						success : function(data) {
+							console.log("test");
 							console.log(data.check);
 							location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
 						}

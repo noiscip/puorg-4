@@ -15,7 +15,6 @@ public class Operation {
 	private String requesterEnd;
 	private String operatorCancel;
 	private String requesterCancel;
-	private int tableNo;
 	private int operApplyNo;
 	private int brdNo;
 
@@ -24,7 +23,7 @@ public class Operation {
 
 	public Operation(int operNo, int requesterNo, int operatorNo, int operPrice, Date operStartReg, Date operEndReg,
 			int firstCancelUserNo, String operatorEnd, String requesterEnd, String operatorCancel,
-			String requesterCancel, int tableNo, int operApplyNo, int brdNo) {
+			String requesterCancel, int operApplyNo, int brdNo) {
 		this.operNo = operNo;
 		this.requesterNo = requesterNo;
 		this.operatorNo = operatorNo;
@@ -36,7 +35,6 @@ public class Operation {
 		this.requesterEnd = requesterEnd;
 		this.operatorCancel = operatorCancel;
 		this.requesterCancel = requesterCancel;
-		this.tableNo = tableNo;
 		this.operApplyNo = operApplyNo;
 		this.brdNo = brdNo;
 	}
@@ -145,20 +143,12 @@ public class Operation {
 		this.brdNo = brdNo;
 	}
 
-	public int getTableNo() {
-		return tableNo;
-	}
-
-	public void setTableNo(int tableNo) {
-		this.tableNo = tableNo;
-	}
-
 	@Override
 	public String toString() {
 		return "Operation [operNo=" + operNo + ", requesterNo=" + requesterNo + ", operatorNo=" + operatorNo
 				+ ", operPrice=" + operPrice + ", operStartReg=" + operStartReg + ", operEndReg=" + operEndReg
 				+ ", firstCancelUserNo=" + firstCancelUserNo + ", operatorEnd=" + operatorEnd + ", requesterEnd="
 				+ requesterEnd + ", operatorCancel=" + operatorCancel + ", requesterCancel=" + requesterCancel
-				+ ", tableNo=" + tableNo + ", operApplyNo=" + operApplyNo + ", brdNo=" + brdNo + "]";
+				+ ", operApplyNo=" + operApplyNo + ", brdNo=" + brdNo + "]";
 	}
 }

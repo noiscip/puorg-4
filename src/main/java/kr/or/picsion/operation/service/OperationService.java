@@ -24,6 +24,7 @@ public class OperationService {
 		System.out.println(operation);
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		int result = operationDao.insertOperation(operation);
+		System.out.println("insertOperation 서비스  끝");
 		
 		return result;
 	}
