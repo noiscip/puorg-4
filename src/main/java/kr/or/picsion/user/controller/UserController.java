@@ -1,8 +1,11 @@
 package kr.or.picsion.user.controller;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.View;
+
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
 
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
@@ -182,11 +193,86 @@ public class UserController {
 	}
 	
 	//정보 수정 페이지로 이동 (회원의 정보 검색해서)
-	@RequestMapping("updateinfo.ps")
-	public String updatePage(HttpSession session) {
+	@RequestMapping(value="updateinfo.ps", method=RequestMethod.GET)
+	public String updatePage(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
+		User userinfo = userService.userInfo(user.getUserNo());
+		
+		model.addAttribute("userinfo", userinfo);
 		
 		return "mypage.updateinfo";
+	}
+	
+	//정보수정 페이지에서 정보수정
+	@RequestMapping(value="updateinfo.ps", method=RequestMethod.POST)
+	public String updateInfo(HttpSession session, User user, MultipartFile file) {
+		User userSession = (User)session.getAttribute("user");
+		user.setUserNo(userSession.getUserNo());
+		
+		System.out.println(file.getOriginalFilename());
+		System.out.println(user);
+		String filePathh="";
+		String uploadPath = "C:\\bitcamp104\\PICSION\\Final_Picsion\\src\\main\\webapp\\assets\\img\\faces\\";
+		String path="/assets/img/faces/";
+		
+		File dir = new File(uploadPath);
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
+
+		String originalFileName = file.getOriginalFilename();
+		String saveFileName = originalFileName;//	우어어ㅓㅇ~~~~~~~~~~~~~~~
+		filePathh = uploadPath + saveFileName;
+		
+		String dbPath=path+originalFileName;
+		
+		if(originalFileName.equals("")&&userSession.getPrContent().equals(user.getPrContent())) {
+			System.out.println("같은거지?");
+		}else {		//파일은 파일 업로드만 따로 분리!
+			if(saveFileName != null && !saveFileName.equals("")) {
+				/*if(saveFileName.toLowerCase().indexOf(".jpg")>0){
+					saveFileName = header+"check01"+".jpg";
+				}*/
+				if(new File(uploadPath + saveFileName).exists()) {
+					saveFileName = saveFileName + "_" + System.currentTimeMillis();
+				}
+				try {
+					File newFile = new File(uploadPath + saveFileName);
+					file.transferTo(newFile);
+					
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
+			} 
+			
+			user.setPrPicture(dbPath);
+			userService.updateUserPr(user);
+		}
+		
+		if(user.getPwd()=="") {
+			System.out.println("안되 비었어");
+		}else if(userSession.getPwd().equals(user.getPwd())) {
+			System.out.println("안되 똑같아");
+		}else {
+			userService.updateUserInfo(user);
+		}
+		
+		session.setAttribute("user", userService.userInfo(user.getUserNo()));
+		
+		return "redirect:updateinfo.ps";
+	}
+	
+	//포인트 충전
+	@RequestMapping("charge.ps")
+	public View pointCharge(HttpSession session, int point, Model model) {
+		User user = (User)session.getAttribute("user");
+		int result=userService.pointCharge(point, user.getUserNo());
+		
+		model.addAttribute("result", result);
+		
+		return jsonview;
 	}
 	
 }
