@@ -1,11 +1,14 @@
 ﻿package kr.or.picsion.user.service;
 
-import java.util.ArrayList;
+import java.io.FileOutputStream;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dao.UserDao;
@@ -152,5 +155,56 @@ public class UserService {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		return userDao.updateRole(userNo);
 	}
-
+	
+	//포인트 충전
+	public int pointCharge(int point, int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		int result = userDao.pointCharge(point, userNo);
+		
+		return result;
+	}
+	
+	//정보 수정
+	public void updateUserInfo(User user) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		userDao.updateUser(user);
+	}
+	
+	//회원 프로필 테이블 관련 수정
+	public void updateUserPr(User user) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		
+	    /*int result = 0;
+	    String changed_file_name = "";
+	    //System.out.println(user);
+	    //업로드한 파일이 있다면,
+	    if (file != null) {
+	       String filename = file.getOriginalFilename();
+	       String path = request.getServletContext().getRealPath("/");
+	       String[] temp = filename.split("\\.");
+	       if(temp.length > 1) {
+	          changed_file_name = user.getUserName() + "." + temp[temp.length-1];
+	          user.setPrPicture(changed_file_name);
+	         
+	          String fpath = path + "images\\profile\\" + changed_file_name;
+	   
+	          // 서버에 파일 업로드 (write)
+	          FileOutputStream fs = null;
+	          try {
+	             fs = new FileOutputStream(fpath);
+	             fs.write(file.getBytes());
+	          } catch (Exception e) {
+	             System.out.println("이미지 쓰기 실패");
+	          } finally {
+	             try {
+	                fs.close();
+	             } catch (Exception e) {
+	                e.printStackTrace();
+	             }
+	          }
+	       }
+	    }*/
+		userDao.updateUserPr(user);
+	}
+	
 }

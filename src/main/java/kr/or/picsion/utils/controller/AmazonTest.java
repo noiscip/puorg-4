@@ -104,10 +104,13 @@ public class AmazonTest {
 		System.out.println(iter);
 		while(iter.hasNext()) {
 			String uploadFileName = iter.next();
+			
 			MultipartFile mFile = mRequest.getFile(uploadFileName);
+			
 			String originalFileName = mFile.getOriginalFilename();
 			System.out.println("오리진파일네임: "+originalFileName);
 			String saveFileName = originalFileName;//	우어어ㅓㅇ~~~~~~~~~~~~~~~
+			
 			filePathh = uploadPath + saveFileName;
 			
 			System.out.println("uploadPath: "+uploadPath);
@@ -133,24 +136,33 @@ public class AmazonTest {
 					
 					Metadata metadata;
 					System.out.println("업로드에서 메타 출력전--------------------------------------------------------");
+					String picInfo="";
 					try {
 						metadata = ImageMetadataReader.readMetadata(newFile);
-
-
 						for (Directory directory : metadata.getDirectories()) {
+							System.out.println(directory);
 						    for (Tag tag : directory.getTags()) {
 						        System.out.format("[%s] - %s = %s \n",
 						            directory.getName(), tag.getTagName(), tag.getDescription());
+						        if(!directory.getName().equals("Exif Thumbnail") && tag.getTagName().split(" ")[0].equals("Image")) {
+						        	System.out.println("---------------------------------");
+						        	System.out.format("[%s] - %s = %s \n",
+								            directory.getName(), tag.getTagName(), tag.getDescription());
+						        	System.out.println(tag.getDirectoryName());
+						        	System.out.println("---------------------------------");
+						        	picInfo += tag.getDescription().split(" ")[0];
+						        }
+						        
+						        
 						    }
 						    if (directory.hasErrors()) {
 						        for (String error : directory.getErrors()) {
 						            System.err.format("ERROR: %s", error);
 						        }
 						    }
-						    System.out.println("bbbb");
-						    System.out.println(directory);
 						}
-
+						System.out.println("픽미픽미픽미픽미업픽미픽미 픽쳐인포");
+						System.out.println(picInfo);
 
 					} catch (Exception e1) {
 						e1.printStackTrace();

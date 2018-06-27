@@ -25,29 +25,28 @@ $(function(){
 					$('#noticeList').empty() 
 					var noticeMenu = '';
 					$.each(data.map, function(i, elt) {
-						console.log(elt)
 						noticeMenu += '<li class="divider"><a>'
 						noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
 						noticeMenu += '"'+ elt[1].userName +'"'
-						var value = '' 
+						var value = elt[0].tableNo + ',' + elt[0].sendUserNo
 						
 						if(elt[0].tableNo == 3){
-							value = elt[0].tableNo + ','+  elt[0].brdNo + ',' + elt[0].noticeNo
+							value += ',' +  elt[0].brdNo + ',0'
 							noticeMenu += '님이 ' + elt[2].brdTitle
 							noticeMenu += ((elt[0].operNo ==0)? ' 작업을 신청 하였습니다':' 작업을 수락 하였습니다' )
 						}else if(elt[0].tableNo == 4){
 							if(elt[2].tableNo == 2){
-								value = elt[2].tableNo + ','+ elt[2].picNo + ',' + elt[0].noticeNo
+								value += ',0,' + elt[2].picNo + ',' + elt[2].tableNo 
 							}else if(elt[2].tableNo == 3){
-								value = elt[2].tableNo + ','+ elt[2].brdNo + ', '+ elt[0].noticeNo
+								value += ',' + elt[2].brdNo + ',0,' + elt[2].tableNo
 							}
 							noticeMenu += '님이 ' + elt[3] + '글에 댓글을 달았습니다'
 						}else if(elt[0].tableNo == 5){
-							value = elt[0].tableNo + ','+ elt[0].sendUserNo
+							value += ',0,0' 
 							noticeMenu += '님이 메시지를 보냈습니다'
 						}
 						noticeMenu += '<input type="hidden" value="'+value+'">'
-						noticeMenu += '</a></li>'
+						noticeMenu += '</a></li>' 
 					})
 					$('#noticeList').append(noticeMenu)
 					isRun =false
@@ -59,32 +58,24 @@ $(function(){
 	
 	$(document).on('click','.divider',function(){
 		var value = ($(this).find('input')[0].value).split(',')
-
-		if(value[0] == 2){
-			$.ajax({
-				url : "/picsion/notice/readCheck.ps",
-				data : {
-						noticeNo: value[2]
-				}
-			})
-			self.location = '/picsion/picture/picinfo.ps?picNo=' + value[1]
-		}else if(value[0] == 3){
-			$.ajax({
-				url : "/picsion/notice/readCheck.ps",
-				data : {
-						noticeNo: value[2]
-				}
-			})
-			self.location = '/picsion/board/boardInfo.ps?brdNo=' + value[1]
-		}else if(value[0] == 5){
-			$.ajax({
-				url : "/picsion/notice/readCheck.ps",
-				data : {
-						receiveUserNo : $('#loginUserNo').val(),
-						sendUserNo : value[1],
-						tableNo : value[0]
-				}
-			})
+			
+		$.ajax({
+			url : "/picsion/notice/readCheck.ps",
+			data : {
+					receiveUserNo : $('#loginUserNo').val(),
+					tableNo : value[0],
+					sendUserNo : value[1],
+					brdNo : value[2],
+					picNo : value[3]
+			}
+		})
+		
+		if(value[0] == 3 || value[4] == 3){
+			self.location = '/picsion/board/boardInfo.ps?brdNo=' + value[2]
+		}else if(value[4] == 2){
+			self.location = '/picsion/picture/picinfo.ps?picNo=' + value[3]
+		}
+		else if(value[0] == 5){
 			self.location = '/picsion/message/messageNotice.ps?userNo=' + value[1]
 		}
 		
