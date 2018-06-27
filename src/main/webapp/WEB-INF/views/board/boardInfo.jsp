@@ -155,7 +155,7 @@
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
-	<div class="profile-content">
+	<div class="profile-content">	
 		<div class="container">
 			<div class="row" style="border-width: 1px; text-align: center;">
 				<div class="col-md-12 ml-auto mr-auto">
@@ -163,6 +163,13 @@
 					<p>
 						<font>${boardInfo.brdContent}</font>
 					</p>
+					<c:choose>
+						<c:when
+						test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
+						<button type="button" class="btn btn-default btn-sm" style="float:right"
+							data-toggle="modal" data-target="#exampleModal">신청하기</button>
+						</c:when>
+					</c:choose>
 				</div>
 			</div>
 			<c:choose>
@@ -174,6 +181,30 @@
 								<div class="row">
 									<div class="col-md-6 col-sm-6">
 										<h3 class="title" style="text-align: center">작업 정보</h3>
+										<div class="card card-collapse">
+											<div class="card-header" role="tab" id="headingTwo">
+												<h5 class="mb-0">
+													<a>요청자</a>
+												</h5>
+											</div>
+											<div id="collapseTwo" class="collapse show" role="tabpanel"
+												aria-labelledby="headingTwo" data-parent="#accordion"
+												style="">
+												<div class="card-body">${requestUser.userName}</div>
+											</div>
+										</div>
+										<div class="card card-collapse">
+											<div class="card-header" role="tab" id="headingTwo">
+												<h5 class="mb-0">
+													<a>작업자</a>
+												</h5>
+											</div>
+											<div id="collapseTwo" class="collapse show" role="tabpanel"
+												aria-labelledby="headingTwo" data-parent="#accordion"
+												style="">
+												<div class="card-body">${operatorUser.userName}</div>
+											</div>
+										</div>
 										<div class="card card-collapse">
 											<div class="card-header" role="tab" id="headingTwo">
 												<h5 class="mb-0">
@@ -343,15 +374,11 @@
 						</tbody>
 
 					</table>
-				</c:when>
-				<c:when
-					test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
-					<button type="button" class="btn btn-default btn-sm" style="float:right"
-						data-toggle="modal" data-target="#exampleModal">신청하기</button>
-				</c:when>
+				</c:when>				
 			</c:choose>
 		</div>
 	</div>
+	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
 	<div id="upload">
 		<div class="card card-collapse">
 			<div class="card-header" role="tab" id="picupload1">
@@ -425,6 +452,7 @@
 			</div>
 		</div>
 	</div>
+	</c:if>
 </div>
 <!-- 신청Modal -->
 <div class="modal fade" id="exampleModal" tabindex="1" role="dialog"
