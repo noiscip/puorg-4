@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  <!-- getBoardList(전체조회) -->
  <select id="boardList"  
                            resultType="kr.or.picsion.board.dto.Board">
-      select u.*,us.userId as userId, us.userName as userName, o.operState as operState  from BOARD u join USERS us on u.userNo=us.userNo join OPERATIONSTATE o on u.operStateNo=o.operStateNo order by u.brdNo desc
+      select u.*,us.userId as userId, us.userName as userName, o.operState as operState  from BOARD u join USERS us on u.userNo=us.userNo join OPERATIONSTATE o on u.operStateNo=o.operStateNo order by u.brdNo
  </select>
  
  <!-- operationList(내 작업 게시판 리스트) -->

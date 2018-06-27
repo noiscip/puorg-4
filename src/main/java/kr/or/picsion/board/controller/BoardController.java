@@ -111,7 +111,8 @@ public class BoardController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println(list);
+		System.out.println(operlist);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("operlist", operlist);
