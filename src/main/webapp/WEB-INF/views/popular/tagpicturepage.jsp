@@ -58,6 +58,7 @@
 <style type="text/css">
 .img-size {
 	height: 300px;
+	width: 100%;
 }
 </style>
 
@@ -67,7 +68,7 @@
 </div>
 <div class="main main-raised">
 	<div class="profile-content">
-		<div class="container">
+		<div class="container-fluid"> 
 		
 			<div class="row">
 				<div class="col-md-12 ml-auto mr-auto">
@@ -78,15 +79,15 @@
 					</select>
 				</div>
 			</div> 
-			<div id="gallery">
+			
 				<div class="flex_grid credits">
+				<div class="tz-gallery">
+				<div class="row">
 					<c:forEach items="${tagpicList}" var="tagpic"
 						varStatus="status">
-						<div class="item" data-w="640" data-h="426"
-							style="width: 255px; height: 300px; display: block;">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${tagpic.picNo}"> <img class="rounded img-size"
-								src="<%=request.getContextPath()%>/${tagpic.picPath}"
-								alt="No Image">
+						<div class="item col-sm-6 col-md-4">
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${tagpic.picNo}">
+							<img class="rounded img-size" src="<%=request.getContextPath()%>/${tagpic.picPath}"	alt="No Image">
 							</a>
 							<div>
 			                    <div class="counts hide-xs hide-sm ">
@@ -111,8 +112,9 @@
                				</div>
 						</div>
 					</c:forEach>
-				</div>
+				</div>	
 			</div>
+		</div>
 		</div>
 	</div>
 </div>
