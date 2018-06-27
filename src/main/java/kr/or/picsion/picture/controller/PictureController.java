@@ -101,7 +101,6 @@ public class PictureController {
 	public View wordChartList(Model model) {
 		List<String> wordChartList = pictureService.wordChartList();
 		model.addAttribute("wordChartList",wordChartList);
-		System.out.println(wordChartList);
 		return jsonview;
 		
 	}
@@ -112,7 +111,6 @@ public class PictureController {
 		String tagParam = request.getParameter("tagParam");
 		System.out.println("이게?"+tagParam);
 		List<String> searchTagList = pictureService.searchTag(tagParam);
-		System.out.println(searchTagList);
 		model.addAttribute("searchTagList", searchTagList);
 		return jsonview;
 	}
