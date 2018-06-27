@@ -7,7 +7,7 @@ import kr.or.picsion.board.dto.Board;
 
 public interface BoardDao {
 
-	public List<Board> boardList(HashMap<String, Integer> map);
+	public List<Board> boardList();
 	public int insertBoard(Board board);
 	public int deleteBoard(int brdNo);
 	public int updateBoard(Board board);

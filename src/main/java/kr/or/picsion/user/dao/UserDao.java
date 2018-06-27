@@ -10,7 +10,8 @@ public interface UserDao {
 	public List<User> userList();
 	public int registerUser(User user);
 	public int insertProfile(int userNo);
-	public int updateUser(User user);
+	public void updateUser(User user);		//user 정보 변경
+	public void updateUserPr(User user);		//프로필 자기소개 수정
 	public int deleteUser(int userNo);
 	public User selectUser(String user, Object userId);		//파라미터 값에따라 유동적으로 회원의 정보 검색
 	public User selectUserProfile(int userNo);
@@ -27,4 +28,6 @@ public interface UserDao {
 	public int updateAccount(int userNo, String accountNo, String portalSite);	 //이미 다른 포털의 계정이 등록되어 있다면 update
 	public User selectAccountNo(String accountNo, String portalSite);
 	public int updateRole(int userNo); //계정 연동 되었을 경우 권한 업데이트
+	public int pointCharge(int point, int userNo);	//캐시 충전
+	
 }

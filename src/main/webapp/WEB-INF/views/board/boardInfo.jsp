@@ -346,27 +346,86 @@
 				</c:when>
 				<c:when
 					test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
-					<button type="button" class="btn btn-default btn-sm"
+					<button type="button" class="btn btn-default btn-sm" style="float:right"
 						data-toggle="modal" data-target="#exampleModal">신청하기</button>
 				</c:when>
 			</c:choose>
-
-
-
-
-
-
-
 		</div>
-
 	</div>
+	<div id="upload">
+		<div class="card card-collapse">
+			<div class="card-header" role="tab" id="picupload1">
+				<h5 class="mb-0 title">
+					<a class="collapsed" data-toggle="collapse" href="#picupload" style="text-align: center;"
+						aria-expanded="false" aria-controls="picupload">사진 업로드</a>
+				</h5>
+			</div>
+			<div id="picupload" class="collapse" role="tabpanel"
+				aria-labelledby="picupload1" data-parent="#upload">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+							<form id="fileForm" action="amazontest.ps"
+								enctype="multipart/form-data" method="post">
 
+								<div class="fileinput fileinput-new text-center"
+									data-provides="fileinput">
+									<div class="fileinput-new thumbnail img-raised">
+										<img
+											src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
+											alt="...">
+									</div>
+									<div
+										class="fileinput-preview fileinput-exists thumbnail img-raised"></div>
+									<div>
+										<span class="btn btn-raised btn-round btn-default btn-file">
+											<span class="fileinput-new">Select image</span> <span
+											class="fileinput-exists">Change</span> <input type="file"
+											name="filePath" accept=".jpg, .png, .bmp" />
+										</span> <a href="#pablo"
+											class="btn btn-danger btn-round fileinput-exists"
+											data-dismiss="fileinput"> <i class="fa fa-times"></i>
+											Remove
+										</a>
+									</div>
+								</div>
+								<!-- <input type="submit" class="btn btn-primary btn-round" value="보내기"> -->
+							</form>
+						</div>
+
+						<div class="col-md-6">
+							<form
+								action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
+
+								<div class="form-group">
+									<label for="title">제목</label> <input type="text"
+										class="form-control" id="pictureTitle" name="picTitle">
+								</div>
+
+								<div class="form-group">
+									<label for="description">설명</label> <input type="text"
+										class="form-control" id="pictureDesc" name="picContent">
+								</div>
+
+								<!-- <form action=""> -->
+								<div id="picTags" class="form-group">
+									<label for="comment">Tags</label> <br>
+									<div id="loaderIcon"></div>
+								</div>
+								<!-- </form> -->
+								<%--	<div class="form-group">
+							<input type="text" name="picPath" value="${picPath}"> 
+						</div> --%>
+								<div id="tagA"></div>
+								<button type="submit" class="btn btn-primary">저장하기</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
-
-
-
-
 <!-- 신청Modal -->
 <div class="modal fade" id="exampleModal" tabindex="1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -454,3 +513,83 @@
 	</div>
 </div>
 
+<script>
+	$(function() {
+		$('input[type=file]').change(function() {
+			var formData = new FormData($('#fileForm')[0])
+			console.log("클릭가능????")
+			console.log(formData)
+			$.ajax({
+				url : "/picsion/amazontest.ps",
+				data : formData,
+				processData: false,
+				contentType: false,
+				type :'POST',
+				success : function(data){
+					console.log(data)
+					$("#loaderIcon").empty();
+					if(data.logo != null){
+					var logo =''
+						logo += '<div class="alert alert-warning">'
+						logo += 	'<div class="container-fluid">'
+						logo += 		'<div class="alert-icon">'
+						logo += 			'<i class="material-icons">warning</i>'
+						logo += 		'</div>'
+						logo += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+						logo += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+						logo += 		'</button>'
+						logo += 		'<b>Warning Alert</b>' + data.logo
+						logo += 	'</div>'
+						logo += '</div>'
+						
+						$('h1').after(logo)
+					}
+ 					/*얼굴감지*/
+					var ctx = ''
+					var ctx = document.getElementByName('filePath').getContext('2d');
+						if(data.face != null){
+							ctx.strokeStyle="#FF0000";
+							
+							ctx.strokeRect(data.face["0"].x_0,data.face["0"].y_1,data.face["0"].width,data.face["0"].height);
+							
+						}
+					
+					var safe = ''
+					if(data.safe != null){
+						safe += '<div class="alert alert-danger">'
+						safe += 	'<div class="container-fluid">'
+						safe += 		'<div class="alert-icon">'
+						safe += 			'<i class="material-icons">warning</i>'
+						safe += 		'</div>'
+						safe += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+						safe += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+						safe += 		'</button>'
+						safe += 		'<b>Warning Alert</b>' + data.safe
+						safe += 	'</div>'
+						safe += '</div>'
+						$('h1').after(safe)
+					}
+					
+					var tags = ''
+					$.each(data.label, function(i, elt) {
+						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
+					})
+					
+					$('#picTags').append(tags)
+					
+					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
+					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
+					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
+					$('#tagA').append(tags)
+					/* $('#taginputtest').attr("data-role","tagsinput"); */
+					console.log('와요?')
+					$("input[data-role=tagsinput]").tagsinput();
+				}
+			,beforeSend:function(){
+				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
+			}
+				
+			})
+		})
+	})
+</script>

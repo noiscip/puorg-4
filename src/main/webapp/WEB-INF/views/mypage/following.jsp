@@ -44,7 +44,7 @@
 			<div class="gallery text-center">
 				<div class="row">
 					<c:forEach items="${followingList}" var="following">
-						<div class="col-md-2" align="left">
+						<div class="col-md-2">
 							<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
 								<c:choose>
 									<c:when test="${following.prPicture eq null}">
