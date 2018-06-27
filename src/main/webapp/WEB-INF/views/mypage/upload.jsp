@@ -134,6 +134,7 @@ $(document).on("click", "#tagAdd", function() {
 <script>
 	$(function() {
 		$('input[type=file]').change(function() {
+			console.log($(this))
 			var formData = new FormData($('#fileForm')[0])
 			console.log("클릭가능????")
 			console.log(formData)
