@@ -60,40 +60,34 @@ public class NoticeService {
 
 		List<Notice> noticeList = noticeDao.noticeList(userNo);
 		HashMap<Integer, Object> map = new HashMap<>();
+		
 		Map<String,Notice> overlap = new HashMap<>();
 		int i = 0;
-		String key="";
 		for (Notice no : noticeList) {
+			String key = no.getTableNo() +","+no.getSendUserNo()+","+no.getBrdNo()+","+no.getPicNo();
+			
+			if(overlap.get(key) == null ) overlap.put(key, no);
+			else continue;
+			
 			List<Object> obj = new ArrayList<>();
 			obj.add(no);
 			obj.add(userService.userInfo(no.getSendUserNo()));
 
 			int tableNo = no.getTableNo();
 			if (tableNo == 3) {
-				key = tableNo + ","+ no.getBrdNo()+ ","+no.getOperApplyNo()+","+no.getOperNo();						
 				obj.add(boardService.selectBoard(no.getBrdNo()));
 			} else if (tableNo == 4) {
 				Comment comment = commentService.selectComment(no.getCmtNo());
 				obj.add(comment);
 				String title ="";
 				if (comment.getTableNo() == 2) {
-					key = tableNo+","+comment.getTableNo()+","+no.getPicNo()+","+no.getSendUserNo();
 					title = pictureService.picInfo(comment.getPicNo()).getPicTitle();
 				} else {
-					key = tableNo+","+comment.getTableNo()+","+no.getBrdNo()+","+no.getSendUserNo();
 					title = boardService.selectBoard(comment.getBrdNo()).getBrdTitle();
 				}
 				obj.add(title);
-			} else if(tableNo == 5) {
-				key = tableNo +","+no.getSendUserNo();
 			}
-			
-			if(overlap.get(key) == null ) {
-				overlap.put(key, no);
-			}else {
-				continue;
-			}
-			
+		
 			map.put(i, obj);
 			i++;
 		}
