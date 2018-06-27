@@ -156,6 +156,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where userNo = #{userNo}
 	</update>
 	
+	<!-- 포인트 충전 -->
+	<update id="pointCharge">
+		update USERS 
+			set point=point+#{param1}
+		where userNo=#{param2};
+	</update>
 	
+	<!-- 회원 정보 수정 -->
+	<update id="updateUser">
+		update USERS
+			set userName=#{userName}
+				<if test="pwd != ''">, pwd=#{pwd}</if>
+		where userNo=#{userNo}
+	</update>
+	
+	<!-- 회원 프로필 수정 -->
+	<update id="updateUserPr">
+		update PROFILE 
+			set prContent=#{prContent}
+				<if test="prPicture != ''">, prPicture=#{prPicture}</if>
+		where userNo=#{userNo}
+	</update>
 
 </mapper>
