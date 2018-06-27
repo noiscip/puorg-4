@@ -228,8 +228,8 @@ public class PictureController {
 			e.printStackTrace();
 		}
 
-		int result = pictureService.updateWater(output.getPath(), picture.getPicNo());
-		if(result!=0) {
+		int waterResult = pictureService.updateWater(output.getPath(), picture.getPicNo());
+		if(waterResult!=0) {
 			System.out.println("워터마크 생성");
 		}else {
 			System.out.println("워터마크 생성 실패");
@@ -238,7 +238,15 @@ public class PictureController {
 		//s3 저장
 		String saveFileName =picture.getPicPath().split("/")[4];
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-//		uploadObject(saveFileName);
+		String webFilePath = uploadObject(saveFileName);
+		
+		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
+		if(s3Result!=0) {
+			System.out.println("s3 경로 생성");
+		}else {
+			System.out.println("s3 경로 생성 실패");
+		}
+		
 		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
@@ -270,14 +278,15 @@ public class PictureController {
         w.dispose();
     }
 	//s3에 저장하기
-	public void uploadObject(String file) {
+	public String uploadObject(String file) {
 		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
 		String SECRET_KEY = "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\r\n";
 	  	String clientRegion = "ap-northeast-2";
         String bucketName = "picsion/img";
         String stringObjKeyName = file;
         String fileObjKeyName = file;
-        String fileName = "D:/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
+        //String fileName = "D:/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
+        String fileName = "/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
         String a3path="";
         
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
@@ -311,6 +320,8 @@ public class PictureController {
             e.printStackTrace();
         }
         a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName;
+        
+        return a3path;
 	}
 }
 

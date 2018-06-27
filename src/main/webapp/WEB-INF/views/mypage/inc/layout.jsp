@@ -50,6 +50,7 @@
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
     <!-- Plugin for Fileupload, full documentation here: https://www.jasny.net/bootstrap/javascript/#fileinput -->
    	<script src="<%=request.getContextPath()%>/assets/js/plugins/jasny-bootstrap.min.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/jcanvas.js"></script>
 </head>
 
 <body class="profile-page sidebar-collapse">

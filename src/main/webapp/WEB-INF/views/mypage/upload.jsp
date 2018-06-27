@@ -2,25 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
-<head>
-<%-- <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link href="<%=request.getContextPath()%>/uploadassets/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css"/> 
-    <link href="<%=request.getContextPath()%>/uploadassets/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css"/>
-    <script src="<%=request.getContextPath()%>/uploadassets/js/plugins/sortable.js" type="text/javascript"></script>
-    <script src="<%=request.getContextPath()%>/uploadassets/js/fileinput.js" type="text/javascript"></script>
-    <script src="<%=request.getContextPath()%>/uploadassets/js/locales/fr.js" type="text/javascript"></script>
-    <script src="<%=request.getContextPath()%>/uploadassets/js/locales/es.js" type="text/javascript"></script>
-    <script src="<%=request.getContextPath()%>/uploadassets/themes/explorer-fa/theme.js" type="text/javascript"></script>
-    <script src="<%=request.getContextPath()%>/uploadassets/themes/fa/theme.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>  --%>
-
-
-</head>
-
 <script type="text/javascript">
 $(document).on("click", "#tagAdd", function() {
     if($('#tagAddName').val()==0){
@@ -78,10 +59,12 @@ $(document).on("click", "#tagAdd", function() {
 									src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
 									alt="...">
 							</div>
-							<div
-								class="fileinput-preview fileinput-exists thumbnail img-raised"></div>
+							<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
+							<%-- <canvas id="canvasdiv"></canvas> --%>
+								
+							</div> 
 							<div>
-								<span class="btn btn-raised btn-round btn-default btn-file">
+								<span class="btn btn-raised btn-round btn-default btn-file"> 
 									<span class="fileinput-new">Select image</span> <span
 									class="fileinput-exists">Change</span> <input type="file"
 									name="filePath" accept=".jpg, .png, .bmp" />
@@ -133,6 +116,8 @@ $(document).on("click", "#tagAdd", function() {
 
 <script>
 	$(function() {
+		
+
 		$('input[type=file]').change(function() {
 			var formData = new FormData($('#fileForm')[0])
 			console.log("클릭가능????")
@@ -163,15 +148,44 @@ $(document).on("click", "#tagAdd", function() {
 						$('h1').after(logo)
 					}
  					/*얼굴감지*/
-					var ctx = ''
-					var ctx = document.getElementByName('filePath').getContext('2d');
-						if(data.face != null){
-							ctx.strokeStyle="#FF0000";
-							
-							ctx.strokeRect(data.face["0"].x_0,data.face["0"].y_1,data.face["0"].width,data.face["0"].height);
-							
-						}
-					
+ 					 if(data.face != null){
+ 						console.log("얼굴그리기")
+ 						/* $('canvas').drawImage({
+ 							source: $('.fileinput-preview')["0"].children["0"].src,
+ 							x: 10, y: 10,
+ 							load:rec
+ 						});
+ 						function rec(){
+ 							console.log("이게 되낭?");
+ 							$('canvas').drawRect({
+								strokeStyle:"#FF0000",
+								strokeWidth:4,
+								x:data.face["0"].x_0, y:data.face["0"].y_1,
+								width:data.face["0"].width,
+								height:data.face["0"].height
+ 							});
+ 						}
+ 						 */
+ 						 
+ 						  /* $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */ 
+ 						//이 밑에 잠시 주석걸겠습니다
+ 						/* $('canvas').drawImage({
+ 							source: $('.fileinput-preview')['0'].children['0'].src,
+ 							x: 100, y: 100,
+ 							load:rec
+ 						});
+ 						function rec(){
+ 							console.log("이게 되낭?");
+ 							$('canvas').drawRect({
+ 							strokeStyle:"#FF0000",
+ 							strokeWidth:2,
+ 							x:100, y:100,
+ 							width:20,
+ 							height:20
+ 							});
+ 						}
+ */ 						
+ 					} 
 					var safe = ''
 					if(data.safe != null){
 						safe += '<div class="alert alert-danger">'
@@ -202,6 +216,7 @@ $(document).on("click", "#tagAdd", function() {
 					/* $('#taginputtest').attr("data-role","tagsinput"); */
 					console.log('와요?')
 					$("input[data-role=tagsinput]").tagsinput();
+					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
 				}
 			,beforeSend:function(){
 				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");

@@ -45,6 +45,9 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.ImageSource;
 import com.google.cloud.vision.v1.SafeSearchAnnotation;
+import com.google.cloud.vision.v1.WebDetection;
+import com.google.cloud.vision.v1.WebDetection.WebEntity;
+import com.google.cloud.vision.v1.WebDetection.WebLabel;
 import com.google.protobuf.ByteString;
 
 import kr.or.picsion.picture.dto.Face;
@@ -74,6 +77,7 @@ public class AmazonTest {
 		String safecheck=detectSafeSearch(abc);
 		List<String> labelBag=detectLabels(abc);
 		List<Face> faceList = detectFaces(abc);
+//		detectWebDetections(abc);
 
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
@@ -295,7 +299,7 @@ public class AmazonTest {
 				
 			}
 			System.out.println(safeLevel);
-			if(safeLevel>2) {
+			if(safeLevel>4) {
 				safeExist="유해콘텐츠가 감지되었습니다.";
 			}else {
 				safeExist=null;
@@ -330,10 +334,10 @@ public class AmazonTest {
 	                System.out.println(
 	                        "position: %s" + annotation.getBoundingPoly() + "\n");
 //	                faceXY+=annotation.getBoundingPoly();
-	                System.out.println("왼상?"+annotation.getBoundingPoly().getVertices(0));
+	                /*System.out.println("왼상?"+annotation.getBoundingPoly().getVertices(0));
 	                System.out.println("오상?"+annotation.getBoundingPoly().getVertices(1));
 	                System.out.println("오하?"+annotation.getBoundingPoly().getVertices(2));
-	                System.out.println("왼하?"+annotation.getBoundingPoly().getVertices(3));
+	                System.out.println("왼하?"+annotation.getBoundingPoly().getVertices(3));*/
 	                facePoly.add(new Face((int)annotation.getBoundingPoly().getVertices(0).getX(),
 	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getX(),
 	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getY(),
@@ -342,6 +346,61 @@ public class AmazonTest {
 	        }
 	        return facePoly;
 	    }
+	}
+
+	public static void detectWebDetections(String filePath) throws Exception {
+		List<AnnotateImageRequest> requests = new ArrayList<>();
+
+		Image img = getImage(filePath);
+		Feature feat = Feature.newBuilder().setType(Feature.Type.WEB_DETECTION).build();
+		AnnotateImageRequest request = AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+		requests.add(request);
+
+		try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
+			BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
+			List<AnnotateImageResponse> responses = response.getResponsesList();
+
+			for (AnnotateImageResponse res : responses) {
+				if (res.hasError()) {
+					System.out.println("Error: "+ res.getError().getMessage());
+					return;
+				}
+
+				// Search the web for usages of the image. You could use these signals later
+				// for user input moderation or linking external references.
+				// For a full list of available annotations, see http://g.co/cloud/vision/docs
+				WebDetection annotation = res.getWebDetection();
+				
+				for (WebEntity entity : annotation.getWebEntitiesList()) {
+					/*if(entity.getScore()>0.7 && entity.getDescription()!=null) {
+						System.out.println(entity.getDescription() + " : " + entity.getEntityId() + " : " + entity.getScore());
+					}*/
+					if(entity.getDescription()==null) {
+						System.out.println(entity.getDescription() + " : " + entity.getEntityId() + " : " + entity.getScore());
+					}
+				}
+				for (WebLabel label : annotation.getBestGuessLabelsList()) {
+					System.out.println("Best guess label: "+ label.getLabel());
+					
+				}
+				/*System.out.println("\nPages with matching images: Score\n==");*/
+				/*for (WebPage page : annotation.getPagesWithMatchingImagesList()) {
+					out.println(page.getUrl() + " : " + page.getScore());
+				}
+				out.println("\nPages with partially matching images: Score\n==");
+				for (WebImage image : annotation.getPartialMatchingImagesList()) {
+					out.println(image.getUrl() + " : " + image.getScore());
+				}
+				out.println("\nPages with fully matching images: Score\n==");
+				for (WebImage image : annotation.getFullMatchingImagesList()) {
+					out.println(image.getUrl() + " : " + image.getScore());
+				}
+				out.println("\nPages with visually similar images: Score\n==");
+				for (WebImage image : annotation.getVisuallySimilarImagesList()) {
+					out.println(image.getUrl() + " : " + image.getScore());
+				}*/
+			}
+		}
 	}
 	
 	private static Image getImage(String filePath) throws IOException {

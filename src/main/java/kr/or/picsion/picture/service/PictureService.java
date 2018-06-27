@@ -152,7 +152,12 @@ public class PictureService {
     	int result = pictureDao.updateWater(picWater, picNo);
     	return result;
     }
-    
+    //s3에 사진 저장
+    public int updatePicture(String picPath,int picNo) {
+    	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	int result = pictureDao.updatePicture(picPath,picNo);
+    	return result;
+    }
     
     //태그 리스트
     public List<String> selectTag(int picNo){
