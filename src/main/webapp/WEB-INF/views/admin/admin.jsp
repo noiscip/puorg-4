@@ -2,10 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
 	$(function() {
-
+		$('#datatable').DataTable();
 		$(document).on('click', 'button[title=userDelete]', function() {
 
 			/* 삭제 ajax */
@@ -108,7 +109,7 @@
 			<h1>전체 회원 목록</h1>
 			
 			<input type="text" id="search"><button id="searchbtn">검색</button><button id="allUser">전체 조회</button>
-			<table border="3">
+			<table border="3" id="datatable">
 				<thead>
 					<tr>
 						<th>유저 번호</th>

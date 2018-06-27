@@ -21,8 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="readCheck">
 		update NOTICE
 		   set readCheck='T'
-		 where <if test="noticeNo != 0">noticeNo = #{noticeNo}</if>
-		 	   <if test="noticeNo == 0">receiveUserNo=#{receiveUserNo} AND tableNo=#{tableNo} AND sendUserNo=#{sendUserNo}</if>
-		 	   
+		 where receiveUserNo=#{receiveUserNo} AND sendUserNo=#{sendUserNo} AND tableNo = #{tableNo}
+		 	   <if test="brdNo != 0"> AND brdNo=#{brdNo}</if>
+		 	   <if test="picNo != 0"> AND picNo=#{picNo}</if>
 	</update>
 </mapper>

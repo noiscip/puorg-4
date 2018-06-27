@@ -132,19 +132,25 @@ public class AmazonTest {
 					try {
 						metadata = ImageMetadataReader.readMetadata(newFile);
 
-
 						for (Directory directory : metadata.getDirectories()) {
+							System.out.println(directory);
 						    for (Tag tag : directory.getTags()) {
 						        System.out.format("[%s] - %s = %s \n",
 						            directory.getName(), tag.getTagName(), tag.getDescription());
+						        if(!directory.getName().equals("Exif Thumbnail") && tag.getTagName().split(" ")[0].equals("Image")) {
+						        	System.out.println("---------------------------------");
+						        	System.out.format("[%s] - %s = %s \n",
+								            directory.getName(), tag.getTagName(), tag.getDescription());
+						        	System.out.println("---------------------------------");
+						        }
+						        
+						        
 						    }
 						    if (directory.hasErrors()) {
 						        for (String error : directory.getErrors()) {
 						            System.err.format("ERROR: %s", error);
 						        }
 						    }
-						    System.out.println("bbbb");
-						    System.out.println(directory);
 						}
 
 
