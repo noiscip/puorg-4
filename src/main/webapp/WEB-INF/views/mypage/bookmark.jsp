@@ -54,6 +54,7 @@ $(document).on('click','#like',function(){
 /* 뿌려주는 이미지의 크기 */
 .img-size {
 	height: 300px;
+	width: 100%;
 }
 
 /* 사용자의 프로필 사진의 크기 */
@@ -72,7 +73,7 @@ $(document).on('click','#like',function(){
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
 <div class="main main-raised">
 	<div class="profile-content">
-		<div class="container">
+		<div class="container-fluid">
 		<ul class="nav nav-pills justify-content-center my-ul">
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
@@ -82,18 +83,15 @@ $(document).on('click','#like',function(){
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
 		</ul>
-			<div class="gallery">
 				<div class="row">
-				
-					
 			<div id="gallery">
 				<div class="flex_grid credits">
+				<div class="tz-gallery">
+				<div class="row">
 					<c:forEach items="${bookmarkPicList}" var="bookmarkpic" varStatus="status">
-						<div class="item" data-w="640" data-h="426"
-							style="width: 255px; height: 300px; display: block;">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}"> <img class="rounded img-size"
-								src="<%=request.getContextPath()%>${bookmarkpic.picPath}"
-								alt="">
+						<div class="item col-sm-6 col-md-4">
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
+							<img class="rounded img-size" src="<%=request.getContextPath()%>${bookmarkpic.picPath}"	alt="No Image">
 							</a>
 							<div>
 			                    <div class="counts hide-xs hide-sm ">
@@ -118,27 +116,12 @@ $(document).on('click','#like',function(){
                				</div>
 						</div>
 					</c:forEach>
+					</div>
+					</div>
 				</div>
 			</div>
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 				</div>
-			</div>
-			
-			
-			
-			
-			
-			
-			
 			
 		</div>
 	</div>

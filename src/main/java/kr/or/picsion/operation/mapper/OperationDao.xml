@@ -22,7 +22,7 @@ select * from OPERATION where brdNo=#{brdNo}
 <!-- operBoardList(전체조회) -->
  <select id="operBoardList" 
                            resultType="kr.or.picsion.operation.dto.Operation">
-      select bo.*,oper.* from BOARD bo left join OPERATION oper on bo.brdNo=oper.brdNo  order by bo.brdNo desc
+      select bo.*,oper.* from BOARD bo left join OPERATION oper on bo.brdNo=oper.brdNo  order by bo.brdNo
  </select>
 
 
