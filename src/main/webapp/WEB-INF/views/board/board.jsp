@@ -46,7 +46,7 @@ $(document).ready( function () {
 															href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a>
 													</c:when>
 													<c:otherwise>
-														<a>${n.brdTitle}</a>
+													<a data-toggle="popover" data-placement="right" data-trigger="hover" data-content="작업중인 게시판은 작업 관계자만 읽기가 가능합니다.">${n.brdTitle}</a>													
 													</c:otherwise>
 												</c:choose>
 											</c:when>
