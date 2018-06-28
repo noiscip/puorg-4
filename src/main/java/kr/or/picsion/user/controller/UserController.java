@@ -2,10 +2,11 @@ package kr.or.picsion.user.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.View;
-
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
 
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
@@ -192,6 +186,29 @@ public class UserController {
 		return "mypage.following";
 	}
 	
+	//정보 수정 전 비밀번호 확인 페이지
+	@RequestMapping(value="updatebefore.ps", method=RequestMethod.GET)
+	public String updateBeforePage() {
+		return "mypage.updatebefore";
+	}
+	
+	//정보 수정 페이지전 (비밀번호 확인)
+	@RequestMapping(value="updatebefore.ps", method=RequestMethod.POST)
+	public String updateBefore(User user, HttpSession session) {
+		User userSession = (User)session.getAttribute("user");
+		String result;
+		System.out.println("업데이트 비포컨트롤러 와??");
+		
+		if(userSession.getPwd().equals(user.getPwd())) {
+			result="redirect:updateinfo.ps";
+		}else {
+			result="redirect:updatebefore.ps";
+		}
+		System.out.println("result머야??");
+		System.out.println(result);
+		return result;
+	}
+	
 	//정보 수정 페이지로 이동 (회원의 정보 검색해서)
 	@RequestMapping(value="updateinfo.ps", method=RequestMethod.GET)
 	public String updatePage(HttpSession session, Model model) {
@@ -210,9 +227,8 @@ public class UserController {
 		user.setUserNo(userSession.getUserNo());
 		
 		System.out.println(file.getOriginalFilename());
-		System.out.println(user);
 		String filePathh="";
-		String uploadPath = "C:\\bitcamp104\\PICSION\\Final_Picsion\\src\\main\\webapp\\assets\\img\\faces\\";
+		String uploadPath = "C:\\bitcamp104\\PICSION\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\Final_Picsion\\assets\\img\\faces\\";
 		String path="/assets/img/faces/";
 		
 		File dir = new File(uploadPath);
@@ -221,18 +237,23 @@ public class UserController {
 		}
 
 		String originalFileName = file.getOriginalFilename();
-		String saveFileName = originalFileName;//	우어어ㅓㅇ~~~~~~~~~~~~~~~
+		String saveFileName = originalFileName;
 		filePathh = uploadPath + saveFileName;
 		
 		String dbPath=path+originalFileName;
 		
-		if(originalFileName.equals("")&&userSession.getPrContent().equals(user.getPrContent())) {
+		//자기소개 변경했을때
+		if(userSession.getPrContent().equals(user.getPrContent())) {
 			System.out.println("같은거지?");
-		}else {		//파일은 파일 업로드만 따로 분리!
+		}else {		
+			userService.updateUserPr(user);
+		}
+		
+		//프로필 사진 변경 했을때
+		if(originalFileName.equals("")) {
+			System.out.println("프로필 사진 변경 X");
+		}else {
 			if(saveFileName != null && !saveFileName.equals("")) {
-				/*if(saveFileName.toLowerCase().indexOf(".jpg")>0){
-					saveFileName = header+"check01"+".jpg";
-				}*/
 				if(new File(uploadPath + saveFileName).exists()) {
 					saveFileName = saveFileName + "_" + System.currentTimeMillis();
 				}
@@ -247,10 +268,12 @@ public class UserController {
 				} 
 			} 
 			
+			System.out.println(user);
 			user.setPrPicture(dbPath);
-			userService.updateUserPr(user);
+			userService.updateUserPic(user);
 		}
 		
+		//비밀번호, 유저네임 변경했을때
 		if(user.getPwd()=="") {
 			System.out.println("안되 비었어");
 		}else if(userSession.getPwd().equals(user.getPwd())) {
