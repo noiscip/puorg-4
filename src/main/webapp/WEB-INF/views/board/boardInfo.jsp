@@ -54,8 +54,10 @@
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 							      	$("#reviewcontent").val("");
+							      	if(${boardInfo.operStateNo}==2){
 							      	var tableNo=4+":"+data.addcomment.cmtNo;
 									send(receiveUserNo,tableNo);
+							      	}
 							     
 							  }, 
 							  error: function(){
@@ -164,12 +166,99 @@
 						<font>${boardInfo.brdContent}</font>
 					</p>
 					<c:choose>
-						<c:when
-						test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
+						<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
 						<button type="button" class="btn btn-default btn-sm" style="float:right"
 							data-toggle="modal" data-target="#exampleModal">신청하기</button>
 						</c:when>
 					</c:choose>
+					<c:if test="${boardInfo.operStateNo eq 1}">
+							<div class="col-md-12 col-sm-12">
+										<h3 class="title">댓 	글</h3>
+										<!-- <h3 class="main-price">$335</h3> -->
+										<div id="accordion" role="tablist">
+
+											<div class="card card-collapse">
+
+												<div id="collapseThree" class="collapse show"
+													role="tabpanel" aria-labelledby="headingThree"
+													data-parent="#accordion"
+													style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
+													<div class="card-body" id="reviewcontents">
+
+														<c:forEach var="review1" items="${comment}"
+															varStatus="status">
+
+															<div class="media">
+																<a class="float-left"
+																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
+																	<div class="avatar">
+																		<img class="media-object" alt="Tim Picture"
+																			src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
+																	</div>
+																</a>
+																<div class="media-body">
+																	<h4 class="media-heading">
+
+																		${commentuser[status.index].userName} <small>·
+																			<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
+																				value="${review1.cmtReg}" />
+																		</small>
+
+																	</h4>
+																	<p>${review1.cmtContent}</p>
+																	<a href="#pablo"
+																		class="btn btn-primary btn-link float-right"
+																		rel="tooltip" title="" data-original-title="보내버리기"
+																		id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																		<i class="material-icons">reply</i> 신고
+																	</a>
+																</div>
+															</div>
+
+														</c:forEach>
+
+													</div>
+												</div>
+											</div>
+											<div class="card card-collapse">
+												<div class="card-header" role="tab" id="headingTwo">
+													<h5 class="mb-0">
+														<a>Input Comment</a>
+													</h5>
+												</div>
+												<div id="collapseTwo" class="collapse show" role="tabpanel"
+													aria-labelledby="headingTwo" data-parent="#accordion"
+													style="">
+													<div class="media media-post">
+														<a class="author float-left" href="#pablo">
+															<div class="avatar">
+																<img class="media-object" alt="64x64"
+																	src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
+															</div>
+														</a>
+														<div class="media-body">
+															<div class="form-group label-floating bmd-form-group">
+																<label class="form-control-label bmd-label-floating"
+																	for="exampleBlogPost"> 댓글을 달아보세요...</label>
+																<textarea class="form-control" rows="5"
+																	id="reviewcontent"></textarea>
+															</div>
+															<div class="media-footer">
+																<a href="#pablo"
+																	class="btn btn-primary btn-round btn-wd float-right"
+																	id="addreviewbutton">Post Comment</a>
+																<button class="btn btn-primary btn-sm"
+																	data-toggle="modal" data-target="#reportModal">신고</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+							
+						</c:if>
 				</div>
 			</div>
 			<c:choose>
