@@ -60,43 +60,26 @@ $(function() {
 <style type="text/css">
 .img-size {
 	height: 300px;
-}
+	width: 100%;
+} 
 </style>
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');">
-	
 </div>
 <div class="main main-raised">
 	<div class="profile-content">
-		<div class="container">
-		
-			<div class="row">
-				<div class="col-md-6 ml-auto mr-auto">
-					<div class="profile-tabs">
-						<ul class="nav nav-pills nav-pills-icons justify-content-center"
-							role="tablist">
 
-							<li class="nav-item"><a class="nav-link"
-								href="<%=request.getContextPath()%>/home.ps"> <i
-									class="material-icons">keyboard_backspace</i> 돌아가기
-							</a></li>
-
-						</ul>
-					</div>
-				</div>
-			</div> 
-			<div id="gallery">
-				<div class="flex_grid credits">
-					<c:forEach items="${imagelistall}" var="followinglistall"
-						varStatus="status">
-						<div class="item" data-w="640" data-h="426"
-							style="width: 255px; height: 300px; display: block;">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}"> <img class="rounded img-size"
-								src="<%=request.getContextPath()%>/${followinglistall.picPath}"
-								alt="">
-							</a>
-							<div>
+		<div class="container-fluid">
+			<div class="flex_grid credits">
+			<div class="tz-gallery">
+				<div class="row">
+				<c:forEach items="${imagelistall}" var="followinglistall" varStatus="status">					
+						  <div class="item col-sm-6 col-md-4"> 
+			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}"> 
+			                        <img class="rounded img-size" src="<%=request.getContextPath()%>/${followinglistall.picPath}"alt="No Image">
+			                    </a>
+			                    <div>
 			                    <div class="counts hide-xs hide-sm ">
 			                    <c:choose>
 									<c:when test="${followinglistall.respectCheck eq 'T'}">
@@ -117,10 +100,12 @@ $(function() {
 			                    </div>
 			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${ownlist[status.index].userNo}">${ownlist[status.index].userName}</a>
                				</div>
-						</div>
+			            </div>
+						
 					</c:forEach>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 </div>

@@ -14,6 +14,7 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
+	baguetteBox.run('.picturezoom');
 	
 	var loginUserNo = $('#loginUserNo').val();
 	var userInfoNo = ${userInfo.userNo};
@@ -220,8 +221,15 @@ $(document).ready(function() {
 })
 
 </script>
-<div class="page-header header-filter" data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
+<div class="page-header header-filter" data-parallax="true"	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
+<div class="container">
+            <div class="row title-row">
+                <div class="col-md-4 ml-auto">
+                    <button class="btn btn-white float-right"><i class="material-icons">shopping_cart</i>Add Cart<div class="ripple-container"></div></button>
+                    <button class="btn btn-primary float-right"><i class="material-icons"></i>Buy<div class="ripple-container"></div></button>
+                </div>
+            </div>
+        </div>
 </div>
 
 <input type="hidden" value="${picture.tableNo},${picture.userNo},0,${picture.picNo}" id="info">
@@ -233,7 +241,10 @@ $(document).ready(function() {
 				<div class="col-md-6 col-sm-6">
 					<div class="card card-blog">
 						<div class="card-header card-header-image">
-							<a data-toggle="modal" data-target=".bd-example-modal-lg"> <img class="img"	src="<%=request.getContextPath()%>/${picture.picPath}">
+						<div class="picturezoom">
+							<a href="${picture.picPath}"> 
+							<img class="img" src="${picture.picPath}">
+							</a></div>
 								<div class="card-title">
 								<c:choose>
 								<c:when test="${respectresult eq 1}">
@@ -252,7 +263,7 @@ $(document).ready(function() {
 								</c:otherwise>
 								</c:choose>
 								</div>
-							</a>
+							
 							<div class="colored-shadow colored-shadow-big"
 								style="background-image: url(&quot;<%=request.getContextPath()%>/${picture.picPath}?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div>
 						</div>
@@ -320,7 +331,8 @@ $(document).ready(function() {
 				</div>
 				<div class="col-md-6 col-sm-6">
 					<h2 class="title">${picture.picTitle}</h2>
-					<!-- <h3 class="main-price">$335</h3> -->
+				<!--  <h3 class="main-price">$335</h3> -->
+				 <h1 class="card-title"><small>$199</small></h1> 
 					<div id="accordion" role="tablist">
 						<div class="card card-collapse">
 							<div class="card-header" id="headingOne">
@@ -449,18 +461,15 @@ $(document).ready(function() {
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12 col-sm-12">
+				<!-- <div class="col-md-12 col-sm-12">
 					<div align="center">
-
-						<h1 class="card-title">
-							<small>$</small>199
-						</h1>
+						
 						<button class="btn btn-rose btn-round card-title">
 							Buy &nbsp;<i class="material-icons">shopping_cart</i>
 						</button>
 					</div>
 
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="related-products">
@@ -471,7 +480,7 @@ $(document).ready(function() {
 					<div class="card card-product">
 						<div class="card-header card-header-image">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${rList.picNo}">
-							<img class="img" src="<%=request.getContextPath()%>${rList.picPath}"></a>
+							<img class="img" src="${rList.picPath}"></a>
 							<div class="colored-shadow"	style="background-image: url(&quot;<%=request.getContextPath()%>${rList.picPath}&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">
@@ -501,9 +510,6 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
-
-
-
 
 <!-- 메시지 모달 -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="">
@@ -541,17 +547,4 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
-</div>
-
-<!-- 사진 확대 모달 -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-     <div class="card card-blog">
-    <div class="card-header card-header-image">
-            <img class="img" src="<%=request.getContextPath()%>/${picture.picPath}">
-    </div>
-</div>
-    </div>
-  </div>
 </div>

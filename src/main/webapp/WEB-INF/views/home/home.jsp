@@ -720,16 +720,12 @@ label.btn.btn-default.btn-circle.focus {
 }
 </style>
 <script>
-	//postid 가져와서 댓글달기
-	$(document)
-			.ready(
-					function() {
-						console.log('자색고구마칩')
+//postid 가져와서 댓글달기
+$(document).ready(function() {
 						console.log($('#result').val())
 						if ($('#result').val() == "F") {
 							alert('이미 연동된 계정 입니다. 다른 아이디를 등록 하세요.')
-<%session.removeAttribute("result");%>
-	}
+							<%session.removeAttribute("result");%>}
 						//이미지 class명부여
 						//postModal("main");
 						$("#carousel").on("mousewheel", function(e) {
@@ -766,14 +762,11 @@ label.btn.btn-default.btn-circle.focus {
 									}
 								});
 						
-						var text = ""
 						  ///워드 차트 기능
 							$.ajax({
 								  url : "/picsion/picture/tagList.ps",
-								  async : true,
 								  success : function(data){
-									  text=data.wordChartList;
-									  console.log(text);
+									  var text=data.wordChartList;
 									  var data = Highcharts.reduce(text, function(arr, word) {
 											var obj = Highcharts.find(arr,
 													function(obj) {
@@ -793,6 +786,18 @@ label.btn.btn-default.btn-circle.focus {
 								[]);
 
 								Highcharts.chart('wordchart', {
+									plotOptions: {
+								        series: {
+								            cursor: 'pointer',
+								            point: {
+								                events: {
+								                    click: function () {
+								                    	location.href="/picsion/picture/tagpicList.ps?tag="+$(this)[0].name;
+								                    }
+								                }
+								            }
+								        }
+								    },
 									series : [ {
 										type : 'wordcloud',
 										data : data,
@@ -804,11 +809,11 @@ label.btn.btn-default.btn-circle.focus {
 								});
 								  },
 								  error: function(){
-								   	  alert("메시지 보내는 도중 오류가 발생했습니다.");
+								   	  alert("천천히!!");
 								  }
 							})
 						
-					})
+					
 
 	//css - 카테고리별 게시물 필터링
 	var all = $("#carousel").children(); //초기값
@@ -847,7 +852,6 @@ label.btn.btn-default.btn-circle.focus {
 	}
 
 	function moveToSelected(element) {
-		console.log("moveToSelected");
 		if (element == "next") {
 			var selected = $(".selected").next();
 		} else if (element == "prev") {
@@ -898,10 +902,17 @@ label.btn.btn-default.btn-circle.focus {
 		curObj.next().click();
 		$(".selected > div").children().click();
 	}
+	
+	
+	$( "#carousel" ).hover(
+			function(){$('body').css("overflow","hidden")},
+			function(){$('body').css("overflow","visible")	}
+	);
+	
+})
 </script>
 <div class="page-header header-filter clear-filter purple-filter"
-	data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg2.jpg');">
+	data-parallax="true">
 	<div class="container">
 		<c:choose>
 			<c:when test="${sessionScope.user eq null}">
@@ -917,7 +928,7 @@ label.btn.btn-default.btn-circle.focus {
 									<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 									<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
 								</ol>
-								<div style="height: 500px" class="carousel-inner">
+								<div style="max-height: 500px" class="carousel-inner">
 									<div class="carousel-item active">
 										<img class="d-block w-100"
 											src="<%=request.getContextPath()%>/assets/img/bg.jpg"
@@ -955,10 +966,110 @@ label.btn.btn-default.btn-circle.focus {
 			</c:when>
 			<c:otherwise>
 
-				<c:if test="${imagelist eq ''}">
-
-					<h6>팔로잉 하세요</h6>
-				</c:if>
+				
+				<c:choose>
+				<c:when test="${empty imagelist}">
+				<h1 class="text-center">팔로잉을 시작 하세요</h1>
+				<div class="row">
+                    <div class="col-md-3">
+                        <div class="card card-profile card-plain">
+                            <div class="card-avatar">
+                                <a href="#pablo">
+                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/marc.jpg">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Alec Thompson</h4>
+                                <h6 class="category text-muted">CEO / Co-Founder</h6>
+                                <p class="card-description">
+                                    And I love you like Kanye loves Kanye. We need to restart the human foundation.
+                                </p>
+                            </div>
+                            <div class="card-footer justify-content-center">
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-facebook">
+                                    <i class="fa fa-facebook-square"></i>
+                                </a>
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-google">
+                                    <i class="fa fa-google"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-profile card-plain">
+                            <div class="card-avatar">
+                                <a href="#pablo">
+                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/kendall.jpg">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Tania Andrew</h4>
+                                <h6 class="category text-muted">Designer</h6>
+                                <p class="card-description">
+                                    Don't be scared of the truth because we need to restart the human foundation. And I love you like Kanye loves Kanye.
+                                </p>
+                            </div>
+                            <div class="card-footer justify-content-center">
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble">
+                                    <i class="fa fa-dribbble"></i>
+                                </a>
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-linkedin">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-profile card-plain">
+                            <div class="card-avatar">
+                                <a href="#pablo">
+                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/christian.jpg">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Christian Mike</h4>
+                                <h6 class="category text-muted">Web Developer</h6>
+                                <p class="card-description">
+                                    I love you like Kanye loves Kanye. Don't be scared of the truth because we need to restart the human foundation.
+                                </p>
+                            </div>
+                            <div class="card-footer justify-content-center">
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-facebook"><i class="fa fa-facebook-square"></i></a>
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble"><i class="fa fa-dribbble"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-profile card-plain">
+                            <div class="card-avatar">
+                                <a href="#pablo">
+                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/avatar.jpg">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Rebecca Stormvile</h4>
+                                <h6 class="category text-muted">Web Developer</h6>
+                                <p class="card-description">
+                                    Don't be scared of the truth because we need to restart the human foundation.
+                                </p>
+                            </div>
+                            <div class="card-footer justify-content-center">
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-google"><i class="fa fa-google"></i></a>
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter"><i class="fa fa-twitter"></i></a>
+                                <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble"><i class="fa fa-dribbble"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				</c:when>
+				<c:otherwise>
+				
 
 				<div class="row">
 					<div class="col-md-12">
@@ -1010,18 +1121,21 @@ label.btn.btn-default.btn-circle.focus {
 						</article>
 					</c:forEach>
 				</div>
+				</c:otherwise>
+				</c:choose>
+				
 			</c:otherwise>
 		</c:choose>
 	</div>
 </div>
 
-
+ 
 
 <div class="main main-raised">
 	<div class="section section-basic">
+	
 		<div class="container">
 			<div id="wordchart"></div>
 		</div>
 	</div>
 </div>
-

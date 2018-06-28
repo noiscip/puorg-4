@@ -60,7 +60,11 @@ public class BoardController {
 		if(boardInfo.getOperStateNo()==2) {
 			operation=operationService.selectOper(brdNo);
 		}
+		User requestUser = userService.userInfo(operation.getRequesterNo());
+		User operatorUser = userService.userInfo(operation.getOperatorNo());
 		System.out.println(operation);
+		model.addAttribute("operatorUser", operatorUser);
+		model.addAttribute("requestUser", requestUser);
 		model.addAttribute("operation", operation);
 		model.addAttribute("commentuser", commentuser);
 		model.addAttribute("applylist", list);
@@ -111,7 +115,8 @@ public class BoardController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println(list);
+		System.out.println(operlist);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("operlist", operlist);

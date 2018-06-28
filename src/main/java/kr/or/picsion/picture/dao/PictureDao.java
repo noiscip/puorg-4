@@ -14,7 +14,7 @@ public interface PictureDao {
 	public List<String> selectTag(int picNo);  			//태그 리스트
 	public int searchPath(int picNo);////////////////////////////뀨?
 	public int deletePicture(int picNo);
-	public int updatePicture(Picture picture);
+	public int updatePicture(String picPath,int picNo);  //일단 아무도 안쓰는거 같은데 사진 s3에 저장할때 쓰겠음 from 아림
 	public List<Picture> pictureList();
 	public Picture selectPicture(int picNo);			//사진 상세
 	public List<Picture> studioPicList(int userNo, int myuserNo);//userNo로 스튜디오에서 사진 불러오기

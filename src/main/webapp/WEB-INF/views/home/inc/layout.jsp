@@ -49,9 +49,7 @@
 	<tiles:insertAttribute name="header" />
 
 	<!-- content -->
-	<div id="main">
-		<tiles:insertAttribute name="content" />
-	</div>
+	<tiles:insertAttribute name="content" />
 
 	<!-- footer -->
 	<tiles:insertAttribute name="footer" />

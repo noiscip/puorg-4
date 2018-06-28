@@ -6,7 +6,9 @@
 
 <script type="text/javascript">
 $(document).ready( function () {
-    $('#datatable').DataTable();
+    $('#datatable').DataTable( {
+        "order": [[ 0, "desc" ]]
+    } );
 } );
 </script>
 
@@ -22,6 +24,7 @@ $(document).ready( function () {
 					<table class="table" id="datatable">
 						<thead>
 							<tr>
+							
 								<th class="text-center">#</th>
 								<th class="text-center">제목</th>
 								<th class="text-center">작성자</th>
@@ -32,6 +35,7 @@ $(document).ready( function () {
 						<tbody>
 							<c:forEach items="${list}" var="n" varStatus="status">
 								<tr>
+								
 									<td class="text-center">${n.brdNo}</td>
 									<td class="text-center"><c:choose>
 											<c:when test="${n.operStateNo eq 2}">
