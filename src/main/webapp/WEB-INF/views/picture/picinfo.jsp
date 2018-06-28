@@ -225,8 +225,8 @@ $(document).ready(function() {
 <div class="container">
             <div class="row title-row">
                 <div class="col-md-4 ml-auto">
-                    <button class="btn btn-white float-right"><i class="material-icons">shopping_cart</i>Add Cart<div class="ripple-container"></div></button>
-                    <button class="btn btn-primary float-right"><i class="material-icons"></i>Buy<div class="ripple-container"></div></button>
+                    <button class="btn btn-white float-right"><i class="material-icons">shopping_cart</i> Add Cart<div class="ripple-container"></div></button>
+                    <a href="<%=request.getContextPath()%>/purchase/userPurchase.ps" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</a>
                 </div>
             </div>
         </div>

@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">
+$(function() {
+	var loginUserNo = $('#loginUserNo').val();
+
 $(document).on('click','#like',function(){
 			if(loginUserNo == 0){
 			}else{
@@ -33,6 +36,7 @@ $(document).on('click','#like',function(){
 				    picNo : $(this).attr("value")};
 			var bookmark = $(this);
 			var bpa = $(this).parent();
+			var removeDiv = bookmark.closest('.item');
 			 $.ajax({
 				url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
 				data : data,
@@ -40,6 +44,7 @@ $(document).on('click','#like',function(){
 					if(data.result==1){
 						  $(bookmark)[0].innerHTML = 'bookmark_border';
 						  $(bpa)[0].childNodes[1].nodeValue--;
+						  removeDiv.remove();
 					  }else{
 						  $(bookmark)[0].innerHTML = 'bookmark';
 						  $(bpa)[0].childNodes[1].nodeValue++;
@@ -48,6 +53,7 @@ $(document).on('click','#like',function(){
 			 }) 
 		}
 	})
+})
 
 </script>
 <style>
