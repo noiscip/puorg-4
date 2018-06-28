@@ -60,7 +60,11 @@ public class BoardController {
 		if(boardInfo.getOperStateNo()==2) {
 			operation=operationService.selectOper(brdNo);
 		}
+		User requestUser = userService.userInfo(operation.getRequesterNo());
+		User operatorUser = userService.userInfo(operation.getOperatorNo());
 		System.out.println(operation);
+		model.addAttribute("operatorUser", operatorUser);
+		model.addAttribute("requestUser", requestUser);
 		model.addAttribute("operation", operation);
 		model.addAttribute("commentuser", commentuser);
 		model.addAttribute("applylist", list);
@@ -97,51 +101,13 @@ public class BoardController {
 		
 	
 	@RequestMapping("board.ps")
-	public String boardList(Model model, String pg) {
+	public String boardList(Model model) {
 		System.out.println("요청게시판 컨트롤러");
 		List<Board> list=new ArrayList<Board>();
 		List<Operation> operlist=new ArrayList<Operation>();
-		int total=0;
-		
-		int page = 1;
-		String Strpg = pg;
-		if (Strpg != null) {
-			page = Integer.parseInt(Strpg);
-		}
-
-		int rowSize = 5;
-		int start = (page * rowSize) - (rowSize - 1);
-		int end = page * rowSize;
-
-		
-		total = boardService.getBoardCount();
-
-		System.out.println("start : " + start);
-		System.out.println("end : " + end);
-		System.out.println("total : " + total);
-
-		// ... 목록
-		int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-		// int totalPage = total/rowSize + (total%rowSize==0?0:1);
-		System.out.println("페이지수 : " + allPage);
-
-		int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
-		// [10] >>
-		int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
-		// ((1-1)/10*10)
-		int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
-		if (toPage > allPage) { // 예) 20>17
-			toPage = allPage;
-		}
-
-		// start , end
-		HashMap<String, Integer> map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
 		try {
-			list = boardService.boardList(map);
-			operlist=operationService.operBoardList(map);
-			
+			list = boardService.boardList();
+			operlist=operationService.operBoardList();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,15 +115,11 @@ public class BoardController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(list);
 		System.out.println(operlist);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("operlist", operlist);
-		model.addAttribute("pg", page);
-		model.addAttribute("allPage", allPage);
-		model.addAttribute("block", block);
-		model.addAttribute("fromPage", fromPage);
-		model.addAttribute("toPage", toPage);	
 		System.out.println("뷰단 보내기");
 		return "board.board";
 	}

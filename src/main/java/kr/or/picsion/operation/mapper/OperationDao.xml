@@ -20,9 +20,9 @@ select * from OPERATION where brdNo=#{brdNo}
 
 
 <!-- operBoardList(전체조회) -->
- <select id="operBoardList" parameterType="hashmap" 
+ <select id="operBoardList" 
                            resultType="kr.or.picsion.operation.dto.Operation">
-      select oper.* from (select * from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select * from BOARD order by brdNo DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RN where RN.ROWNUM >= #{start} and RN.ROWNUM  &lt;= #{end}) bo left join OPERATION oper on bo.brdNo=oper.brdNo;
+      select bo.*,oper.* from BOARD bo left join OPERATION oper on bo.brdNo=oper.brdNo  order by bo.brdNo
  </select>
 
 
