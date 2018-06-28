@@ -36,9 +36,15 @@
 					table += '<td>' + elt.blaNo + '</td>'
 					table += '<td>' + elt.blaUserNo + '</td>'
 					table += '<td>' + elt.blaContent+ '</td>'
-					table += '<td>' + moment(elt.blaReg).format('YYYY-MM-DD, H:mm:ss') + '</td>'
+					table += '<td>' + moment(elt.blaReg).format('YYYY-MM-DD, H:mm:ss') + '</td>' 
 					table += '<td>' + elt.tableNo + '</td>'
-					table += '<td>' + elt.brdNo + '</td>'
+					
+					if(elt.brdNo==0){
+						table += '<td>' + elt.brdNo + '</td>'
+					}else{
+						table += '<td><a href="/picsion/board/boardInfo.ps?brdNo='+elt.brdNo+'">'+elt.brdNo+'</a></td>'
+					}
+					
 					table += '<td>' + elt.cmtNo + '</td>'
 					table += '<td>' + elt.picNo + '</td>'
 					table += '<td>' + elt.userNo + '</td>'
@@ -70,10 +76,22 @@
 						table += '<td>' + elt.blaContent+ '</td>'
 						table += '<td>' + moment(elt.blaReg).format('YYYY-MM-DD, H:mm:ss') + '</td>'
 						table += '<td>' + elt.tableNo + '</td>'
-						table += '<td>' + elt.brdNo + '</td>'
+						if(elt.brdNo==0){
+							table += '<td>' + elt.brdNo + '</td>'
+						}else{
+							table += '<td><a href="/picsion/board/boardInfo.ps?brdNo='+elt.brdNo+'">'+elt.brdNo+'</a></td>'
+						}
 						table += '<td>' + elt.cmtNo + '</td>'
-						table += '<td>' + elt.picNo + '</td>'
-						table += '<td>' + elt.userNo + '</td>'
+						if(elt.picNo==0){
+							table += '<td>' + elt.picNo + '</td>'
+						}else{
+							table += '<td><a href="/picsion/picture/picinfo.ps?picNo='+elt.picNo+'">'+elt.picNo+'</a></td>'
+						}
+						if(elt.userNo==0){
+							table += '<td>' + elt.userNo + '</td>'
+						}else{
+							table += '<td><a href="/picsion/picture/mystudio.ps?userNo='+elt.userNo+'">'+elt.userNo+'</a></td>'
+						}
 						table += '</tr>'
 					})
 					
@@ -135,11 +153,27 @@
 							<td>${complain.blaUserNo}</td>
 							<td>${complain.blaContent}</td>
 							<td><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${complain.blaReg}" /></td>
-							<td>${complain.tableNo}</td>	
-							<td>${complain.brdNo}</td>
+							<td>${complain.tableNo}</td>
+							
+							<c:choose>
+								<c:when test="${complain.brdNo eq 0}"><td>${complain.brdNo}</td></c:when>
+								<c:otherwise>
+									<td><a href="/picsion/board/boardInfo.ps?brdNo=${complain.brdNo}">${complain.brdNo}</a></td>
+								</c:otherwise>
+							</c:choose>
 							<td>${complain.cmtNo}</td>
-							<td>${complain.picNo}</td>
-							<td>${complain.userNo}</td>
+							<c:choose>
+								<c:when test="${complain.picNo eq 0}"><td>${complain.picNo}</td></c:when>
+								<c:otherwise>
+									<td><a href="/picsion/picture/picinfo.ps?picNo=${complain.picNo}">${complain.picNo}</a></td>
+								</c:otherwise>
+							</c:choose>
+							<c:choose>
+								<c:when test="${complain.userNo eq 0}"><td>${complain.userNo}</td></c:when>
+								<c:otherwise>
+									<td><a href="/picsion/picture/mystudio.ps?userNo=${complain.userNo}">${complain.userNo}</a></td>
+								</c:otherwise>
+							</c:choose>
 						</tr>
 					</c:forEach>
 				</tbody>

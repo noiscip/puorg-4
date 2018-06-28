@@ -120,7 +120,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	set picWater=#{param1}
 	where picNo=#{param2}
 	</update>
-	
+	<!-- s3에 사진 저장 -->
+	<update id="updatePicture">
+	update PICTURE
+	set picPath=#{param1}
+	where picNo=#{param2}
+	</update>
 	<!-- 사진 업로드 저장 시 태그 저장 -->
 	<insert id="insertTag" >
     insert into TAG
@@ -139,9 +144,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where p.userNo=#{userNo} order by r.c desc, p.picReg asc;
 	</select>
 	
-	
-	<!--  사진 경로 뽑아내기? 
-	<select id="searchPath">
-		select picPath
-	</select> -->
 </mapper>

@@ -5,7 +5,6 @@
 
 <script type="text/javascript">
 $(function() {
-	/* baguetteBox.run('.tz-gallery'); */
 	var loginUserNo = $('#loginUserNo').val();
 
 	
@@ -77,7 +76,7 @@ $(function() {
 				<div class="row">
 				<c:forEach items="${imagelistall}" var="followinglistall" varStatus="status">					
 						  <div class="item col-sm-6 col-md-4"> 
-			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}">
+			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}"> 
 			                        <img class="rounded img-size" src="<%=request.getContextPath()%>/${followinglistall.picPath}"alt="No Image">
 			                    </a>
 			                    <div>
