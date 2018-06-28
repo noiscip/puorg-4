@@ -283,8 +283,8 @@ public class PictureController {
         String bucketName = "picsion/img";
         String stringObjKeyName = file;
         String fileObjKeyName = file;
-        //String fileName = "D:/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
-        String fileName = "/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
+        String fileName = "D:/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
+        /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
         
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
@@ -317,7 +317,7 @@ public class PictureController {
             // couldn't parse the response from Amazon S3.
             e.printStackTrace();
         }
-        a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName;
+        a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName+"/"+fileObjKeyName;
         
         return a3path;
 	}

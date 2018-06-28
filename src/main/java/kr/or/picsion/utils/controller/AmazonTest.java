@@ -92,8 +92,8 @@ public class AmazonTest {
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
 		String filePathh="";
-		/*String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
-		String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
+		String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
+		/*String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
