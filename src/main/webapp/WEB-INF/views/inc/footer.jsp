@@ -22,7 +22,7 @@
 		  </style>
 		  <script type="text/javascript">
 		  //top으로ws
-		  
+		  	
 			$(document).ready(function() {
 
 				if($('#loginUserNo').val()!= ""){

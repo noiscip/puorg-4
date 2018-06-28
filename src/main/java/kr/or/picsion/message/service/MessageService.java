@@ -144,4 +144,30 @@ public class MessageService {
 				
 		return msginfo;
 	}
+	
+	//받은메시지 삭제(receiveMsgDel update)
+	public int receiveDel(int myUserNo, int userNo) {
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		int result = messageDao.receiveDel(myUserNo, userNo);
+		
+		return result;
+	}
+	
+	//보낸메시지 삭제(sendMsgDel update)
+	public int sendDel(int myUserNo, int userNo) {
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		int result = messageDao.sendDel(myUserNo, userNo);
+		
+		return result;
+	}
+	
+	//메시지함 유저 검색해서 메시지 리스트 가져오기
+	public List<Message> selectUserMsg(int userNo, String userName){
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		List<Message> selectUserMsg = messageDao.selectUserMsg(userNo, userName);
+		
+		return selectUserMsg;
+	}
+	
+	
 }

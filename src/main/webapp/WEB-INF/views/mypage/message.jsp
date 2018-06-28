@@ -27,6 +27,7 @@
 			<%session.removeAttribute("msgNotice");%>
 			
 		}
+		
 		//메시지 보내고, 메시지 대화창에 보낸 메시지 append, 회원 대화 목록 div에서 해당 div remove후 다시 append
 		$(document).on('click', '.messageSend', function(){
 			console.log("메시지 보내기 되는거야?")
@@ -69,7 +70,7 @@
 										   	"<div class='media-body media-body-custom'>"+
 										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
 										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
-										   		"<a class='btn btn-rose btn-link float-right message-margin-del'><i class='material-icons receiveMsgDel'>clear</i>삭제</a>"+
+										   		"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
 										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
 										   	"</div></div>";
 										   	
@@ -86,6 +87,64 @@
 				
 			}
 			
+		})
+		
+		//받은 메시지함에서 삭제 버튼 눌렀을때  메시지 삭제
+		$(document).on('click', '.receiveMsgDel', function(){
+			var userListDel=$(this).closest('.media');
+			var userNo=$(this).parent()[0].children[1].dataset.no;
+			
+			console.log(userListDel)
+			console.log("여기 와?")
+			if(confirm("회원과 대화목록을 정말 삭제하시겠습니까?")==true){
+				console.log("삭제완료~")
+				
+				$.ajax({
+					url:"/picsion/message/msgdel.ps",
+					data:{userNo:userNo},
+					success:function(data){
+						userListDel.remove();
+						$('#msgContent-show').empty();
+					}
+				})
+			}
+			
+		})
+		
+		
+		//검색 버튼 클릭시 메시지 검색 비동기 처리
+		$('#searchBtn').click(function(){
+			var userName = $('.selectMsg').val();
+			console.log(userName)
+			
+			$.ajax({
+				url:"/picsion/message/msguser.ps",
+				data:{userName:userName},
+				success:function(data){
+					$('#msgContent-show').empty();
+					$('#commentstart').empty();
+					var selList;
+					$.each(data.recentSelMsg, function(index,obj){
+						selList="<div class='media'>"+
+										"<a class='float-left'>"+
+											"<div class='avatar'>"+
+										"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.user[0].userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+obj.user[0].prPicture+"'></a>"+
+									"</div></a>"+
+									"<div class='media-body media-body-custom'>"+
+									"<h4 class='media-heading msgUserName' data-name='"+obj.user[0].userName+"'>"+
+										obj.user[0].userName+"<small> · "+moment(obj.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small>"+
+									"</h4>"+
+									"<p class='msgList' style='cursor: pointer;' data-no='"+obj.user[0].userNo+"'>"+obj.msgContent+"</p>"+
+									"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
+									"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'> <i class='material-icons'>reply</i> 신고"+
+									"</a></div></div>";
+						$('#commentstart').append(selList);
+					})
+					/* $('#msg-body').scrollTop($('#msg-body')[0].scrollHeight); */
+					
+					console.log("대꾸할 힘도 없어~~")
+				}
+			});
 		})
 		
 		
@@ -118,7 +177,7 @@
 		})
 		
 		//받은 메시지함에서 삭제 버튼 눌렀을때  메시지 삭제
-		$(document).on('click', '.receiveMsgDel', function(){
+		/* $(document).on('click', '.receiveMsgDel', function(){
 			var msgNo=$(this).parent().parent()[0].children[0].innerText;
 			var removeMsg=$(this).parent().parent()[0];
 			
@@ -132,7 +191,7 @@
 				}
 			});
 			
-		})
+		}) */
 		
 		//보낸 메시지 내용 Modal창으로 띄우기
 		$(document).on('click', '.sendMsgModal', function() {
@@ -182,7 +241,7 @@
 		})		
 		
 		//검색 버튼 클릭시 메시지 검색 비동기 처리
-		$('#searchBtn').click(function(){
+		$('#123132123').click(function(){
 			var userName = $('.selectMsg').val();
 			console.log(userName)
 			
@@ -368,6 +427,7 @@ function abb(userNo,myNo,msgUser) {
 /* 메시지창  상단 너비 잡는거*/
 .message-header{
 	max-width: 600px;
+    margin-top: 100px;
 }
 
 /* ****** */
@@ -388,7 +448,7 @@ function abb(userNo,myNo,msgUser) {
 	margin-bottom: 15px;
 }
 
-/* 메시지 날짜 표시 여백 */
+/* 메시지 날짜 표시 여백, 메시지 검색폼 여백 */
 .msg-reg-p{
 	margin-bottom: 0px;
 }
@@ -418,65 +478,23 @@ function abb(userNo,myNo,msgUser) {
 	overflow-y: auto;
 }
 
-
-
-
-.container-2{
-  width: 300px;
-  vertical-align: middle;
-  white-space: nowrap;
-  position: relative;
+/* 메시지함 div 마진 */
+.msg-user-form{
+	padding-bottom:0px !important;
 }
 
-.container-2 input#search{
-  width: 50px;
-  height: 50px;
-  background: #2b303b;
-  border: none;
-  font-size: 10pt;
-  float: left;
-  color: #262626;
-  padding-left: 35px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  color: #fff;
- 
-  -webkit-transition: width .55s ease;
-  -moz-transition: width .55s ease;
-  -ms-transition: width .55s ease;
-  -o-transition: width .55s ease;
-  transition: width .55s ease;
+/* 메시지함 검색 폼 */
+.msg-search-btn{
+	cursor: pointer; 
+	margin-top: 10px; 
+	float: right;
 }
 
-.container-2 input#search::-webkit-input-placeholder {
-   color: #65737e;
-}
- 
-.container-2 input#search:-moz-placeholder { /* Firefox 18- */
-   color: #65737e;  
-}
- 
-.container-2 input#search::-moz-placeholder {  /* Firefox 19+ */
-   color: #65737e;  
-}
- 
-.container-2 input#search:-ms-input-placeholder {  
-   color: #65737e;  
+/* 메시지함 하단 여백 */
+.msg-pad-bottom{
+    padding-bottom: 100px !important;
 }
 
-.container-2 input#search:focus, .container-2 input#search:active{
-  outline:none;
-  width: 300px;
-}
- 
-.container-2:hover input#search{
-width: 300px;
-}
- 
-.container-2:hover .icon{
-  color: #93a2ad;
-}
 </style>
 
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -490,17 +508,21 @@ width: 300px;
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
-			<div class="gallery ">
+			<div class="gallery msg-pad-bottom">
 				<div class="row">
 					
 					<div class="col-md-5">
 						<div class="card card-collapse">
-							<div class="card-header" role="tab" id="headingThree">
+							<div class="card-header msg-user-form" role="tab" id="headingThree">
 								<h5 class="mb-0">
 									<a>Message</a>
 								</h5>
+								<div class="form-group has-default bmd-form-group input-group msg-reg-p" style="padding-top:0; margin-top: 10px;">
+		                            <input type="text" class="form-control selectMsg" placeholder="userName 검색">
+				                 	<i class="material-icons msg-search-btn" id="searchBtn">search</i>
+				                </div>
 							</div>
 							<div id="collapseThree" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="max-height: 700px; overflow-x: hidden; overflow-y: inherit;">
 								<div id="commentstart" class="card-body">
@@ -519,7 +541,7 @@ width: 300px;
 
 												</h4>
 												<p class="msgList" style="cursor: pointer;" data-no="${recentMsg2.user[0].userNo}">${recentMsg2.msgContent}</p>
-												<a class="btn btn-rose btn-link float-right message-margin-del"><i class="material-icons receiveMsgDel">clear</i>삭제</a>
+												<a class="btn btn-rose btn-link float-right message-margin-del receiveMsgDel"><i class="material-icons">clear</i>삭제</a>
 												<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" title="" data-original-title="보내버리기"> <i class="material-icons">reply</i> 신고
 												</a>
 											</div>
@@ -530,10 +552,7 @@ width: 300px;
 								</div>
 							</div>
 						</div>
-						
-						
-						
-						<form class="form-inline">
+						<!-- <form class="form-inline">
 							<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						    	메시지함 선택
 							</a>
@@ -541,11 +560,8 @@ width: 300px;
 								<li class="nav-item"><a class="nav-link tag" id="receiveTag" href="#receive" role="tab" data-toggle="tab">받은 메시지</a></li>
 								<li class="nav-item"><a class="nav-link" id="sendTag" href="#send" role="tab" data-toggle="tab">보낸 메시지</a></li>
 							</ul>
-			                 <div class="form-group has-default bmd-form-group" style="padding-top:0; margin-top: 10px;">
-	                            <input type="text" class="form-control selectMsg" placeholder="userName 검색">
-			                 </div>
-			                 <i class="material-icons" style="cursor: pointer; margin-top: 10px;" id="searchBtn">search</i>
-			           </form>
+			                 
+			           </form> -->
 					</div>
 
 					<div class="col-md-7" id="msgContent-show">
