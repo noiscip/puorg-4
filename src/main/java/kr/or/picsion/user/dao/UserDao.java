@@ -12,6 +12,7 @@ public interface UserDao {
 	public int insertProfile(int userNo);
 	public void updateUser(User user);		//user 정보 변경
 	public void updateUserPr(User user);		//프로필 자기소개 수정
+	public void updateUserPic(User user);
 	public int deleteUser(int userNo);
 	public User selectUser(String user, Object userId);		//파라미터 값에따라 유동적으로 회원의 정보 검색
 	public User selectUserProfile(int userNo);
