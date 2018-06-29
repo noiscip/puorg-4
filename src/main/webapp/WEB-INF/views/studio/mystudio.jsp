@@ -166,7 +166,7 @@
 
 				
         <div class="description text-center">
-          <p><%-- ${userinfo.prContent} --%>
+          <p style="font-size: large"><%-- ${userinfo.prContent} --%>
 	          <c:choose>
 	          	<c:when test="${userinfo.prContent eq null}">
 	          		사용자의 자기 소개 정보가 없습니다.
@@ -242,47 +242,59 @@
           </div>
           
           <div class="tab-pane text-center" id="favorite">
-          	<h4 align="center">팔로워</h4>
+          	<h4 align="center"><b>팔로워</b></h4><hr>
           	<div id="follower">
-          		<!-- DB에서 해당 계정의 follower 프로필 불러와서 스튜디오로 이동하게끔 구현 -->
-          		<c:forEach items="${followerlist}" var="follow">
-          			<c:choose>
-          				<c:when test="${follow.prPicture eq null}">
-          					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
-          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}">
-          						<img src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img" data-toggle="tooltip" data-placement="top" title="${follow.userName}">
-          					</a>
-          				</c:when>
-          				<c:otherwise>
-          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}">
-          						<img src="<%=request.getContextPath()%>${follow.prPicture}" class="rounded user-img" data-toggle="tooltip" data-placement="top" title="${follow.userName}">
-          					</a>
+          		<c:choose>
+						<c:when test="${empty followerlist}">
+							<h3 class="text-center">팔로워가 아무도 없네요ㅠㅠ</h3><br>
+						</c:when>
+						<c:otherwise>
+			          		<!-- DB에서 해당 계정의 follower 프로필 불러와서 스튜디오로 이동하게끔 구현 -->
+			          		<c:forEach items="${followerlist}" var="follow">
+			          			<c:choose>
+			          				<c:when test="${follow.prPicture eq null}">
+			          					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
+			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}">
+			          						<img src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img" data-toggle="tooltip" data-placement="top" title="${follow.userName}">
+			          					</a>
+			          				</c:when>
+			          				<c:otherwise>
+			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}">
+			          						<img src="<%=request.getContextPath()%>${follow.prPicture}" class="rounded user-img" data-toggle="tooltip" data-placement="top" title="${follow.userName}">
+			          					</a>
+			          				</c:otherwise>
+			          			</c:choose>
+			          		</c:forEach>
           				</c:otherwise>
-          			</c:choose>
-          		</c:forEach>
+				</c:choose>
             </div>
               
               
-            <h4 align="center">팔로잉</h4>
+            <h4 align="center"><b>팔로잉</b></h4><hr>
             <div id="following">
-            	<form action="" method="post">
-            	<!-- DB에서 해당 계정의 following 프로필 불러와서 스튜디오로 이동하게끔 구현 -->
-          		<c:forEach items="${followinglist}" var="following">
-          			<c:choose>
-          				<c:when test="${following.prPicture eq null}">
-          					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
-          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="tooltip" data-placement="top" title="${following.userName}">
-          						<img title="${following.userId}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
-          					</a>
-          				</c:when>
-          				<c:otherwise>
-          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="tooltip" data-placement="top" title="${following.userName}">
-          						<img title="${following.userId}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded user-img">
-          					</a>
-          				</c:otherwise>
+            		<c:choose>
+						<c:when test="${empty followinglist}">
+							<h3 class="text-center">팔로잉을 시작해보세요~</h3><br>
+						</c:when>
+						<c:otherwise>
+			            	<!-- DB에서 해당 계정의 following 프로필 불러와서 스튜디오로 이동하게끔 구현 -->
+			          		<c:forEach items="${followinglist}" var="following">
+			          			<c:choose>
+			          				<c:when test="${following.prPicture eq null}">
+			          					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
+			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="tooltip" data-placement="top" title="${following.userName}">
+			          						<img title="${following.userId}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
+			          					</a>
+			          				</c:when>
+			          				<c:otherwise>
+			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="tooltip" data-placement="top" title="${following.userName}">
+			          						<img title="${following.userId}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded user-img">
+			          					</a>
+			          				</c:otherwise>
+			          			</c:choose>
+			          		</c:forEach>
+		          		</c:otherwise>
           			</c:choose>
-          		</c:forEach>
-          		</form>
             </div>
           </div>
         </div>
