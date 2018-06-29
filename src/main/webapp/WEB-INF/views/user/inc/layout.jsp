@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-<head>
+<head><%-- 
 	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
 	
 	<meta charset="utf-8">
@@ -46,7 +46,9 @@
     <!-- Fixed Sidebar Nav - js With initialisations -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
 	<!-- 네이버 로그인 -->
-	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>	
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>	 
+	--%>
+	<tiles:insertAttribute name="script"/>
 </head>
 
 <body class="signup-page sidebar-collapse">

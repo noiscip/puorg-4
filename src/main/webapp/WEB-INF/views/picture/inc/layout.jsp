@@ -6,7 +6,7 @@
 
 <html>
 
-<head>
+<head><%-- 
 	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
 
   	<meta charset="utf-8">
@@ -51,6 +51,8 @@
     <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
     <!-- Fixed Sidebar Nav - js With initialisations -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
+     --%>
+	<tiles:insertAttribute name="script"/>
 </head>
 
 <body class="product-page">

@@ -25,7 +25,7 @@ public class BlameController {
 
 	@Autowired
 	private BlameService blameService;
-	
+
 	@RequestMapping("adminComplainList.ps")
 	public String complain(Model model) {
 		
