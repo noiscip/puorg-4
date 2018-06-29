@@ -51,4 +51,11 @@ public class PurchaseController {
 		model.addAttribute("purchaseList",purchaseList);
 		return jsonview;
 	}
+	
+	
+	@RequestMapping("userPurchase.ps")
+	public String userPurchase(Model model) {
+		
+		return "purchase.buy";
+	}
 }

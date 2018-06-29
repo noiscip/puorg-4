@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script type="text/javascript">
+$(function() {
+	var loginUserNo = $('#loginUserNo').val();
+
 $(document).on('click','#like',function(){
 			if(loginUserNo == 0){
 			}else{
@@ -33,6 +36,7 @@ $(document).on('click','#like',function(){
 				    picNo : $(this).attr("value")};
 			var bookmark = $(this);
 			var bpa = $(this).parent();
+			var removeDiv = bookmark.closest('.item');
 			 $.ajax({
 				url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
 				data : data,
@@ -40,6 +44,7 @@ $(document).on('click','#like',function(){
 					if(data.result==1){
 						  $(bookmark)[0].innerHTML = 'bookmark_border';
 						  $(bpa)[0].childNodes[1].nodeValue--;
+						  removeDiv.remove();
 					  }else{
 						  $(bookmark)[0].innerHTML = 'bookmark';
 						  $(bpa)[0].childNodes[1].nodeValue++;
@@ -48,6 +53,7 @@ $(document).on('click','#like',function(){
 			 }) 
 		}
 	})
+})
 
 </script>
 <style>
@@ -81,7 +87,7 @@ $(document).on('click','#like',function(){
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
 				<div class="row">
 			<div id="gallery">

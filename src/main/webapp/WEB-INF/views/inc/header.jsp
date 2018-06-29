@@ -118,6 +118,13 @@ $(function(){
 		
 	}) */
 
+	var generateRandom = function (min, max) {
+		  var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
+		  return ranNum;
+	}
+	console.log($('.page-header'))
+	$('.page-header').css({'background-image':'url(<%=request.getContextPath()%>/assets/img/main/main'+generateRandom(1,6)+'.jpg)'}) 
+	
 })
 </script>
 <input type="hidden" value='<c:choose><c:when test="${sessionScope.user eq null}">0</c:when><c:otherwise>${sessionScope.user.userNo}</c:otherwise></c:choose>' id="loginUserNo">
@@ -181,7 +188,7 @@ $(function(){
 		                    <a href="<%=request.getContextPath()%>/operation/operequest.ps" class="dropdown-item">
 		                        <i class="material-icons">description</i>요청/작업
 		                    </a>
-		                    <a href="<%=request.getContextPath()%>/user/updateinfo.ps" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/user/updatebefore.ps" class="dropdown-item">
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
 		                    <c:if test="${sessionScope.user.naver eq null}">

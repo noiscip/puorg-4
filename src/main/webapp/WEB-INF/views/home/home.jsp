@@ -912,8 +912,7 @@ $(document).ready(function() {
 })
 </script>
 <div class="page-header header-filter clear-filter purple-filter"
-	data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg2.jpg');">
+	data-parallax="true">
 	<div class="container">
 		<c:choose>
 			<c:when test="${sessionScope.user eq null}">

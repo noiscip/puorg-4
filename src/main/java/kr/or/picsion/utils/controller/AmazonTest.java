@@ -92,8 +92,8 @@ public class AmazonTest {
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		boolean isSuccess = false;
 		String filePathh="";
-		/*String uploadPath = "D:\\bitcamp104\\finalProject\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
-		String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
+		String uploadPath = "D:\\imagePicsion\\";
+		/*String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -116,7 +116,7 @@ public class AmazonTest {
 			System.out.println("uploadPath: "+uploadPath);
 			System.out.println("saveFileName: "+saveFileName);
 			System.out.println("filePathh: "+filePathh);
-			picturePath = "/assets/img/examples/"+saveFileName;
+			picturePath = "/imagePicsion/"+saveFileName;
 			/*picturePath = filePathh;*/
 	
 			System.out.println("이것이!!! "+uploadPath + saveFileName);
@@ -431,66 +431,5 @@ public class AmazonTest {
         }
 
         return image;
-    }
-	
-	//이미지 이름 변경
-	public static String allListFile(String dirPath, String header, int intLen){
-		 
-        //디렉토리경로
-        String filePath = dirPath;
-        File path = new File(filePath);
-        //하위파일들 파일배열에 넣는다.
-        File[] list = path.listFiles();
-        //저장될 파일명
-        String fileName="";
-        //변경될 파일명
-        String newFileName="";
-        //카운트 숫자 세기
-        String intLength="";
-        //숫자 앞에 붙일 0의 숫자 세기
-        int zeroPlus;
- 
-        for (int i = 0; i < list.length; i++) {
- 
-            //스트링 형변환
-            intLength = Integer.toString(i);
-            //기준치에서 현재 자리수를 뺀다.
-            zeroPlus= intLen-intLength.length();
-            String imgNumber = "";
-            //자리수 뺀만큼 돌려 앞에 0을 붙인다.
-            for(int j = 0; j < zeroPlus; j++){
-                imgNumber += "0";
-            }
-            //그리고 뒤에 파일 숫자를 붙인다.
-            imgNumber+=i;
- 
-            //파일명을 저장
-            fileName = list[i].getName();
-            //변경전 파일명
-            System.out.print(fileName+" => ");
- 
-            //확장자를 검색한다. jpg, bmp 2개만, 차후 추가, 해당 확장자가 많으면 배열에 넣고 검증한다.
-            if(fileName.toLowerCase().indexOf(".jpg")>0){
-                newFileName = header+imgNumber+".jpg";
-            }else if(fileName.toLowerCase().indexOf(".bmp")>0){
-                newFileName = header+imgNumber+".bmp";
-            }else if(fileName.toLowerCase().indexOf(".png")>0){
-                newFileName = header+imgNumber+".png";
-            }else if(fileName.toLowerCase().indexOf(".gif")>0){
-                newFileName = header+imgNumber+".gif";
-            }else{//확장자가 벗어나면 파일명 그대로 셋팅
-                newFileName = fileName;
-            }
- 
-            //변경된 파일명
-            System.out.println(newFileName);
- 
-            //실제로 파일명 변경해주는 부분
-            list[i].renameTo(new File(filePath+newFileName));
-        }
- 
-        //끝난거 알려주는 리턴값
-        return "이미지파일이름변경완료";
- 
     }
 }
