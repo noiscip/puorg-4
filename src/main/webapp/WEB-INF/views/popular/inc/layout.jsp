@@ -44,7 +44,7 @@
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-selectpicker.js"></script>
     <!--	Plugin for Tags, full documentation here: https://xoxco.com/projects/code/tagsinput/  -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
-      <!--	Plugin for Small Gallery in Product Page -->
+    <!--	Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
     <!-- Plugins for presentation and navigation  -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>

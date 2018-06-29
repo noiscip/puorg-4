@@ -74,31 +74,31 @@ $(function() {
 			<div class="flex_grid credits">
 			<div class="tz-gallery">
 				<div class="row">
-				<c:forEach items="${imagelistall}" var="followinglistall" varStatus="status">					
+				<c:forEach items="${followingPicList}" var="followingListAll" varStatus="status">					
 						  <div class="item col-sm-6 col-md-4"> 
-			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followinglistall.picNo}"> 
-			                        <img class="rounded img-size" src="<%=request.getContextPath()%>/${followinglistall.picPath}"alt="No Image">
+			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followingListAll.picNo}"> 
+			                        <img class="rounded img-size" src="<%=request.getContextPath()%>/${followingListAll.picPath}"alt="No Image">
 			                    </a>
 			                    <div>
 			                    <div class="counts hide-xs hide-sm ">
 			                    <c:choose>
-									<c:when test="${followinglistall.respectCheck eq 'T'}">
-										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite</i>${followinglistall.respectCount}</em>
+									<c:when test="${followingListAll.respectCheck eq 'T'}">
+										<em><i id="like" value="${followingListAll.picNo}" class="material-icons">favorite</i>${followingListAll.respectCount}</em>
 									</c:when>
 									<c:otherwise>
-										<em><i id="like" value="${followinglistall.picNo}" class="material-icons">favorite_border</i>${followinglistall.respectCount}</em>
+										<em><i id="like" value="${followingListAll.picNo}" class="material-icons">favorite_border</i>${followingListAll.respectCount}</em>
 									</c:otherwise>
 								</c:choose>
 								<c:choose>
-									<c:when test="${followinglistall.bookmarkCheck eq 'T'}">
-										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark</i>${followinglistall.bookmarkCount}</em>
+									<c:when test="${followingListAll.bookmarkCheck eq 'T'}">
+										<em><i id="down" value="${followingListAll.picNo}" class="material-icons">bookmark</i>${followingListAll.bookmarkCount}</em>
 									</c:when>
 									<c:otherwise>
-										<em><i id="down" value="${followinglistall.picNo}" class="material-icons">bookmark_border</i>${followinglistall.bookmarkCount}</em>
+										<em><i id="down" value="${followingListAll.picNo}" class="material-icons">bookmark_border</i>${followingListAll.bookmarkCount}</em>
 									</c:otherwise>
 								</c:choose>
 			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${ownlist[status.index].userNo}">${ownlist[status.index].userName}</a>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${followingPicListOwner[status.index].userNo}">${followingPicListOwner[status.index].userName}</a>
                				</div>
 			            </div>
 						

@@ -57,86 +57,17 @@ public class PictureController {
 	@Autowired
 	private CommentService commentService;
 	
-	//사진 상세 페이지
-	@RequestMapping("picinfo.ps")
-	public String picInfo(HttpSession session, Model model, int picNo){
-		User user = new User(); 
-		if(session.getAttribute("user") != null) {
-			user = (User) session.getAttribute("user");					  //로그인 사용자
-		}
-		else {
-			user.setUserNo(0);
-		}
-		
-		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
-		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
-		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
-		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
-		List<String> tagList = pictureService.selectTag(picNo);
-		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
-		int followResult = 0;
-		int respectresult = pictureService.respectConfirm(picNo, user.getUserNo()); //좋아요 하고 있는지 확인
-		int bookmarkresult = pictureService.bookmarkConfirm(picNo, user.getUserNo()); //북마크 하고 있는지 확인
-		int respectCount = pictureService.respectCount(picNo);						 //좋아요 갯수
-		int bookmarkCount = pictureService.bookmarkCount(picNo);					 //북마크 갯수
-		if(user.getUserNo() != userInfo.getUserNo()) {
-			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
-		}
-		model.addAttribute("respectList",respectPhotoList);
-		model.addAttribute("respectCount",respectCount);
-		model.addAttribute("bookmarkCount",bookmarkCount);
-		model.addAttribute("respectresult",respectresult);
-		model.addAttribute("bookmarkresult",bookmarkresult);
-		model.addAttribute("followResult", followResult);
-		model.addAttribute("tagList",tagList);
-		model.addAttribute("picture",picture);
-		model.addAttribute("userInfo",userInfo);
-		model.addAttribute("commentList",commentList);
-		model.addAttribute("commentUserList",commentUserList);
-		return "picture.picinfo";
-	}
-	
-	//워드 차트 태그 리스트
-	@RequestMapping("tagList.ps")
-	public View wordChartList(Model model) {
-		List<String> wordChartList = pictureService.wordChartList();
-		model.addAttribute("wordChartList",wordChartList);
-		return jsonview;
-		
-	}
-	
-	//헤더 검색창 태그 리스트
-	@RequestMapping(value="searchpicture.ps",method=RequestMethod.POST)
-	public View searchPicList(Model model, HttpServletRequest request) {
-		String tagParam = request.getParameter("tagParam");
-		System.out.println("이게?"+tagParam);
-		List<String> searchTagList = pictureService.searchTag(tagParam);
-		model.addAttribute("searchTagList", searchTagList);
-		return jsonview;
-	}
-	
-	//태그 검색 페이지 사진, 유저 리스트
-	@RequestMapping("tagpicList.ps")
-	public String searchTagPicList(HttpSession session, Model model, String tag) {
-		User user = new User(); 
-		if(session.getAttribute("user") != null) {
-			user = (User) session.getAttribute("user");					  //로그인 사용자
-		}
-		else {
-			user.setUserNo(0);
-		}
-		System.out.println("이건 값이 없나?"+tag);
-		
-		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
-		List<User> tagUserList = pictureService.searchTagUserList(tag);
-		model.addAttribute("tagpicList",tagpicList);
-		model.addAttribute("tagUserList",tagUserList);
-		model.addAttribute("tag",tag);
-		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
-		return "popular.tagpicturepage";
-	}
-	
-	//Studio 페이지 이동(userNo 값 받아서)  회원 팔로잉,팔로워,업로드한 사진,팔로잉한 회원인지 확인 결과 불러오기 
+	/**
+	* 날      짜 : 2018. 6. 13.
+	* 메소드명 : myStudio
+	* 작성자명 : 박주원, 정도혁
+	* 기      능 : 마이스튜디오 페이지
+	*
+	* @param session
+	* @param model
+	* @param userNo
+	* @return String
+	*/
 	@RequestMapping("mystudio.ps")
 	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
@@ -166,38 +97,17 @@ public class PictureController {
 		return "studio.mystudio";
 	}
 	
-	//사진 좋아요
-	@RequestMapping("increaserespect.ps")
-	public View pictureRespect(int picNo, int userNo, Model model) {
-		int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
-		System.out.println("사진 좋아요 컨트롤러");
-		if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
-			pictureService.deleteRespect(picNo, userNo);
-			System.out.println("좋아요 취소");
-		}else {	//좋아요 하지 않을때 -> 좋아요 증가
-			pictureService.increaseRespect(picNo, userNo);
-			System.out.println("좋아요 선택");
-		}
-		model.addAttribute("result",result);
-		return jsonview;
-	}
-	
-	//사진 북마크
-	@RequestMapping("increasebookmark.ps")
-	public View pictureBookmark(int picNo, int userNo, Model model) {
-		int result = pictureService.bookmarkConfirm(picNo, userNo);
-		System.out.println("사진 북마크 컨트롤러");
-		if(result!=0) {	 //북마크 하고 있을때 -> 북마크 삭제
-			pictureService.deleteBookmark(picNo, userNo);
-			System.out.println("북마크 취소");
-		}else {	//북마크 하지 않을때 -> 북마크 증가
-			pictureService.increaseBookmark(picNo, userNo);
-			System.out.println("북마크 선택");
-		}
-		model.addAttribute("result",result);
-		return jsonview;
-	}
-	
+	/**
+	* 날      짜 : 2018. 6. 13.
+	* 메소드명 : insertPicture
+	* 작성자명 : 이아림
+	* 기      능 : 사진 업로드
+	*
+	* @param picture
+	* @param tag
+	* @param session
+	* @return String
+	*/
 	@RequestMapping("uploadAfter.ps")
 	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
@@ -256,7 +166,120 @@ public class PictureController {
 		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
-	//워터마크 입히기
+	
+	/**
+	* 날      짜 : 2018. 6. 17.
+	* 메소드명 : pictureRespect
+	* 작성자명 : 정도혁
+	* 기      능 : 사진 좋아요 기능
+	*
+	* @param picNo
+	* @param userNo
+	* @param model
+	* @return View
+	*/
+	@RequestMapping("increaserespect.ps")
+	public View pictureRespect(int picNo, int userNo, Model model) {
+		int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
+		System.out.println("사진 좋아요 컨트롤러");
+		if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
+			pictureService.deleteRespect(picNo, userNo);
+			System.out.println("좋아요 취소");
+		}else {	//좋아요 하지 않을때 -> 좋아요 증가
+			pictureService.increaseRespect(picNo, userNo);
+			System.out.println("좋아요 선택");
+		}
+		model.addAttribute("result",result);
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 17.
+	* 메소드명 : pictureBookmark
+	* 작성자명 : 정도혁
+	* 기      능 : 사진 북마크 기능
+	*
+	* @param picNo
+	* @param userNo
+	* @param model
+	* @return View
+	*/
+	@RequestMapping("increasebookmark.ps")
+	public View pictureBookmark(int picNo, int userNo, Model model) {
+		int result = pictureService.bookmarkConfirm(picNo, userNo);
+		System.out.println("사진 북마크 컨트롤러");
+		if(result!=0) {	 //북마크 하고 있을때 -> 북마크 삭제
+			pictureService.deleteBookmark(picNo, userNo);
+			System.out.println("북마크 취소");
+		}else {	//북마크 하지 않을때 -> 북마크 증가
+			pictureService.increaseBookmark(picNo, userNo);
+			System.out.println("북마크 선택");
+		}
+		model.addAttribute("result",result);
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 18.
+	* 메소드명 : picInfo
+	* 작성자명 : 정도혁
+	* 기      능 : 사진 상세 페이지
+	*
+	* @param session
+	* @param model
+	* @param picNo
+	* @return String
+	*/
+	@RequestMapping("picinfo.ps")
+	public String picInfo(HttpSession session, Model model, int picNo){
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
+		
+		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
+		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
+		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
+		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
+		List<String> tagList = pictureService.selectTag(picNo);
+		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
+		int followResult = 0;
+		int respectresult = pictureService.respectConfirm(picNo, user.getUserNo()); //좋아요 하고 있는지 확인
+		int bookmarkresult = pictureService.bookmarkConfirm(picNo, user.getUserNo()); //북마크 하고 있는지 확인
+		int respectCount = pictureService.respectCount(picNo);						 //좋아요 갯수
+		int bookmarkCount = pictureService.bookmarkCount(picNo);					 //북마크 갯수
+		if(user.getUserNo() != userInfo.getUserNo()) {
+			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
+		}
+		model.addAttribute("respectList",respectPhotoList);
+		model.addAttribute("respectCount",respectCount);
+		model.addAttribute("bookmarkCount",bookmarkCount);
+		model.addAttribute("respectresult",respectresult);
+		model.addAttribute("bookmarkresult",bookmarkresult);
+		model.addAttribute("followResult", followResult);
+		model.addAttribute("tagList",tagList);
+		model.addAttribute("picture",picture);
+		model.addAttribute("userInfo",userInfo);
+		model.addAttribute("commentList",commentList);
+		model.addAttribute("commentUserList",commentUserList);
+		return "picture.picinfo";
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 18.
+	* 메소드명 : addTextWatermark
+	* 작성자명 : 이아림
+	* 기      능 : 사진 워터마크 기능
+	*
+	* @param text
+	* @param type
+	* @param source
+	* @param destination
+	* @throws IOException
+	*/
 	public static void addTextWatermark(String text, String type, File source, File destination) throws IOException {
         BufferedImage image = ImageIO.read(source);
 
@@ -283,7 +306,84 @@ public class PictureController {
         ImageIO.write(watermarked, type, destination);
         w.dispose();
     }
-	//s3에 저장하기
+	
+	/**
+	* 날      짜 : 2018. 6. 20.
+	* 메소드명 : wordChartList
+	* 작성자명 : 정도혁
+	* 기      능 : 워드 차트로 태그 리스트 출력
+	*
+	* @param model
+	* @return View
+	*/
+	@RequestMapping("tagList.ps")
+	public View wordChartList(Model model) {
+		List<String> wordChartList = pictureService.wordChartList();
+		model.addAttribute("wordChartList",wordChartList);
+		return jsonview;
+		
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 22.
+	* 메소드명 : searchPicList
+	* 작성자명 : 정도혁
+	* 기      능 : 헤더 검색창 태그 자동완성 및 검색
+	*
+	* @param model
+	* @param request
+	* @return View
+	*/
+	@RequestMapping(value="searchpicture.ps",method=RequestMethod.POST)
+	public View searchPicList(Model model, HttpServletRequest request) {
+		String tagParam = request.getParameter("tagParam");
+		System.out.println("이게?"+tagParam);
+		List<String> searchTagList = pictureService.searchTag(tagParam);
+		model.addAttribute("searchTagList", searchTagList);
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 22.
+	* 메소드명 : searchTagPicList
+	* 작성자명 : 정도혁
+	* 기      능 : 태그 검색 페이지
+	*
+	* @param session
+	* @param model
+	* @param tag
+	* @return String
+	*/
+	@RequestMapping("tagpicList.ps")
+	public String searchTagPicList(HttpSession session, Model model, String tag) {
+		User user = new User(); 
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
+		System.out.println("이건 값이 없나?"+tag);
+		
+		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
+		List<User> tagUserList = pictureService.searchTagUserList(tag);
+		model.addAttribute("tagpicList",tagpicList);
+		model.addAttribute("tagUserList",tagUserList);
+		model.addAttribute("tag",tag);
+		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
+		return "popular.tagpicturepage";
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 27.
+	* 메소드명 : uploadObject
+	* 작성자명 : 이아림
+	* 기      능 : s3 저장
+	*
+	* @param file
+	* @param bucketName
+	* @return String
+	*/
 	public String uploadObject(String file,String bucketName) {
 		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
 		String SECRET_KEY = "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\r\n";
@@ -330,7 +430,17 @@ public class PictureController {
         return a3path;
 	}
 	
-	// 이미지 이름 변경
+	/**
+	* 날      짜 : 2018. 6. 29.
+	* 메소드명 : renameFile
+	* 작성자명 : 이아림
+	* 기      능 : 이미지 이름 변경
+	*
+	* @param fileName
+	* @param userNo
+	* @param picNo
+	* @return String
+	*/
 	public static String renameFile(String fileName, int userNo, int picNo) {
 
 		// 변경될 파일명
