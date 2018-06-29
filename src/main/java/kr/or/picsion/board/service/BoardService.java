@@ -16,62 +16,103 @@ public class BoardService {
 
 	@Autowired
 	private SqlSession sqlSession;
-	// 글 상세보기 서비스
+
+	/**
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : selectBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글 상세보기 서비스
+	 *
+	 * @param brdNo
+	 * @return
+	 */
 	public Board selectBoard(int brdNo) {
 		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
 		System.out.println("보드 서비스 ");
-		Board board= boarddao.selectBoard(brdNo);
-		
+		Board board = boarddao.selectBoard(brdNo);
+
 		return board;
 	}
 	
-	// 글 수정 서비스
-		public int updateBoard(Board board) {
-			BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-			System.out.println("updateBoard 서비스 ");
-			int result = boarddao.updateBoard(board);
-			
-			return result;
-		}
-		
-	
-	// 글목록보기 서비스
-		public List<Board> boardList() throws ClassNotFoundException, SQLException {
 
-			BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-			List<Board> list = boarddao.boardList();
+	/**
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : updateBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글 수정 서비스
+	 *
+	 * @param board
+	 * @return
+	 */
+	public int updateBoard(Board board) {
+		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+		System.out.println("updateBoard 서비스 ");
+		int result = boarddao.updateBoard(board);
 
-			return list;
-		}
-		//게시판 글 수
-		public int getBoardCount() {
-			int total=0;
+		return result;
+	}
 
-			BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-			total=boarddao.getBoardCount();
-			return total;
-		}
-	//글쓰기
-		public void insertBoard(Board board){
-			BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-			System.out.println("글 쓰기 전");
-			boarddao.insertBoard(board);
-			System.out.println("글쓰기 완료");
-		}
-		
-		
-		
-		//내 작업 게시판 리스트
-				public List<Board> operationBoardList(int userNo){
-					BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-					System.out.println("operationBoardList 서비스 시작 ");
-					return boarddao.operationBoardList(userNo);
-				}
-		//내 요청 게시판 리스트
-				public List<Board> requestBoardList(int userNo){
-					BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-					System.out.println("requestBoardList 서비스 시작 ");
-					return boarddao.requestBoardList(userNo);
-				}
-		
+	/**
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : boardList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글목록보기 서비스
+	 *
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<Board> boardList() throws ClassNotFoundException, SQLException {
+
+		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+		List<Board> list = boarddao.boardList();
+
+		return list;
+	}
+
+	/**
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : insertBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글쓰기
+	 *
+	 * @param board
+	 */
+	public void insertBoard(Board board) {
+		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+		System.out.println("글 쓰기 전");
+		boarddao.insertBoard(board);
+		System.out.println("글쓰기 완료");
+	}
+
+	/**
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : operationBoardList 
+	 * 작성자명 : 김준수
+	 * 기 능 : 내 작업 게시판 리스트
+	 *
+	 * @param userNo
+	 * @return
+	 */
+	public List<Board> operationBoardList(int userNo) {
+		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+		System.out.println("operationBoardList 서비스 시작 ");
+		return boarddao.operationBoardList(userNo);
+	}
+
+	/**
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : requestBoardList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 내 요청 게시판 리스트
+	 *
+	 * @param userNo
+	 * @return
+	 */
+	public List<Board> requestBoardList(int userNo) {
+		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
+		System.out.println("requestBoardList 서비스 시작 ");
+		return boarddao.requestBoardList(userNo);
+	}
+
 }
