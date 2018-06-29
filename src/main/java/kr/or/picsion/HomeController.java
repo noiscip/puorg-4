@@ -48,7 +48,7 @@ public class HomeController {
 		User user2 = (User) session.getAttribute("user");
 		
 		if(user2 != null) {
-			List<Picture> followingPicList = userService.listpic(user2.getUserNo());
+			List<Picture> followingPicList = userService.followingUserPicList(user2.getUserNo());
 		    model.addAttribute("imagelist", followingPicList);
 		    System.out.println(followingPicList);
 		}
