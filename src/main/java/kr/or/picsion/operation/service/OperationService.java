@@ -17,7 +17,10 @@ public class OperationService {
 	private SqlSession sqlSession;
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : insertOperation 작성자명 : 김준수 기 능 : 작업 등록 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : insertOperation 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 작업 등록 서비스
 	 *
 	 * @param operation
 	 * @return
@@ -33,7 +36,10 @@ public class OperationService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : selectOper 작성자명 : 김준수 기 능 : 작업 찾기 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : selectOper 
+	 * 작성자명 : 김준수
+	 * 기 능 : 작업 찾기 서비스
 	 *
 	 * @param brdNo
 	 * @return
@@ -48,7 +54,10 @@ public class OperationService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : operBoardList 작성자명 : 김준수 기 능 : 작업 찾기list
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : operBoardList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 작업 찾기list
 	 *
 	 * @return
 	 */
@@ -62,7 +71,10 @@ public class OperationService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : operationList 작성자명 : 김준수 기 능 : 내 작업 리스트
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : operationList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 내 작업 리스트
 	 *
 	 * @param userNo
 	 * @return
@@ -75,7 +87,10 @@ public class OperationService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : requestList 작성자명 : 김준수 기 능 : 내 요청 리스트
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : requestList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 내 요청 리스트
 	 *
 	 * @param userNo
 	 * @return

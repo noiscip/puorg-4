@@ -38,7 +38,10 @@ public class OperationController {
 	private NoticeService noticeService;
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : OperationApplyok 작성자명 : 김준수 기 능 : 작업 신청 수락
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : OperationApplyok 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 작업 신청 수락
 	 *
 	 * @param operation
 	 * @param model
@@ -79,7 +82,10 @@ public class OperationController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : operRequest 작성자명 : 김준수 기 능 : 요청, 작업 리스트
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : operRequest 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 요청, 작업 리스트
 	 *
 	 * @param session
 	 * @param model

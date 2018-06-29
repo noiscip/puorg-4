@@ -18,7 +18,10 @@ public class BoardService {
 	private SqlSession sqlSession;
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : selectBoard 작성자명 : 김준수 기 능 : 글 상세보기 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : selectBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글 상세보기 서비스
 	 *
 	 * @param brdNo
 	 * @return
@@ -30,9 +33,13 @@ public class BoardService {
 
 		return board;
 	}
+	
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : updateBoard 작성자명 : 김준수 기 능 : 글 수정 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : updateBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글 수정 서비스
 	 *
 	 * @param board
 	 * @return
@@ -46,7 +53,10 @@ public class BoardService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : boardList 작성자명 : 김준수 기 능 : 글목록보기 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : boardList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글목록보기 서비스
 	 *
 	 * @return
 	 * @throws ClassNotFoundException
@@ -61,7 +71,10 @@ public class BoardService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : insertBoard 작성자명 : 김준수 기 능 : 글쓰기
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : insertBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 글쓰기
 	 *
 	 * @param board
 	 */
@@ -73,7 +86,10 @@ public class BoardService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : operationBoardList 작성자명 : 김준수 기 능 : 내 작업 게시판 리스트
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : operationBoardList 
+	 * 작성자명 : 김준수
+	 * 기 능 : 내 작업 게시판 리스트
 	 *
 	 * @param userNo
 	 * @return
@@ -85,7 +101,10 @@ public class BoardService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : requestBoardList 작성자명 : 김준수 기 능 : 내 요청 게시판 리스트
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : requestBoardList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 내 요청 게시판 리스트
 	 *
 	 * @param userNo
 	 * @return

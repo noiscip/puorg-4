@@ -19,7 +19,10 @@ public class CommentService {
 	private SqlSession sqlSession;
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : commentList 작성자명 : 김준수 기 능 : 댓글 목록 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : commentList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 댓글 목록 서비스
 	 *
 	 * @param brdNo
 	 * @return
@@ -32,7 +35,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : commentuser 작성자명 : 김준수 기 능 : 댓글 작성자 유저 정보 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : commentuser 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 댓글 작성자 유저 정보 서비스
 	 *
 	 * @param brdNo
 	 * @return
@@ -45,7 +51,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : insertComment 작성자명 : 김준수 기 능 : 요청게시판 댓글 쓰기 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : insertComment 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 요청게시판 댓글 쓰기 서비스
 	 *
 	 * @param comment
 	 * @return
@@ -59,7 +68,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : deleteComment 작성자명 : 김준수 기 능 : 댓글 전부 삭제 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : deleteComment 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 댓글 전부 삭제 서비스
 	 *
 	 * @param cmtNo
 	 * @return
@@ -72,7 +84,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : deleteAllComment 작성자명 : 김준수 기 능 : 작업 수락시 해당 게시물 댓글
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : deleteAllComment 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 작업 수락시 해당 게시물 댓글
 	 * 리셋
 	 *
 	 * @param brdNo
@@ -86,7 +101,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : picCommentList 작성자명 : 정도혁 기 능 : 사진 댓글 목록 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : picCommentList 
+	 * 작성자명 : 정도혁 
+	 * 기 능 : 사진 댓글 목록 서비스
 	 *
 	 * @param picNo
 	 * @return
@@ -97,7 +115,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : picCommentUserList 작성자명 : 정도혁 기 능 : 사진 댓글 작성자 리스트
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : picCommentUserList 
+	 * 작성자명 : 정도혁 
+	 * 기 능 : 사진 댓글 작성자 리스트
 	 *
 	 * @param picNo
 	 * @return
@@ -108,7 +129,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : picInsertComment 작성자명 : 정도혁 기 능 : 사진 댓글 쓰기 서비스
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : picInsertComment 
+	 * 작성자명 : 정도혁 
+	 * 기 능 : 사진 댓글 쓰기 서비스
 	 *
 	 * @param comment
 	 * @return
@@ -120,7 +144,10 @@ public class CommentService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : selectComment 작성자명 : 김준수, 정도혁 기 능 : 댓글 번호에 해당하는 댓글
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : selectComment 
+	 * 작성자명 : 김준수, 정도혁 
+	 * 기 능 : 댓글 번호에 해당하는 댓글
 	 * 찾기 서비스
 	 *
 	 * @param cmtNo

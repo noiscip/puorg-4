@@ -19,7 +19,10 @@ public class OperationApplyService {
 	private SqlSession sqlSession;
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : insertOperationApply 작성자명 : 김준수 기 능 : 신청하기
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : insertOperationApply 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 신청하기
 	 *
 	 * @param operationApply
 	 * @return
@@ -34,8 +37,10 @@ public class OperationApplyService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : operationApplyNameList 작성자명 : 김준수 기 능 : 해당유저가쓴 요청글에
-	 * 신청자 이름 목록 가져오기
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : operationApplyNameList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 해당유저가쓴 요청글에 신청자 이름 목록 가져오기
 	 *
 	 * @param brdNo
 	 * @return
@@ -50,8 +55,10 @@ public class OperationApplyService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 메소드명 : operationApplyList 작성자명 : 김준수 기 능 : 해당유저가쓴 요청글에 신청자
-	 * 목록 가져오기
+	 * 날 짜 : 2018. 6. 29. 
+	 * 메소드명 : operationApplyList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 해당유저가쓴 요청글에 신청자 목록 가져오기
 	 *
 	 * @param brdNo
 	 * @param requestUserNo

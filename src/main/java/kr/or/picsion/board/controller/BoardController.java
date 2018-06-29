@@ -48,7 +48,9 @@ public class BoardController {
 	private CommentService commentService;
 
 	/**
-	 * 날 짜 : 2018. 6. 14. 메소드명 : selectBoard 작성자명 : 김준수 기 능 :
+	 * 날 짜 : 2018. 6. 14. 메소드명 : selectBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 요청게시판 상세보기
 	 *
 	 * @param brdNo
 	 * @param model
@@ -83,7 +85,9 @@ public class BoardController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 15. 메소드명 : postwriteBoard 작성자명 : 김준수 기 능 :
+	 * 날 짜 : 2018. 6. 15. 메소드명 : postwriteBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 요청 글 작성
 	 *
 	 * @param board
 	 * @param session
@@ -103,7 +107,9 @@ public class BoardController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 16. 메소드명 : getwriteBoard 작성자명 : 김준수 기 능 :
+	 * 날 짜 : 2018. 6. 16. 메소드명 : getwriteBoard 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 요청글 작성 뷰단 보내기
 	 *
 	 * @return
 	 */
@@ -114,7 +120,9 @@ public class BoardController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 19. 메소드명 : boardList 작성자명 : 김준수 기 능 :
+	 * 날 짜 : 2018. 6. 19. 메소드명 : boardList 
+	 * 작성자명 : 김준수 
+	 * 기 능 : 요청게시판 리스트
 	 *
 	 * @param model
 	 * @return
