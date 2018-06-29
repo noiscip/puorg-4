@@ -22,8 +22,18 @@
 
 /* 팔로잉 회원 프로필 사진 크기 이미지 */
 .following-pr{
-	width:180px;
-	height:180px;
+	width:100% !important;
+	height:100% !important;
+}
+
+/* 팔로잉한 회원 이미지 margin-bottom 제거 */
+.following-pr-mar{
+	margin-bottom: 0px !important;
+}
+
+/* 팔로잉 리스트 패딩 탑 제거 */
+.following-pr-pad{
+	padding-top: 0px;
 }
 
 </style>
@@ -42,22 +52,39 @@
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
 			<div class="gallery text-center">
-				<div class="row">
-					<c:forEach items="${followingList}" var="following">
-						<div class="col-md-2">
-							<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
-								<c:choose>
-									<c:when test="${following.prPicture eq null}">
-										<img title="${following.userName}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded following-pr">
-									</c:when>
-									<c:otherwise>
-										<img title="${following.userName}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded following-pr">
-									</c:otherwise>
-								</c:choose>
-							</a>
-						</div>
-					</c:forEach>
-				</div>
+					<c:choose>
+						<c:when test="${empty followingList}">
+							<h1 class="text-center"><b>팔로잉한 회원이 없네요!</b></h1>
+							<h3 class="text-center">팔로잉을 시작해보세요~</h3>
+						</c:when>
+						<c:otherwise>
+							
+						  <div class="flex_grid credits">
+							<div class="tz-gallery following-pr-pad">
+								<div class="row">
+									<c:forEach items="${followingList}" var="following">
+											<div class="item col-md-2">
+												<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
+													<c:choose>
+														<c:when test="${following.prPicture eq null}">
+															<img title="${following.userName}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded following-pr following-pr-mar">
+														</c:when>
+														<c:otherwise>
+															<img title="${following.userName}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded following-pr following-pr-mar">
+														</c:otherwise>
+													</c:choose>
+												</a>
+													<div class="counts hide-xs hide-sm ">
+														<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">${following.userName}</a>
+													</div>
+											</div>
+										
+									</c:forEach>
+									</div>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
 			</div>
 		</div>
 	</div>

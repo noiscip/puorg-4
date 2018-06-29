@@ -89,45 +89,53 @@ $(document).on('click','#like',function(){
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
-				<div class="row">
+		
 			<div id="gallery">
 				<div class="flex_grid credits">
 				<div class="tz-gallery">
-				<div class="row">
-					<c:forEach items="${bookmarkPicList}" var="bookmarkpic" varStatus="status">
-						<div class="item col-sm-6 col-md-4">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
-							<img class="rounded img-size" src="<%=request.getContextPath()%>${bookmarkpic.picPath}"	alt="No Image">
-							</a>
-							<div>
-			                    <div class="counts hide-xs hide-sm ">
-			                    <c:choose>
-									<c:when test="${bookmarkpic.respectCheck eq 'T'}">
-										<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite</i>${bookmarkpic.respectCount}</em>
-									</c:when>
-									<c:otherwise>
-										<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite_border</i>${bookmarkpic.respectCount}</em>
-									</c:otherwise>
-								</c:choose>
-								<c:choose>
-									<c:when test="${bookmarkpic.bookmarkCheck eq 'T'}">
-										<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark</i>${bookmarkpic.bookmarkCount}</em>
-									</c:when>
-									<c:otherwise>
-										<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark_border</i>${bookmarkpic.bookmarkCount}</em>
-									</c:otherwise>
-								</c:choose>
-			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${bookmarkPicUserList[status.index].userNo}">${bookmarkPicUserList[status.index].userName}</a>
-               				</div>
-						</div>
-					</c:forEach>
-					</div>
+					<c:choose>
+						<c:when test="${empty bookmarkPicList}">
+							<h1 class="text-center"><b>즐겨찾기한 사진이 없네요!</b></h1>
+							<h3 class="text-center">원하는 사진을 담아보세요~</h3>
+						</c:when>
+						<c:otherwise>
+							<div class="row">
+								<c:forEach items="${bookmarkPicList}" var="bookmarkpic" varStatus="status">
+									<div class="item col-sm-6 col-md-4">
+										<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
+										<img class="rounded img-size" src="<%=request.getContextPath()%>${bookmarkpic.picPath}"	alt="No Image">
+										</a>
+										<div>
+						                    <div class="counts hide-xs hide-sm ">
+						                    <c:choose>
+												<c:when test="${bookmarkpic.respectCheck eq 'T'}">
+													<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite</i>${bookmarkpic.respectCount}</em>
+												</c:when>
+												<c:otherwise>
+													<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite_border</i>${bookmarkpic.respectCount}</em>
+												</c:otherwise>
+											</c:choose>
+											<c:choose>
+												<c:when test="${bookmarkpic.bookmarkCheck eq 'T'}">
+													<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark</i>${bookmarkpic.bookmarkCount}</em>
+												</c:when>
+												<c:otherwise>
+													<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark_border</i>${bookmarkpic.bookmarkCount}</em>
+												</c:otherwise>
+											</c:choose>
+						                    </div>
+						                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${bookmarkPicUserList[status.index].userNo}">${bookmarkPicUserList[status.index].userName}</a>
+			               				</div>
+									</div>
+								</c:forEach>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				
 					</div>
 				</div>
 			</div>
-					
-				</div>
+			
 			
 		</div>
 	</div>

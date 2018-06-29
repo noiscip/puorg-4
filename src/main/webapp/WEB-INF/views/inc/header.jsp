@@ -123,7 +123,7 @@ $(function(){
 		  return ranNum;
 	}
 	console.log($('.page-header'))
-	$('.page-header').css({'background-image':'url(<%=request.getContextPath()%>/assets/img/main/main'+generateRandom(1,6)+'.jpg)'}) 
+	$('.page-header').css({'background-image':'url(<%=request.getContextPath()%>/assets/img/main/main'+generateRandom(1,11)+'.jpg)'}) 
 	
 })
 </script>
@@ -199,6 +199,11 @@ $(function(){
 		                    <c:if test="${sessionScope.user.google eq null}">
 			                    <a href="<%=request.getContextPath()%>/google/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>구글 계정 연동 
+		                    	</a>
+	                    	</c:if>
+	                    	<c:if test="${sessionScope.user.roleNo eq 3}">
+			                    <a href="<%=request.getContextPath()%>/user/admin.ps" class="dropdown-item"> 
+			                   		<i class="material-icons">build</i>회원/매출/신고
 		                    	</a>
 	                    	</c:if>
 		                  </div>
