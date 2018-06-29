@@ -27,44 +27,39 @@ public class OperationApplyController {
 	private View jsonview;
 
 	@Autowired
-	private  OperationApplyService applyService;
-	
+	private OperationApplyService applyService;
+
 	@Autowired
 	private NoticeService noticeService;
-	
+
+	/**
+	 * 날 짜 : 2018. 6. 29. 메소드명 : insertOperationApply 작성자명 : 김준수 기 능 : 요청게시판 작업 신청
+	 *
+	 * @param operationApply
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value = "apply.ps")
 	public String insertOperationApply(OperationApply operationApply, HttpSession session) {
-		User user = (User)session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		System.out.println("insertoperation 컨트롤러");
 		operationApply.setOperUserNo(user.getUserNo());
 		int result = applyService.insertOperationApply(operationApply);
-		
-		if(result == 1) {
+
+		if (result == 1) {
 			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
-			
+
 			noticeMap.put("no", operationApply.getBrdNo());
 			noticeMap.put("addNo", operationApply.getOperApplyNo());
 			noticeMap.put("receiveUserNo", operationApply.getRequestUserNo());
 			noticeMap.put("sendUserNo", operationApply.getOperUserNo());
 			noticeMap.put("table", "brdNo, operApplyNo");
 			noticeMap.put("tableNo", 3);
-			
+
 			noticeService.insertNotice(noticeMap);
 		}
-		
+
 		return "board.boardInfo";
 	}
-	/*
-	@RequestMapping(value = "applylist.ps")
-	public View OperationApplyList(OperationApply operationApply, HttpSession session, Model model) {
-		User user = (User)session.getAttribute("user");
-		System.out.println("OperationApplyList 컨트롤러");
-		List<OperationApply> list = applyService.operationApplyList(operationApply);
-		System.out.println(list);
-		model.addAttribute("applylist", list);
-		
-		return jsonview;
-	}*/
-	
-	
+
 }

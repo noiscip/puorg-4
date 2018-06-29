@@ -34,31 +34,39 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
-	
+
 	@Autowired
 	private OperationApplyService operationApplyService;
-	
+
 	@Autowired
 	private OperationService operationService;
-		
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private CommentService commentService;
 
+	/**
+	 * 날 짜 : 2018. 6. 14. 메소드명 : selectBoard 작성자명 : 김준수 기 능 :
+	 *
+	 * @param brdNo
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value = "boardInfo.ps")
 	public String selectBoard(int brdNo, Model model, HttpSession session) {
 		System.out.println("보드인포 컨트롤");
-		User user = (User)session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		Board boardInfo = boardService.selectBoard(brdNo);
 		Operation operation = new Operation();
-		List<Comment> comment = commentService.commentList(brdNo);		
-		List<User> commentuser= commentService.commentuser(brdNo);
+		List<Comment> comment = commentService.commentList(brdNo);
+		List<User> commentuser = commentService.commentuser(brdNo);
 		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
 		List<String> applyid = operationApplyService.operationApplyNameList(brdNo);
-		if(boardInfo.getOperStateNo()==2) {
-			operation=operationService.selectOper(brdNo);
+		if (boardInfo.getOperStateNo() == 2) {
+			operation = operationService.selectOper(brdNo);
 		}
 		User requestUser = userService.userInfo(operation.getRequesterNo());
 		User operatorUser = userService.userInfo(operation.getOperatorNo());
@@ -68,18 +76,22 @@ public class BoardController {
 		model.addAttribute("operation", operation);
 		model.addAttribute("commentuser", commentuser);
 		model.addAttribute("applylist", list);
-		model.addAttribute("applyid", applyid);		
+		model.addAttribute("applyid", applyid);
 		model.addAttribute("boardInfo", boardInfo);
-		model.addAttribute("comment",comment);
+		model.addAttribute("comment", comment);
 		return "board.boardInfo";
 	}
-		
-	
-	
-	
+
+	/**
+	 * 날 짜 : 2018. 6. 15. 메소드명 : postwriteBoard 작성자명 : 김준수 기 능 :
+	 *
+	 * @param board
+	 * @param session
+	 * @return String
+	 */
 	@RequestMapping(value = "writeboard.ps", method = RequestMethod.POST)
-	public String postwriteBoard(Board board, HttpSession session) {		
-		User user = (User)session.getAttribute("user");
+	public String postwriteBoard(Board board, HttpSession session) {
+		User user = (User) session.getAttribute("user");
 		Board inboard = board;
 		System.out.println(board);
 		inboard.setUserNo(user.getUserNo());
@@ -89,25 +101,32 @@ public class BoardController {
 		boardService.insertBoard(inboard);
 		return "board.writeBoard";
 	}
-		
-	
-	
-	
+
+	/**
+	 * 날 짜 : 2018. 6. 16. 메소드명 : getwriteBoard 작성자명 : 김준수 기 능 :
+	 *
+	 * @return
+	 */
 	@RequestMapping(value = "writeboard.ps", method = RequestMethod.GET)
 	public String getwriteBoard() {
 		System.out.println("겟 보드");
 		return "board.writeBoard";
 	}
-		
-	
+
+	/**
+	 * 날 짜 : 2018. 6. 19. 메소드명 : boardList 작성자명 : 김준수 기 능 :
+	 *
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("board.ps")
 	public String boardList(Model model) {
 		System.out.println("요청게시판 컨트롤러");
-		List<Board> list=new ArrayList<Board>();
-		List<Operation> operlist=new ArrayList<Operation>();
+		List<Board> list = new ArrayList<Board>();
+		List<Operation> operlist = new ArrayList<Operation>();
 		try {
 			list = boardService.boardList();
-			operlist=operationService.operBoardList();
+			operlist = operationService.operBoardList();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,12 +136,11 @@ public class BoardController {
 		}
 		System.out.println(list);
 		System.out.println(operlist);
-		
+
 		model.addAttribute("list", list);
 		model.addAttribute("operlist", operlist);
 		System.out.println("뷰단 보내기");
 		return "board.board";
 	}
-	
-	
+
 }
