@@ -188,7 +188,7 @@ $(function(){
 		                    <a href="<%=request.getContextPath()%>/operation/operequest.ps" class="dropdown-item">
 		                        <i class="material-icons">description</i>요청/작업
 		                    </a>
-		                    <a href="<%=request.getContextPath()%>/user/updateinfo.ps" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/user/updatebefore.ps" class="dropdown-item">
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
 		                    <c:if test="${sessionScope.user.naver eq null}">
@@ -199,6 +199,11 @@ $(function(){
 		                    <c:if test="${sessionScope.user.google eq null}">
 			                    <a href="<%=request.getContextPath()%>/google/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>구글 계정 연동 
+		                    	</a>
+	                    	</c:if>
+	                    	<c:if test="${sessionScope.user.roleNo eq 3}">
+			                    <a href="<%=request.getContextPath()%>/user/admin.ps" class="dropdown-item"> 
+			                   		<i class="material-icons">build</i>회원/매출/신고
 		                    	</a>
 	                    	</c:if>
 		                  </div>

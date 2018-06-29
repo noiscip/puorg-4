@@ -175,7 +175,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateUserPr">
 		update PROFILE 
 			set prContent=#{prContent}
-				<if test="prPicture != ''">, prPicture=#{prPicture}</if>
+				<!-- <if test="prPicture != ''">, prPicture=#{prPicture}</if> -->
+		where userNo=#{userNo}
+	</update>
+	
+	<!-- 회원 프로필 사진 수정 -->
+	<update id="updateUserPic">
+		update PROFILE
+			set prPicture=#{prPicture}
 		where userNo=#{userNo}
 	</update>
 

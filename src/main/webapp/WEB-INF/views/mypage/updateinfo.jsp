@@ -108,7 +108,7 @@
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
-			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/updateinfo.ps">정보 수정</a></li>
+			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
 		
 			<form class="form" method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/user/updateinfo.ps">
@@ -197,7 +197,7 @@
 		                      <div class="input-group">
 		                        <input type="password" class="form-control" />
 		                      </div>
-	                    </div>
+                   		 </div> 
 	                    
 	                  <div class="form-group text-center update-lab-padding">
 	                  	<label for="exampleInput1" class="bmd-label-floating">현재 캐시</label>

@@ -16,9 +16,10 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
+    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css?v=2" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" />
-    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/fluid-gallery.css">
     <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.theme.css" rel="stylesheet">
     <!-- Js -->

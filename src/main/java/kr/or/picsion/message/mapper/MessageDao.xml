@@ -148,7 +148,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
-	<!-- 보낸메시지,받은메시지 다 가져오기 -->
+	<!-- 한 회원과 주고 받은 메시지 다 가져오기 -->
 	<select id="msgList" resultMap="Message">
 		<!-- select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo where receiveUserNo = #{userNo}
 		union all
@@ -169,4 +169,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectMessage" resultType="kr.or.picsion.message.dto.Message">
 		select * from MESSAGES where msgNo=#{msgNo}
 	</select>
+	
+	<!-- 받은 메시지 삭제 -->
+	<update id="sendDel">
+		update MESSAGES
+		set receiveMsgDel='T'
+		where receiveUserNo=#{param1} AND sendUserNo=#{param2}
+	</update>
+	
+	<!-- 보낸 메시지 삭제 -->
+	<update id="receiveDel">
+		update MESSAGES
+		set sendMsgDel='T'
+		where sendUserNo=#{param1} AND receiveUserNo=#{param2}
+	</update>
+	
+	<!-- 메시지함에서 유저 검색 -->
+	<select id="selectUserMsg" resultMap="Message">
+		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo
+						 		 join PROFILE p ON p.userNo = u.userNo
+		where receiveUserNo = #{param1} AND u.userName like '%${param2}%' AND receiveMsgDel='F'
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
+										 join PROFILE p ON p.userNo = u.userNo
+		where sendUserNo = #{param1} AND u.userName like '%${param2}%' AND sendMsgDel ='F'
+		ORDER by msgReg
+	</select>
+	
 </mapper>

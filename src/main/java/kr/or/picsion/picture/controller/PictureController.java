@@ -203,21 +203,26 @@ public class PictureController {
 		User user = (User) session.getAttribute("user");
 		picture.setTagContent(tag);
 		pictureService.insertPicture(picture, user.getUserNo());
-		System.out.println("내밑에뭐지");
-		System.out.println(user.getUserNo());
+		System.out.println("유저번호:"+user.getUserNo());
 		System.out.println(picture);
 		System.out.println(picture.getTagContent());
-		String upath="D:/bitcamp104/finalProject/Final_Picsion/src/main/webapp"+picture.getPicPath();
+		String upath="D:/imagePicsion"+picture.getPicPath();
 		System.out.println("파일경로라서 워터마크에 쓸것이다: "+upath);
+		
+		//원본사진 이름 수정
+		
 		
 		String waterText = "PICSION";
 		File input = new File(upath);
-		File dir = new File("D:\\fileWater\\");
+		//워터마크 폴더 생성
+		File dir = new File("D:\\imagePicsion\\");
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
-		File output = new File("D:/fileWater/"+user.getUserNo()+"000"+picture.getPicNo()+".jpg");
-		System.out.println("워터마크되나?"+output.getPath());
+		//워터마크 사진 이름 수정하여 저장
+		String renameWater ="w"+renameFile(picture.getPicPath(), user.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
+		File output = new File("D:/imagePicsion/"+renameWater);
+		System.out.println("워터마크되나?"+output.getPath().substring(13));
 		// adding text as overlay to an image
 		try {
 			addTextWatermark(waterText, "jpg", input, output);
@@ -225,7 +230,9 @@ public class PictureController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		//워터마크사진 s3에 저장
+		uploadObject(output.getPath().substring(16),"picsion/water");
+		
 		int waterResult = pictureService.updateWater(output.getPath(), picture.getPicNo());
 		if(waterResult!=0) {
 			System.out.println("워터마크 생성");
@@ -233,10 +240,11 @@ public class PictureController {
 			System.out.println("워터마크 생성 실패");
 		}
 		
-		//s3 저장
-		String saveFileName =picture.getPicPath().split("/")[4];
+		//s3 저장 (원본 사진)
+		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+//		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-		String webFilePath = uploadObject(saveFileName);
+		String webFilePath = uploadObject(saveFileName,"picsion/img");
 		
 		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
 		if(s3Result!=0) {
@@ -262,7 +270,7 @@ public class PictureController {
         AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
         w.setComposite(alphaChannel);
         w.setColor(Color.GRAY);
-        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 26));
+        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
         FontMetrics fontMetrics = w.getFontMetrics();
         Rectangle2D rect = fontMetrics.getStringBounds(text, w);
 
@@ -276,14 +284,14 @@ public class PictureController {
         w.dispose();
     }
 	//s3에 저장하기
-	public String uploadObject(String file) {
+	public String uploadObject(String file,String bucketName) {
 		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
 		String SECRET_KEY = "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\r\n";
 	  	String clientRegion = "ap-northeast-2";
-        String bucketName = "picsion/img";
+        /*bucketName = "picsion/img";*/
         String stringObjKeyName = file;
         String fileObjKeyName = file;
-        String fileName = "D:/bitcamp104/finalProject/Final_Picsion/src/main/webapp/assets/img/examples/" + fileObjKeyName;
+        String fileName = "D:/imagePicsion/" + fileObjKeyName;
         /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
         
@@ -320,6 +328,31 @@ public class PictureController {
         a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName+"/"+fileObjKeyName;
         
         return a3path;
+	}
+	
+	// 이미지 이름 변경
+	public static String renameFile(String fileName, int userNo, int picNo) {
+
+		// 변경될 파일명
+		String newFileName = "";
+
+		// 확장자를 검색한다. jpg, bmp , png
+		if (fileName.toLowerCase().indexOf(".jpg") > 0) {
+			newFileName = userNo + "000" + picNo + ".jpg";
+		} else if (fileName.toLowerCase().indexOf(".bmp") > 0) {
+			newFileName = userNo + "000" + picNo + ".bmp";
+		} else if (fileName.toLowerCase().indexOf(".png") > 0) {
+			newFileName = userNo + "000" + picNo + ".png";
+		} else {// 확장자가 벗어나면 파일명 그대로 셋팅
+			newFileName = fileName;
+		}
+
+		// 변경된 파일명
+		System.out.println("이미지파일이름변경완료"+newFileName);
+
+		// 끝난거 알려주는 리턴값
+		return newFileName;
+
 	}
 }
 
