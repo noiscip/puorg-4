@@ -452,6 +452,7 @@ $(document).ready(function() {
 														class="btn btn-primary btn-round btn-wd float-right">Post
 														Comment</button>
 														<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
+														<a href="${picture.picPath}" class="btn btn-primary btn-sm">안졸린데?</a>
 												</div>
 											</div>
 										</c:otherwise>
@@ -480,7 +481,7 @@ $(document).ready(function() {
 					<div class="card card-product">
 						<div class="card-header card-header-image">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${rList.picNo}">
-							<img class="img" src="${rList.picPath}"></a>
+							<img class="img" src="<%=request.getContextPath()%>${rList.picPath}"></a>
 							<div class="colored-shadow"	style="background-image: url(&quot;<%=request.getContextPath()%>${rList.picPath}&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">

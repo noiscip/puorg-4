@@ -123,7 +123,7 @@ $(function(){
 		  return ranNum;
 	}
 	console.log($('.page-header'))
-	$('.page-header').css({'background-image':'url(<%=request.getContextPath()%>/assets/img/main/main'+generateRandom(1,6)+'.jpg)'}) 
+	$('.page-header').css({'background-image':'url(<%=request.getContextPath()%>/assets/img/main/main'+generateRandom(1,11)+'.jpg)'}) 
 	
 })
 </script>
