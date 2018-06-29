@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Freebie: 12 Practical Templates For List Pages</title>
+
+    <style>
+        body{
+            padding: 40px 0;
+        }
+    </style>
+	<link rel="stylesheet" href="assets/css/tabs/tabs-underlined.css">
+
+</head>
+<body>
+
+    <div class="tabs-underline">
+
+        <ul>
+            <li>
+                <a class="tab-active" data-index="0" href="#">First tab</a>
+            </li>
+            <li>
+                <a data-index="1" href="#">Second tab</a>
+            </li>
+            <li>
+                <a data-index="2" href="#">Third tab</a>
+            </li>
+        </ul>
+
+        <div class="tabs-content-placeholder">
+
+            <div>
+                <p>Lorem ipsum dolor ist amet, consectetur adipiscing elit. Suspendisse molestie volutpat consectetur. Class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
+                <img src="assets/images/pictures/colosseum.jpg" width="378" alt="Colosseum">
+            </div>
+
+            <div class="tab-content-active">
+                <p>Lorem ipsum dolor ist amet, consectetur adipiscing elit. Suspendisse molestie volutpat consectetur. Class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
+                <img src="assets/images/pictures/bahnhoff.jpg" width="378" alt="Banhoff">
+            </div>
+
+            <div>
+                <p>Lorem ipsum dolor ist amet, consectetur adipiscing elit. Suspendisse molestie volutpat consectetur. Class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
+                <img src="assets/images/pictures/sahale-wa.jpg" width="378" alt="Sahale Wa">
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+
+            var widget = $('.tabs-underline');
+
+            var tabs = widget.find('ul a'),
+                content = widget.find('.tabs-content-placeholder > div');
+
+            tabs.on('click', function (e) {
+
+                e.preventDefault();
+
+                // Get the data-index attribute, and show the matching content div
+
+                var index = $(this).data('index');
+
+                tabs.removeClass('tab-active');
+                content.removeClass('tab-content-active');
+
+                $(this).addClass('tab-active');
+                content.eq(index).addClass('tab-content-active');
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

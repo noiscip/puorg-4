@@ -103,8 +103,9 @@
 
 <style>
 	/* 뿌려주는 이미지의 크기 */
-	.img-size{
+	.img-size {
 		height: 300px;
+		width: 100%;
 	}
 	
 	/* 사용자의 프로필 사진의 크기 */
@@ -119,7 +120,7 @@
   <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
   <div class="main main-raised">
     <div class="profile-content">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col-md-6 ml-auto mr-auto">
             <div class="profile">
@@ -200,17 +201,15 @@
         
         <div class="tab-content tab-space">
           <div class="tab-pane active" id="studio">
-            <div class="row">
-            
             
             <div id="gallery">
 				<div class="flex_grid credits">
+				<div class="tz-gallery">
+				<div class="row">
 					<c:forEach items="${piclist}" var="studioPic" varStatus="status">
-						<div class="item" data-w="640" data-h="426"
-							style="width: 255px; height: 300px; display: block;">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}"> <img class="rounded img-size"
-								src="<%=request.getContextPath()%>${studioPic.picPath}"
-								alt="">
+						<div class="item col-sm-6 col-md-4">
+							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}">
+							<img class="rounded img-size" src="<%=request.getContextPath()%>${studioPic.picPath}" alt="">
 							</a>
 							<div>
 			                    <div class="counts hide-xs hide-sm ">
@@ -235,10 +234,11 @@
                				</div>
 						</div>
 					</c:forEach>
+					</div>
+					</div>
 				</div>
-			</div>
+			</div> 
             
-            </div>
           </div>
           
           <div class="tab-pane text-center" id="favorite">
