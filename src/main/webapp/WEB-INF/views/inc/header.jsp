@@ -194,6 +194,11 @@ $(function(){
 			                   		<i class="material-icons">visibility</i>구글 계정 연동 
 		                    	</a>
 	                    	</c:if>
+	                    	<c:if test="${sessionScope.user.roleNo eq 3}">
+			                    <a href="<%=request.getContextPath()%>/user/admin.ps" class="dropdown-item"> 
+			                   		<i class="material-icons">build</i>회원/매출/신고
+		                    	</a>
+	                    	</c:if>
 		                  </div>
 		                </li>
 						<li class="nav-item">
