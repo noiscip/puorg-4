@@ -68,7 +68,7 @@ public class PictureController {
 	* @param userNo
 	* @return String
 	*/
-	@RequestMapping("mystudio.ps")
+	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
 	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
 		if(session.getAttribute("user") != null) {
@@ -95,6 +95,40 @@ public class PictureController {
 		model.addAttribute("followResult", followResult);
 		
 		return "studio.mystudio";
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : studioScroll
+	* 작성자명 : 박주원
+	* 기      능 : 스크롤 페이징
+	*
+	* @param session
+	* @param model
+	* @param userNo
+	* @return View
+	*/
+	@RequestMapping(value="mystudio.ps", method=RequestMethod.POST)
+	public View studioScroll(HttpSession session, Model model, int userNo){
+		User user = new User(); 
+		int page=0;
+		int endpage=6;
+		
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
+		User scrollUserInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
+		List<Picture> scrollPicList = pictureService.studioPicList(scrollUserInfo.getUserNo(), user.getUserNo()); //스튜디오 사진리스트
+		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo);
+
+		model.addAttribute("scrollUserInfo", scrollUserInfo);
+		model.addAttribute("scrollPicList", scrollPicList);
+		model.addAttribute("scrollOwnerList",scrollOwnerList);
+		
+		return jsonview;
 	}
 	
 	/**
