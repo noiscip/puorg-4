@@ -23,39 +23,38 @@
 		  <script type="text/javascript">
 		  //top으로ws
 		  	
-			$(document).ready(function() {
+			$(function() {
 
 				if($('#loginUserNo').val()!= ""){
 					connect() 
-					console.log($('#loginUserNo').val())
 				}
 				
 				//신고하기/////////////////////////////////////////////////////////////////
-			$('#blaSend').click(function(){
-				var info = $('#info').val().split(',')
-				var blaContent = $('#blaContent').val()
-				var data = 	{
-								blaContent : blaContent,
-								tableNo : info[0],
-								userNo : info[1],
-								brdNo : info[2],
-								picNo : info[3]
-							}
-				blameController(data)
-			})
-			
-			$(document).on('click','a[data-original-title=보내버리기]',function(){
-				var info = (this.id).split(',')
-				var content = this.parentNode.children[1].innerHTML
-				var data = {
-								tableNo : info[0],
-								userNo : info[1],
-								brdNo : info[2],
-								picNo : info[3],
-								cmtNo : info[4],
-								blaContent : content
-							}
-				blameController(data)
+				$('#blaSend').click(function(){
+					var info = $('#info').val().split(',')
+					var blaContent = $('#blaContent').val()
+					var data = 	{
+									blaContent : blaContent,
+									tableNo : info[0],
+									userNo : info[1],
+									brdNo : info[2],
+									picNo : info[3]
+								}
+					blameController(data)
+				})
+				
+				$(document).on('click','a[data-original-title=보내버리기]',function(){
+					var info = (this.id).split(',')
+					var content = this.parentNode.children[1].innerHTML
+					var data = {
+									tableNo : info[0],
+									userNo : info[1],
+									brdNo : info[2],
+									picNo : info[3],
+									cmtNo : info[4],
+									blaContent : content
+								}
+					blameController(data)
 				})
 			});
 			
@@ -64,7 +63,7 @@
 					url : "/picsion/blame/complainInsert.ps",
 					data : data,
 					success : function(data){
-						console.log(data)
+						alert('신고 되었습니다')
 					}
 				})
 			}
@@ -87,7 +86,6 @@
 		  		console.log("onMessage 실행")
 		  		
 				var table = evt.data.split(':')[2]
-				var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
 				var sendUserNo = evt.data.split(':')[0]
 				var removeDiv = $('#commentstart').find('p[data-no='+sendUserNo+']').closest('.media');
 				var url = "";
@@ -102,8 +100,6 @@
                     			cmtNo: evt.data.split(':')[3]
                     	},
                         success: function(data) {
-                        	console.log(data);
-                    		console.log(data.addcomment);
 							  var media="";
 						      
 									media += "<div class='media'>"+
@@ -137,8 +133,6 @@
                     			msgNo: evt.data.split(':')[3]
                     	},
                         success: function(data) {
-                        	console.log(data)
-                        	
                         	/* 현재 연 메시지창이 보낸사람이 맞는지 확인해서 메시지 뿌려주기  */
                         	if($('.messageSend').data("no")==sendUserNo && $('#msgContent-show').hasClass('msg-show')){
 	                        	var msg = "<div class='popover bs-popover-right bs-popover-right-docs message-receive'>"+
@@ -170,25 +164,16 @@
                         }
                     })
                 } else{
-					
-					$.ajax({
-						url : "/picsion/notice/noticeMsg.ps",
-						success: function (data) {
-							if (data.count > 0 && $('#newNotice').length == 0){
-								$('#userProfile').append(newMessage)
-							}
-						}
-					})
+                	newNoticeCount()
                 }
-				
-				
 		 	}
+		  	
+		  	
 		  	function onClose(evt) {
 			  console.log("여기는 클로즈 이벤트")
 			}
 		  
 		  	function send(receiveUser,tableNo) {
-			  	console.log("send오긴해?")
 			  	var loginUser = $('#loginUserNo').val()
 			  
 		        wsocket.send(loginUser+":"+receiveUser+":"+tableNo);

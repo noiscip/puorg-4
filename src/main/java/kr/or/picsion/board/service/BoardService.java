@@ -1,7 +1,6 @@
 package kr.or.picsion.board.service;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;

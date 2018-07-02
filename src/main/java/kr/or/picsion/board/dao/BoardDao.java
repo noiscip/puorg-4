@@ -1,6 +1,5 @@
 package kr.or.picsion.board.dao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import kr.or.picsion.board.dto.Board;
