@@ -6,44 +6,7 @@
 
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-	<title>PICSION</title>
-	
-	<link href="<%=request.getContextPath()%>/assets/img/apple-icon.png" rel="apple-touch-icon" sizes="76x76">
-	<link href="<%=request.getContextPath()%>/assets/img/favicon.png" rel="icon" type="image/png">
-	<!-- Fonts and icons -->
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" rel="stylesheet" type="text/css"/>
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-	
-	
-	<!-- CSS Files -->
-	<link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
-	<link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.css" rel="stylesheet">
-    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.theme.css" rel="stylesheet">	
-	<!-- Js -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/wordcloud.js"></script>
-	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-	<!--   Core JS Files   -->
-	<script src="<%=request.getContextPath()%>/assets/js/core/jquery.min.js" type="text/javascript"></script>
-	<script src="<%=request.getContextPath()%>/assets/js/core/popper.min.js" type="text/javascript"></script>
-	<script src="<%=request.getContextPath()%>/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
-	<script src="<%=request.getContextPath()%>/assets/js/plugins/moment.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-	<script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
-	<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-	<script src="<%=request.getContextPath()%>/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
-	<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
-	<script src="<%=request.getContextPath()%>/assets/js/material-kit.js?v=2.0.1" type="text/javascript"></script>
-
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/export-data.js"></script>
-
-	
+	<tiles:insertAttribute name="script"/>
 </head>
 
 <body class="index-page sidebar-collapse">
