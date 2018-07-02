@@ -1,25 +1,17 @@
-package kr.or.picsion.user.controller;
+﻿package kr.or.picsion.user.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
-
 import kr.or.picsion.picture.dto.Picture;
-import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -41,29 +33,58 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private PictureService pictureService;
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : register
+	* 작성자명 : 아윤근
+	* 기      능 : 회원가입 페이지로 이동
+	*
+	* @return String
+	*/
 	@RequestMapping(value="register.ps", method=RequestMethod.GET)
     public String register(){
         return "user.register";
     }
 	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : userRegister
+	* 작성자명 : 아윤근
+	* 기      능 : 회원가입
+	*
+	* @param user
+	* @return String
+	*/
 	@RequestMapping(value="register.ps", method=RequestMethod.POST)
 	public String userRegister(User user) {
 		userService.register(user);
 		return "redirect:/home.ps";
 	}
 	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : userLogin
+	* 작성자명 : 아윤근
+	* 기      능 : 로그인 페이지로 이동
+	*
+	* @return String
+	*/
 	@RequestMapping(value="login.ps", method=RequestMethod.GET)
-	public String userLogint() {
+	public String userLogin() {
 		return "user.login";
 	}
 	
-	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : userLogin
+	* 작성자명 : 아윤근
+	* 기      능 : 로그인
+	*
+	* @param user
+	* @param session
+	* @return String
+	*/
 	@RequestMapping(value="login.ps", method=RequestMethod.POST)
 	public String userLogin(User user, HttpSession session) {
 		User loginUser = userService.login(user);
@@ -81,12 +102,30 @@ public class UserController {
 		return result;
 	}
 	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : userLogout
+	* 작성자명 : 아윤근
+	* 기      능 : 로그아웃
+	*
+	* @param session
+	* @return String
+	*/
 	@RequestMapping("logout.ps")
 	public String userLogout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/home.ps";
 	}
 	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : adminPage
+	* 작성자명 : 김보경
+	* 기      능 : 관리자 페이지로 이동
+	*
+	* @param model
+	* @return String
+	*/
 	@RequestMapping("admin.ps")
 	public String adminPage(Model model) {
 		
@@ -95,43 +134,38 @@ public class UserController {
 		return "admin.admin";
 	}
 	
-	@RequestMapping("adminUserDel.ps")
-	public View userDel(int userNo, Model model) {
+	@RequestMapping("adminStats.ps")
+	public String salesStats(Model model) {
 		
-		int result = userService.userDel(userNo);
-		model.addAttribute("result",result);
-		return jsonview;
-	}
-	
-	@RequestMapping("adminAllUser.ps")
-	public View userFindAll(Model model) {
-		List<User> userList = userService.userList();
-		model.addAttribute("allUser",userList);
-		return jsonview;
-	}
-	
-	@RequestMapping("adminUserSearch.ps")
-	public View userSearch(String userId, Model model) {
 		
-		User user = userService.searchUserId(userId);
-		model.addAttribute("searchUser",user);
-		return jsonview;
+		return "admin.stats";
 	}
-	
 	
 	//팔로잉하는 사람의 최신 사진 전체 페이지
+
+	/**
+	* 날        짜 : 2018. 6. 13.
+	* 메소드명 : popularPicList
+	* 작성자명 : 정도혁
+	* 기        능 : 팔로잉 유저의 최신 사진 페이지
+	*
+	* @param session
+	* @param model
+	* @return String
+	*/
 	@RequestMapping(value="popular.ps", method=RequestMethod.GET)
-	public String getList(HttpSession session, Model model) {
+	public String popularPicList(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		List<Picture> followingPicList = userService.listpic(user.getUserNo()); //팔로잉 최신 사진 리스트
-		List<User> followingPicListOwner = userService.listpicown(user.getUserNo()); //사진 주인 리스트
+		List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo()); //팔로잉 최신 사진 리스트
+		List<User> followingPicListOwner = userService.followingUserPicOwnerList(user.getUserNo()); //사진 주인 리스트
 		System.out.println(followingPicList);
-		model.addAttribute("imagelistall", followingPicList);
-		model.addAttribute("ownlist",followingPicListOwner);
+		model.addAttribute("followingPicList", followingPicList);
+		model.addAttribute("followingPicListOwner",followingPicListOwner);
 		
 		return "popular.followingpicall";
 	}
 	
+	//삭제 여부?? 테스트용인가요??
 	@RequestMapping(value="userlist.ps")
 	public String userList(Model model) {
 		
@@ -140,7 +174,17 @@ public class UserController {
 		return "home.admin";
 	}
 	
-	//팔로잉 하고 있는지 확인
+	/**
+	* 날      짜 : 2018. 6. 13.
+	* 메소드명 : followingConfirm
+	* 작성자명 : 박주원
+	* 기      능 : 내가 팔로잉하고 있는지 확인
+	*
+	* @param userNo
+	* @param followingUserNo
+	* @param model
+	* @return View
+	*/
 	@RequestMapping("following.ps")
 	public View followingConfirm(int userNo, int followingUserNo, Model model) {
 		
@@ -159,10 +203,18 @@ public class UserController {
 		return jsonview;
 	}
 	
-	//즐겨찾기한 사진 목록보기 페이지로 이동
+	/**
+	* 날      짜 : 2018. 6. 13.
+	* 메소드명 : myBookmark
+	* 작성자명 : 박주원, 정도혁
+	* 기      능 : 즐겨찾기한 사진 목록보기 페이지로 이동
+	*
+	* @param session
+	* @param model
+	* @return String
+	*/
 	@RequestMapping("bookmarklist.ps")
 	public String myBookmark(HttpSession session, Model model) {
-		System.out.println("myBookmark 컨트롤");
 		User user = (User)session.getAttribute("user");
 		System.out.println(user.getUserNo());
 		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo());
@@ -173,7 +225,16 @@ public class UserController {
 		return "mypage.bookmark";
 	}
 	
-	//팔로잉한 회원의 목록보기 페이지로 이동
+	/**
+	* 날      짜 : 2018. 6. 13.
+	* 메소드명 : myFollowing
+	* 작성자명 : 박주원
+	* 기      능 : 팔로잉한 회원의 목록보기 페이지로 이동
+	*
+	* @param session
+	* @param model
+	* @return String
+	*/
 	@RequestMapping("followinglist.ps")
 	public String myFollowing(HttpSession session, Model model) {
 		System.out.println("myFollowing 컨트롤");
@@ -185,31 +246,69 @@ public class UserController {
 		
 		return "mypage.following";
 	}
-	
-	//정보 수정 전 비밀번호 확인 페이지
-	@RequestMapping(value="updatebefore.ps", method=RequestMethod.GET)
-	public String updateBeforePage() {
-		return "mypage.updatebefore";
-	}
-	
-	//정보 수정 페이지전 (비밀번호 확인)
-	@RequestMapping(value="updatebefore.ps", method=RequestMethod.POST)
-	public String updateBefore(User user, HttpSession session) {
-		User userSession = (User)session.getAttribute("user");
-		String result;
-		System.out.println("업데이트 비포컨트롤러 와??");
+
+	/**
+	* 날      짜 : 2018. 6. 18.
+	* 메소드명 : userDel
+	* 작성자명 : 김보경
+	* 기      능 : 유저 삭제 처리
+	*
+	* @param userNo
+	* @param model
+	* @return View
+	*/
+	@RequestMapping("adminUserDel.ps")
+	public View userDel(int userNo, Model model) {
 		
-		if(userSession.getPwd().equals(user.getPwd())) {
-			result="redirect:updateinfo.ps";
-		}else {
-			result="redirect:updatebefore.ps";
-		}
-		System.out.println("result머야??");
-		System.out.println(result);
-		return result;
+		int result = userService.userDel(userNo);
+		model.addAttribute("result",result);
+		return jsonview;
 	}
 	
-	//정보 수정 페이지로 이동 (회원의 정보 검색해서)
+	/**
+	* 날      짜 : 2018. 6. 19.
+	* 메소드명 : userFindAll
+	* 작성자명 : 김보경
+	* 기      능 : 회원 전체 검색
+	*
+	* @param model
+	* @return View
+	*/
+	@RequestMapping("adminAllUser.ps")
+	public View userFindAll(Model model) {
+		List<User> userList = userService.userList();
+		model.addAttribute("allUser",userList);
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 19.
+	* 메소드명 : userSearch
+	* 작성자명 : 김보경
+	* 기      능 : userId로 회원 검색
+	*
+	* @param userId
+	* @param model
+	* @return View
+	*/
+	@RequestMapping("adminUserSearch.ps")
+	public View userSearch(String userId, Model model) {
+		
+		User user = userService.searchUserId(userId);
+		model.addAttribute("searchUser",user);
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 26.
+	* 메소드명 : updatePage
+	* 작성자명 : 정도혁
+	* 기      능 : 정보 수정 페이지로 이동 (회원의 정보 검색해서)
+	*
+	* @param session
+	* @param model
+	* @return String
+	*/
 	@RequestMapping(value="updateinfo.ps", method=RequestMethod.GET)
 	public String updatePage(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
@@ -220,7 +319,17 @@ public class UserController {
 		return "mypage.updateinfo";
 	}
 	
-	//정보수정 페이지에서 정보수정
+	/**
+	* 날      짜 : 2018. 6. 26.
+	* 메소드명 : updateInfo
+	* 작성자명 : 박주원
+	* 기      능 : 정보수정
+	*
+	* @param session
+	* @param user
+	* @param file
+	* @return String
+	*/
 	@RequestMapping(value="updateinfo.ps", method=RequestMethod.POST)
 	public String updateInfo(HttpSession session, User user, MultipartFile file) {
 		User userSession = (User)session.getAttribute("user");
@@ -288,6 +397,17 @@ public class UserController {
 	}
 	
 	//포인트 충전
+	/**
+	* 날      짜 : 2018. 6. 26.
+	* 메소드명 : pointCharge
+	* 작성자명 : 박주원
+	* 기      능 : 포인트 충전
+	*
+	* @param session
+	* @param point
+	* @param model
+	* @return View
+	*/
 	@RequestMapping("charge.ps")
 	public View pointCharge(HttpSession session, int point, Model model) {
 		User user = (User)session.getAttribute("user");
@@ -296,6 +416,43 @@ public class UserController {
 		model.addAttribute("result", result);
 		
 		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 27.
+	* 메소드명 : updateBeforePage
+	* 작성자명 : 박주원
+	* 기      능 : 정보 수정 전 비밀번호 확인 페이지
+	*
+	* @return String
+	*/
+	@RequestMapping(value="updatebefore.ps", method=RequestMethod.GET)
+	public String updateBeforePage() {
+		return "mypage.updatebefore";
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 27.
+	* 메소드명 : updateBefore
+	* 작성자명 : 박주원
+	* 기      능 : 정보 수정 페이지전 (비밀번호 확인)
+	*
+	* @param user
+	* @param session
+	* @return String
+	*/
+	@RequestMapping(value="updatebefore.ps", method=RequestMethod.POST)
+	public String updateBefore(User user, HttpSession session) {
+		User userSession = (User)session.getAttribute("user");
+		String result;
+		
+		if(userSession.getPwd().equals(user.getPwd())) {
+			result="redirect:updateinfo.ps";
+		}else {
+			result="redirect:updatebefore.ps";
+		}
+		
+		return result;
 	}
 	
 }

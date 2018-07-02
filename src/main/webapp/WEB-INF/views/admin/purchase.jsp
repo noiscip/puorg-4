@@ -92,7 +92,7 @@
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글 관리</a></li>
 		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출 내역</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminPurchase.ps">통계</a></li>
+		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminStats.ps">통계</a></li>
 		</ul>
 		
 		
