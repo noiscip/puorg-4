@@ -87,7 +87,7 @@
 						varStatus="status">
 						<div class="item col-sm-6 col-md-4">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${tagpic.picNo}">
-							<img class="rounded img-size" src="<%=request.getContextPath()%>/${tagpic.picPath}"	alt="No Image">
+							<img class="rounded img-size" src="${tagpic.picWater}"	alt="No Image">
 							</a>
 							<div>
 			                    <div class="counts hide-xs hide-sm ">

@@ -38,19 +38,16 @@ public class PictureService {
     /**
     * 날      짜 : 2018. 6. 13.
     * 메소드명 : insertPicture
-    * 작성자명 : 이아림
+    * 작성자명 : 이아림,김준수
     * 기      능 : 사진업로드 저장
     *
     * @param picture
     * @param userNo
     */
-    public void insertPicture(Picture picture, int userNo) {
-        HashMap<String, Object> picmap = new HashMap<String, Object>();
-        picmap.put("picture", picture);
-        picmap.put("userNo", userNo);
+    public void insertPicture(Picture picture) {
         System.out.println(picture.toString());  //////////////////////////////////뀨?
         PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
-        pictureDao.insertPicture(picmap);
+        pictureDao.insertPicture(picture);
         for(String p : picture.getTagContent()) {
             pictureDao.insertTag(picture.getPicNo(), p);
         }

@@ -213,16 +213,45 @@ public class UserController {
 	* @param model
 	* @return String
 	*/
-	@RequestMapping("bookmarklist.ps")
+	@RequestMapping(value="bookmarklist.ps", method=RequestMethod.GET)
 	public String myBookmark(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
-		System.out.println(user.getUserNo());
-		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo());
-		List<User> bookmarkPicUserList = userService.bookmarkPicUserList(user.getUserNo());
+		int page=0;
+		int endpage=6;
+		
+		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo(), page, endpage);
+		List<User> bookmarkPicUserList = userService.bookmarkPicUserList(user.getUserNo(), page, endpage);
+		
 		model.addAttribute("bookmarkPicList", bookmarkPicList);
 		model.addAttribute("bookmarkPicUserList",bookmarkPicUserList);
+		model.addAttribute("page", bookmarkPicList.size());
 		
 		return "mypage.bookmark";
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : myBookmark
+	* 작성자명 : 박주원
+	* 기      능 : 북마크 리스트 스크롤 페이징
+	*
+	* @param session
+	* @param model
+	* @return View
+	*/
+	@RequestMapping(value="bookmarklist.ps", method=RequestMethod.POST)
+	public View myBookmarkScroll(HttpSession session, Model model, int page) {
+		User user = (User)session.getAttribute("user");
+		int endpage=6;
+		
+		List<Picture> scrollPicList = userService.bookmarkPicList(user.getUserNo(), page, endpage);
+		List<User> scrollPicUserList = userService.bookmarkPicUserList(user.getUserNo(), page, endpage);
+		
+		model.addAttribute("scrollPicList", scrollPicList);
+		model.addAttribute("scrollPicUserList",scrollPicUserList);
+		model.addAttribute("endpage", scrollPicList.size());
+		
+		return jsonview;
 	}
 	
 	/**

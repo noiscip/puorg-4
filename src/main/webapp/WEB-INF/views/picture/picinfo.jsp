@@ -218,6 +218,31 @@ $(document).ready(function() {
 
 	})
 	
+	
+	/* //사진 결제
+	$(document).on('click', '#buy', function(){
+		if(loginUserNo==0){
+			alert("로그인 후 이용하세요");
+		}else{
+			 $.ajax({
+					url:"/picsion/purchase/userPurchase.ps",
+					data:{userNo:loginUserNo,
+						  picNo:picNo},
+					success:function(data){
+						
+					}
+				})
+		}
+	}) */
+	
+	//사진 카트 추가
+	$(document).on('click', '#addcart', function(){
+		if(loginUserNo==0){
+			alert("로그인 후 이용하세요");
+		}else{
+			
+		}
+	})
 })
 
 </script>
@@ -225,8 +250,17 @@ $(document).ready(function() {
 <div class="container">
             <div class="row title-row">
                 <div class="col-md-4 ml-auto">
-                    <button class="btn btn-white float-right"><i class="material-icons">shopping_cart</i> Add Cart<div class="ripple-container"></div></button>
-                    <a href="<%=request.getContextPath()%>/purchase/userPurchase.ps" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</a>
+                <c:choose>
+                	<c:when test="${sessionScope.user eq null}">
+                	<script type="text/javascript">
+                		alert("사진 구매는 로그인 후 이용해주세요");
+                	</script>
+                	</c:when>
+                	<c:otherwise>
+                	 	<button id="addcart" class="btn btn-white float-right"><i class="material-icons">shopping_cart</i> Add Cart<div class="ripple-container"></div></button>
+                    	<a href="<%=request.getContextPath()%>/purchase/userPurchase.ps?userNo=${sessionScope.user.userNo}&picNo=${picture.picNo}" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</a>
+                	</c:otherwise>
+                </c:choose>
                 </div>
             </div>
         </div>
@@ -242,8 +276,8 @@ $(document).ready(function() {
 					<div class="card card-blog">
 						<div class="card-header card-header-image">
 						<div class="picturezoom">
-							<a href="${picture.picPath}"> 
-							<img class="img" src="${picture.picPath}">
+							<a href="${picture.picWater}"> 
+							<img class="img" src="${picture.picWater}">
 							</a></div>
 								<div class="card-title">
 								<c:choose>

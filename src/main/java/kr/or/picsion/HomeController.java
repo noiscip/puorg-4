@@ -50,9 +50,7 @@ public class HomeController {
 		if(user2 != null) {
 			List<Picture> followingPicList = userService.followingUserPicList(user2.getUserNo());
 		    model.addAttribute("imagelist", followingPicList);
-		    System.out.println(followingPicList);
 		}
-		
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home.home";
