@@ -9,9 +9,9 @@
 	                <div class="card-header card-header-primary text-center">
 	                  <h4>Sign Up</h4>
 	                  <div class="social-line">
-	                    <a href="#" class="btn btn-link btn-just-icon">
-	                      <i class="fa fa-facebook-square"></i>
-	                    </a>
+	                    <button class="btn btn-just-icon  btn-google">
+                                <i class="fa fa-google"> </i>
+                         </button>
 	                    <a href="<%=request.getContextPath()%>/google/login.ps" class="btn btn-link btn-just-icon">
 	                       <img alt="구글 로그인" src="<%=request.getContextPath()%>/assets/img/portalsite/google_icon.png" style="width: 40px">
 	                    </a>

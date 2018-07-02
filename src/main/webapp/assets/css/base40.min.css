@@ -524,7 +524,7 @@ label{display:block;margin-top:3px !important;margin-bottom:3px !important}
 .dd_box.langs+div a:nth-last-child(2){border:0 !important}
 @media screen and (max-width:567px){.dd_box.langs+div{left:20px !important}
 }
-.icon{position:relative;display:inline-block;padding:0;background-image:url(../img/sprites.png);background-image:url(../img/sprites.svg),none;background-repeat:no-repeat;cursor:pointer}
+.icon{position:relative;display:inline-block;padding:0;background-image:url(../img/sprites.png);background-repeat:no-repeat;cursor:pointer}
 .icon_menu_loupe{background-position:-200px 0;width:17px;height:17px;top:2px}
 .icon_download{background-position:0 -50px;width:15px;height:15px;top:2px}
 .icon_ec{background-position:-100px -50px;width:15px;height:16px;top:2px}
