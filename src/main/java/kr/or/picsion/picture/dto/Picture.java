@@ -19,16 +19,18 @@ public class Picture {
 	private String resolution;
 	private Date photoDate;
 	private List<String> tagContent;
+	private String cartCheck;
 	private String respectCheck;
 	private String bookmarkCheck;
 	private int respectCount;
 	private int bookmarkCount;
 
 	public Picture() {}
-
+	
 	public Picture(int picNo, String picTitle, String picContent, Date picReg, String picPath, String picWater,
 			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolution, Date photoDate,
-			List<String> tagContent, String respectCheck, String bookmarkCheck, int respectCount, int bookmarkCount) {
+			List<String> tagContent, String cartCheck, String respectCheck, String bookmarkCheck, int respectCount,
+			int bookmarkCount) {
 		super();
 		this.picNo = picNo;
 		this.picTitle = picTitle;
@@ -44,12 +46,12 @@ public class Picture {
 		this.resolution = resolution;
 		this.photoDate = photoDate;
 		this.tagContent = tagContent;
+		this.cartCheck = cartCheck;
 		this.respectCheck = respectCheck;
 		this.bookmarkCheck = bookmarkCheck;
 		this.respectCount = respectCount;
 		this.bookmarkCount = bookmarkCount;
 	}
-
 
 	public int getPicNo() {
 		return picNo;
@@ -163,6 +165,14 @@ public class Picture {
 		this.tagContent = tagContent;
 	}
 
+	public String getCartCheck() {
+		return cartCheck;
+	}
+
+	public void setCartCheck(String cartCheck) {
+		this.cartCheck = cartCheck;
+	}
+
 	public String getRespectCheck() {
 		return respectCheck;
 	}
@@ -200,9 +210,11 @@ public class Picture {
 		return "Picture [picNo=" + picNo + ", picTitle=" + picTitle + ", picContent=" + picContent + ", picReg="
 				+ picReg + ", picPath=" + picPath + ", picWater=" + picWater + ", picHit=" + picHit + ", picPrice="
 				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolution="
-				+ resolution + ", photoDate=" + photoDate + ", tagContent=" + tagContent + ", respectCheck="
-				+ respectCheck + ", bookmarkCheck=" + bookmarkCheck + ", respectCount=" + respectCount
-				+ ", bookmarkCount=" + bookmarkCount + "]";
+				+ resolution + ", photoDate=" + photoDate + ", tagContent=" + tagContent + ", cartCheck=" + cartCheck
+				+ ", respectCheck=" + respectCheck + ", bookmarkCheck=" + bookmarkCheck + ", respectCount="
+				+ respectCount + ", bookmarkCount=" + bookmarkCount + "]";
 	}
+
+	
 	
 }
