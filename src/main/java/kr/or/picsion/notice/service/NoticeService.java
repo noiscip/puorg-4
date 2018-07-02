@@ -12,16 +12,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.notice.dao.NoticeDao;
 import kr.or.picsion.notice.dto.Notice;
-import kr.or.picsion.operation.service.OperationService;
-import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
-import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
 /**

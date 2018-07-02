@@ -2,7 +2,6 @@ package kr.or.picsion.purchase.dao;
 
 import java.util.List;
 
-import kr.or.picsion.blame.dto.Blame;
 import kr.or.picsion.purchase.dto.Purchase;
 
 public interface PurchaseDao {

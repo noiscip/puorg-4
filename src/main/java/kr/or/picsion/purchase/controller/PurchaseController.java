@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
-import kr.or.picsion.blame.dto.Blame;
 import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.purchase.service.PurchaseService;
 

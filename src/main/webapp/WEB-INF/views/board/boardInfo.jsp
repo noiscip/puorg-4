@@ -6,7 +6,7 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
-		if(${boardInfo.operStateNo}==2){
+		if(${boardInfo.operStateNo}==2){ 
 		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 		}
 		var myNo = $('#loginUserNo').val();
@@ -146,13 +146,11 @@
 			$('#oApplyReg').val(operApplyReg);
 			$('#oApplyAppeal').val(operApplyAppeal);
 			$('#operApplyNo').val(operApplyNo);
-		});
+		}); 
 	});
 </script>
 
-<input type="hidden"
-	value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0"
-	id="info">
+<input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
 
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -206,10 +204,7 @@
 
 																	</h4>
 																	<p>${review1.cmtContent}</p>
-																	<a href="#pablo"
-																		class="btn btn-primary btn-link float-right"
-																		rel="tooltip" title="" data-original-title="보내버리기"
-																		id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																	<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
 																		<i class="material-icons">reply</i> 신고
 																	</a>
 																</div>
@@ -366,10 +361,7 @@
 
 																	</h4>
 																	<p>${review1.cmtContent}</p>
-																	<a href="#pablo"
-																		class="btn btn-primary btn-link float-right"
-																		rel="tooltip" title="" data-original-title="보내버리기"
-																		id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																	<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
 																		<i class="material-icons">reply</i> 신고
 																	</a>
 																</div>

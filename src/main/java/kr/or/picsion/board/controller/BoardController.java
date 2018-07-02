@@ -2,7 +2,6 @@ package kr.or.picsion.board.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;

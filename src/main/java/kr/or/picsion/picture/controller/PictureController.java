@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -32,8 +31,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.simpleworkflow.flow.worker.SynchronousActivityTaskPoller;
-
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;

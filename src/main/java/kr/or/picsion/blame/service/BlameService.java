@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import kr.or.picsion.blame.dao.BlameDao;
 import kr.or.picsion.blame.dto.Blame;
-import kr.or.picsion.user.dao.UserDao;
-import kr.or.picsion.user.dto.User;
 
 @Service
 public class BlameService {

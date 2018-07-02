@@ -17,8 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
-import com.amazonaws.services.appstream.model.Session;
-
 import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.message.service.MessageService;
 import kr.or.picsion.notice.service.NoticeService;
@@ -103,9 +101,7 @@ public class MessageController {
 			map.put(m.getSendUserNo(), m);
 		}
 		
-		System.out.println(map.keySet());
 		map.remove(user.getUserNo());
-		System.out.println(map.keySet());
 		
 		List<Message> recentMsg = new ArrayList<>();
 		
@@ -130,10 +126,6 @@ public class MessageController {
 		});
 		
 		model.addAttribute("recentMsg", recentMsg);
-		
-		for (Message m : recentMsg) {
-			System.out.println(m);
-		}
 		
 		return "mypage.message";
 	}

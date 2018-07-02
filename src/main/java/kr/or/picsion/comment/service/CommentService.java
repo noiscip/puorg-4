@@ -6,8 +6,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.or.picsion.board.dao.BoardDao;
-import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.comment.dao.CommentDao;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.user.dto.User;
