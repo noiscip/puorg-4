@@ -98,7 +98,6 @@
 	 	
 		
 		var lastScrollTop = 0;
-		var page = ${};
 		$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
 	        
 	        var currentScrollTop = $(window).scrollTop();
