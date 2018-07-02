@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -95,16 +95,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 북마크한 사진 리스트 -->
 	<select id="bookmarkPicList" resultType="kr.or.picsion.picture.dto.Picture">
-		<!-- select po.*, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount 
-		from (SELECT p.picNo, b.userNo, p.picPath, p.picTitle, p.picReg FROM PICTURE p JOIN BOOKMARK b ON p.picNo = b.picNo	WHERE b.userNo=#{userNo}) po
-		left join BOOKMARK b on po.picNo = b.picNo and po.userNo=b.userNo
-		left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo 
-		left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo 
-		left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo 
-		order by po.picReg; -->
 		select *
 		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select po.*, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount 
-				from (SELECT p.picNo, b.userNo, p.picPath, p.picTitle, p.picReg FROM PICTURE p JOIN BOOKMARK b ON p.picNo = b.picNo	WHERE b.userNo=#{param1}) po
+				from (SELECT p.picNo, b.userNo, p.picPath, p.picWater, p.picTitle, p.picReg FROM PICTURE p JOIN BOOKMARK b ON p.picNo = b.picNo	WHERE b.userNo=#{param1}) po
 				left join BOOKMARK b on po.picNo = b.picNo and po.userNo=b.userNo
 				left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo 
 				left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo 
