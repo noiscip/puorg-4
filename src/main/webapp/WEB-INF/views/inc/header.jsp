@@ -4,9 +4,14 @@
 
 <script>
 $(function(){
+	console.log($('#loginUserNo').val())
+	if($('#loginUserNo').val() != 0){
+		newNoticeCount()
+	}
 	
 	var isRun =false
-	$('#newNotice').click(function(){
+	$(document).on('click','#newNotice',function(){
+		
 		$('#noticeList').hide() 
 
 		if(isRun == true) {
@@ -74,8 +79,7 @@ $(function(){
 			self.location = '/picsion/board/boardInfo.ps?brdNo=' + value[2]
 		}else if(value[4] == 2){
 			self.location = '/picsion/picture/picinfo.ps?picNo=' + value[3]
-		}
-		else if(value[0] == 5){
+		}else if(value[0] == 5){
 			self.location = '/picsion/message/messageNotice.ps?userNo=' + value[1]
 		}
 		
@@ -117,12 +121,24 @@ $(function(){
 		}
 		
 	}) */
+	
+	function newNoticeCount() {
+		var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
+		
+		$.ajax({
+			url : "/picsion/notice/noticeMsg.ps",
+			success: function (data) {
+				if (data.count > 0 ){
+					$('#newNoticePlace').append(newMessage)
+				}
+			}
+		})
+	}
 
 	var generateRandom = function (min, max) {
 		  var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
 		  return ranNum;
 	}
-	console.log($('.page-header'))
 	$('.page-header').css({'background-image':'url(<%=request.getContextPath()%>/assets/img/main/main'+generateRandom(1,11)+'.jpg)'}) 
 	
 })
@@ -218,12 +234,11 @@ $(function(){
 									  <img style ="width: 30px;" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
 									</c:otherwise>
 								</c:choose> 
-								  ${sessionScope.user.userName}
+							  	${sessionScope.user.userName}
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="#" data-toggle="dropdown">
-								<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">
+							<a href="#" data-toggle="dropdown" id="newNoticePlace">
 							</a>
 								<ul class="dropdown-menu" id="noticeList">
 								</ul>

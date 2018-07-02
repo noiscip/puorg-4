@@ -1,6 +1,5 @@
 package kr.or.picsion.comment.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,13 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
-import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
-import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.notice.service.NoticeService;
-import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;

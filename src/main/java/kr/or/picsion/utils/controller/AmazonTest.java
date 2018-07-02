@@ -4,13 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,21 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.View;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
@@ -207,12 +191,10 @@ public class AmazonTest {
 		return filePathh;
 	} // fileUpload end
 	
-	
-	
 	/*
 	public void uploadObject(String file) {
-		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
-		String SECRET_KEY = "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\r\n";
+		String ACCESS_KEY;
+		String SECRET_KEY;
 	  	String clientRegion = "ap-northeast-2";
         String bucketName = "picsion/img";
         String stringObjKeyName = file;
@@ -251,6 +233,9 @@ public class AmazonTest {
             e.printStackTrace();
         }
         a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName;
+<<<<<<< HEAD
+	}
+=======
 	}*/
 
 	/**
@@ -262,6 +247,7 @@ public class AmazonTest {
 	* @param filePath
 	* @return
 	* @throws Exception
+>>>>>>> 13c5e69a099d197dd41dac86664994b9460ea19b
 	*/
 	public static List<String> detectLabels(String filePath) throws Exception {
 	    List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
@@ -413,10 +399,10 @@ public class AmazonTest {
 	                System.out.println("오상?"+annotation.getBoundingPoly().getVertices(1));
 	                System.out.println("오하?"+annotation.getBoundingPoly().getVertices(2));
 	                System.out.println("왼하?"+annotation.getBoundingPoly().getVertices(3));*/
-	                facePoly.add(new Face((int)annotation.getBoundingPoly().getVertices(0).getX(),
-	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getX(),
-	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getY(),
-	                			 		  (int)annotation.getBoundingPoly().getVertices(2).getY()));
+	                facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
+	                			 		  annotation.getBoundingPoly().getVertices(1).getX(),
+	                			 		  annotation.getBoundingPoly().getVertices(1).getY(),
+	                			 		  annotation.getBoundingPoly().getVertices(2).getY()));
 	            }
 	        }
 	        return facePoly;

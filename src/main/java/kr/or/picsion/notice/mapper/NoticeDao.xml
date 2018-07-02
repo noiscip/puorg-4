@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="readCheckCount" resultType="int">
-		select count(*)  from NOTICE where receiveUserNo = #{userNo}
+		select count(*)  from NOTICE where receiveUserNo = #{userNo} AND readCheck = 'F'
 	</select>
 	
 	<select id="noticeList" resultType="kr.or.picsion.notice.dto.Notice">

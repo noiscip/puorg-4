@@ -17,13 +17,12 @@
 			
 			removeDiv = $('#commentstart').find('p[data-no='+userNo+']').closest('.media');
 			
-			abb(userNo,myNo,msgUser)
-			$('#msgContent-show').addClass('msg-show');
+			msgList(userNo,myNo,msgUser)
 		})
 		
 		if($('#msgNotice').val() != "" ){
 			var sendUser = $('#msgNotice').val().split(',')
-			abb(sendUser[0],myNo,sendUser[1])
+			msgList(sendUser[0],myNo,sendUser[1])
 			<%session.removeAttribute("msgNotice");%>
 			
 		}
@@ -71,7 +70,7 @@
 										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
 										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
 										   		"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
-										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
+										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
 										   	"</div></div>";
 										   	
 							$('#commentstart').prepend(userList);
@@ -136,7 +135,7 @@
 									"</h4>"+
 									"<p class='msgList' style='cursor: pointer;' data-no='"+obj.user[0].userNo+"'>"+obj.msgContent+"</p>"+
 									"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
-									"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'> <i class='material-icons'>reply</i> 신고"+
+									"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'> <i class='material-icons'>reply</i> 신고"+
 									"</a></div></div>";
 						$('#commentstart').append(selList);
 					})
@@ -148,7 +147,8 @@
 		
 	})
 	
-function abb(userNo,myNo,msgUser) {
+function msgList(userNo,myNo,msgUser) {
+	$('#msgContent-show').addClass('msg-show');
 	$.ajax({
 		url:"/picsion/message/msglist.ps",
 		data:{userNo:userNo},
@@ -349,11 +349,11 @@ function abb(userNo,myNo,msgUser) {
 
 												<h4 class="media-heading msgUserName" data-name="${recentMsg2.user[0].userName}">
 													${recentMsg2.user[0].userName}<small> · <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${recentMsg2.msgReg}" /></small>
-
 												</h4>
 												<p class="msgList" style="cursor: pointer;" data-no="${recentMsg2.user[0].userNo}">${recentMsg2.msgContent}</p>
 												<a class="btn btn-rose btn-link float-right message-margin-del receiveMsgDel"><i class="material-icons">clear</i>삭제</a>
-												<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" title="" data-original-title="보내버리기"> <i class="material-icons">reply</i> 신고
+												<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기"
+												 id="${recentMsg2.tableNo},${recentMsg2.user[0].userNo},0,0,0"> <i class="material-icons">reply</i> 신고
 												</a>
 											</div>
 
