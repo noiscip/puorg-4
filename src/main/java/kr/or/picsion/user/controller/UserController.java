@@ -1,4 +1,4 @@
-package kr.or.picsion.user.controller;
+﻿package kr.or.picsion.user.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -134,6 +134,15 @@ public class UserController {
 		return "admin.admin";
 	}
 	
+	@RequestMapping("adminStats.ps")
+	public String salesStats(Model model) {
+		
+		
+		return "admin.stats";
+	}
+	
+	//팔로잉하는 사람의 최신 사진 전체 페이지
+
 	/**
 	* 날        짜 : 2018. 6. 13.
 	* 메소드명 : popularPicList

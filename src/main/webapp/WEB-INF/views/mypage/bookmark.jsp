@@ -103,7 +103,7 @@ $(document).on('click','#like',function(){
 								<c:forEach items="${bookmarkPicList}" var="bookmarkpic" varStatus="status">
 									<div class="item col-sm-6 col-md-4">
 										<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
-										<img class="rounded img-size" src="<%=request.getContextPath()%>${bookmarkpic.picPath}"	alt="No Image">
+										<img class="rounded img-size" src="${bookmarkpic.picWater}"	alt="No Image">
 										</a>
 										<div>
 						                    <div class="counts hide-xs hide-sm ">

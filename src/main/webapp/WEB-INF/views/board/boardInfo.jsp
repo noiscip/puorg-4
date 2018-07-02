@@ -148,6 +148,18 @@
 			$('#operApplyNo').val(operApplyNo);
 		});
 	});
+	
+	
+	$(document).on("click", "#tagAdd", function() {
+	    if($('#tagAddName').val()==0){
+	        alert("태그를 입력해주세요.");
+	    }else{
+	        $('#picTags').append("<input type='text' value="+$('#tagAddName').val()+" name='tag' data-role='tagsinput'>");
+	        $("input[data-role=tagsinput]").tagsinput();
+	        $('#tagAddName').val("");
+	    }
+	    
+	});
 </script>
 
 <input type="hidden"
@@ -420,6 +432,13 @@
 								</div>
 							</div>
 						</div>
+						
+						<div align="center">
+							<button type="button" class="btn btn-success">작업자 확인</button>
+							<button type="button" class="btn btn-danger">요청자 확인</button>
+						</div>
+						
+						
 					</div>
 				</c:when>
 			</c:choose>
@@ -483,7 +502,7 @@
 						<div class="col-md-6">
 							<form id="fileForm" action="amazontest.ps"
 								enctype="multipart/form-data" method="post">
-
+		
 								<div class="fileinput fileinput-new text-center"
 									data-provides="fileinput">
 									<div class="fileinput-new thumbnail img-raised">
@@ -491,10 +510,12 @@
 											src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
 											alt="...">
 									</div>
-									<div
-										class="fileinput-preview fileinput-exists thumbnail img-raised"></div>
+									<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
+									<%-- <canvas id="canvasdiv"></canvas> --%>
+										
+									</div> 
 									<div>
-										<span class="btn btn-raised btn-round btn-default btn-file">
+										<span class="btn btn-raised btn-round btn-default btn-file"> 
 											<span class="fileinput-new">Select image</span> <span
 											class="fileinput-exists">Change</span> <input type="file"
 											name="filePath" accept=".jpg, .png, .bmp" />
@@ -508,31 +529,34 @@
 								<!-- <input type="submit" class="btn btn-primary btn-round" value="보내기"> -->
 							</form>
 						</div>
-
+		
 						<div class="col-md-6">
-							<form
-								action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
-
+							<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
+		
 								<div class="form-group">
 									<label for="title">제목</label> <input type="text"
 										class="form-control" id="pictureTitle" name="picTitle">
 								</div>
-
+		
 								<div class="form-group">
 									<label for="description">설명</label> <input type="text"
 										class="form-control" id="pictureDesc" name="picContent">
 								</div>
-
+		
 								<!-- <form action=""> -->
 								<div id="picTags" class="form-group">
 									<label for="comment">Tags</label> <br>
-									<div id="loaderIcon"></div>
+										<div id="loaderIcon">
+									
+										</div>
 								</div>
 								<!-- </form> -->
-								<%--	<div class="form-group">
-							<input type="text" name="picPath" value="${picPath}"> 
-						</div> --%>
-								<div id="tagA"></div>
+						<%--	<div class="form-group">
+									<input type="text" name="picPath" value="${picPath}"> 
+								</div> --%>
+								<div id="tagA">
+								
+								</div>
 								<button type="submit" class="btn btn-primary">저장하기</button>
 							</form>
 						</div>
@@ -632,7 +656,10 @@
 
 <script>
 	$(function() {
+		
+
 		$('input[type=file]').change(function() {
+			console.log($(this))
 			var formData = new FormData($('#fileForm')[0])
 			console.log("클릭가능????")
 			console.log(formData)
@@ -662,15 +689,44 @@
 						$('h1').after(logo)
 					}
  					/*얼굴감지*/
-					var ctx = ''
-					var ctx = document.getElementByName('filePath').getContext('2d');
-						if(data.face != null){
-							ctx.strokeStyle="#FF0000";
-							
-							ctx.strokeRect(data.face["0"].x_0,data.face["0"].y_1,data.face["0"].width,data.face["0"].height);
-							
-						}
-					
+ 					 if(data.face != null){
+ 						console.log("얼굴그리기")
+ 						/* $('canvas').drawImage({
+ 							source: $('.fileinput-preview')["0"].children["0"].src,
+ 							x: 10, y: 10,
+ 							load:rec
+ 						});
+ 						function rec(){
+ 							console.log("이게 되낭?");
+ 							$('canvas').drawRect({
+								strokeStyle:"#FF0000",
+								strokeWidth:4,
+								x:data.face["0"].x_0, y:data.face["0"].y_1,
+								width:data.face["0"].width,
+								height:data.face["0"].height
+ 							});
+ 						}
+ 						 */
+ 						 
+ 						  /* $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */ 
+ 						//이 밑에 잠시 주석걸겠습니다
+ 						/* $('canvas').drawImage({
+ 							source: $('.fileinput-preview')['0'].children['0'].src,
+ 							x: 100, y: 100,
+ 							load:rec
+ 						});
+ 						function rec(){
+ 							console.log("이게 되낭?");
+ 							$('canvas').drawRect({
+ 							strokeStyle:"#FF0000",
+ 							strokeWidth:2,
+ 							x:100, y:100,
+ 							width:20,
+ 							height:20
+ 							});
+ 						}
+ */ 						
+ 					} 
 					var safe = ''
 					if(data.safe != null){
 						safe += '<div class="alert alert-danger">'
@@ -701,6 +757,7 @@
 					/* $('#taginputtest').attr("data-role","tagsinput"); */
 					console.log('와요?')
 					$("input[data-role=tagsinput]").tagsinput();
+					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
 				}
 			,beforeSend:function(){
 				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");

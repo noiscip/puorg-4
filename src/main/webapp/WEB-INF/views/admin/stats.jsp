@@ -1,6 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript">
+$(function(){
+	
+
+Highcharts.chart('sales', {
+
+  title: {
+    text: ''
+  },
+ 
+  xAxis: {
+    tickInterval: 1
+  },
+
+  yAxis: {
+    type: 'logarithmic',
+    minorTickInterval: 0.1
+  },
+
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br />',
+    pointFormat: 'x = {point.x}, y = {point.y}'
+  },
+
+  series: [{
+    data: [1, 2, 3, 4, 5, 6, 7, 8, 8],
+    pointStart: 1
+  }]
+});
+})
+</script>
 
 
 <div class="page-header header-filter clear-filter purple-filter"
@@ -16,33 +47,10 @@
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글 관리</a></li>
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출 내역</a></li>
-		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/adminPurchase.ps">통계</a></li>
+		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/adminStats.ps">통계</a></li>
 		</ul>
 		
-		
-			<h1>전체 매출 내역</h1>
-			<table border="3">
-				<thead>
-					<tr>
-						<th>사진 번호</th>
-						<th>구매 유저 번호</th>
-						<th>판매 유저 번호</th>
-						<th>구매 날짜</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<c:forEach var="admin" items="${purchaseList}">
-
-						<tr>
-							<td>${admin.picNo}</td>
-							<td>${admin.purchaseUserNo}</td>
-							<td>${admin.saleUserNo}</td>
-							<td>${admin.purchaseReg}</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+		<div id="sales" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 		</div>
 	</div>
 </div>

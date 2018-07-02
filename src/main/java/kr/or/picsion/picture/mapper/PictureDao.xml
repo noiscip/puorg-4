@@ -105,11 +105,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 사진 업로드 저장 -->
-	<insert id="insertPicture" parameterType="hashmap">		
+	<insert id="insertPicture" parameterType="kr.or.picsion.picture.dto.Picture">		
 	insert into PICTURE
 	 (picNo, picTitle, picContent, picPath, picWater, picPrice, userNo)
-	values (#{picture.picNo},#{picture.picTitle},#{picture.picContent},#{picture.picPath},#{picture.picWater},100,#{userNo})
-	 <selectKey keyProperty="picture.picNo" resultType="Integer" order="AFTER">
+	values (#{picNo},#{picTitle},#{picContent},#{picPath},#{picWater},100,#{userNo})
+	 <selectKey keyProperty="picNo" resultType="Integer" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
 	</insert>

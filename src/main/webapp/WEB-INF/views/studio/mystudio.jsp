@@ -209,7 +209,7 @@
 					<c:forEach items="${piclist}" var="studioPic" varStatus="status">
 						<div class="item col-sm-6 col-md-4">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}">
-							<img class="rounded img-size" src="<%=request.getContextPath()%>${studioPic.picPath}" alt="">
+							<img class="rounded img-size" src="${studioPic.picWater}" alt="">
 							</a>
 							<div>
 			                    <div class="counts hide-xs hide-sm ">
