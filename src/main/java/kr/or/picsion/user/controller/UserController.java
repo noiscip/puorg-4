@@ -134,30 +134,6 @@ public class UserController {
 		return "admin.admin";
 	}
 	
-
-	@RequestMapping("adminUserDel.ps")
-	public View userDel(int userNo, Model model) {
-		
-		int result = userService.userDel(userNo);
-		model.addAttribute("result",result);
-		return jsonview;
-	}
-	
-	@RequestMapping("adminAllUser.ps")
-	public View userFindAll(Model model) {
-		List<User> userList = userService.userList();
-		model.addAttribute("allUser",userList);
-		return jsonview;
-	}
-	
-	@RequestMapping("adminUserSearch.ps")
-	public View userSearch(String userId, Model model) {
-		
-		User user = userService.searchUserId(userId);
-		model.addAttribute("searchUser",user);
-		return jsonview;
-	}
-	
 	@RequestMapping("adminStats.ps")
 	public String salesStats(Model model) {
 		
