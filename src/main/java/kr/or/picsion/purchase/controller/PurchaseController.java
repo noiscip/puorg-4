@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.purchase.dto.PurchList;
 import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
