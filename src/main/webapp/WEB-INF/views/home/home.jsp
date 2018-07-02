@@ -1107,7 +1107,7 @@ $(document).ready(function() {
 							<div class="card card-blog">
 								<div class="card-header card-header-image">
 									<a href="#pablo"> <img class="img"
-										src="<%=request.getContextPath()%>${fileInfo.picPath}">
+										src="${fileInfo.picWater}">
 										<div class="card-title"><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss a" value = "${fileInfo.picReg}" /></div>
 									</a>
 								</div>

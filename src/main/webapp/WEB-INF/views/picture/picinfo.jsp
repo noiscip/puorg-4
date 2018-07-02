@@ -242,8 +242,8 @@ $(document).ready(function() {
 					<div class="card card-blog">
 						<div class="card-header card-header-image">
 						<div class="picturezoom">
-							<a href="${picture.picPath}"> 
-							<img class="img" src="${picture.picPath}">
+							<a href="${picture.picWater}"> 
+							<img class="img" src="${picture.picWater}">
 							</a></div>
 								<div class="card-title">
 								<c:choose>
