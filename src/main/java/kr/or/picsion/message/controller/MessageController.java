@@ -41,7 +41,16 @@ public class MessageController {
 	@Autowired
 	private UserService userService;
 	
-	//메시지 보내기
+	/**
+	* 날      짜 : 2018. 6. 12.
+	* 메소드명 : messageSend
+	* 작성자명 : 박주원, 아윤근
+	* 기      능 : 메시지 보내기, 알림 등록
+	*
+	* @param message
+	* @param model
+	* @return View
+	*/
 	@RequestMapping("send.ps")
 	public View messageSend(Message message, Model model) {
 		int result = messageService.sendMessage(message);
@@ -70,29 +79,21 @@ public class MessageController {
 		return jsonview;
 	}
 	
-	//메시지 읽어오기 (socket)
-	@RequestMapping("readmsg.ps")
-	public View messageRead(HttpSession session, Message message, Model model) {
-		System.out.println("리드메시지 컨트롤러~");
-		System.out.println(message);
-		User userinfo = userService.userInfo(message.getSendUserNo());
-		Message msginfo = messageService.messageInfo(message.getMsgNo());
-		System.out.println("********"+msginfo);
-		model.addAttribute("userinfo", userinfo);
-		model.addAttribute("msginfo", msginfo);
-		
-		return jsonview;
-	}
-	
-	
-	
-	//메시지 리스트  6.21
+	/**
+	* 날      짜 : 2018. 6. 21.
+	* 메소드명 : receiveMessage
+	* 작성자명 : 박주원
+	* 기      능 : 메시지 리스트
+	*
+	* @param session
+	* @param model
+	* @return String
+	*/
 	@RequestMapping("receivemessage.ps")
 	public String receiveMessage(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		
 		List<Message> messageAll = messageService.messageAll(user.getUserNo());
-		System.out.println("리시브 메시지 와라~~~~~99-----------------------------------");
 		
 		Map<Integer, Message> map = new HashMap<>();
 		
@@ -137,7 +138,17 @@ public class MessageController {
 		return "mypage.message";
 	}
 	
-	//한 회원과 주고받은 메시지 리스트 뽑아오기 6.22
+	/**
+	* 날      짜 : 2018. 6. 22.
+	* 메소드명 : messageList
+	* 작성자명 : 박주원
+	* 기      능 : 한 회원과 주고받은 메시지 리스트 뽑아오기
+	*
+	* @param userNo
+	* @param session
+	* @param model
+	* @return View
+	*/
 	@RequestMapping("msglist.ps")
 	public View messageList(int userNo, HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
@@ -148,7 +159,41 @@ public class MessageController {
 		return jsonview;
 	}
 	
-	//한 회원의 메시지 목록을 모두 삭제
+	/**
+	* 날      짜 : 2018. 6. 24.
+	* 메소드명 : messageRead
+	* 작성자명 : 박주원
+	* 기      능 : 메시지 읽어오기 (socket)
+	*
+	* @param session
+	* @param message
+	* @param model
+	* @return View
+	*/
+	@RequestMapping("readmsg.ps")
+	public View messageRead(HttpSession session, Message message, Model model) {
+		System.out.println("리드메시지 컨트롤러~");
+		System.out.println(message);
+		User userinfo = userService.userInfo(message.getSendUserNo());
+		Message msginfo = messageService.messageInfo(message.getMsgNo());
+		System.out.println("********"+msginfo);
+		model.addAttribute("userinfo", userinfo);
+		model.addAttribute("msginfo", msginfo);
+		
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 27.
+	* 메소드명 : messageDel
+	* 작성자명 : 박주원
+	* 기      능 : 메시지함에서 한 회원과 주고 받은 대화내용 모두 삭제
+	*
+	* @param userNo
+	* @param session
+	* @param model
+	* @return View
+	*/
 	@RequestMapping("msgdel.ps")
 	public View messageDel(int userNo, HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
@@ -166,7 +211,17 @@ public class MessageController {
 		return jsonview;
 	}
 	
-	//메시지함 유저 검색
+	/**
+	* 날      짜 : 2018. 6. 28.
+	* 메소드명 : selectUserMsg
+	* 작성자명 : 박주원
+	* 기      능 : 메시지함 유저 검색
+	*
+	* @param userName
+	* @param session
+	* @param model
+	* @return View
+	*/
 	@RequestMapping("msguser.ps")
 	public View selectUserMsg(String userName, HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
@@ -209,99 +264,23 @@ public class MessageController {
 		
 		return jsonview;
 	}
-	
-	
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//메시지 확인시 messageState update
-	@RequestMapping("stateup.ps")
-	public View messageState(String msgNo, String msgState, Model model) {
-		int result =0;
-		
-		if(msgState.equals("안읽음")) {
-			result = messageService.messageState(Integer.parseInt(msgNo));
-		}
-		
-		model.addAttribute("result", result);
-		
-		return jsonview;
-	}
 
-	
-	//받은 메시지함에서 메시지 삭제
-	@RequestMapping("receivedel.ps")
-	public View receiveMessageDel(String msgNo, Model model) {
-		int result = messageService.receiveMessageDel(Integer.parseInt(msgNo));
-		
-		model.addAttribute("result", result);
-		
-		return jsonview;
-	}
-	
-	
-	//보낸 메시지함에서 메시지 삭제
-	@RequestMapping("senddel.ps")
-	public View sendMessageDel(String msgNo, Model model) {
-		int result = messageService.sendMessageDel(Integer.parseInt(msgNo));
-		
-		model.addAttribute("result", result);
-		
-		return jsonview;
-	}
-	
-	
-	//받은 메시지함에서 userName으로 메시지 검색
-	@RequestMapping("receiveselect.ps")
-	public View receiveSelect(String userName, HttpSession session, Model model) {
-		User user = (User)session.getAttribute("user");
-		
-		//받은 메시지에 대한 정보
-		List<Message> receiveSelect = messageService.selectReceiveMsg(user.getUserNo(), userName);
-		List<User> receiveSelInfo = messageService.selectReceiveInfo(user.getUserNo(), userName);
-		List<String> receiveSelReg = new ArrayList<>();
-		
-		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
-		for(Message m : receiveSelect) {
-			receiveSelReg.add(reg.format(m.getMsgReg()));
-		}
-		
-		model.addAttribute("receiveSelect", receiveSelect);
-		model.addAttribute("receiveSelInfo", receiveSelInfo);
-		model.addAttribute("receiveSelReg", receiveSelReg);
-		
-		return jsonview;
-	}
-	
-	
-	//보낸 메시지함에서 userName으로 메시지 검색
-	@RequestMapping("sendselect.ps")
-	public View sendSelect(String userName, HttpSession session, Model model) {
-		User user = (User)session.getAttribute("user");
-		
-		//보낸 메시지에 대한 정보
-		List<Message> sendSelect = messageService.selectSendMsg(user.getUserNo(), userName);
-		List<User> sendSelInfo = messageService.selectSendInfo(user.getUserNo(), userName);
-		List<String> sendSelReg = new ArrayList<>();
-		
-		java.text.SimpleDateFormat reg = new java.text.SimpleDateFormat("yy-MM-dd HH:mm");
-		for(Message m : sendSelect) {
-			sendSelReg.add(reg.format(m.getMsgReg()));
-		}
-		
-		model.addAttribute("sendSelect", sendSelect);
-		model.addAttribute("sendSelInfo", sendSelInfo);
-		model.addAttribute("sendSelReg", sendSelReg);
-		
-		return jsonview;
-	}
-
+	/**
+	* 날      짜 : 2018. 6. 29.
+	* 메소드명 : messageNotice
+	* 작성자명 : 아윤근
+	* 기      능 : 메시지 알림
+	*
+	* @param session
+	* @param userNo
+	* @return String
+	*/
 	@RequestMapping("messageNotice.ps")
 	public String messageNotice(HttpSession session,int userNo) {
-		System.out.println("---------------------------------");
-		System.out.println(userNo);
 		User user = userService.userInfo(userNo);
 		String msgUser = user.getUserNo() + "," + user.getUserName();
 		session.setAttribute("msgNotice", msgUser);
 		return "redirect:/message/receivemessage.ps";
 	}
+	
 }
