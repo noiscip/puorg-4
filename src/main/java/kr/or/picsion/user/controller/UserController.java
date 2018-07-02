@@ -118,6 +118,12 @@ public class UserController {
 		return jsonview;
 	}
 	
+	@RequestMapping("adminStats.ps")
+	public String salesStats(Model model) {
+		
+		
+		return "admin.stats";
+	}
 	
 	//팔로잉하는 사람의 최신 사진 전체 페이지
 	@RequestMapping(value="popular.ps", method=RequestMethod.GET)

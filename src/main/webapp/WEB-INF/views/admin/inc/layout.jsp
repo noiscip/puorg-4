@@ -39,6 +39,10 @@
 	<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
 	<script src="<%=request.getContextPath()%>/assets/js/material-kit.js?v=2.0.1" type="text/javascript"></script>
 
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
 	
 </head>
 
