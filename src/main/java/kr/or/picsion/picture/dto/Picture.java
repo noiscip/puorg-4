@@ -23,12 +23,14 @@ public class Picture {
 	private String bookmarkCheck;
 	private int respectCount;
 	private int bookmarkCount;
+	private String transferState;
 
 	public Picture() {}
-
+	
 	public Picture(int picNo, String picTitle, String picContent, Date picReg, String picPath, String picWater,
 			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolution, Date photoDate,
-			List<String> tagContent, String respectCheck, String bookmarkCheck, int respectCount, int bookmarkCount) {
+			List<String> tagContent, String respectCheck, String bookmarkCheck, int respectCount, int bookmarkCount,
+			String transferState) {
 		super();
 		this.picNo = picNo;
 		this.picTitle = picTitle;
@@ -48,8 +50,8 @@ public class Picture {
 		this.bookmarkCheck = bookmarkCheck;
 		this.respectCount = respectCount;
 		this.bookmarkCount = bookmarkCount;
+		this.transferState = transferState;
 	}
-
 
 	public int getPicNo() {
 		return picNo;
@@ -195,6 +197,15 @@ public class Picture {
 		this.bookmarkCount = bookmarkCount;
 	}
 
+	public String getTransferState() {
+		return transferState;
+	}
+
+	public void setTransferState(String transferState) {
+		this.transferState = transferState;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Picture [picNo=" + picNo + ", picTitle=" + picTitle + ", picContent=" + picContent + ", picReg="
@@ -202,7 +213,8 @@ public class Picture {
 				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolution="
 				+ resolution + ", photoDate=" + photoDate + ", tagContent=" + tagContent + ", respectCheck="
 				+ respectCheck + ", bookmarkCheck=" + bookmarkCheck + ", respectCount=" + respectCount
-				+ ", bookmarkCount=" + bookmarkCount + "]";
+				+ ", bookmarkCount=" + bookmarkCount + ", transferState=" + transferState + "]";
 	}
+	
 	
 }
