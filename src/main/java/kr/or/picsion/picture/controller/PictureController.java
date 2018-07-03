@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
 import com.amazonaws.AmazonServiceException;
@@ -33,10 +34,13 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.operation.dto.OperPicture;
+import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
+import software.amazon.ion.SystemSymbols;
 
 @Controller
 @RequestMapping("/picture/")
@@ -50,6 +54,9 @@ public class PictureController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private OperPictureService operPictureService;
 	
 	@Autowired
 	private CommentService commentService;
@@ -134,6 +141,65 @@ public class PictureController {
 	}
 	
 	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : insertOperPicture
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param picture
+	* @param tag
+	* @param session
+	* @param operNo
+	* @return
+	*/
+	@RequestMapping("operpicupload.ps")
+	public String insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
+		System.out.println("inseroper 들어왔다");
+		User user = (User) session.getAttribute("user");	
+		OperPicture operPicture = new OperPicture();
+		System.out.println(file.getOriginalFilename());
+		String filePathh="";
+		String uploadPath = "D:\\bitcamp104\\finalproject\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\Picsion\\assets\\img\\operpic\\";
+		String path="/assets/img/operpic/";
+		
+		File dir = new File(uploadPath);
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
+
+		String originalFileName = file.getOriginalFilename();
+		System.out.println(originalFileName.split("\\.")[1]);
+		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
+		filePathh = uploadPath + saveFileName;
+		
+		String dbPath=path+saveFileName;
+		operPicture.setOperNo(Integer.parseInt(operNo));
+		operPicture.setPicPath(dbPath);
+		operPicture.setUserNo(user.getUserNo());
+		System.out.println(operPicture);
+		operPictureService.insertOperPicture(operPicture);
+		
+		
+		
+			if(saveFileName != null && !saveFileName.equals("")) {
+				if(new File(uploadPath + saveFileName).exists()) {
+					saveFileName = saveFileName + "_" + System.currentTimeMillis();
+				}
+				try {
+					File newFile = new File(uploadPath + saveFileName);
+					file.transferTo(newFile);
+					
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
+			} 	
+		
+		return "boardInfo.ps?brdNo="+brdNo;
+	}
+	
+	/**
 	* 날      짜 : 2018. 6. 13.
 	* 메소드명 : insertPicture
 	* 작성자명 : 이아림
@@ -147,6 +213,7 @@ public class PictureController {
 	@RequestMapping("uploadAfter.ps")
 	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
+		
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
 		pictureService.insertPicture(picture);
