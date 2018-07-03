@@ -129,7 +129,7 @@
 		                        	
 		                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
 												"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-												"<img class='rounded img-size' src='"+obj.picWater+"'>"+
+												"<img class='rounded img-size' src='"+obj.picWater+"' alt=''>"+
 												"</a><div>"+
 					                    		"<div class='counts hide-xs hide-sm'>";
 					                    		if(obj.respectCheck=="T"){

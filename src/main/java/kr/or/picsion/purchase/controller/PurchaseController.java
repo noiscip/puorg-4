@@ -75,9 +75,10 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("userPurchase.ps")
-	public String userPurchase(Model model,int userNo, int picNo) {
+	public String userPurchase(Model model,int userNo, int picNo,  HttpSession session) {
 		int check = purchaseService.cartConfirm(userNo, picNo);
 		System.out.println(check);
+		
 		if(check==0) {
 			purchaseService.insertCart(picNo, userNo);
 		}
@@ -138,13 +139,46 @@ public class PurchaseController {
 	@RequestMapping("picturePurchase.ps")
 	public String buyPicture(@ModelAttribute("PurchList") PurchList purchases, HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
-		purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
 		if(user != null) {
 			List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo());
 		    model.addAttribute("imagelist", followingPicList);
+		    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
+			purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
 		}
 		return "home.home";
+	}
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : buyHistory
+	* 작성자명 : 박주원
+	* 기      능 : 구매내역 페이지 이동
+	*
+	* @return String
+	*/
+	@RequestMapping("history.ps")
+	public String buyHistory(HttpSession session, Model model) {
+		User user = (User) session.getAttribute("user");
+		System.out.println("여기능??");
+		System.out.println(user.getUserNo());
+		
+		List<Picture> pictureInfo = purchaseService.selectPicPurchase(user.getUserNo());
+		List<User> userInfo = purchaseService.selectPicUser(user.getUserNo());
+		List<Purchase> purchaseInfo = purchaseService.selectPurchase(user.getUserNo());
+		int sumPurchase = purchaseService.sumPurchase(user.getUserNo());
+		
+		System.out.println(pictureInfo+"사진정보********");
+		System.out.println(userInfo+"유저정보********");
+		System.out.println(purchaseInfo+"구매정보********");
+		System.out.println(sumPurchase+"합계********");
+		
+		model.addAttribute("pictureInfo", pictureInfo);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("purchaseInfo", purchaseInfo);
+		model.addAttribute("sumPurchase", sumPurchase);
+		
+		return "mypage.buyhistory";
 	}
 
 	/**
