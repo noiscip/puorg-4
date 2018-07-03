@@ -929,8 +929,16 @@ $(document).ready(function() {
 								</c:forEach>
 								</ol>
 								<div style="max-height: 500px" class="carousel-inner">
-								<c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
+								
+								<c:forEach items="${ranPicture}" var="randPic" varStatus='status' begin="0" end="8">
+								<c:if test="${status.index eq 0}">
 								<div class="carousel-item active">
+										<img class="d-block w-100"
+											src="${randPic.picWater}"
+											alt="No Image">
+								</div>
+								</c:if>
+								<div class="carousel-item">
 										<img class="d-block w-100"
 											src="${randPic.picWater}"
 											alt="No Image">
