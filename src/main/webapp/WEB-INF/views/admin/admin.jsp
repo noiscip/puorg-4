@@ -6,7 +6,9 @@
 
 <script type="text/javascript">
 	$(function() {
-		$('#datatable').DataTable();
+		 $('#datatable').DataTable( {
+		        "order": [[ 0, "desc" ]]
+		    } );
 		$(document).on('click', 'button[title=userDelete]', function() {
 
 			/* 삭제 ajax */
@@ -109,26 +111,26 @@
 			<h1>전체 회원 목록</h1>
 			
 			<input type="text" id="search"><button id="searchbtn">검색</button><button id="allUser">전체 조회</button>
-			<table border="3" id="datatable">
+			<table class="table" id="datatable">
 				<thead>
 					<tr>
-						<th>유저 번호</th>
-						<th>유저 아이디</th>
-						<th>유저 이름</th>
-						<th>유저 포인트</th>
-						<th>유저 가입날짜</th>
-						<th>삭제</th>
+						<th class="text-center">번호</th>
+						<th class="text-center">유저 아이디</th>
+						<th class="text-center">유저 이름</th>
+						<th class="text-center">유저 포인트</th>
+						<th class="text-center">유저 가입날짜</th>
+						<th class="text-center">삭제</th>
 					</tr>
 				</thead>
 				<tbody id="tableBody">
-					<c:forEach var="admin" items="${userList}">
+					<c:forEach var="admin" items="${userList}" varStatus="i">
 						<tr>
-							<td>${admin.userNo}</td>
-							<td>${admin.userId}</td>
-							<td>${admin.userName}</td>
-							<td>${admin.point}</td>
-							<td><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${admin.userReg}" /></td>
-							<td><button class="btn btn-primary btn-link" title="userDelete" id="${admin.userNo}">삭제</button></td>
+							<td class="text-center">${i.count}</td>
+							<td class="text-center">${admin.userId}</td>
+							<td class="text-center">${admin.userName}</td>
+							<td class="text-center">${admin.point}</td>
+							<td class="text-center"><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${admin.userReg}" /></td>
+							<td class="text-center"><button class="btn btn-primary btn-link" title="userDelete" id="${admin.userNo}">삭제</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>

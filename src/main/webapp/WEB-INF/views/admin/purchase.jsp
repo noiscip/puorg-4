@@ -7,7 +7,9 @@
 
 <script>
   $( function() {
-	  $('#datatable').DataTable();
+	  $('#datatable').DataTable( {
+	        "order": [[ 0, "desc" ]]
+	    } );
 	  $('.datetimepicker').datetimepicker({
 		    icons: {
 		        time: "fa fa-clock-o",
@@ -63,6 +65,7 @@
 					console.log(elt)
 					
 					table += '<tr>'
+					table += '<td>' + (++i) + '</td>'
 					table += '<td>' + elt.picNo + '</td>'
 					table += '<td>' + elt.purchaseUserNo + '</td>'
 					table += '<td>' + elt.saleUserNo + '</td>'
@@ -88,39 +91,37 @@
 	<div class="section section-basic">
 		<div class="container">
 		
-		<ul class="nav nav-pills nav-pills-rose">
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글 관리</a></li>
-		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출 내역</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminStats.ps">통계</a></li>
-		</ul>
-		
-		
+			<ul class="nav nav-pills nav-pills-rose">
+			  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
+			  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글 관리</a></li>
+			  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출 내역</a></li>
+			  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/adminStats.ps">통계</a></li>
+			</ul>
+			
 			<h1>전체 매출 내역</h1>
 			<div class="form-group">
 			    <label class="label-control">날짜 선택</label>
 			    <input id="datePicker" type="text" class="form-control datetimepicker"/>
 			    <button id="purchaseSearch">검색</button><button id="allPurchase">전체 조회</button>
 			</div>
-			<table border="3" id="datatable">
+			<table class="table" id="datatable">
 				<thead>
 					<tr>
-						<th>사진 번호</th>
-						<th>구매 유저 번호</th>
-						<th>판매 유저 번호</th>
-						<th>구매 날짜</th>
+						<th class="text-center">매출 번호</th>
+						<th class="text-center">사진 번호</th>
+						<th class="text-center">구매 유저 번호</th>
+						<th class="text-center">판매 유저 번호</th>
+						<th class="text-center">구매 날짜</th>
 					</tr>
 				</thead>
-
 				<tbody id="tableBody">
-					<c:forEach var="admin" items="${purchaseList}">
-
+					<c:forEach var="admin" items="${purchaseList}" varStatus="i">
 						<tr>
-							<td>${admin.picNo}</td>
-							<td>${admin.purchaseUserNo}</td>
-							<td>${admin.saleUserNo}</td>
-							<td><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${admin.purchaseReg}" /></td>
-							
+							<td class="text-center">${i.count}</td>
+							<td class="text-center">${admin.picNo}</td>
+							<td class="text-center">${admin.purchaseUserNo}</td>
+							<td class="text-center">${admin.saleUserNo}</td>
+							<td class="text-center"><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${admin.purchaseReg}" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>

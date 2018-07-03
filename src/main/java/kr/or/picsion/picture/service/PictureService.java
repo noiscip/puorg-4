@@ -186,9 +186,9 @@ public class PictureService {
 	* @param picNo
 	* @return Picture
 	*/
-	public Picture picInfo(int picNo) {
+	public Picture picInfo(int userNo, int picNo) {
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		Picture picture = picDao.selectPicture(picNo);
+		Picture picture = picDao.selectPicture(userNo, picNo);
 		return picture;
 	}
 	
@@ -222,36 +222,7 @@ public class PictureService {
     	List<String> tagList = picturedao.selectTag(picNo);
     	return tagList;
     }
-    
-	/**
-	* 날      짜 : 2018. 6. 19.
-	* 메소드명 : respectCount
-	* 작성자명 : 정도혁
-	* 기      능 : 사진 좋아요 갯수
-	*
-	* @param picNo
-	* @return Integer
-	*/
-	public int respectCount(int picNo) {
-		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		int result = picturedao.respectCount(picNo);
-		return result;
-	}
-	
-	/**
-	* 날      짜 : 2018. 6. 19.
-	* 메소드명 : bookmarkCount
-	* 작성자명 : 정도혁
-	* 기      능 : 사진 북마크 갯수
-	*
-	* @param picNo
-	* @return Integer
-	*/
-	public int bookmarkCount(int picNo) {
-		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		int result = picturedao.bookmarkCount(picNo);
-		return result;
-	}
+  
 	
 	/**
 	* 날      짜 : 2018. 6. 20.

@@ -24,7 +24,6 @@ $(document).ready( function () {
 					<table class="table" id="datatable">
 						<thead>
 							<tr>
-							
 								<th class="text-center">#</th>
 								<th class="text-center">제목</th>
 								<th class="text-center">작성자</th>
