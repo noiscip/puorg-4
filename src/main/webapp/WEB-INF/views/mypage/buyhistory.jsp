@@ -1,12 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style>
 	/* 마이페이지 상단 메뉴 위,아래 여백 */
 	.my-ul {
 		padding-top: 30px;
 		padding-bottom: 30px;
+	}
+	
+	/* 카테고리 하단 여백 삭제 */
+	.cat-margin-bot{
+		margin-bottom: 0px;
 	}
 </style>
 
@@ -23,8 +29,15 @@
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
-			
+		
 			<div id="tables" class="my-ul">
+				<form class="form-inline cat-margin-bot">
+						<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">거래 내역</a>
+						<ul class="nav dropdown-menu">
+							<li class="nav-item"><a class="nav-link" href="">구매 내역</a></li>
+							<li class="nav-item"><a class="nav-link" href="">판매 내역</a></li>
+						</ul>
+				</form>
 				<div class="table-responsive">
 				
 					<table class="table table-shopping">
@@ -49,7 +62,7 @@
 								<td class="td-name"><a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${picture.picNo}">${picture.picTitle}</a>
 									<br> <small>by ${userInfo[status.index].userName}</small></td>
 								<td class="text-center"></td>
-								<td class="td-number text-center">${purchaseInfo[status.index].purchaseReg}</td>
+								<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${purchaseInfo[status.index].purchaseReg}" /></td>
 								<td class="td-number text-center">${picture.picPrice}<small>원</small></td>
 							</tr>
 						</c:forEach>
