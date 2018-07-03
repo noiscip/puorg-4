@@ -12,8 +12,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from PURCHASE where purchaseReg > #{date}
 	</select>
 	
-	<select id="salesStatistics" resultType="String">
-	select sum(picPrice) from PICTURE where picNo in (select picNo from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg)
+	<select id="salesStatistics" resultType="Integer">
+	select ifNull(sum(picPrice),0) from PICTURE where picNo in (select picNo from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg)
 	</select>
 
 	<!-- 장바구니 담기 -->

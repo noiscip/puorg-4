@@ -3,37 +3,29 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
 $(function(){
-	Highcharts.chart('sales', {
-		  chart: {
-		    type: 'line'
-		  },
-		  title: {
-		    text: '매출 내역'
-		  },
-		  subtitle: {
-		    text: 'PICSION'
-		  },
-		  xAxis: {
-		    categories: ['2016-06-11', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-		  },
-		  yAxis: {
-		    title: {
-		      text: '매출금액'
-		    }
-		  },
-		  plotOptions: {
-		    line: {
-		      dataLabels: {
-		        enabled: true
-		      },
-		      enableMouseTracking: false
-		    }
-		  },
-		  series: [{
-		    name: 'picsion',
-		    data: [5000, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-		  }]
-
+	console.log(new Date($.now()))
+	
+	console.log(new Date(24*60*60*1000*49))
+	
+	var mainDate = {
+			startDate:new Date(($.now()-(24*60*60*1000*49))),
+			endDate:new Date($.now())
+		}
+	statistics(mainDate)
+	
+	function chart(date, sales){
+		
+		Highcharts.chart('sales', {
+			  chart: { type: 'line' },
+			  title: { text: '매출 내역' },
+			  subtitle: { text: 'PICSION' },
+			  xAxis: { categories: date },
+			  yAxis: {  title: {  text: '매출금액' } },
+			  plotOptions: { line: { dataLabels: { enabled: true }, enableMouseTracking: false } },
+			  series: [{ name: 'picsion', data: sales }] })
+	}
+	
+	
 		  $('.datetimepicker').datetimepicker({
 			    icons: {
 			        time: "fa fa-clock-o",
@@ -50,17 +42,23 @@ $(function(){
 
 	
 	$('#daySearch').click(function(){
+	var selectDate = {
+			startDate:$('#datePicker1').val(),
+			endDate:$('#datePicker2').val()
+		}
+	statistics(selectDate)
+	})
+	
+	function statistics(date){
 		$.ajax({
 			url:"/picsion/purchase/salesAmount.ps",
-			data:{
-				startDate:$('#datePicker1').val(),
-				endDate:$('#datePicker2').val()
-			},
+			data:date,
 			success: function(data){
 				console.log(data)
+				chart(data.map[1],data.map[2])
 			}
 		})
-	})
+	}
 })
 </script>
 
@@ -80,11 +78,21 @@ $(function(){
 		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출 내역</a></li>
 		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/adminStats.ps">통계</a></li>
 		</ul>
-		<div class="form-group">
-			<input id="datePicker1" type="text" class="form-control datetimepicker"/>
-			<input id="datePicker2" type="text" class="form-control datetimepicker"/>
-			<button id="daySearch">검색</button>
+		<br>
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-4">
+				<input id="datePicker1" type="text" class="form-control datetimepicker"/>
+			</div>
+			~
+			<div class="col-md-4">
+				<input id="datePicker2" type="text" class="form-control datetimepicker"/>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-primary btn-sm" id="daySearch">검색</button>
+			</div>
 		</div>
+		<br>
 		<div id="sales" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 		</div>
 	</div>

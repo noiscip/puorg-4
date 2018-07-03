@@ -3,6 +3,7 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -89,14 +90,10 @@ public class PurchaseController {
 	
 	@RequestMapping("salesAmount.ps")
 	public View salesStatistics(Date startDate, Date endDate, Model model) {
-		System.out.println(startDate+":"+endDate);
 		
-		
-		
-
-		String sales = purchaseService.salesStatistics(startDate,endDate);
-		model.addAttribute("sales",sales);
-		System.out.println(sales);
+		Map<Integer, List<Object>> map = purchaseService.salesStatistics(startDate,endDate);
+		model.addAttribute("map",map);
+		System.out.println(map);
 		return jsonview; 
 	}
 		
