@@ -63,6 +63,9 @@ public class PictureController {
   	@Autowired
 	private PictureService pictureService;
   	
+  	@Autowired
+	private PurchaseService purchaseService;
+  	
 	@Autowired
 	private UserService userService;
 	
@@ -134,23 +137,20 @@ public class PictureController {
 	public View studioScroll(HttpSession session, Model model, int userNo, int page){
 		User user = new User(); 
 		int endpage=6;
-		System.out.println(page+"는 머야?");
+		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
 		else {
 			user.setUserNo(0);
 		}
-		/*User scrollUserInfo = userService.userInfo(userNo);*/	 //스튜디오 대상 사용자
 		List<Picture> scrollPicList = pictureService.studioPicList(userNo, user.getUserNo(), page, endpage); //스튜디오 사진리스트
 		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo, page, endpage);
 		
-		System.out.println("리스트 몇개 가져옴?"+scrollPicList);
-		/*model.addAttribute("scrollUserInfo", scrollUserInfo);*/
 		model.addAttribute("scrollPicList", scrollPicList);
 		model.addAttribute("scrollOwnerList",scrollOwnerList);
 		model.addAttribute("endpage", scrollPicList.size());
-		System.out.println("리스트 사이즈는?"+scrollPicList.size());
+		
 		return jsonview;
 	}
 	
@@ -167,15 +167,14 @@ public class PictureController {
 	* @return
 	*/
 	@RequestMapping("operpicupload.ps")
-	public String insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
+	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
 		System.out.println("inseroper 들어왔다");
 		User user = (User) session.getAttribute("user");	
 		OperPicture operPicture = new OperPicture();
 		System.out.println(file.getOriginalFilename());
 		String filePathh="";
-		String uploadPath = "D:\\bitcamp104\\finalproject\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\Picsion\\assets\\img\\operpic\\";
-		String path="/assets/img/operpic/";
-		
+		String uploadPath = "D:\\imagePicsion\\";
+		String dbPath="";
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
@@ -186,12 +185,7 @@ public class PictureController {
 		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
 		filePathh = uploadPath + saveFileName;
 		
-		String dbPath=path+saveFileName;
-		operPicture.setOperNo(Integer.parseInt(operNo));
-		operPicture.setPicPath(dbPath);
-		operPicture.setUserNo(user.getUserNo());
-		System.out.println(operPicture);
-		operPictureService.insertOperPicture(operPicture);
+		
 		
 		
 		
@@ -202,6 +196,7 @@ public class PictureController {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
+					dbPath=amazonService.uploadObject(saveFileName,"picsion/operpic");
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
@@ -209,8 +204,15 @@ public class PictureController {
 					e.printStackTrace();
 				} 
 			} 	
+			System.out.println("디비 패쓰"+dbPath);
+
+			operPicture.setOperNo(Integer.parseInt(operNo));
+			operPicture.setPicPath(dbPath);
+			operPicture.setUserNo(user.getUserNo());
+			System.out.println(operPicture);
+			operPictureService.insertOperPicture(operPicture);
 		
-		return "boardInfo.ps?brdNo="+brdNo;
+		return jsonview;
 	}
 	
 	/**
@@ -267,11 +269,14 @@ public class PictureController {
 		}else {
 			System.out.println("워터마크 생성 실패");
 		}
+		
 		//s3 저장 (원본 사진)
 		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		//원본사진 변경
 		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
-				
+		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
+		new File(picture.getPicPath()).renameTo(reFile);
+		
 //		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
 		String webFilePath = amazonService.uploadObject(saveFileName,"picsion/img");
@@ -362,12 +367,14 @@ public class PictureController {
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
+		int buycheck = purchaseService.purchaseConfirm(user.getUserNo(), picNo);
 		List<String> tagList = pictureService.selectTag(picNo);
 		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
 		int followResult = 0;
 		if(user.getUserNo() != userInfo.getUserNo()) {
 			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
 		}
+		model.addAttribute("buycheck",buycheck);
 		model.addAttribute("respectList",respectPhotoList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("tagList",tagList);

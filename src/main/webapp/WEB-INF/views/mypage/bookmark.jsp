@@ -84,7 +84,7 @@ $(function() {
                         	
                         	scrollPage="<div class='item col-sm-6 col-md-4'>"+
 											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-											"<img class='rounded img-size' src='<%=request.getContextPath()%>"+obj.picPath+"' alt='No Image'>"+
+											"<img class='rounded img-size' src='<%=request.getContextPath()%>"+obj.picWater+"' alt='No Image'>"+
 											"</a>"+
 										   "<div>"+
 						                   "<div class='counts hide-xs hide-sm'>";
@@ -147,7 +147,7 @@ $(function() {
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>

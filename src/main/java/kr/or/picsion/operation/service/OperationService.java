@@ -107,4 +107,22 @@ public class OperationService {
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		return operationDao.requestList(userNo);
 	}
+	
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : updateOperation
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param operation
+	* @return
+	*/
+	public int updateOperation(Operation operation) {
+
+		System.out.println("updateOperation 서비스 시작 ");
+		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+		return operationDao.updateOperation(operation);
+	}
 }

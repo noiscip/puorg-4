@@ -38,4 +38,12 @@ select * from OPERATION where brdNo=#{brdNo}
       select * from OPERATION where requesterNo=#{userNo} order by operStartReg desc
  </select>
  
+ 
+ <!-- updateOperation(요청 수정) -->
+ <select id="updateOperation" parameterType="kr.or.picsion.operation.dto.Operation">
+      update OPERATION set 
+      operPrice=#{operPrice}
+      
+       where operNo=#{operNo}
+ </select>
 </mapper>

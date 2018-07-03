@@ -42,7 +42,7 @@ $(document).on("click", "#tagAdd", function() {
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
@@ -56,7 +56,7 @@ $(document).on("click", "#tagAdd", function() {
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail img-raised">
 								<img
-									src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
+									src="assets/img/up.png"
 									alt="...">
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
@@ -204,6 +204,9 @@ $(document).on("click", "#tagAdd", function() {
 					
 					var tags = ''
 					$.each(data.label, function(i, elt) {
+						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
+					})
+					$.each(data.label2,function(i,elt){
 						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
 					})
 					

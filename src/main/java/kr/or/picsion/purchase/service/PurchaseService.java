@@ -189,6 +189,70 @@ public class PurchaseService {
 		int result = purchaseDao.cartCount(userNo);
 		return result;
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : selectPicPurchase
+	* 작성자명 : 박주원
+	* 기      능 : 구매한 사진 리스트
+	*
+	* @param userNo
+	* @return List<Picture>
+	*/
+	public List<Picture> selectPicPurchase(int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		List<Picture> list = purchaseDao.selectPicPurchase(userNo);
+		
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : selectPicUser
+	* 작성자명 : 박주원
+	* 기      능 : 구매한 사진 작가 리스트
+	*
+	* @param userNo
+	* @return List<User>
+	*/
+	public List<User> selectPicUser(int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		List<User> list = purchaseDao.selectPicUser(userNo);
+		
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : selectPurchase
+	* 작성자명 : 박주원
+	* 기      능 : 구매한 정보 리스트
+	*
+	* @param userNo
+	* @return List<Purchase>
+	*/
+	public List<Purchase> selectPurchase(int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		List<Purchase> list = purchaseDao.selectPurchase(userNo);
+		
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : sumPurchase
+	* 작성자명 : 박주원
+	* 기      능 : 구매한 사진 가격의 합계
+	*
+	* @param userNo
+	* @return Integer
+	*/
+	public int sumPurchase(int userNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.sumPurchase(userNo);
+		
+		return result;
+	}
 
 	
 	/**
@@ -206,5 +270,36 @@ public class PurchaseService {
 		int result = purchaseDao.cartConfirm(userNo, picNo);
 		return result;
 	}
-
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : purchaseConfirm
+	* 작성자명 : 정도혁
+	* 기      능 : 구매한 사진인지 확인
+	*
+	* @param purchaseUserNo
+	* @param picNo
+	* @return Integer
+	*/
+	public int purchaseConfirm(int purchaseUserNo, int picNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.purchaseConfirm(purchaseUserNo, picNo);
+		return result;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : updatePoint
+	* 작성자명 : 정도혁
+	* 기      능 : 구매 후 금액 업데이트
+	*
+	* @param point
+	* @param userNo
+	* @return Integer
+	*/
+	public int updatePoint(int point, int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.updatePoint(point, userNo);
+		return result;
+	}
 }
