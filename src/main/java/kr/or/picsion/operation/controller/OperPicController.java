@@ -1,4 +1,4 @@
-package kr.or.picsion.utils.controller;
+package kr.or.picsion.operation.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,39 +37,15 @@ import com.google.protobuf.ByteString;
 import kr.or.picsion.picture.dto.Face;
 
 @Controller
-public class AmazonTest {
+public class OperPicController {
 	
 	public String picturePath;
 	
 	@Autowired
 	private View jsonview;
 	
-	
-	/**
-	* 날      짜 : 2018. 6. 8.
-	* 메소드명 : upload
-	* 작성자명 : 이아림
-	* 기      능 : 업로드 페이지로 이동
-	*
-	* @return String
-	*/
-	@RequestMapping("upload.ps")
-	public String upload() {
-		return "mypage.upload";
-	}
-	
-	/**
-	* 날      짜 : 2018. 6. 7.
-	* 메소드명 : visionCheck
-	* 작성자명 : 이아림
-	* 기      능 : 비전으로 사진정보 가져오기
-	*
-	* @param filePath
-	* @param model
-	* @return View
-	* @throws Exception
-	*/
-	@RequestMapping(value = "amazontest.ps", method=RequestMethod.POST)
+
+	@RequestMapping(value = "operpic.ps", method=RequestMethod.POST)
 	public View visionCheck(MultipartHttpServletRequest filePath,Model model) throws Exception {
 		String uploadedPath= fileUpload(filePath);//실경로 파일 업로드
 		String logocheck=detectLogos(uploadedPath);//vision : 로고감지
@@ -233,22 +209,10 @@ public class AmazonTest {
             e.printStackTrace();
         }
         a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName;
-<<<<<<< HEAD
+
 	}
-=======
 	}*/
 
-	/**
-	* 날      짜 : 2018. 7. 2.
-	* 메소드명 : detectLabels
-	* 작성자명 : 이아림
-	* 기      능 : 사진에서 태그 뽑기
-	*
-	* @param filePath
-	* @return
-	* @throws Exception
->>>>>>> 13c5e69a099d197dd41dac86664994b9460ea19b
-	*/
 	public static List<String> detectLabels(String filePath) throws Exception {
 	    List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
 	    Image image = getImage(filePath);

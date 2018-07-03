@@ -1,8 +1,11 @@
 ﻿package kr.or.picsion.purchase.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +35,29 @@ public class PurchaseService {
 		return purchaseDao.purchaseSearch(date);
 	}
 	
-	public String salesStatistics(Date startDate, Date endDate) {
+	public Map<Integer, List<Object>> salesStatistics(Date startDate, Date endDate) {
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		Map<Integer, List<Object>> map = new HashMap<>();
+		List<Object> date = new ArrayList<>();
+		List<Object> sales = new ArrayList<>();		
+
+		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd");	
 		
-	
 		long diff = endDate.getTime() - startDate.getTime();
-		long diffDays = diff / (24 * 60 * 60 * 1000);
-		System.out.println(diffDays);
-		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd");
+		long diffDays = diff / 7;
+		Date md = new Date(startDate.getTime() +diffDays);
 		
-		
-		
-		return purchaseDao.salesStatistics(startDate, endDate);
+        for(int i=0; i < 7; i++) {
+            date.add(reg.format(md));
+            sales.add(purchaseDao.salesStatistics(startDate, md));
+            
+            startDate = md;
+            md = new Date(md.getTime()+diffDays);
+        }
+        
+        map.put(1, date);
+        map.put(2, sales);
+		return map;
 	}
 	/**
 	* 날      짜 : 2018. 7. 2.

@@ -1,7 +1,18 @@
 ﻿package kr.or.picsion.picture.service;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,6 +312,7 @@ public class PictureService {
     	int result = pictureDao.updatePicture(picPath,picNo);
     	return result;
     }
+
     
     
     /**
@@ -315,5 +327,80 @@ public class PictureService {
     	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
     	List<Picture> list = pictureDao.selectRandom();
     	return list;
+    }
+
+    /**
+	* 날      짜 : 2018. 6. 29.
+	* 메소드명 : renameFile
+	* 작성자명 : 이아림
+	* 기      능 : 이미지 이름 변경
+	*
+	* @param fileName
+	* @param userNo
+	* @param picNo
+	* @return String
+	*/
+	public String renameFile(String fileName, int userNo, int picNo) {
+
+		// 변경될 파일명
+		String newFileName = "";
+
+		// 확장자를 검색한다. jpg, bmp , png
+		if (fileName.toLowerCase().indexOf(".jpg") > 0) {
+			newFileName = userNo + "000" + picNo + ".jpg";
+		} else if (fileName.toLowerCase().indexOf(".bmp") > 0) {
+			newFileName = userNo + "000" + picNo + ".bmp";
+		} else if (fileName.toLowerCase().indexOf(".png") > 0) {
+			newFileName = userNo + "000" + picNo + ".png";
+		} else {// 확장자가 벗어나면 파일명 그대로 셋팅
+			newFileName = fileName;
+		}
+
+		// 변경된 파일명
+		System.out.println("이미지파일이름변경완료"+newFileName);
+
+		// 끝난거 알려주는 리턴값
+		return newFileName;
+
+	}
+
+	/**
+	* 날      짜 : 2018. 6. 18.
+	* 메소드명 : addTextWatermark
+	* 작성자명 : 이아림
+	* 기      능 : 사진 워터마크 기능
+	*
+	* @param text
+	* @param type
+	* @param source
+	* @param destination
+	* @throws IOException
+	*/
+	public void addTextWatermark(String text, String type, File source, File destination) throws IOException {
+        BufferedImage image = ImageIO.read(source);
+
+        // determine image type and handle correct transparency
+        int imageType = "png".equalsIgnoreCase(type) ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;
+        BufferedImage watermarked = new BufferedImage(image.getWidth(), image.getHeight(), imageType);
+
+        // initializes necessary graphic properties
+        Graphics2D w = (Graphics2D) watermarked.getGraphics();
+        w.drawImage(image, 0, 0, null);
+        AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
+        w.setComposite(alphaChannel);
+        w.setColor(Color.GRAY);
+        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        FontMetrics fontMetrics = w.getFontMetrics();
+        Rectangle2D rect = fontMetrics.getStringBounds(text, w);
+
+        // calculate center of the image
+        int centerX = (image.getWidth() - (int) rect.getWidth()) / 2;
+        int centerY = image.getHeight() / 2;
+
+        // add text overlay to the image
+        w.drawString(text, centerX, centerY);
+        ImageIO.write(watermarked, type, destination);
+        w.dispose();
+
     }
 }

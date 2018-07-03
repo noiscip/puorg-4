@@ -15,7 +15,7 @@ public interface PurchaseDao {
 	public List<Purchase> purchaseList();		   //구매 리스트
 	public List<Purchase> purchaseSearch(String date); //날짜로 검색한 구매 리스트
 
-	public String salesStatistics(Date startDate, Date endDate);
+	public int salesStatistics(Date startDate, Date endDate);
 
 	public int insertCart(int picNo, int userNo);  //장바구니에 저장
 	public int deleteCart(int picNo, int userNo);  //장바구니에서  빼기
