@@ -425,7 +425,6 @@ public class UserController {
 		return "redirect:updateinfo.ps";
 	}
 	
-	//포인트 충전
 	/**
 	* 날      짜 : 2018. 6. 26.
 	* 메소드명 : pointCharge

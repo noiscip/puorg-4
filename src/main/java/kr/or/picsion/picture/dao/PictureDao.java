@@ -15,16 +15,14 @@ public interface PictureDao {
 	public int deletePicture(int picNo);
 	public int updatePicture(String picPath,int picNo);  //일단 아무도 안쓰는거 같은데 사진 s3에 저장할때 쓰겠음 from 아림
 	public List<Picture> pictureList();
-	public Picture selectPicture(int picNo);			//사진 상세
-	public List<Picture> studioPicList(int userNo, int myuserNo);//userNo로 스튜디오에서 사진 불러오기
-	public List<User> studioOwnerList(int userNo); 		//마이스튜디오 주인
+	public Picture selectPicture(int userNo, int picNo); //사진 상세
+	public List<Picture> studioPicList(int userNo, int myuserNo, int page, int endpage);//userNo로 스튜디오에서 사진 불러오기
+	public List<User> studioOwnerList(int userNo, int page, int endpage); 		//마이스튜디오 주인
 	public List<Picture> searchPicture(String word);
 	public void respectDelete(int picNo, int userNo);	//사진 좋아요 삭제
 	public void bookmarkDelete(int picNo, int userNo);	//사진 북마크 삭제
 	public int respectConfirm(int picNo, int userNo); 	//사진 좋아요 확인
 	public int bookmarkConfirm(int picNo, int userNo);	//사진 북마크 확인
-	public int respectCount(int picNo);					//사진 좋아요 갯수
-	public int bookmarkCount(int picNo);				//사진 북마크 갯수
 	public int respectIncrease(int picNo, int userNo);	//사진 좋아요 증가
 	public void bookmarkIncrease(int picNo, int userNo);//사진 북마크 증가(생성)
 	public List<Picture> photograherRespectPicList(int userNo); //작가의 인기순 사진리스트

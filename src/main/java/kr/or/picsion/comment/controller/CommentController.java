@@ -118,15 +118,16 @@ public class CommentController {
 	 * @param comment
 	 * @param model
 	 * @param picNo
-	 * @return
+	 * @return View
 	 */
 	@RequestMapping(value = "insertpiccomment.ps")
-	public View insertPicComment(Comment comment, Model model, int picNo) {
+	public View insertPicComment(Comment comment,HttpSession session, Model model, int picNo) {
+		User user = (User) session.getAttribute("user");
 		commentService.picInsertComment(comment);
 		List<Comment> newcommentlist = commentService.picCommentList(picNo); // 댓글 목록
 		List<User> newcommentUserList = commentService.picCommentUserList(picNo); // 댓글 유저 목록
 
-		int receiveUser = pictureService.picInfo(comment.getPicNo()).getUserNo();
+		int receiveUser = pictureService.picInfo(user.getUserNo(), comment.getPicNo()).getUserNo();
 		HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 
 		noticeMap.put("no", comment.getPicNo());
@@ -137,7 +138,6 @@ public class CommentController {
 		noticeMap.put("tableNo", 4);
 
 		noticeService.insertNotice(noticeMap);
-		System.out.println("ㅇㅇㅇ");
 		model.addAttribute("newcommentUserList", newcommentUserList);
 		model.addAttribute("newcommentlist", newcommentlist);
 		return jsonview;

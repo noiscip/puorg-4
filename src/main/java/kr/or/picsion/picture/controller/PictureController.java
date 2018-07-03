@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
 import com.amazonaws.AmazonServiceException;
@@ -34,11 +35,16 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.operation.dto.OperPicture;
+import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
+import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 import kr.or.picsion.utils.AmazonUpload;
+import software.amazon.ion.SystemSymbols;
+
 
 @Controller
 @RequestMapping("/picture/")
@@ -49,9 +55,12 @@ public class PictureController {
 
   	@Autowired
 	private PictureService pictureService;
-	
+  	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private OperPictureService operPictureService;
 	
 	@Autowired
 	private CommentService commentService;
@@ -73,6 +82,9 @@ public class PictureController {
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
 	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
+		int page=0;
+		int endpage=6;
+		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -80,8 +92,8 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo()); //스튜디오 사진리스트
-		List<User> ownerList = pictureService.studioOwnerList(userNo);
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), page, endpage); //스튜디오 사진리스트
+		List<User> ownerList = pictureService.studioOwnerList(userNo, page, endpage);
  		List<User> followerList = userService.followerUserList(userNo);
 		List<User> followingList = userService.followingUserList(userNo);
 		int followResult = 0;
@@ -95,6 +107,7 @@ public class PictureController {
 		model.addAttribute("followerlist", followerList);
 		model.addAttribute("followinglist", followingList);
 		model.addAttribute("followResult", followResult);
+		model.addAttribute("page", picList.size());
 		
 		return "studio.mystudio";
 	}
@@ -111,26 +124,86 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.POST)
-	public View studioScroll(HttpSession session, Model model, int userNo){
+	public View studioScroll(HttpSession session, Model model, int userNo, int page){
 		User user = new User(); 
-		int page=0;
 		int endpage=6;
-		
+		System.out.println(page+"는 머야?");
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
 		else {
 			user.setUserNo(0);
 		}
-		User scrollUserInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> scrollPicList = pictureService.studioPicList(scrollUserInfo.getUserNo(), user.getUserNo()); //스튜디오 사진리스트
-		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo);
-
-		model.addAttribute("scrollUserInfo", scrollUserInfo);
+		/*User scrollUserInfo = userService.userInfo(userNo);*/	 //스튜디오 대상 사용자
+		List<Picture> scrollPicList = pictureService.studioPicList(userNo, user.getUserNo(), page, endpage); //스튜디오 사진리스트
+		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo, page, endpage);
+		
+		System.out.println("리스트 몇개 가져옴?"+scrollPicList);
+		/*model.addAttribute("scrollUserInfo", scrollUserInfo);*/
 		model.addAttribute("scrollPicList", scrollPicList);
 		model.addAttribute("scrollOwnerList",scrollOwnerList);
-		
+		model.addAttribute("endpage", scrollPicList.size());
+		System.out.println("리스트 사이즈는?"+scrollPicList.size());
 		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : insertOperPicture
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param picture
+	* @param tag
+	* @param session
+	* @param operNo
+	* @return
+	*/
+	@RequestMapping("operpicupload.ps")
+	public String insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
+		System.out.println("inseroper 들어왔다");
+		User user = (User) session.getAttribute("user");	
+		OperPicture operPicture = new OperPicture();
+		System.out.println(file.getOriginalFilename());
+		String filePathh="";
+		String uploadPath = "D:\\bitcamp104\\finalproject\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\Picsion\\assets\\img\\operpic\\";
+		String path="/assets/img/operpic/";
+		
+		File dir = new File(uploadPath);
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
+
+		String originalFileName = file.getOriginalFilename();
+		System.out.println(originalFileName.split("\\.")[1]);
+		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
+		filePathh = uploadPath + saveFileName;
+		
+		String dbPath=path+saveFileName;
+		operPicture.setOperNo(Integer.parseInt(operNo));
+		operPicture.setPicPath(dbPath);
+		operPicture.setUserNo(user.getUserNo());
+		System.out.println(operPicture);
+		operPictureService.insertOperPicture(operPicture);
+		
+		
+		
+			if(saveFileName != null && !saveFileName.equals("")) {
+				if(new File(uploadPath + saveFileName).exists()) {
+					saveFileName = saveFileName + "_" + System.currentTimeMillis();
+				}
+				try {
+					File newFile = new File(uploadPath + saveFileName);
+					file.transferTo(newFile);
+					
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
+			} 	
+		
+		return "boardInfo.ps?brdNo="+brdNo;
 	}
 	
 	/**
@@ -147,6 +220,7 @@ public class PictureController {
 	@RequestMapping("uploadAfter.ps")
 	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
+		
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
 		pictureService.insertPicture(picture);
@@ -274,26 +348,18 @@ public class PictureController {
 		else {
 			user.setUserNo(0);
 		}
-		
-		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
+		System.out.println(user.getUserNo());
+		Picture picture = pictureService.picInfo(user.getUserNo(), picNo);	  //클릭한 사진
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
 		List<String> tagList = pictureService.selectTag(picNo);
 		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
 		int followResult = 0;
-		int respectresult = pictureService.respectConfirm(picNo, user.getUserNo()); //좋아요 하고 있는지 확인
-		int bookmarkresult = pictureService.bookmarkConfirm(picNo, user.getUserNo()); //북마크 하고 있는지 확인
-		int respectCount = pictureService.respectCount(picNo);						 //좋아요 갯수
-		int bookmarkCount = pictureService.bookmarkCount(picNo);					 //북마크 갯수
 		if(user.getUserNo() != userInfo.getUserNo()) {
 			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
 		}
 		model.addAttribute("respectList",respectPhotoList);
-		model.addAttribute("respectCount",respectCount);
-		model.addAttribute("bookmarkCount",bookmarkCount);
-		model.addAttribute("respectresult",respectresult);
-		model.addAttribute("bookmarkresult",bookmarkresult);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("tagList",tagList);
 		model.addAttribute("picture",picture);
