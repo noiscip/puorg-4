@@ -302,4 +302,18 @@ public class PictureService {
     	return result;
     }
     
+    
+    /**
+    * 날      짜 : 2018. 7. 3.
+    * 메소드명 : selectRandom
+    * 작성자명 : 정도혁
+    * 기      능 : 메인 화면 랜덤 사진 리스트
+    *
+    * @return List<Picture>
+    */
+    public List<Picture> selectRandom(){
+    	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	List<Picture> list = pictureDao.selectRandom();
+    	return list;
+    }
 }
