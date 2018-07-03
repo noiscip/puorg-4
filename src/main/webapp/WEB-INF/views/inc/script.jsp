@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 	<meta charset="utf-8">
@@ -38,6 +38,15 @@
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
    	<!-- Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
+
+   
+<%--
+   	<!-- Plugins for presentation and navigation  -->
+    <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
+    <!-- Fixed Sidebar Nav - js With initialisations -->
+    <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script> 
+--%>
+
 	<!-- ckEditor -->
 	<script src="<%=request.getContextPath()%>/ckeditor/ckeditor.js" type="text/javascript" ></script>
   	<!-- 네이버 로그인 -->
@@ -51,4 +60,10 @@
 	<script src="https://code.highcharts.com/modules/export-data.js"></script>
    	<!-- 아림이 수정중 -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css"> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/jcanvas.js"></script>	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/jcanvas.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>	
+	
+	
+	

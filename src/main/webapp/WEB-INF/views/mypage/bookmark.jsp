@@ -6,7 +6,6 @@
 $(function() {
 	var loginUserNo = $('#loginUserNo').val();
 
-    var page = ${page};
     
 	$(document).on('click','#like',function(){
 			if(loginUserNo == 0){
@@ -58,6 +57,7 @@ $(function() {
 	
 	
 	var lastScrollTop = 0;
+    var page = ${page};
 
 	$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
          
