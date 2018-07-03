@@ -38,12 +38,6 @@
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
    	<!-- Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
-<%--
-   	<!-- Plugins for presentation and navigation  -->
-    <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
-    <!-- Fixed Sidebar Nav - js With initialisations -->
-    <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script> 
---%>
 	<!-- ckEditor -->
 	<script src="<%=request.getContextPath()%>/ckeditor/ckeditor.js" type="text/javascript" ></script>
   	<!-- 네이버 로그인 -->
