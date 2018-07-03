@@ -17,13 +17,12 @@
 			
 			removeDiv = $('#commentstart').find('p[data-no='+userNo+']').closest('.media');
 			
-			abb(userNo,myNo,msgUser)
-			$('#msgContent-show').addClass('msg-show');
+			msgList(userNo,myNo,msgUser)
 		})
 		
 		if($('#msgNotice').val() != "" ){
 			var sendUser = $('#msgNotice').val().split(',')
-			abb(sendUser[0],myNo,sendUser[1])
+			msgList(sendUser[0],myNo,sendUser[1])
 			<%session.removeAttribute("msgNotice");%>
 			
 		}
@@ -71,7 +70,7 @@
 										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
 										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
 										   		"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
-										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
+										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
 										   	"</div></div>";
 										   	
 							$('#commentstart').prepend(userList);
@@ -136,208 +135,20 @@
 									"</h4>"+
 									"<p class='msgList' style='cursor: pointer;' data-no='"+obj.user[0].userNo+"'>"+obj.msgContent+"</p>"+
 									"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
-									"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' title='' data-original-title='보내버리기'> <i class='material-icons'>reply</i> 신고"+
+									"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'> <i class='material-icons'>reply</i> 신고"+
 									"</a></div></div>";
 						$('#commentstart').append(selList);
 					})
 					/* $('#msg-body').scrollTop($('#msg-body')[0].scrollHeight); */
 					
-					console.log("대꾸할 힘도 없어~~")
 				}
 			});
-		})
-		
-		
-		////////////////////////////////////////////////////////////////
-		
-		
-		
-		//받은 메시지를 읽었을 때 메시지 상태 비동기로 update
-		$(document).on('click', '.receiveMsgModal', function(){
-			var msgNo=$(this).parent()[0].children[0].innerText;
-			var msgState=$(this).parent()[0].children[4].innerText;
-			var msgChange=$(this).parent()[0].children[4];
-			var msgContent=$(this)[0].innerText;
-			
-			$('.modal-body').empty();
-			$('.modal-body').append("<h5>메시지 내용</h5>"+msgContent);
-			
-			$.ajax({
-				url:"/picsion/message/stateup.ps",
-				data:{	msgNo:msgNo,
-						msgState:msgState
-					 },
-				success : function(data){
-					  if(data.result==1){
-						  msgChange.innerText='읽음';
-					  }
-				}
-			})
-			
-		})
-		
-		//받은 메시지함에서 삭제 버튼 눌렀을때  메시지 삭제
-		/* $(document).on('click', '.receiveMsgDel', function(){
-			var msgNo=$(this).parent().parent()[0].children[0].innerText;
-			var removeMsg=$(this).parent().parent()[0];
-			
-			$.ajax({
-				url:"/picsion/message/receivedel.ps",
-				data : {msgNo:msgNo},
-				success:function(data){
-					if(data.result==1){
-						removeMsg.remove();
-					}
-				}
-			});
-			
-		}) */
-		
-		//보낸 메시지 내용 Modal창으로 띄우기
-		$(document).on('click', '.sendMsgModal', function() {
-			var msgContent=$(this)[0].innerText;
-			
-			$('.modal-body').empty();
-			$('.modal-body').append("<h5>메시지 내용</h5>"+msgContent);			
-		})
-		
-		//보낸 메시지함에서 삭제 버튼 눌렀을때 메시지 삭제
-		$(document).on('click', '.sendMsgDel', function(){
-			var msgNo=$(this).parent().parent()[0].children[0].innerText;
-			var removeMsg=$(this).parent().parent()[0];
-			
-			$.ajax({
-				url:"/picsion/message/senddel.ps",
-				data : {msgNo:msgNo},
-				success:function(data){
-					if(data.result==1){
-						removeMsg.remove();
-					}
-				}
-			});
-			
-		})
-		
-		//보낸 메시지함 카테고리 선택시 tag 클래스 생성
-		$('#receiveTag').click(function() {
-			$('#receiveTag').addClass('tag');
-			$('#sendTag').removeClass('tag');
-			$('#receive').show();
-			$('#send').hide();
-			$('#selectInfoMsg').hide();
-			
-			console.log(this)
-		})		
-		
-		//받은 메시지함 카테고리 선택시 tag 클래스 생성
-		$('#sendTag').click(function() {
-			$('#sendTag').addClass('tag');
-			$('#receiveTag').removeClass('tag');
-			$('#send').show();
-			$('#receive').hide();
-			$('#selectInfoMsg').hide();
-			
-			console.log(this)
-		})		
-		
-		//검색 버튼 클릭시 메시지 검색 비동기 처리
-		$('#123132123').click(function(){
-			var userName = $('.selectMsg').val();
-			console.log(userName)
-			
-			//받은 메시지함에서 검색할 경우
-			if($('#receiveTag').hasClass('tag')){
-				console.log("리시브 여기온거?")
-				$('#receive').hide();
-				$('#send').hide();
-				
-				$.ajax({
-					url:"/picsion/message/receiveselect.ps",
-					data:{userName:userName},
-					success:function(data){
-						
-						var table="<thead><tr>"+
-									"<th>번호</th><th>보낸이</th><th>내용</th><th>받은 날짜</th><th>상태</th><th>삭제</th>"+
-						  		  "</tr></thead><tbody>";
-						
-						$('#selectMsgTab').empty();
-						/* obj=data.receiveSelect[index] */
-						$.each(data.receiveSelect, function(index,obj){
-							
-							if(obj.receiveMsgDel=="F"){
-								console.log("몇개나 가져오니?")
-								console.log(obj.msgNo);
-								table+="<tr>"+
-											"<td>"+obj.msgNo+"</td>"+
-											"<td>"+data.receiveSelInfo[index].userName+"</td>"+
-											"<td class='receiveMsgModal' data-toggle='modal' data-target='#myModal'>"+obj.msgContent+"</td>"+
-											"<td>"+data.receiveSelReg[index]+"</td>"+
-											"<td>";
-												if(obj.msgState=="F"){
-													table+="안읽음</td>";
-												}else{
-													table+="읽음</td>";
-												}
-												table+="<td><i class='material-icons receiveMsgDel' style='cursor: pointer;''>clear</i></td>"
-										+"</tr>";
-							}
-						});
-						table+="</tbody>";
-						
-						$('#selectMsgTab').append(table);
-						$('#selectInfoMsg').show();
-					}
-				});
-			//보낸 메시지함에서 검색할 경우 
-			}else if($('#sendTag').hasClass('tag')){
-				console.log("아니면 샌드온거?")
-				$('#receive').hide();
-				$('#send').hide();
-				
-				$.ajax({
-					url:"/picsion/message/sendselect.ps",
-					data:{userName:userName},
-					success:function(data){
-						
-						var table="<thead><tr>"+
-									"<th>번호</th><th>받은이</th><th>내용</th><th>보낸 날짜</th><th>상태</th><th>삭제</th>"+
-						  		  "</tr></thead><tbody>";
-						
-						$('#selectMsgTab').empty();
-						/* obj=data.receiveSelect[index] */
-						$.each(data.sendSelect, function(index,obj){
-							
-							if(obj.sendMsgDel=="F"){
-								console.log("몇개나 가져오니?")
-								console.log(obj.msgNo);
-								table+="<tr>"+
-											"<td>"+obj.msgNo+"</td>"+
-											"<td>"+data.sendSelInfo[index].userName+"</td>"+
-											"<td class='sendMsgModal' data-toggle='modal' data-target='#myModal'>"+obj.msgContent+"</td>"+
-											"<td>"+data.sendSelReg[index]+"</td>"+
-											"<td>";
-												if(obj.msgState=="F"){
-													table+="안읽음</td>";
-												}else{
-													table+="읽음</td>";
-												}
-												table+="<td><i class='material-icons sendMsgDel' style='cursor: pointer;''>clear</i></td>"
-										+"</tr>";
-							}
-						});
-						table+="</tbody>";
-						
-						$('#selectMsgTab').append(table);
-						$('#selectInfoMsg').show();
-					}
-				});
-				
-			}
 		})
 		
 	})
 	
-function abb(userNo,myNo,msgUser) {
+function msgList(userNo,myNo,msgUser) {
+	$('#msgContent-show').addClass('msg-show');
 	$.ajax({
 		url:"/picsion/message/msglist.ps",
 		data:{userNo:userNo},
@@ -538,11 +349,11 @@ function abb(userNo,myNo,msgUser) {
 
 												<h4 class="media-heading msgUserName" data-name="${recentMsg2.user[0].userName}">
 													${recentMsg2.user[0].userName}<small> · <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${recentMsg2.msgReg}" /></small>
-
 												</h4>
 												<p class="msgList" style="cursor: pointer;" data-no="${recentMsg2.user[0].userNo}">${recentMsg2.msgContent}</p>
 												<a class="btn btn-rose btn-link float-right message-margin-del receiveMsgDel"><i class="material-icons">clear</i>삭제</a>
-												<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" title="" data-original-title="보내버리기"> <i class="material-icons">reply</i> 신고
+												<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기"
+												 id="${recentMsg2.tableNo},${recentMsg2.user[0].userNo},0,0,0"> <i class="material-icons">reply</i> 신고
 												</a>
 											</div>
 

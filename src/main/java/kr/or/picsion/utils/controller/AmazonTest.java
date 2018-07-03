@@ -4,13 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,21 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.View;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
@@ -55,47 +39,71 @@ import kr.or.picsion.picture.dto.Face;
 @Controller
 public class AmazonTest {
 	
-	/*	public List<String> labelBag;
-	public String logocheck;
-	public String safecheck;*/
 	public String picturePath;
 	
 	@Autowired
 	private View jsonview;
 	
-	//public AmazonTest() {}
 	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : upload
+	* 작성자명 : 이아림
+	* 기      능 : 업로드 페이지로 이동
+	*
+	* @return String
+	*/
 	@RequestMapping("upload.ps")
-	public String bbbb() {
+	public String upload() {
 		return "mypage.upload";
 	}
 	
+	/**
+	* 날      짜 : 2018. 6. 7.
+	* 메소드명 : visionCheck
+	* 작성자명 : 이아림
+	* 기      능 : 비전으로 사진정보 가져오기
+	*
+	* @param filePath
+	* @param model
+	* @return View
+	* @throws Exception
+	*/
 	@RequestMapping(value = "amazontest.ps", method=RequestMethod.POST)
-	public View aaaaa(MultipartHttpServletRequest filePath,Model model) throws Exception {
-		String abc= fileUpload(filePath);
-		String logocheck=detectLogos(abc);
-		String safecheck=detectSafeSearch(abc);
-		List<String> labelBag=detectLabels(abc);
-		List<Face> faceList = detectFaces(abc);
-//		detectWebDetections(abc);
+	public View visionCheck(MultipartHttpServletRequest filePath,Model model) throws Exception {
+		String uploadedPath= fileUpload(filePath);//실경로 파일 업로드
+		String logocheck=detectLogos(uploadedPath);//vision : 로고감지
+		String safecheck=detectSafeSearch(uploadedPath);//vision : 유해감지
+		List<String> labelBag=detectLabels(uploadedPath);//vision : 태그뽑기
+//		List<Face> faceList = detectFaces(uploadedPath);//vision : 얼굴감지
+//		detectWebDetections(uploadedPath);
 
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
 		model.addAttribute("label", labelBag);
 		model.addAttribute("picPath",picturePath);
-		model.addAttribute("face",faceList);
+//		model.addAttribute("face",faceList);
 		
-		System.out.println("labelBag: "+labelBag);
+		System.out.println("labelBag: "+labelBag);//지워라라라라라라라라라ㅏㄹㄹㄹ
 		return jsonview;
 	}
 	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : fileUpload
+	* 작성자명 : 이아림, 아윤근
+	* 기      능 : 실경로 파일 업로드 및 메타데이터 뽑기
+	*
+	* @param mRequest
+	* @return String
+	*/
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
-		boolean isSuccess = false;
 		String filePathh="";
-		/*String uploadPath = "D:\\imagePicsion\\";*/
-		String uploadPath = "C:\\imagePicsion\\";
+		String uploadPath = "D:\\imagePicsion\\";
+		/*String uploadPath = "C:\\imagePicsion\\";*/
 		/*String uploadPath = "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";*/
 		
+		//파일 저장하는 폴더
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
@@ -110,7 +118,7 @@ public class AmazonTest {
 			
 			String originalFileName = mFile.getOriginalFilename();
 			System.out.println("오리진파일네임: "+originalFileName);
-			String saveFileName = originalFileName;//	우어어ㅓㅇ~~~~~~~~~~~~~~~
+			String saveFileName = originalFileName;
 			
 			filePathh = uploadPath + saveFileName;
 			
@@ -132,8 +140,7 @@ public class AmazonTest {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					mFile.transferTo(newFile);
-//					uploadObject(saveFileName); // s3에 들어가는 단계~~~~~~~~~~~~~~~~~~~~~~~
-					isSuccess = true;		
+//					uploadObject(saveFileName); // s3에 들어가는 단계~~~~~~~~~~~~~~~~~~~~~~~	
 					
 					Metadata metadata;
 					System.out.println("업로드에서 메타 출력전--------------------------------------------------------");
@@ -173,10 +180,8 @@ public class AmazonTest {
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
-					isSuccess = false;
 				} catch (IOException e) {
 					e.printStackTrace();
-					isSuccess = false;
 				}
 			} // if end
 			
@@ -186,12 +191,10 @@ public class AmazonTest {
 		return filePathh;
 	} // fileUpload end
 	
-	
-	
 	/*
 	public void uploadObject(String file) {
-		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
-		String SECRET_KEY = "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\r\n";
+		String ACCESS_KEY;
+		String SECRET_KEY;
 	  	String clientRegion = "ap-northeast-2";
         String bucketName = "picsion/img";
         String stringObjKeyName = file;
@@ -230,8 +233,22 @@ public class AmazonTest {
             e.printStackTrace();
         }
         a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName;
+<<<<<<< HEAD
+	}
+=======
 	}*/
-	
+
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : detectLabels
+	* 작성자명 : 이아림
+	* 기      능 : 사진에서 태그 뽑기
+	*
+	* @param filePath
+	* @return
+	* @throws Exception
+>>>>>>> 13c5e69a099d197dd41dac86664994b9460ea19b
+	*/
 	public static List<String> detectLabels(String filePath) throws Exception {
 	    List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
 	    Image image = getImage(filePath);
@@ -256,6 +273,16 @@ public class AmazonTest {
 	    }
 	}
 	
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : detectLogos
+	* 작성자명 : 이아림
+	* 기      능 : 로고발견
+	*
+	* @param filePath
+	* @return String
+	* @throws Exception
+	*/
 	public static String detectLogos(String filePath) throws Exception {
 	    List<AnnotateImageRequest> requests = new ArrayList<>();
 	    String logoExist = null;
@@ -288,6 +315,17 @@ public class AmazonTest {
 	    }
 	}
 	
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : detectSafeSearch
+	* 작성자명 : 이아림
+	* 기      능 : 
+	*
+	* @param filePath
+	* @return
+	* @throws Exception
+	* @throws IOException
+	*/
 	public static String detectSafeSearch(String filePath) throws Exception, IOException {
 		List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
 	    Image image = getImage(filePath);
@@ -320,6 +358,16 @@ public class AmazonTest {
 			return safeExist;
 		}
 	}
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : detectFaces
+	* 작성자명 : 이아림
+	* 기      능 : 얼굴감지
+	*
+	* @param filePath
+	* @return
+	* @throws Exception
+	*/
 	public static List<Face> detectFaces(String filePath) throws Exception {
 	    List<AnnotateImageRequest> requests = new ArrayList<>();
 
@@ -351,16 +399,25 @@ public class AmazonTest {
 	                System.out.println("오상?"+annotation.getBoundingPoly().getVertices(1));
 	                System.out.println("오하?"+annotation.getBoundingPoly().getVertices(2));
 	                System.out.println("왼하?"+annotation.getBoundingPoly().getVertices(3));*/
-	                facePoly.add(new Face((int)annotation.getBoundingPoly().getVertices(0).getX(),
-	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getX(),
-	                			 		  (int)annotation.getBoundingPoly().getVertices(1).getY(),
-	                			 		  (int)annotation.getBoundingPoly().getVertices(2).getY()));
+	                facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
+	                			 		  annotation.getBoundingPoly().getVertices(1).getX(),
+	                			 		  annotation.getBoundingPoly().getVertices(1).getY(),
+	                			 		  annotation.getBoundingPoly().getVertices(2).getY()));
 	            }
 	        }
 	        return facePoly;
 	    }
 	}
 
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : detectWebDetections
+	* 작성자명 : 이아림
+	* 기      능 : 웹에서 태그가져오기
+	*
+	* @param filePath
+	* @throws Exception
+	*/
 	public static void detectWebDetections(String filePath) throws Exception {
 		List<AnnotateImageRequest> requests = new ArrayList<>();
 
@@ -396,22 +453,6 @@ public class AmazonTest {
 					System.out.println("Best guess label: "+ label.getLabel());
 					
 				}
-				/*System.out.println("\nPages with matching images: Score\n==");*/
-				/*for (WebPage page : annotation.getPagesWithMatchingImagesList()) {
-					out.println(page.getUrl() + " : " + page.getScore());
-				}
-				out.println("\nPages with partially matching images: Score\n==");
-				for (WebImage image : annotation.getPartialMatchingImagesList()) {
-					out.println(image.getUrl() + " : " + image.getScore());
-				}
-				out.println("\nPages with fully matching images: Score\n==");
-				for (WebImage image : annotation.getFullMatchingImagesList()) {
-					out.println(image.getUrl() + " : " + image.getScore());
-				}
-				out.println("\nPages with visually similar images: Score\n==");
-				for (WebImage image : annotation.getVisuallySimilarImagesList()) {
-					out.println(image.getUrl() + " : " + image.getScore());
-				}*/
 			}
 		}
 	}

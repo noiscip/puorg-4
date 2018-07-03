@@ -176,9 +176,9 @@ public class UserService {
 	* @param userNo
 	* @return List<Picture>
 	*/
-	public List<Picture> bookmarkPicList(int userNo){
+	public List<Picture> bookmarkPicList(int userNo, int page, int endpage){
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		List<Picture> bookmarkPicList = userDao.bookmarkPicList(userNo);
+		List<Picture> bookmarkPicList = userDao.bookmarkPicList(userNo, page, endpage);
 		return bookmarkPicList;
 	}
 	
@@ -191,9 +191,9 @@ public class UserService {
 	* @param userNo
 	* @return List<User>
 	*/
-	public List<User> bookmarkPicUserList(int userNo){
+	public List<User> bookmarkPicUserList(int userNo, int page, int endpage){
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		List<User> bookmarkPicUserList =userDao.bookmarkPicUserList(userNo);
+		List<User> bookmarkPicUserList =userDao.bookmarkPicUserList(userNo, page, endpage);
 		return bookmarkPicUserList;
 	}
 	

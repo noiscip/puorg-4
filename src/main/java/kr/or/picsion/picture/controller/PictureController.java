@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -32,8 +31,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.simpleworkflow.flow.worker.SynchronousActivityTaskPoller;
-
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;
@@ -68,9 +65,12 @@ public class PictureController {
 	* @param userNo
 	* @return String
 	*/
-	@RequestMapping("mystudio.ps")
+	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
 	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
+		int page=0;
+		int endpage=6;
+		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -78,8 +78,8 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo()); //스튜디오 사진리스트
-		List<User> ownerList = pictureService.studioOwnerList(userNo);
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), page, endpage); //스튜디오 사진리스트
+		List<User> ownerList = pictureService.studioOwnerList(userNo, page, endpage);
  		List<User> followerList = userService.followerUserList(userNo);
 		List<User> followingList = userService.followingUserList(userNo);
 		int followResult = 0;
@@ -93,8 +93,44 @@ public class PictureController {
 		model.addAttribute("followerlist", followerList);
 		model.addAttribute("followinglist", followingList);
 		model.addAttribute("followResult", followResult);
+		model.addAttribute("page", picList.size());
 		
 		return "studio.mystudio";
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 2.
+	* 메소드명 : studioScroll
+	* 작성자명 : 박주원
+	* 기      능 : 스크롤 페이징
+	*
+	* @param session
+	* @param model
+	* @param userNo
+	* @return View
+	*/
+	@RequestMapping(value="mystudio.ps", method=RequestMethod.POST)
+	public View studioScroll(HttpSession session, Model model, int userNo, int page){
+		User user = new User(); 
+		int endpage=6;
+		System.out.println(page+"는 머야?");
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
+		/*User scrollUserInfo = userService.userInfo(userNo);*/	 //스튜디오 대상 사용자
+		List<Picture> scrollPicList = pictureService.studioPicList(userNo, user.getUserNo(), page, endpage); //스튜디오 사진리스트
+		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo, page, endpage);
+		
+		System.out.println("리스트 몇개 가져옴?"+scrollPicList);
+		/*model.addAttribute("scrollUserInfo", scrollUserInfo);*/
+		model.addAttribute("scrollPicList", scrollPicList);
+		model.addAttribute("scrollOwnerList",scrollOwnerList);
+		model.addAttribute("endpage", scrollPicList.size());
+		System.out.println("리스트 사이즈는?"+scrollPicList.size());
+		return jsonview;
 	}
 	
 	/**
@@ -112,15 +148,16 @@ public class PictureController {
 	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		picture.setTagContent(tag);
-		pictureService.insertPicture(picture, user.getUserNo());
+		picture.setUserNo(user.getUserNo());
+		pictureService.insertPicture(picture);
 		System.out.println("유저번호:"+user.getUserNo());
 		System.out.println(picture);
 		System.out.println(picture.getTagContent());
-		String upath="D:/imagePicsion"+picture.getPicPath();
+//		String upath="D:/imagePicsion"+picture.getPicPath();
+		String upath=picture.getPicPath();
 		System.out.println("파일경로라서 워터마크에 쓸것이다: "+upath);
 		
 		//원본사진 이름 수정
-		
 		
 		String waterText = "PICSION";
 		File input = new File(upath);
@@ -132,7 +169,7 @@ public class PictureController {
 		//워터마크 사진 이름 수정하여 저장
 		String renameWater ="w"+renameFile(picture.getPicPath(), user.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
 		File output = new File("D:/imagePicsion/"+renameWater);
-		System.out.println("워터마크되나?"+output.getPath().substring(13));
+		System.out.println("워터마크되나?"+output.getPath().substring(16));//로직바꾸자
 		// adding text as overlay to an image
 		try {
 			addTextWatermark(waterText, "jpg", input, output);
@@ -141,9 +178,9 @@ public class PictureController {
 			e.printStackTrace();
 		}
 		//워터마크사진 s3에 저장
-		uploadObject(output.getPath().substring(16),"picsion/water");
+		String waterPath = uploadObject(output.getPath().substring(16),"picsion/water",picture);
 		
-		int waterResult = pictureService.updateWater(output.getPath(), picture.getPicNo());
+		int waterResult = pictureService.updateWater(waterPath, picture.getPicNo());
 		if(waterResult!=0) {
 			System.out.println("워터마크 생성");
 		}else {
@@ -154,16 +191,14 @@ public class PictureController {
 		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 //		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-		String webFilePath = uploadObject(saveFileName,"picsion/img");
+		String webFilePath = uploadObject(saveFileName,"picsion/img",picture);
 		
 		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
 		if(s3Result!=0) {
 			System.out.println("s3 경로 생성");
 		}else {
 			System.out.println("s3 경로 생성 실패");
-		}
-		
-		
+		}		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	
@@ -306,7 +341,102 @@ public class PictureController {
         ImageIO.write(watermarked, type, destination);
         w.dispose();
     }
+	/**
+	* 날      짜 : 2018. 6. 27.
+	* 메소드명 : uploadObject
+	* 작성자명 : 이아림
+	* 기      능 : s3 저장
+	*
+	* @param file
+	* @param bucketName
+	* @return String
+	*/
+	public String uploadObject(String file,String bucketName,Picture picture) {
+		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
+		String SECRET_KEY = "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\r\n";
+	  	String clientRegion = "ap-northeast-2";
+        /*bucketName = "picsion/img";*/
+        String stringObjKeyName = file;
+        String fileObjKeyName = file;
+        
+//        fileObjKeyName=renameFile(fileName, userNo, picNo);
+        
+        String fileName = "D:/imagePicsion/" + fileObjKeyName;
+        /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
+        String a3path="";
+        
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+        try {
+        	AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                    .withRegion(clientRegion)
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                    .build();
+            File newFile = new File(fileName);
+            fileObjKeyName = renameFile(fileName, picture.getUserNo(), picture.getPicNo());
+         // Upload a text string as a new object.
+            s3Client.putObject(bucketName, fileObjKeyName, "Uploaded String Object");
+            // Upload a file as a new object with ContentType and title specified.
+            PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, newFile);
+            
+            //체인지이이이이ㅣ지지이이이ㅣ지이ㅣ지~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//            File fileToMove = new File();
+//            newFile.renameTo(renameFile(fileName, picture.getUserNo(), picture.getPicNo()));
+            
+            
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("plain/text");
+            metadata.addUserMetadata("x-amz-meta-title", "someTitle");
+            request.setMetadata(metadata);
+            s3Client.putObject(request);
+            System.out.println("이거 뭘까?"+s3Client.getBucketLocation(bucketName)); //s3 파일경로인가?
+            System.out.println("s3 주소는 "+fileName);
+//            fileName = renameFile(fileName, picture.getUserNo(), picture.getPicNo());
+        }
+        catch(AmazonServiceException e) {
+            e.printStackTrace();
+        }
+        catch(SdkClientException e) {
+            e.printStackTrace();
+        }
+        a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName+"/"+fileObjKeyName;
+        
+        return a3path;
+	}
 	
+	/**
+	* 날      짜 : 2018. 6. 29.
+	* 메소드명 : renameFile
+	* 작성자명 : 이아림
+	* 기      능 : 이미지 이름 변경
+	*
+	* @param fileName
+	* @param userNo
+	* @param picNo
+	* @return String
+	*/
+	public static String renameFile(String fileName, int userNo, int picNo) {
+
+		// 변경될 파일명
+		String newFileName = "";
+
+		// 확장자를 검색한다. jpg, bmp , png
+		if (fileName.toLowerCase().indexOf(".jpg") > 0) {
+			newFileName = userNo + "000" + picNo + ".jpg";
+		} else if (fileName.toLowerCase().indexOf(".bmp") > 0) {
+			newFileName = userNo + "000" + picNo + ".bmp";
+		} else if (fileName.toLowerCase().indexOf(".png") > 0) {
+			newFileName = userNo + "000" + picNo + ".png";
+		} else {// 확장자가 벗어나면 파일명 그대로 셋팅
+			newFileName = fileName;
+		}
+
+		// 변경된 파일명
+		System.out.println("이미지파일이름변경완료"+newFileName);
+
+		// 끝난거 알려주는 리턴값
+		return newFileName;
+
+	}
 	/**
 	* 날      짜 : 2018. 6. 20.
 	* 메소드명 : wordChartList
@@ -372,97 +502,6 @@ public class PictureController {
 		model.addAttribute("tag",tag);
 		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
 		return "popular.tagpicturepage";
-	}
-	
-	/**
-	* 날      짜 : 2018. 6. 27.
-	* 메소드명 : uploadObject
-	* 작성자명 : 이아림
-	* 기      능 : s3 저장
-	*
-	* @param file
-	* @param bucketName
-	* @return String
-	*/
-	public String uploadObject(String file,String bucketName) {
-		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
-		String SECRET_KEY = "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\r\n";
-	  	String clientRegion = "ap-northeast-2";
-        /*bucketName = "picsion/img";*/
-        String stringObjKeyName = file;
-        String fileObjKeyName = file;
-        String fileName = "D:/imagePicsion/" + fileObjKeyName;
-        /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
-        String a3path="";
-        
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
-        try {
-        	AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withRegion(clientRegion)
-                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                    .build();
-        
-            // Upload a text string as a new object.
-            s3Client.putObject(bucketName, stringObjKeyName, "Uploaded String Object");
-            
-            // Upload a file as a new object with ContentType and title specified.
-            PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, new File(fileName));
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType("plain/text");
-            metadata.addUserMetadata("x-amz-meta-title", "someTitle");
-            request.setMetadata(metadata);
-            s3Client.putObject(request);
-            System.out.println("이거 뭘까?"+s3Client.getBucketLocation(bucketName)); //s3 파일경로인가?
-            System.out.println("s3 주소는 "+fileName);
-        }
-        catch(AmazonServiceException e) {
-            // The call was transmitted successfully, but Amazon S3 couldn't process 
-            // it, so it returned an error response.
-            e.printStackTrace();
-        }
-        catch(SdkClientException e) {
-            // Amazon S3 couldn't be contacted for a response, or the client
-            // couldn't parse the response from Amazon S3.
-            e.printStackTrace();
-        }
-        a3path="http://s3."+clientRegion+".amazonaws.com/"+bucketName+"/"+fileObjKeyName;
-        
-        return a3path;
-	}
-	
-	/**
-	* 날      짜 : 2018. 6. 29.
-	* 메소드명 : renameFile
-	* 작성자명 : 이아림
-	* 기      능 : 이미지 이름 변경
-	*
-	* @param fileName
-	* @param userNo
-	* @param picNo
-	* @return String
-	*/
-	public static String renameFile(String fileName, int userNo, int picNo) {
-
-		// 변경될 파일명
-		String newFileName = "";
-
-		// 확장자를 검색한다. jpg, bmp , png
-		if (fileName.toLowerCase().indexOf(".jpg") > 0) {
-			newFileName = userNo + "000" + picNo + ".jpg";
-		} else if (fileName.toLowerCase().indexOf(".bmp") > 0) {
-			newFileName = userNo + "000" + picNo + ".bmp";
-		} else if (fileName.toLowerCase().indexOf(".png") > 0) {
-			newFileName = userNo + "000" + picNo + ".png";
-		} else {// 확장자가 벗어나면 파일명 그대로 셋팅
-			newFileName = fileName;
-		}
-
-		// 변경된 파일명
-		System.out.println("이미지파일이름변경완료"+newFileName);
-
-		// 끝난거 알려주는 리턴값
-		return newFileName;
-
 	}
 }
 

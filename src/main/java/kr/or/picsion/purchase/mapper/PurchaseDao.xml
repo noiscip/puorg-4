@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -15,4 +15,66 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="salesStatistics" resultType="String">
 	select sum(picPrice) from PICTURE where picNo in (select picNo from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg)
 	</select>
+
+	<!-- 장바구니 담기 -->
+	<insert id="insertCart">
+		INSERT INTO CART
+		(picNo, userNo)
+		VALUES
+		( #{param1}, #{param2})
+	</insert>
+	
+	<!-- 장바구니에서 항목 빼기 -->
+	<delete id="deleteCart">
+		DELETE FROM CART WHERE picNo=#{param1} AND userNo=#{param2}
+	</delete>
+	
+	<!-- 장바구니 전체 비우기 -->
+	<delete id="deleteCartAll">
+		DELETE FROM CART WHERE userNo=#{param1}
+	</delete>
+	
+	<!-- 장바구니 사진 리스트 -->
+	<select id="selectCart" resultType="kr.or.picsion.picture.dto.Picture">
+	 	SELECT p.*, i.camera as camera, i.resolution as resolution, i.photoDate as photoDate FROM PICTURE p 
+	 	left JOIN CART c ON p.picNo = c.picNo 
+		left JOIN PICTUREINFO i on p.picNo = i.picNo
+		 WHERE c.userNo = #{userNo}
+	</select>
+	
+	<!-- 장바구니 사진 작가 리스트 -->
+	<select id="CartPhotographer" resultType="kr.or.picsion.user.dto.User">
+	 	SELECT u.userNo as userNo, u.userName as userName FROM PICTURE p 
+	 	left JOIN CART c ON p.picNo = c.picNo 
+		left JOIN USERS u ON p.userNo = u.userNo
+	 	WHERE c.userNo = #{userNo}
+	</select>
+	
+	<!-- 장바구니 합계 -->
+	<select id="cartTotal" resultType="Integer">
+		SELECT ifNULL(sum(p.picPrice),0) as total FROM PICTURE p JOIN CART c ON p.picNo = c.picNo 			 
+		WHERE c.userNo = #{userNo}
+	</select>
+	
+	<!-- 장바구니 체크 -->
+	<select id="cartConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM CART WHERE picNo=#{param1} AND userNo=#{param2}
+	</select>
+	
+	<!-- 나의 장바구니 항목 갯수 -->
+	<select id="cartCount" resultType="Integer">
+		SELECT COUNT(*) FROM CART WHERE userNo=#{userNo}
+	</select>
+	
+	
+	<!-- 결제 -->
+	<insert id="buyPicture" parameterType="java.util.List">
+		INSERT INTO PURCHASE
+		(picNo, purchaseUserNo, saleUserNo)
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+		(#{item.picNo}, #{item.purchaseUserNo}, #{item.saleUserNo})
+		</foreach>
+	</insert>
+	
 </mapper>

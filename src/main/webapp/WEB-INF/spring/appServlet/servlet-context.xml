@@ -20,12 +20,10 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-
+	
 	<context:component-scan base-package="kr.or.*" />
 	<context:component-scan base-package="kr.or.picsion.*" />
-	<!-- 
-	<context:component-scan base-package="kr.or.picsion.*.*" /> -->
- 
+	 
 	<!--Tiles 설정 (Bean 객체 생성 주입) -->
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		 <property name="definitions">
@@ -50,8 +48,8 @@
 	<!-- google Class Bean설정 추가 -->
 	<!-- 클라이언트ID와 보안비밀 세팅 -->
 	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
-	  <constructor-arg value="461123739745-bvb4iuqnptrkpushdmt2lds0atpgbohe.apps.googleusercontent.com" />
-	  <constructor-arg value="Hul6zAi4yWe0FsUe-RPHiC43" />
+	  <constructor-arg value="#{config['google.clientId']}" />
+	  <constructor-arg value="#{config['google.secretKey']}" />
 	</bean>
  	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
 	<bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">

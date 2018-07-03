@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
 	<meta charset="utf-8">
@@ -38,6 +38,7 @@
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
    	<!-- Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
+
    
 <%--
    	<!-- Plugins for presentation and navigation  -->
@@ -45,6 +46,7 @@
     <!-- Fixed Sidebar Nav - js With initialisations -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script> 
 --%>
+
 	<!-- ckEditor -->
 	<script src="<%=request.getContextPath()%>/ckeditor/ckeditor.js" type="text/javascript" ></script>
   	<!-- 네이버 로그인 -->

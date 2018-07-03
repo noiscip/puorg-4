@@ -7,19 +7,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 마이 스튜디오 사진 , 좋아요, 북마크 리스트 -->
 	<select id="studioPicList" resultType="kr.or.picsion.picture.dto.Picture">
-	select p.*, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount
+	<!-- select p.*, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount
 	from (select * from PICTURE where userNo=#{param1}) p 
-	join USERS u on p.userNo=u.userNo 
-	left join (select * from RESPECT where userNo=#{param2}) r on p.picNo=r.picNo 
-	left join (select * from BOOKMARK where userNo=#{param2}) b on p.picNo=b.picNo 
-	left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
-	left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo;
+		join USERS u on p.userNo=u.userNo 
+		left join (select * from RESPECT where userNo=#{param2}) r on p.picNo=r.picNo 
+		left join (select * from BOOKMARK where userNo=#{param2}) b on p.picNo=b.picNo 
+		left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
+		left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo
+	order by p.picReg DESC -->
+	select *
+	from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select p.*, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount
+	   	from (select * from PICTURE where userNo=#{param1}) p
+	   	join USERS u on p.userNo=u.userNo
+	   	left join (select * from RESPECT where userNo=#{param2}) r on p.picNo=r.picNo
+	   	left join (select * from BOOKMARK where userNo=#{param2}) b on p.picNo=b.picNo
+	   	left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo
+	   	left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo) pp order by pp.picNo DESC, pp.picReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+	where SC.ROWNUM>0
+	order by SC.ROWNUM
+	limit #{param3}, #{param4}
 	</select>
 	
 	<!-- 마이 스튜디오 사진 주인 리스트 -->
 	<select id="studioOwnerList" resultType="kr.or.picsion.user.dto.User">
 	select u.userName
-	from (select * from PICTURE where userNo=#{userNo}) p join USERS u on p.userNo=u.userNo;
+	from (select * from PICTURE where userNo=#{param1}) p join USERS u on p.userNo=u.userNo
+	limit #{param2}, #{param3};
 	</select>
 	
 	<!-- 워드 차트 태그 리스트 -->
@@ -105,11 +118,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 사진 업로드 저장 -->
-	<insert id="insertPicture" parameterType="hashmap">		
+	<insert id="insertPicture" parameterType="kr.or.picsion.picture.dto.Picture">		
 	insert into PICTURE
-	 (picNo, picTitle, picContent, picPath, picWater, picPrice, userNo)
-	values (#{picture.picNo},#{picture.picTitle},#{picture.picContent},#{picture.picPath},#{picture.picWater},100,#{userNo})
-	 <selectKey keyProperty="picture.picNo" resultType="Integer" order="AFTER">
+	 (picNo, picTitle, picContent, picPath, picWater, picPrice, userNo<if test="transferState eq 'F'.toString()">,transferState</if>)
+	values (#{picNo},#{picTitle},#{picContent},#{picPath},#{picWater},100,#{userNo}<if test="transferState eq 'F'.toString()">,#{transferState}</if>)
+	 <selectKey keyProperty="picNo" resultType="Integer" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
 	</insert>

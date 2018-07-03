@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import kr.or.picsion.message.dao.MessageDao;
 import kr.or.picsion.message.dto.Message;
-import kr.or.picsion.user.dto.User;
 
 /**
  * @author Bit
