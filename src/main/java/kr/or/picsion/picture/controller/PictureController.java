@@ -46,6 +46,13 @@ import kr.or.picsion.utils.AmazonUpload;
 import software.amazon.ion.SystemSymbols;
 
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.controller 
+ * @className PictureController
+ * @date 2018. 6. 4.
+ */
+
 @Controller
 @RequestMapping("/picture/")
 public class PictureController {

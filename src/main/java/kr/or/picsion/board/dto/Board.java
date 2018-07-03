@@ -2,6 +2,13 @@ package kr.or.picsion.board.dto;
 
 import java.util.Date;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.board.dto 
+ * @className Board
+ * @date 2018. 6. 4.
+ */
+
 public class Board {
 
 	private int brdNo;

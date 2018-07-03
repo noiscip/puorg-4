@@ -543,7 +543,7 @@ $(document).ready(function() {
 					<div class="card card-product">
 						<div class="card-header card-header-image">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${rList.picNo}">
-							<img class="img" src="<%=request.getContextPath()%>${rList.picPath}"></a>
+							<img class="img" src="${rList.picWater}"></a>
 							<div class="colored-shadow"	style="background-image: url(&quot;<%=request.getContextPath()%>${rList.picPath}&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">

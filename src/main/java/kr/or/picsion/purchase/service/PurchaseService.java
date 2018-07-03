@@ -16,6 +16,13 @@ import kr.or.picsion.purchase.dao.PurchaseDao;
 import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.purchase.service 
+ * @className PurchaseService
+ * @date 2018. 6. 4.
+ */
+
 @Service
 public class PurchaseService {
 	

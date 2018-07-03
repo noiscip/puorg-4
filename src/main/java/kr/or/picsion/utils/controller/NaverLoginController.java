@@ -13,6 +13,13 @@ import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 import kr.or.picsion.utils.NaverLoginConnectUrl;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.utils.controller 
+ * @className NaverLoginController
+ * @date 2018. 6. 15.
+ */
+
 @Controller
 @RequestMapping("/naver/")
 public class NaverLoginController {

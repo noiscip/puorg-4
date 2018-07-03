@@ -24,6 +24,35 @@
 	<context:component-scan base-package="kr.or.*" />
 	<context:component-scan base-package="kr.or.picsion.*" />
 	 
+	<mvc:interceptors>
+		<mvc:interceptor>
+           <mvc:mapping path="/board/*"/>
+           <mvc:mapping path="/blame/*"/>
+           <mvc:mapping path="/operation/*"/>
+           <mvc:mapping path="/operationApply/*"/>
+           <mvc:mapping path="/purchase/*"/>
+           <mvc:mapping path="/upload.ps"/>
+           <mvc:mapping path="/user/admin*.ps"/>
+           <mvc:mapping path="/user/bookmarklist.ps"/>
+           <mvc:mapping path="/user/followinglist.ps"/>
+           <mvc:mapping path="/user/updatebefore.ps"/>
+           <mvc:mapping path="/user/updateinfo.ps"/>
+           <mvc:mapping path="/user/popular.ps"/>
+           <mvc:mapping path="/message/receivemessage.ps"/>
+           <!-- 여러개 컨트롤러 추가 가능 -->
+           <!--
+                <mvc:mapping path="/admin_write"/>
+                <mvc:mapping path="/admin_update"/>
+                <mvc:mapping path="/admin_delete"/>
+                .
+                .
+                .
+           -->
+           <!-- 로그인체크 인터셉터 클래스 -->
+           <bean class="kr.or.picsion.utils.controller.LoginHandler"/>
+        </mvc:interceptor>
+	</mvc:interceptors>
+	
 	<!--Tiles 설정 (Bean 객체 생성 주입) -->
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		 <property name="definitions">

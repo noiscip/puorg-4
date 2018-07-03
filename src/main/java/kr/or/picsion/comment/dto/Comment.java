@@ -2,6 +2,13 @@ package kr.or.picsion.comment.dto;
 
 import java.util.Date;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.comment.dto 
+ * @className Comment
+ * @date 2018. 6. 4.
+ */
+
 public class Comment {
 
 	private int cmtNo;

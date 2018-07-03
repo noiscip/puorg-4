@@ -46,11 +46,28 @@ public class NoticeService {
 	private PictureService pictureService;
 	
 	
+	/**
+	 * 날      짜 : 2018. 6. 25.
+	 * 메소드명 : insertNotice
+	 * 작성자명 : 아윤근
+	 * 기      능 : 알림 대상 객체가 등록 될 경우 알림 등록
+	 *
+	 * @param noticeMap
+	*/
 	public void insertNotice(Map<String, Object> noticeMap) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 		noticeDao.insertNotice(noticeMap);
 	}
 
+	/**
+	 * 날      짜 : 2018. 6. 19.
+	 * 메소드명 : noticeList
+	 * 작성자명 : 아윤근
+	 * 기      능 : 알림 정보를 종류에 따라 나눈 후, 해당 정보의 데이터를 map에 담아서 리턴
+	 *
+	 * @param userNo
+	 * @return HashMap<Integer, Object>
+	*/
 	public HashMap<Integer, Object> noticeList(int userNo) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 
@@ -91,6 +108,15 @@ public class NoticeService {
 		return map;
 	}
 
+	/**
+	 * 날      짜 : 2018. 6. 27.
+	 * 메소드명 : readCheckCount
+	 * 작성자명 : 아윤근
+	 * 기      능 : 읽지 않은 알림 갯수 확인
+	 *
+	 * @param userNo
+	 * @return int
+	*/
 	public int readCheckCount(int userNo) {
 
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
@@ -98,6 +124,15 @@ public class NoticeService {
 		return noticeDao.readCheckCount(userNo);
 	}
 	
+	/**
+	 * 날      짜 : 2018. 6. 27.
+	 * 메소드명 : readCheck
+	 * 작성자명 : 아윤근
+	 * 기      능 : 읽은 알림 읽음 표시
+	 *
+	 * @param notice
+	 * @return int
+	*/
 	public int readCheck(Notice notice) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 		return noticeDao.readCheck(notice);

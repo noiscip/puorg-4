@@ -4,6 +4,13 @@ import java.util.List;
 
 import kr.or.picsion.board.dto.Board;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.board.dao 
+ * @className BoardDao
+ * @date 2018. 6. 4.
+ */
+
 public interface BoardDao {
 
 	public List<Board> boardList();

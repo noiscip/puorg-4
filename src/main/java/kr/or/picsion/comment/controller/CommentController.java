@@ -19,6 +19,13 @@ import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.comment.controller 
+ * @className CommentController
+ * @date 2018. 6. 4.
+ */
+
 @Controller
 @RequestMapping("/comment/")
 public class CommentController {
@@ -42,15 +49,15 @@ public class CommentController {
 	private BoardService boardService;
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : insertBoardComment 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 요청 게시판 댓글 작성
+	 * 기      능 : 요청 게시판 댓글 작성
 	 *
 	 * @param comment
 	 * @param session
 	 * @param model
-	 * @return
+	 * @return View
 	 */
 	@RequestMapping(value = "insertreview.ps")
 	public View insertBoardComment(Comment comment, HttpSession session, Model model) {
@@ -87,14 +94,14 @@ public class CommentController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : readreview 
 	 * 작성자명 : 김준수 
-	 * 기 능 : socket receive대상에게 매시지 보내주기
+	 * 기      능 : socket receive대상에게 매시지 보내주기
 	 *
 	 * @param comment
 	 * @param model
-	 * @return
+	 * @return View
 	 */
 	@RequestMapping(value = "readreview.ps")
 	public View readreview(Comment comment, Model model) {
@@ -110,10 +117,10 @@ public class CommentController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : insertPicComment 
 	 * 작성자명 : 정도혁 
-	 * 기 능 : 사진 댓글 입력
+	 * 기      능 : 사진 댓글 입력
 	 *
 	 * @param comment
 	 * @param model
@@ -143,15 +150,15 @@ public class CommentController {
 		return jsonview;
 	}
 
-	/**
-	 * 날 짜 : 2018. 6. 29. 
+	/** 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : delComment 
 	 * 작성자명 : 김준수, 정도혁 
-	 * 기 능 : 댓글 삭제
+	 * 기      능 : 댓글 삭제
 	 *
 	 * @param cmtNo
 	 * @param model
-	 * @return
+	 * @return View
 	 */
 	@RequestMapping("deletecomment.ps")
 	public View delComment(int cmtNo, Model model) {

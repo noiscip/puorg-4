@@ -9,6 +9,13 @@ import org.springframework.stereotype.Service;
 import kr.or.picsion.operationapply.dao.OperationApplyDao;
 import kr.or.picsion.operationapply.dto.OperationApply;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operationapply.service 
+ * @className OperationApplyService
+ * @date 2018. 6. 4.
+ */
+
 @Service
 public class OperationApplyService {
 

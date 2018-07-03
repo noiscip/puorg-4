@@ -6,6 +6,13 @@ import java.util.List;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.dao 
+ * @className PictureDao
+ * @date 2018. 6. 4.
+ */
+
 public interface PictureDao {
 	public int insertPicture(Picture picture);
 	public int insertTag(int picNo,String tag);////////////////////////////뀨?

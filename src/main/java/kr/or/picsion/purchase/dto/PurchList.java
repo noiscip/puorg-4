@@ -6,9 +6,12 @@ package kr.or.picsion.purchase.dto;
 import java.util.List;
 
 /**
- * @author Bit
- *
+ * @project Final_Picsion
+ * @package kr.or.picsion.purchase.dto 
+ * @className PurchList
+ * @date 2018. 7. 1.
  */
+
 public class PurchList {
 	
 	private List<Purchase> purchases;

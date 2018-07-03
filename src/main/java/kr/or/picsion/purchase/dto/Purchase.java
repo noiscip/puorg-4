@@ -2,6 +2,13 @@ package kr.or.picsion.purchase.dto;
 
 import java.util.Date;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.purchase.dto 
+ * @className Purchase
+ * @date 2018. 6. 4.
+ */
+
 public class Purchase {
 
 	private int picNo;

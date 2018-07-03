@@ -21,6 +21,13 @@ import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.purchase.controller 
+ * @className PurchaseController
+ * @date 2018. 6. 4.
+ */
+
 @Controller
 @RequestMapping("/purchase/")
 public class PurchaseController {
