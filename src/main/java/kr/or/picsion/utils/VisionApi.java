@@ -33,6 +33,7 @@ import com.google.protobuf.ByteString;
 
 import kr.or.picsion.picture.dto.Face;
 
+
 /**
  * @author Bit
  *
@@ -57,7 +58,7 @@ public class VisionApi {
 		 * String uploadPath =
 		 * "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
 		 */
-
+		System.out.println("파일업로드 너는? "+mRequest);
 		// 파일 저장하는 폴더
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -74,7 +75,6 @@ public class VisionApi {
 			String originalFileName = mFile.getOriginalFilename();
 			System.out.println("오리진파일네임: " + originalFileName);
 			String saveFileName = originalFileName;
-
 			filePathh = uploadPath + saveFileName;
 
 			System.out.println("uploadPath: " + uploadPath);
@@ -96,7 +96,6 @@ public class VisionApi {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					mFile.transferTo(newFile);
-					// uploadObject(saveFileName); // s3에 들어가는 단계~~~~~~~~~~~~~~~~~~~~~~~
 
 					Metadata metadata;
 					System.out.println("업로드에서 메타 출력전--------------------------------------------------------");

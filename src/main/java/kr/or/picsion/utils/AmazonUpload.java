@@ -52,7 +52,9 @@ public class AmazonUpload {
         String fileObjKeyName = file;
         
 //        fileObjKeyName=renameFile(fileName, userNo, picNo);
-        
+        if(!fileObjKeyName.startsWith("w")) {
+        	
+        }
         String fileName = "D:/imagePicsion/" + fileObjKeyName;
         /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
