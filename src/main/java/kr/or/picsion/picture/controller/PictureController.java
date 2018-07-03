@@ -252,7 +252,7 @@ public class PictureController {
 			e.printStackTrace();
 		}
 		//워터마크사진 s3에 저장
-		String waterPath = amazonService.uploadObject(output.getPath().substring(16),"picsion/water",picture);
+		String waterPath = amazonService.uploadObject(output.getPath().substring(16),"picsion/water");
 		
 		int waterResult = pictureService.updateWater(waterPath, picture.getPicNo());
 		if(waterResult!=0) {
@@ -260,12 +260,14 @@ public class PictureController {
 		}else {
 			System.out.println("워터마크 생성 실패");
 		}
-		
 		//s3 저장 (원본 사진)
 		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+		//원본사진 변경
+		pictureService.renameFile(saveFileName, picture.getUserNo(), picture.getPicNo());
+				
 //		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-		String webFilePath = amazonService.uploadObject(saveFileName,"picsion/img",picture);
+		String webFilePath = amazonService.uploadObject(saveFileName,"picsion/img");
 		
 		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
 		if(s3Result!=0) {

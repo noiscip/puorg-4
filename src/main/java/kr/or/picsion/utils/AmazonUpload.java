@@ -44,8 +44,7 @@ public class AmazonUpload {
 	* @param bucketName
 	* @return String
 	*/
-	public String uploadObject(String file,String bucketName,Picture picture) {
-		System.out.println(picture);
+	public String uploadObject(String file,String bucketName) {
 
 	  	String clientRegion = "ap-northeast-2";
         /*bucketName = "picsion/img";*/
@@ -65,7 +64,7 @@ public class AmazonUpload {
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                     .build();
             File newFile = new File(fileName);
-            fileObjKeyName = pictureService.renameFile(fileName, picture.getUserNo(), picture.getPicNo());
+//            fileObjKeyName = pictureService.renameFile(fileName, picture.getUserNo(), picture.getPicNo());
          // Upload a text string as a new object.
             s3Client.putObject(bucketName, fileObjKeyName, "Uploaded String Object");
             // Upload a file as a new object with ContentType and title specified.
