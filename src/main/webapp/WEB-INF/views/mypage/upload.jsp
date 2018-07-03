@@ -56,7 +56,7 @@ $(document).on("click", "#tagAdd", function() {
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail img-raised">
 								<img
-									src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
+									src="assets/img/up.png"
 									alt="...">
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
