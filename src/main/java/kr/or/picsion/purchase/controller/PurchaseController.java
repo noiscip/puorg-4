@@ -3,6 +3,7 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -75,13 +76,16 @@ public class PurchaseController {
 	*/
 	@RequestMapping("userPurchase.ps")
 	public String userPurchase(Model model,int userNo, int picNo) {
-		int result = purchaseService.insertCart(picNo, userNo);
+		int check = purchaseService.cartConfirm(userNo, picNo);
+		System.out.println(check);
+		if(check==0) {
+			purchaseService.insertCart(picNo, userNo);
+		}
 		List<Picture> myCartList = purchaseService.selectCart(userNo);
 		List<User> CartPhotographer = purchaseService.CartPhotographer(userNo);
 		int total = purchaseService.cartTotal(userNo);
 		
 		model.addAttribute("total", total);
-		model.addAttribute("result", result);
 		model.addAttribute("photographerName",CartPhotographer);
 		model.addAttribute("myCartList",myCartList);
 		return "purchase.buy";
@@ -89,14 +93,10 @@ public class PurchaseController {
 	
 	@RequestMapping("salesAmount.ps")
 	public View salesStatistics(Date startDate, Date endDate, Model model) {
-		System.out.println(startDate+":"+endDate);
 		
-		
-		
-
-		String sales = purchaseService.salesStatistics(startDate,endDate);
-		model.addAttribute("sales",sales);
-		System.out.println(sales);
+		Map<Integer, List<Object>> map = purchaseService.salesStatistics(startDate,endDate);
+		model.addAttribute("map",map);
+		System.out.println(map);
 		return jsonview; 
 	}
 		
@@ -145,5 +145,30 @@ public class PurchaseController {
 		    model.addAttribute("imagelist", followingPicList);
 		}
 		return "home.home";
+	}
+
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : addCart
+	* 작성자명 : 정도혁
+	* 기      능 : 장바구니에 물건 담고 빼기
+	*
+	* @param model
+	* @param userNo
+	* @param picNo
+	* @return View
+	*/
+	@RequestMapping("addCart.ps")
+	public View addCart(Model model,int userNo, int picNo) {
+		int result = purchaseService.cartConfirm(userNo, picNo);
+		if(result!=0) {	 //장바구니에 담겨 있을때 -> 장바구니에서 삭제
+			purchaseService.deleteCart(picNo, userNo);
+			System.out.println("장바구니 항목 삭제");
+		}else {	//장바구니에 없을때 -> 장바구니에 추가
+			purchaseService.insertCart(picNo, userNo);
+			System.out.println("장바구니 항목 추가");
+		}
+		model.addAttribute("result",result);
+		return jsonview;
 	}
 }

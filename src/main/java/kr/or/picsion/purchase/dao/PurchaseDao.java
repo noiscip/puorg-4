@@ -15,7 +15,7 @@ public interface PurchaseDao {
 	public List<Purchase> purchaseList();		   //구매 리스트
 	public List<Purchase> purchaseSearch(String date); //날짜로 검색한 구매 리스트
 
-	public String salesStatistics(Date startDate, Date endDate);
+	public int salesStatistics(Date startDate, Date endDate);
 
 	public int insertCart(int picNo, int userNo);  //장바구니에 저장
 	public int deleteCart(int picNo, int userNo);  //장바구니에서  빼기
@@ -23,8 +23,8 @@ public interface PurchaseDao {
 	public List<Picture> selectCart(int userNo);   //장바구니에 저장된 사진 리스트
 	public List<User> CartPhotographer(int userNo); //장바구니에 저장된 사진 작가 리스트
 	public int cartTotal(int userNo);			   //장바구니 합계
-	public int cartConfirm(int picNo, int userNo); //장바구니 여부
 	public int cartCount(int userNo);              //장바구니 항목 갯수
+	public int cartConfirm(int userNo, int picNo); //장바구니 확인
 	public int buyPicture(List<Purchase> purcahseList); //사진 결제
 
 }

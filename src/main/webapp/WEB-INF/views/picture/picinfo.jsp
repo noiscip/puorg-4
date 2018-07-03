@@ -219,30 +219,50 @@ $(document).ready(function() {
 	})
 	
 	
-	/* //사진 결제
-	$(document).on('click', '#buy', function(){
-		if(loginUserNo==0){
-			alert("로그인 후 이용하세요");
-		}else{
-			 $.ajax({
-					url:"/picsion/purchase/userPurchase.ps",
-					data:{userNo:loginUserNo,
-						  picNo:picNo},
-					success:function(data){
-						
-					}
-				})
-		}
-	}) */
 	
 	//사진 카트 추가
 	$(document).on('click', '#addcart', function(){
 		if(loginUserNo==0){
 			alert("로그인 후 이용하세요");
 		}else{
-			
+			var data = {userNo : loginUserNo,
+				    picNo : picNo};
+			var btn = $(this);
+		
+			 $.ajax({
+				url : "<%=request.getContextPath()%>/purchase/addCart.ps",
+				data : data,
+				success : function(data){
+					console.log(btn);
+					if(data.result==1){
+						btn.attr('class','btn btn-white float-right');
+						btn["0"].childNodes[1].nodeValue = " Add Cart";
+						btn["0"].children["0"].innerHTML = "shopping_cart";
+					  }else{
+						btn.attr('class','btn btn-primary float-right');
+						btn["0"].childNodes[1].nodeValue = " Remove Cart";
+						btn["0"].children["0"].innerHTML = "remove_shopping_cart";
+					  }
+				}
+			 }) 
 		}
 	})
+<%-- 	
+	//사진 카트 추가
+	$(document).on('click', '#buy', function(){
+		if(loginUserNo==0){
+			alert("로그인 후 이용하세요");
+		}else{
+			if($('#addcart')["0"].children["0"].innerHTML=="remove_shopping_cart"){
+				alert("이미 장바구니에 추가되어있습니다.")
+			}else{
+				location.href="<%=request.getContextPath()%>/purchase/userPurchase.ps?userNo="+loginUserNo+"&picNo="+picNo;
+			}
+		}
+	})
+	 --%>
+	
+	
 })
 
 </script>
@@ -257,8 +277,16 @@ $(document).ready(function() {
                 	</script>
                 	</c:when>
                 	<c:otherwise>
-                	 	<button id="addcart" class="btn btn-white float-right"><i class="material-icons">shopping_cart</i> Add Cart<div class="ripple-container"></div></button>
-                    	<a href="<%=request.getContextPath()%>/purchase/userPurchase.ps?userNo=${sessionScope.user.userNo}&picNo=${picture.picNo}" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</a>
+                		<c:choose>
+                		<c:when test="${picture.cartCheck eq 'T'}">
+                			<button id="addcart" class="btn btn-primary float-right"><i class="material-icons">remove_shopping_cart</i> Remove Cart</button>
+                		</c:when>
+                		<c:otherwise>
+                			<button id="addcart" class="btn btn-white float-right"><i class="material-icons">shopping_cart</i> Add Cart</button>
+                		</c:otherwise>
+                		</c:choose>
+                		<!-- <button id="buy" type="button" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</button> -->
+                    	<a id="buy" href="<%=request.getContextPath()%>/purchase/userPurchase.ps?userNo=${sessionScope.user.userNo}&picNo=${picture.picNo}" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</a>
                 	</c:otherwise>
                 </c:choose>
                 </div>
@@ -281,19 +309,19 @@ $(document).ready(function() {
 							</a></div>
 								<div class="card-title">
 								<c:choose>
-								<c:when test="${respectresult eq 1}">
-										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite</i>${respectCount}</span>
+								<c:when test="${picture.respectCheck eq 'T'}">
+										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite</i>${picture.respectCount}</span>
 								</c:when>
 								<c:otherwise>
-										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite_border</i>${respectCount}</span>
+										<span><i id="like" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">favorite_border</i>${picture.respectCount}</span>
 								</c:otherwise>
 								</c:choose>
 								<c:choose>
-								<c:when test="${bookmarkresult eq 1}">
-										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark</i>${bookmarkCount}</span>
+								<c:when test="${picture.bookmarkCheck eq 'T'}">
+										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark</i>${picture.bookmarkCount}</span>
 								</c:when>
 								<c:otherwise>
-										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark_border</i>${bookmarkCount}</span>
+										<span><i id="down" value="${picture.picNo}" style="cursor: pointer;" class="material-icons">bookmark_border</i>${picture.bookmarkCount}</span>
 								</c:otherwise>
 								</c:choose>
 								</div>
