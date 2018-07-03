@@ -97,9 +97,9 @@ public class PurchaseController {
 		String sales = purchaseService.salesStatistics(startDate,endDate);
 		model.addAttribute("sales",sales);
 		System.out.println(sales);
-		return jsonview;
+		return jsonview; 
+	}
 		
-
 	/**
 	* 날      짜 : 2018. 7. 2.
 	* 메소드명 : deleteItem
