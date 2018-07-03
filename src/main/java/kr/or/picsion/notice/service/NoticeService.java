@@ -77,7 +77,7 @@ public class NoticeService {
 				obj.add(comment);
 				String title ="";
 				if (comment.getTableNo() == 2) {
-					title = pictureService.picInfo(comment.getPicNo()).getPicTitle();
+					title = pictureService.picInfo(userNo, comment.getPicNo()).getPicTitle();
 				} else {
 					title = boardService.selectBoard(comment.getBrdNo()).getBrdTitle();
 				}

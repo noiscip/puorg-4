@@ -151,23 +151,6 @@ public class PurchaseService {
 		return total;
 	}
 	
-	
-	/**
-	* 날      짜 : 2018. 7. 2.
-	* 메소드명 : cartConfirm
-	* 작성자명 : 정도혁
-	* 기      능 : 장바구니 담김 여부
-	*
-	* @param picNo
-	* @param userNo
-	* @return Integer
-	*/
-	public int cartConfirm(int picNo, int userNo) {
-		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		int result = purchaseDao.cartConfirm(picNo, userNo);
-		return result;
-	}
-	
 	/**
 	* 날      짜 : 2018. 7. 2.
 	* 메소드명 : buyPicture
@@ -199,4 +182,22 @@ public class PurchaseService {
 		int result = purchaseDao.cartCount(userNo);
 		return result;
 	}
+
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : cartConfirm
+	* 작성자명 : 정도혁
+	* 기      능 : 장바구니에 물건 들어있는지 확인
+	*
+	* @param userNo
+	* @param picNo
+	* @return Integer
+	*/
+	public int cartConfirm(int userNo, int picNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.cartConfirm(userNo, picNo);
+		return result;
+	}
+
 }

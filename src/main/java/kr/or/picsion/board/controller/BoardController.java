@@ -17,7 +17,9 @@ import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
+import kr.or.picsion.operation.dto.OperPicture;
 import kr.or.picsion.operation.dto.Operation;
+import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.operationapply.dto.OperationApply;
 import kr.or.picsion.operationapply.service.OperationApplyService;
@@ -46,6 +48,8 @@ public class BoardController {
 	@Autowired
 	private CommentService commentService;
 
+	@Autowired
+	private OperPictureService operPictureService;
 	/**
 	 * 날 짜 : 2018. 6. 14. 메소드명 : selectBoard 
 	 * 작성자명 : 김준수 
@@ -66,12 +70,16 @@ public class BoardController {
 		List<User> commentuser = commentService.commentuser(brdNo);
 		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
 		List<String> applyid = operationApplyService.operationApplyNameList(brdNo);
+		OperPicture operPicture = new OperPicture();
 		if (boardInfo.getOperStateNo() == 2) {
 			operation = operationService.selectOper(brdNo);
+			operPicture = operPictureService.selectOperpicture(operation.getOperNo());
 		}
 		User requestUser = userService.userInfo(operation.getRequesterNo());
 		User operatorUser = userService.userInfo(operation.getOperatorNo());
 		System.out.println(operation);
+		System.out.println(operPicture);
+		model.addAttribute("operPicture", operPicture);
 		model.addAttribute("operatorUser", operatorUser);
 		model.addAttribute("requestUser", requestUser);
 		model.addAttribute("operation", operation);
