@@ -68,6 +68,9 @@ public class PictureController {
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
 	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
+		int page=0;
+		int endpage=6;
+		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -75,8 +78,8 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo()); //스튜디오 사진리스트
-		List<User> ownerList = pictureService.studioOwnerList(userNo);
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), page, endpage); //스튜디오 사진리스트
+		List<User> ownerList = pictureService.studioOwnerList(userNo, page, endpage);
  		List<User> followerList = userService.followerUserList(userNo);
 		List<User> followingList = userService.followingUserList(userNo);
 		int followResult = 0;
@@ -90,6 +93,7 @@ public class PictureController {
 		model.addAttribute("followerlist", followerList);
 		model.addAttribute("followinglist", followingList);
 		model.addAttribute("followResult", followResult);
+		model.addAttribute("page", picList.size());
 		
 		return "studio.mystudio";
 	}
@@ -106,25 +110,26 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.POST)
-	public View studioScroll(HttpSession session, Model model, int userNo){
+	public View studioScroll(HttpSession session, Model model, int userNo, int page){
 		User user = new User(); 
-		int page=0;
 		int endpage=6;
-		
+		System.out.println(page+"는 머야?");
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
 		else {
 			user.setUserNo(0);
 		}
-		User scrollUserInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> scrollPicList = pictureService.studioPicList(scrollUserInfo.getUserNo(), user.getUserNo()); //스튜디오 사진리스트
-		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo);
-
-		model.addAttribute("scrollUserInfo", scrollUserInfo);
+		/*User scrollUserInfo = userService.userInfo(userNo);*/	 //스튜디오 대상 사용자
+		List<Picture> scrollPicList = pictureService.studioPicList(userNo, user.getUserNo(), page, endpage); //스튜디오 사진리스트
+		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo, page, endpage);
+		
+		System.out.println("리스트 몇개 가져옴?"+scrollPicList);
+		/*model.addAttribute("scrollUserInfo", scrollUserInfo);*/
 		model.addAttribute("scrollPicList", scrollPicList);
 		model.addAttribute("scrollOwnerList",scrollOwnerList);
-		
+		model.addAttribute("endpage", scrollPicList.size());
+		System.out.println("리스트 사이즈는?"+scrollPicList.size());
 		return jsonview;
 	}
 	

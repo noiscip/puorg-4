@@ -98,8 +98,10 @@
 	 	
 		
 		var lastScrollTop = 0;
+		var page=${page};
+		
 		$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
-	        
+	        console.log(page);
 	        var currentScrollTop = $(window).scrollTop();
 	        var scrollPage="";
 	        
@@ -110,53 +112,49 @@
 	            	if($('#photo-library').hasClass('active')){
 		            	console.log("여기 오는거야?")
 		            	
-		            	<%-- $.ajax({
+		            	$.ajax({
 		                    type : 'post',  
 		                    url : '/picsion/picture/mystudio.ps',
 		                    data : { 
-		                        page: page
+		                        page: page,
+		                        userNo: receiveUserNo
 		                    },
 		                    success : function(data){
 		                        console.log("정상적으로 실행된거?")
 		                        
 		                        $.each(data.scrollPicList, function(index, obj){
-		                        	console.log(obj)
-		                        	console.log(data.scrollPicUserList[index].userName)
+		                        	
+		                        	console.log(obj);
+		                        	console.log(data.scrollOwnerList[index].userName)
 		                        	
 		                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
-													"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-													"<img class='rounded img-size' src='<%=request.getContextPath()%>"+obj.picPath+"' alt='No Image'>"+
-													"</a>"+
-												   "<div>"+
-								                   "<div class='counts hide-xs hide-sm'>";
-								                   if(obj.respectCheck=="T"){
-								                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-								                   }else{
-								                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-								                   }
-								                   
-								                   if(obj.bookmarkCheck=="T"){
-								                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-								                   }else{
-								                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-								                   }
-								                   
-								                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
-								                 
-					                $('#bookpic').append(scrollPage);
+												"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+												"<img class='rounded img-size' src='"+obj.picWater+"'>"+
+												"</a><div>"+
+					                    		"<div class='counts hide-xs hide-sm'>";
+					                    		if(obj.respectCheck=="T"){
+													scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+					                    		}else{
+					                    			scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+					                    		}
+					                    		
+					                    		if(obj.bookmarkCheck=="T"){
+					                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+					                    		}else{
+					                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+					                    		}
+									scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"'>"+data.scrollOwnerList[index].userName+"</a></div></div>";
+									
+									console.log(scrollPage);
+		                        	$('#studioview').append(scrollPage);
 		                        })
+		                        
 							    page+=data.endpage;
-		                        console.log(scrollPage);
-		         				
 		                    }
-		                }); --%>
+		                });
 	                }
-	                
-	                 
 	            }
-	            
 	        }
-	
 	    })
 		
 		
@@ -268,7 +266,7 @@
             <div id="gallery">
 				<div class="flex_grid credits">
 				<div class="tz-gallery">
-				<div class="row">
+				<div class="row" id="studioview">
 					<c:forEach items="${piclist}" var="studioPic" varStatus="status">
 						<div class="item col-sm-6 col-md-4">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}">
