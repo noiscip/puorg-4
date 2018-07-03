@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -22,11 +23,13 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 @Service
 public class NaverLoginConnectUrl {
 
-	private final static String CLIENT_ID = "AavwsVovOeUd6Ijvt3W0";
-	private final static String CLIENT_SECRET = "Hqxt01G0DF";
-	private final static String REDIRECT_URI = "http://127.0.0.1:8090/picsion/naverlogin.ps";
-	private final static String SESSION_STATE = "oauth_state";
-	private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
+	@Value("#{config['naver.clientId']}")
+	private String CLIENT_ID;
+	@Value("#{config['naver.clientSecret']}")
+	private String CLIENT_SECRET;
+	private String REDIRECT_URI = "http://127.0.0.1:8090/picsion/naverlogin.ps";
+	private String SESSION_STATE = "oauth_state";
+	private String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
 	
 	/**
 	 * 날      짜 : 2018. 6. 15.
@@ -42,7 +45,6 @@ public class NaverLoginConnectUrl {
 	public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state){
 		/* Callback으로 전달받은 세선검증용 난수값과 세션에 저장되어있는 값이 일치하는지 확인 */
 		setSession(session, state);
-		
 		String sessionState = getSession(session);
 		if(StringUtils.equals(sessionState, state)){
 		
