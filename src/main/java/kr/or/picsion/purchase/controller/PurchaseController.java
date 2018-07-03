@@ -75,9 +75,10 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("userPurchase.ps")
-	public String userPurchase(Model model,int userNo, int picNo) {
+	public String userPurchase(Model model,int userNo, int picNo,  HttpSession session) {
 		int check = purchaseService.cartConfirm(userNo, picNo);
 		System.out.println(check);
+		
 		if(check==0) {
 			purchaseService.insertCart(picNo, userNo);
 		}
@@ -138,11 +139,11 @@ public class PurchaseController {
 	@RequestMapping("picturePurchase.ps")
 	public String buyPicture(@ModelAttribute("PurchList") PurchList purchases, HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
-		purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
 		if(user != null) {
 			List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo());
 		    model.addAttribute("imagelist", followingPicList);
+		    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
+			purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
 		}
 		return "home.home";
 	}
