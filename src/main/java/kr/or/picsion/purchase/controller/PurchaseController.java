@@ -58,4 +58,18 @@ public class PurchaseController {
 		
 		return "purchase.buy";
 	}
+	
+	@RequestMapping("salesAmount.ps")
+	public View salesStatistics(Date startDate, Date endDate, Model model) {
+		System.out.println(startDate+":"+endDate);
+		
+		
+		
+
+		String sales = purchaseService.salesStatistics(startDate,endDate);
+		model.addAttribute("sales",sales);
+		System.out.println(sales);
+		return jsonview;
+		
+	}
 }

@@ -38,6 +38,7 @@
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
    	<!-- Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
+   
 <%--
    	<!-- Plugins for presentation and navigation  -->
     <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
@@ -55,4 +56,10 @@
 	<script src="https://code.highcharts.com/modules/wordcloud.js"></script>
    	<!-- 아림이 수정중 -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css"> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/jcanvas.js"></script>	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/jcanvas.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>	
+	
+	
+	

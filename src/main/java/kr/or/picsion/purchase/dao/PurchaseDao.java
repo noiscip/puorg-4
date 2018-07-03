@@ -1,5 +1,6 @@
 package kr.or.picsion.purchase.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import kr.or.picsion.blame.dto.Blame;
@@ -12,4 +13,5 @@ public interface PurchaseDao {
 	public Purchase sellList(int saleUserNo);	   //판매
 	public List<Purchase> purchaseList();		   //구매 리스트
 	public List<Purchase> purchaseSearch(String date); //날짜로 검색한 구매 리스트
+	public String salesStatistics(Date startDate, Date endDate);
 }

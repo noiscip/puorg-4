@@ -1,5 +1,7 @@
 package kr.or.picsion.purchase.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -28,5 +30,19 @@ public class PurchaseService {
 	public List<Purchase> purchaseSearch(String date) {
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
 		return purchaseDao.purchaseSearch(date);
+	}
+	
+	public String salesStatistics(Date startDate, Date endDate) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		
+	
+		long diff = endDate.getTime() - startDate.getTime();
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+		System.out.println(diffDays);
+		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd");
+		
+		
+		
+		return purchaseDao.salesStatistics(startDate, endDate);
 	}
 }
