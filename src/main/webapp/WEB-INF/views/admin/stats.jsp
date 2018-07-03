@@ -3,33 +3,38 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
 $(function(){
-	
 
-Highcharts.chart('sales', {
-
-  title: {
-    text: ''
-  },
- 
-  xAxis: {
-    tickInterval: 1
-  },
-
-  yAxis: {
-    type: 'logarithmic',
-    minorTickInterval: 0.1
-  },
-
-  tooltip: {
-    headerFormat: '<b>{series.name}</b><br />',
-    pointFormat: 'x = {point.x}, y = {point.y}'
-  },
-
-  series: [{
-    data: [1, 2, 3, 4, 5, 6, 7, 8, 8],
-    pointStart: 1
-  }]
-});
+	Highcharts.chart('sales', {
+		  chart: {
+		    type: 'line'
+		  },
+		  title: {
+		    text: '매출 내역'
+		  },
+		  subtitle: {
+		    text: 'PICSION'
+		  },
+		  xAxis: {
+		    categories: ['2016-06-11', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+		  },
+		  yAxis: {
+		    title: {
+		      text: '매출금액'
+		    }
+		  },
+		  plotOptions: {
+		    line: {
+		      dataLabels: {
+		        enabled: true
+		      },
+		      enableMouseTracking: false
+		    }
+		  },
+		  series: [{
+		    name: 'picsion',
+		    data: [5000, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+		  }]
+	})
 })
 </script>
 

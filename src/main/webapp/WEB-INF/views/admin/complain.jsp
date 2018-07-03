@@ -6,7 +6,9 @@
 
  <script>
   $( function() {
-	  $('#datatable').DataTable();
+	  $('#datatable').DataTable( {
+	        "order": [[ 0, "desc" ]]
+	    } );
 	  $('.datetimepicker').datetimepicker({
 		    icons: {
 		        time: "fa fa-clock-o",
@@ -103,9 +105,7 @@
 	  }
 	  
   } );
-  
-  
-  </script>
+</script>
 
 <div class="page-header header-filter clear-filter purple-filter"
 	data-parallax="true"
@@ -130,48 +130,48 @@
 			    <input id="datePicker" type="text" class="form-control datetimepicker"/>
 			    <button id="complainSearch">검색</button><button id="allBlame">전체 조회</button>
 			</div>
-			<table border="3" id="datatable">
+			<table class="table" id="datatable">
 				<thead>
 					<tr>
-						<th>신고 번호</th>
-						<th>신고 유저 아이디</th>
-						<th>신고 내용</th>
-						<th>신고 날짜</th>
-						<th>신고 테이블 종류 번호</th>
-						<th>게시판 번호</th>
-						<th>댓글 번호</th>
-						<th>사진 번호</th>
-						<th>유저 번호</th>
+						<th class="text-center">번 호</th>
+						<th class="text-center">신고 유저 아이디</th>
+						<th class="text-center">신고 내용</th>
+						<th class="text-center">신고 날짜</th>
+						<th class="text-center">신고 테이블 종류 번호</th>
+						<th class="text-center">게시판 번호</th>
+						<th class="text-center">댓글 번호</th>
+						<th class="text-center">사진 번호</th>
+						<th class="text-center">유저 번호</th>
 					</tr>
 				</thead>
 
 				<tbody id="tableBody">
-					<c:forEach var="complain" items="${blameList}">
+					<c:forEach var="complain" items="${blameList}" varStatus="i">
 
 						<tr>
-							<td>${complain.blaNo}</td>
-							<td>${complain.blaUserNo}</td>
-							<td>${complain.blaContent}</td>
-							<td><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${complain.blaReg}" /></td>
-							<td>${complain.tableNo}</td>
+							<td class="text-center">${i.count} </td>
+							<td class="text-center">${complain.blaUserNo}</td>
+							<td class="text-center">${complain.blaContent}</td>
+							<td class="text-center"><fmt:formatDate pattern = "yyyy-MM-dd, HH:mm:ss" value = "${complain.blaReg}" /></td>
+							<td class="text-center">${complain.tableNo}</td>
 							
 							<c:choose>
-								<c:when test="${complain.brdNo eq 0}"><td>${complain.brdNo}</td></c:when>
+								<c:when test="${complain.brdNo eq 0}"><td class="text-center">${complain.brdNo}</td></c:when>
 								<c:otherwise>
-									<td><a href="/picsion/board/boardInfo.ps?brdNo=${complain.brdNo}">${complain.brdNo}</a></td>
+									<td class="text-center"><a href="/picsion/board/boardInfo.ps?brdNo=${complain.brdNo}">${complain.brdNo}</a></td>
 								</c:otherwise>
 							</c:choose>
-							<td>${complain.cmtNo}</td>
+							<td class="text-center">${complain.cmtNo}</td>
 							<c:choose>
-								<c:when test="${complain.picNo eq 0}"><td>${complain.picNo}</td></c:when>
+								<c:when test="${complain.picNo eq 0}"><td class="text-center">${complain.picNo}</td></c:when>
 								<c:otherwise>
-									<td><a href="/picsion/picture/picinfo.ps?picNo=${complain.picNo}">${complain.picNo}</a></td>
+									<td class="text-center"><a href="/picsion/picture/picinfo.ps?picNo=${complain.picNo}">${complain.picNo}</a></td>
 								</c:otherwise>
 							</c:choose>
 							<c:choose>
-								<c:when test="${complain.userNo eq 0}"><td>${complain.userNo}</td></c:when>
+								<c:when test="${complain.userNo eq 0}"><td class="text-center">${complain.userNo}</td></c:when>
 								<c:otherwise>
-									<td><a href="/picsion/picture/mystudio.ps?userNo=${complain.userNo}">${complain.userNo}</a></td>
+									<td class="text-center"><a href="/picsion/picture/mystudio.ps?userNo=${complain.userNo}">${complain.userNo}</a></td>
 								</c:otherwise>
 							</c:choose>
 						</tr>
