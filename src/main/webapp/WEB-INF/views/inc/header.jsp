@@ -196,7 +196,7 @@ $(function(){
 		                    <a href="<%=request.getContextPath()%>/message/receivemessage.ps" class="dropdown-item">
 		                        <i class="material-icons">mail</i>메시지함
 		                    </a>
-		                    <a href="#" class="dropdown-item">
+		                    <a href="<%=request.getContextPath()%>/purchase/history.ps" class="dropdown-item">
 		                        <i class="material-icons">shop_two</i>거래내역
 		                    </a>
 		                    <a href="<%=request.getContextPath()%>/operation/operequest.ps" class="dropdown-item">

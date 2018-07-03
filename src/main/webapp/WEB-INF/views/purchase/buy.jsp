@@ -71,7 +71,6 @@
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/faces/giphy.gif');">
 
-</div>
 
 <div class="section section-gray">
 	<div class="container">
@@ -104,8 +103,10 @@
 								<div class="total">
 									Total<span id="total1"class="price">${total}<small>원</small></span>
 								</div>
+								<div class="total">
+									내 금액<span id="total1"class="price">${total}<small>원</small></span>
+								</div> 
 								<br>
-								<hr>
 								<div class="form-group col-sm-12">
 									<button type="submit" class="btn btn-primary btn-block">
 										Proceed
@@ -175,4 +176,5 @@
 	</div>
 	
 	
+</div>
 </div>

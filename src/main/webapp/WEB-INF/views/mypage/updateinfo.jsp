@@ -13,8 +13,10 @@
 			
 			if($('#chargePrice').val() == ""){
 				alert('충전 금액을 입력하세요!');
+				$('#chargePrice').val("");
 			}else if(!regNumber.test($('#chargePrice').val())){
 				alert('잘못 입력하셨습니다! 숫자만 입력해주세요.');
+				$('#chargePrice').val("");
 			}else{
 				$.ajax({
 					url:"/picsion/user/charge.ps",
@@ -28,12 +30,8 @@
 						}
 					}
 				})
+				$('#chargePrice').val("");
 			}
-		})
-		
-		
-		$('.changePr').click(function(){
-			
 		})
 		
 		
@@ -72,7 +70,7 @@
 
 /* 정보 수정페이지 상단 여백 */
 .update-margin{
-	margin-top: 50px;
+	margin-top: 40px;
 }
 /* 정보 수정페이지 하단 여백 */
 .update-padding{
@@ -94,6 +92,15 @@
 	margin-bottom:30px
 }
 
+/* 네이버, 구글 아이콘 너비 */
+.linked-icon-width{
+	width:40px
+}
+
+/* 사진 연동 여부 라벨 색 */
+.linked-lab-color{
+	color:black;
+}
 
 </style>
 
@@ -106,7 +113,7 @@
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">거래 내역</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
@@ -136,34 +143,59 @@
 				      		<button type="button" class="btn btn-default update-btn-margin btn-file">프로필 수정</button> --%>
 	                  	</div>
 	                  	<div class="form-group update-margin">
-	                  		<label for="exampleInput1" class="bmd-label-floating">계정 연동 여부</label>
-		                      <div class="form-check">
-							      <label class="form-check-label">
-							      <c:choose>
-							      	<c:when test="${userinfo.naver eq null && userinfo.google eq null}">
-							      		<input class="form-check-input" type="checkbox" disabled>
-							          		계정 연동하셔야 사진을 등록할 수 있습니다. 
-							          <span class="form-check-sign">
-							              <span class="check"></span>
-							          </span>
-							      	</c:when>
-							      	<c:otherwise>
-							      		<input class="form-check-input" type="checkbox" disabled checked>
-							          		사진을 등록하실 수 있습니다. 
-							          <span class="form-check-sign">
-							              <span class="check"></span>
-							          </span>
-							      	</c:otherwise>
-							      </c:choose>
-							      </label>
+	                  		<label for="exampleInput1" class="bmd-label-floating">다음 계정으로 연동</label>
+	                  		<label for="exampleInput1" class="bmd-label-floating" style="float: right">계정 연동 여부</label>
+		                      <div class="form-check update-btn-margin">
+			                      <c:choose>
+			                      	<c:when test="${userinfo.google eq null}">
+								       <a class="btn btn-secondary" href="<%=request.getContextPath()%>/google/login.ps">Google</a>
+			                      	</c:when>
+			                      	<c:otherwise>
+			                      	   <a class="btn btn-secondary disabled" role="button" aria-disabled="true">Google</a>
+			                      	</c:otherwise>
+			                      </c:choose>
+			                      
+			                      <c:choose>
+			                      	<c:when test="${userinfo.naver eq null}">
+	                        		  <a class="btn btn-secondary" href="<%=request.getContextPath()%>/naver/login.ps">Naver</a>
+			                      	</c:when>
+			                      	<c:otherwise>
+			                      	  <a class="btn btn-secondary disabled" role="button" aria-disabled="true">Naver</a>
+			                      	</c:otherwise>
+			                      </c:choose>
+                        		  
 							      <!-- 구글, 네이버 아이콘 만드는곳~~~ -->
 							      <div align="center" style="float: right">
-							      	  <i class="material-icons">highlight_off</i>
-								      <i class="material-icons">highlight_off</i>
+								      <c:if test="${userinfo.google ne null}">
+									      <img alt="구글 로그인" src="<%=request.getContextPath()%>/assets/img/portalsite/google_icon.png" class="linked-icon-width">
+						              </c:if>
+						              <c:if test="${userinfo.naver ne null}">
+							              <img alt="네이버 로그인" src="<%=request.getContextPath()%>/assets/img/portalsite/naver_icon.png" class="linked-icon-width">
+						              </c:if>    
 							      </div>
-							  </div>
-							  
+							  	</div>
 	                  </div>
+	                  
+                      <div class="form-check update-btn-margin">
+	                      <label class="form-check-label linked-lab-color"><b>
+						      <c:choose>
+						      	<c:when test="${userinfo.naver eq null && userinfo.google eq null}">
+						      		<input class="form-check-input" type="checkbox" disabled>
+						          		계정 연동하셔야 사진을 등록할 수 있습니다. 
+						          <span class="form-check-sign">
+						              <span class="check"></span>
+						          </span>
+						      	</c:when>
+						      	<c:otherwise>
+						      		<input class="form-check-input" type="checkbox" disabled checked>
+						          		사진을 등록하실 수 있습니다. 
+						          <span class="form-check-sign">
+						              <span class="check"></span>
+						          </span>
+						      	</c:otherwise>
+						      </c:choose></b>
+					      </label>
+					  </div>      
 	                  <div class="form-group update-margin">
 	                  	<label for="exampleInput1" class="bmd-label-floating">자기 소개</label>
 	                    <div class="input-group form-default">
@@ -173,7 +205,7 @@
 	                    
 	                </div>
 	                <div class="col-md-1"></div>
-	                <div class="col-md-5 mr-auto">
+	                <div class="col-md-5 mr-auto update-margin">
 	                	<div class="form-group update-lab-padding">
 		                      <label for="exampleInput1" class="bmd-label-floating">아이디</label>
 		                      <div class="input-group">

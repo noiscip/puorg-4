@@ -127,23 +127,20 @@ public class PictureController {
 	public View studioScroll(HttpSession session, Model model, int userNo, int page){
 		User user = new User(); 
 		int endpage=6;
-		System.out.println(page+"는 머야?");
+		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
 		else {
 			user.setUserNo(0);
 		}
-		/*User scrollUserInfo = userService.userInfo(userNo);*/	 //스튜디오 대상 사용자
 		List<Picture> scrollPicList = pictureService.studioPicList(userNo, user.getUserNo(), page, endpage); //스튜디오 사진리스트
 		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo, page, endpage);
 		
-		System.out.println("리스트 몇개 가져옴?"+scrollPicList);
-		/*model.addAttribute("scrollUserInfo", scrollUserInfo);*/
 		model.addAttribute("scrollPicList", scrollPicList);
 		model.addAttribute("scrollOwnerList",scrollOwnerList);
 		model.addAttribute("endpage", scrollPicList.size());
-		System.out.println("리스트 사이즈는?"+scrollPicList.size());
+		
 		return jsonview;
 	}
 	
@@ -262,11 +259,14 @@ public class PictureController {
 		}else {
 			System.out.println("워터마크 생성 실패");
 		}
+		
 		//s3 저장 (원본 사진)
 		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		//원본사진 변경
 		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
-				
+		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
+		new File(picture.getPicPath()).renameTo(reFile);
+		
 //		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
 		String webFilePath = amazonService.uploadObject(saveFileName,"picsion/img");
