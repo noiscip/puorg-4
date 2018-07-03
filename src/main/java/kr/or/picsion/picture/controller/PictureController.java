@@ -56,6 +56,9 @@ public class PictureController {
   	@Autowired
 	private PictureService pictureService;
   	
+  	@Autowired
+	private PurchaseService purchaseService;
+  	
 	@Autowired
 	private UserService userService;
 	
@@ -352,12 +355,14 @@ public class PictureController {
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
+		int buycheck = purchaseService.purchaseConfirm(user.getUserNo(), picNo);
 		List<String> tagList = pictureService.selectTag(picNo);
 		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
 		int followResult = 0;
 		if(user.getUserNo() != userInfo.getUserNo()) {
 			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
 		}
+		model.addAttribute("buycheck",buycheck);
 		model.addAttribute("respectList",respectPhotoList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("tagList",tagList);

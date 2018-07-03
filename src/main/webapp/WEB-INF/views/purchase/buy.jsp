@@ -39,12 +39,14 @@
             });
             
             
-            
           //장바구니 사진 삭제
         	$(document).on('click', '#deleteItem', function(){
         		var tr = $(this).parent().parent();
         		var picNo = $(this).attr("value");
-        		var price = $(this).attr("price")
+        		var price = $(this).attr("price");
+        		var userpoint = $('#change').attr('value');
+        		userpoint *= 1;
+        		console.log($('#change'));
         		   $.ajax({
         			url:"/picsion/purchase/deleteItem.ps",
         			data:{userNo:loginUserNo,
@@ -53,11 +55,12 @@
         				console.log($('#total2'));
         				if(data.result==1){
             			tot-=price;
+            			userpoint+=price;
             			$('#total1')["0"].childNodes["0"].data=tot;
             			$('#total2')["0"].childNodes["0"].data=tot;
         				$(tr).remove();
         				$("#cartNo"+picNo).remove();
-        				
+        				$('#change')["0"].childNodes["0"].data=userpoint;
         				alert("항목 삭제 완료");
         				}else{
         					alert("항목 삭제 실패");
@@ -70,9 +73,9 @@
     </script>
 <div class="page-header header-filter" data-parallax="true"
 	style="background-image: url('<%=request.getContextPath()%>/assets/img/faces/giphy.gif');">
+</div>
 
-
-<div class="section section-gray">
+<div class="section">
 	<div class="container">
 		<div class="main main-raised main-product">
 
@@ -104,7 +107,8 @@
 									Total<span id="total1"class="price">${total}<small>원</small></span>
 								</div>
 								<div class="total">
-									내 금액<span id="total1"class="price">${total}<small>원</small></span>
+									구매 후 잔액<span id="change" value="${user.point-total}" class="price">${user.point-total}<small>원</small></span>
+									<input name="point" value="${user.point-total}" type="hidden">
 								</div> 
 								<br>
 								<div class="form-group col-sm-12">
@@ -138,7 +142,7 @@
 									<tr>
 										<td>
 											<div class="img-container">
-												<img src="${cart.picPath}"
+												<img src="${cart.picWater}"
 													alt="No Image">
 											</div>
 										</td>
@@ -176,5 +180,5 @@
 	</div>
 	
 	
-</div>
+
 </div>

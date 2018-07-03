@@ -263,5 +263,36 @@ public class PurchaseService {
 		int result = purchaseDao.cartConfirm(userNo, picNo);
 		return result;
 	}
-
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : purchaseConfirm
+	* 작성자명 : 정도혁
+	* 기      능 : 구매한 사진인지 확인
+	*
+	* @param purchaseUserNo
+	* @param picNo
+	* @return Integer
+	*/
+	public int purchaseConfirm(int purchaseUserNo, int picNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.purchaseConfirm(purchaseUserNo, picNo);
+		return result;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : updatePoint
+	* 작성자명 : 정도혁
+	* 기      능 : 구매 후 금액 업데이트
+	*
+	* @param point
+	* @param userNo
+	* @return Integer
+	*/
+	public int updatePoint(int point, int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.updatePoint(point, userNo);
+		return result;
+	}
 }
