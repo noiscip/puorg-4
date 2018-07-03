@@ -43,14 +43,14 @@
 							<tr>
 								<td>
 									<div class="img-container">
-										<img src="<%=request.getContextPath()%>${picture.picWater}" alt="No Image">
+										<img src="${picture.picWater}" alt="No Image">
 									</div>
 								</td>
 								<td class="td-name"><a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${picture.picNo}">${picture.picTitle}</a>
 									<br> <small>by ${userInfo[status.index].userName}</small></td>
 								<td class="text-center"></td>
 								<td class="td-number text-center">${purchaseInfo[status.index].purchaseReg}</td>
-								<td class="td-number text-center">${picture.price}<small>원</small></td>
+								<td class="td-number text-center">${picture.picPrice}<small>원</small></td>
 							</tr>
 						</c:forEach>
 						
