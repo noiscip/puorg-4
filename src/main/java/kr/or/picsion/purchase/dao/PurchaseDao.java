@@ -19,7 +19,7 @@ public interface PurchaseDao {
 	public List<Picture> selectCart(int userNo);   //장바구니에 저장된 사진 리스트
 	public List<User> CartPhotographer(int userNo); //장바구니에 저장된 사진 작가 리스트
 	public int cartTotal(int userNo);			   //장바구니 합계
-	public int cartConfirm(int picNo, int userNo); //장바구니 여부
 	public int cartCount(int userNo);              //장바구니 항목 갯수
+	public int cartConfirm(int userNo, int picNo); //장바구니 확인
 	public int buyPicture(List<Purchase> purcahseList); //사진 결제
 }

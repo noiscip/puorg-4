@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	SELECT p.*, i.camera as camera, i.resolution as resolution, i.photoDate as photoDate FROM PICTURE p 
 	 	left JOIN CART c ON p.picNo = c.picNo 
 		left JOIN PICTUREINFO i on p.picNo = i.picNo
-		 WHERE c.userNo = #{userNo}
+		 WHERE c.userNo = #{userNo} order by p.picReg;
 	</select>
 	
 	<!-- 장바구니 사진 작가 리스트 -->
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	SELECT u.userNo as userNo, u.userName as userName FROM PICTURE p 
 	 	left JOIN CART c ON p.picNo = c.picNo 
 		left JOIN USERS u ON p.userNo = u.userNo
-	 	WHERE c.userNo = #{userNo}
+	 	WHERE c.userNo = #{userNo} order by p.picReg;
 	</select>
 	
 	<!-- 장바구니 합계 -->
@@ -53,14 +53,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE c.userNo = #{userNo}
 	</select>
 	
-	<!-- 장바구니 체크 -->
-	<select id="cartConfirm" resultType="Integer">
-		SELECT COUNT(*) FROM CART WHERE picNo=#{param1} AND userNo=#{param2}
-	</select>
-	
 	<!-- 나의 장바구니 항목 갯수 -->
 	<select id="cartCount" resultType="Integer">
 		SELECT COUNT(*) FROM CART WHERE userNo=#{userNo}
+	</select>
+	
+	<!-- 장바구니 확인 -->
+	<select id="cartConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM CART WHERE userNo=#{param1} AND picNo=#{param2}
 	</select>
 	
 	
@@ -73,6 +73,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(#{item.picNo}, #{item.purchaseUserNo}, #{item.saleUserNo})
 		</foreach>
 	</insert>
-	
 	
 </mapper>

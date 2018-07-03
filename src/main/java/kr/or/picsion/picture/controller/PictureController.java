@@ -35,6 +35,7 @@ import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
+import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -47,7 +48,7 @@ public class PictureController {
 
   	@Autowired
 	private PictureService pictureService;
-	
+  	
 	@Autowired
 	private UserService userService;
 	
@@ -269,26 +270,18 @@ public class PictureController {
 		else {
 			user.setUserNo(0);
 		}
-		
-		Picture picture = pictureService.picInfo(picNo); 			  		  //클릭한 사진
+		System.out.println(user.getUserNo());
+		Picture picture = pictureService.picInfo(user.getUserNo(), picNo);	  //클릭한 사진
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
 		List<String> tagList = pictureService.selectTag(picNo);
 		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
 		int followResult = 0;
-		int respectresult = pictureService.respectConfirm(picNo, user.getUserNo()); //좋아요 하고 있는지 확인
-		int bookmarkresult = pictureService.bookmarkConfirm(picNo, user.getUserNo()); //북마크 하고 있는지 확인
-		int respectCount = pictureService.respectCount(picNo);						 //좋아요 갯수
-		int bookmarkCount = pictureService.bookmarkCount(picNo);					 //북마크 갯수
 		if(user.getUserNo() != userInfo.getUserNo()) {
 			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
 		}
 		model.addAttribute("respectList",respectPhotoList);
-		model.addAttribute("respectCount",respectCount);
-		model.addAttribute("bookmarkCount",bookmarkCount);
-		model.addAttribute("respectresult",respectresult);
-		model.addAttribute("bookmarkresult",bookmarkresult);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("tagList",tagList);
 		model.addAttribute("picture",picture);

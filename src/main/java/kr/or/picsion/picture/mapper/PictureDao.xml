@@ -66,7 +66,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 사진 정보 -->
 	<select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">
-	select * from PICTURE where picNo = #{picNo}
+	select p.*,pi.camera, pi.resolution, pi.photoDate, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, if(ifNULL(c.userNo,0)=0,'F','T') as cartCheck, rr.respectCount, bb.bookmarkCount
+	from PICTURE p left join CART c on p.picNo = c.picNo
+					left join PICTUREINFO pi on p.picNo = pi.picNo
+					left join (select * from BOOKMARK where userNo=#{param1}) b on p.picNo = b.picNo
+					left join (select * from RESPECT where userNo=#{param1}) r on p.picNo = r.picNo
+					left join (select picNo, count(*) as respectCount from RESPECT GROUP by picNo) rr on rr.picNo=p.picNo	
+					left join (select picNo, count(*) as bookmarkCount from BOOKMARK GROUP by picNo) bb on bb.picNo=p.picNo					
+	where p.picNo=#{param2};
 	</select>
 	
 	
@@ -88,11 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
 	</select>
 	
-	<!-- 사진 좋아요 갯수 확인 -->
-	<select id="respectCount" resultType="Integer">
-		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{picNo}
-	</select>
-	
+		
 	<!-- 사진 북마크 생성 -->
 	<insert id="bookmarkIncrease">
 	INSERT INTO BOOKMARK
@@ -111,10 +114,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
 	</select>
 	
-	<!-- 사진 북마크 갯수 확인 -->
-	<select id="bookmarkCount" resultType="Integer">
-		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{picNo}
-	</select>
 	
 	<!-- 사진 업로드 저장 -->
 	<insert id="insertPicture" parameterType="kr.or.picsion.picture.dto.Picture">		
