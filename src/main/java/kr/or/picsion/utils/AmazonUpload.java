@@ -3,6 +3,7 @@ package kr.or.picsion.utils;
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.AmazonServiceException;
@@ -24,8 +25,15 @@ import kr.or.picsion.picture.service.PictureService;
 @Service
 public class AmazonUpload {
 	
+	@Value("#{config['s3.accessKey']}")
+	String ACCESS_KEY;
+
+	@Value("#{config['s3.secretKey']}")
+	String SECRET_KEY;
+	
 	@Autowired
 	private PictureService pictureService;
+	
 	/**
 	* 날      짜 : 2018. 6. 27.
 	* 메소드명 : uploadObject
@@ -36,10 +44,8 @@ public class AmazonUpload {
 	* @param bucketName
 	* @return String
 	*/
-	public String uploadObject(String file,String bucketName,Picture picture) {
-		System.out.println(picture);
-		String ACCESS_KEY = "AKIAJQNX3TNHF53ZMUGA";
-		String SECRET_KEY = "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\r\n";
+	public String uploadObject(String file,String bucketName) {
+
 	  	String clientRegion = "ap-northeast-2";
         /*bucketName = "picsion/img";*/
 //        String stringObjKeyName = file;
@@ -58,7 +64,7 @@ public class AmazonUpload {
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                     .build();
             File newFile = new File(fileName);
-            fileObjKeyName = pictureService.renameFile(fileName, picture.getUserNo(), picture.getPicNo());
+//            fileObjKeyName = pictureService.renameFile(fileName, picture.getUserNo(), picture.getPicNo());
          // Upload a text string as a new object.
             s3Client.putObject(bucketName, fileObjKeyName, "Uploaded String Object");
             // Upload a file as a new object with ContentType and title specified.
