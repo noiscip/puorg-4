@@ -922,33 +922,32 @@ $(document).ready(function() {
 							<div id="carouselExampleIndicators" class="carousel slide"
 								data-ride="carousel">
 								<ol class="carousel-indicators">
-									<li data-target="#carouselExampleIndicators" data-slide-to="0"
+								<li data-target="#carouselExampleIndicators" data-slide-to="0"
 										class="active"></li>
-									<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-									<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-									<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+								<c:forEach items="${ranPicture}" var="randNum" varStatus='status' begin="1" end="9">
+								<li data-target="#carouselExampleIndicators" data-slide-to="${status.count}"></li>
+								</c:forEach>
 								</ol>
 								<div style="max-height: 500px" class="carousel-inner">
-									<div class="carousel-item active">
+								
+								<c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
+								<c:choose>
+								<c:when test="${status.index eq 0}">
+								<div class="carousel-item active">
 										<img class="d-block w-100"
-											src="<%=request.getContextPath()%>/assets/img/bg.jpg"
-											alt="First slide">
-									</div>
-									<div class="carousel-item">
+											src="${randPic.picWater}"
+											alt="No Image">
+								</div>
+								</c:when>
+								<c:otherwise>
+								<div class="carousel-item">
 										<img class="d-block w-100"
-											src="<%=request.getContextPath()%>/assets/img/bg3.jpg"
-											alt="Second slide">
+											src="${randPic.picWater}"
+											alt="No Image">
 									</div>
-									<div class="carousel-item">
-										<img class="d-block w-100"
-											src="<%=request.getContextPath()%>/assets/img/bg7.jpg"
-											alt="Third slide">
-									</div>
-									<div class="carousel-item">
-										<img class="d-block w-100"
-											src="<%=request.getContextPath()%>/assets/img/faces/giphy.gif"
-											alt="Fourth slide">
-									</div>
+								</c:otherwise>
+								</c:choose>
+								</c:forEach>
 								</div>
 								<a class="carousel-control-prev"
 									href="#carouselExampleIndicators" role="button"

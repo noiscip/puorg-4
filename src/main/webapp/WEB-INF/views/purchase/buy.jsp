@@ -17,6 +17,7 @@
     
    $(document).ready(function() {
         	var loginUserNo = $('#loginUserNo').val();
+        	var tot = ${total};
             var widget = $('.tabs-underline');
             var tabs = widget.find('ul a'),
                 content = widget.find('.tabs-content-placeholder > div');
@@ -36,7 +37,9 @@
                 content.eq(index).addClass('tab-content-active');
 
             });
-            var tot = ${total};
+            
+            
+            
           //장바구니 사진 삭제
         	$(document).on('click', '#deleteItem', function(){
         		var tr = $(this).parent().parent();
@@ -122,10 +125,10 @@
 									<thead>
 										<tr>
 											<th class="text-center"></th>
-											<th>Picture</th>
-											<th class="text-center">Resolution</th>
-											<th class="text-center">Photodate</th>
-											<th class="text-center">Price</th>
+											<th>사진</th>
+											<th class="text-center">해상도</th>
+											<th class="text-center">날짜</th>
+											<th class="text-center">가격</th>
 											<th></th>
 										</tr>
 									</thead>
@@ -134,7 +137,7 @@
 									<tr>
 										<td>
 											<div class="img-container">
-												<img src="<%=request.getContextPath()%>${cart.picPath}"
+												<img src="${cart.picPath}"
 													alt="No Image">
 											</div>
 										</td>

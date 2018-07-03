@@ -49,7 +49,7 @@ $(document).on("click", "#tagAdd", function() {
 			<h1>upload</h1>
 			<div class="row">
 				<div class="col-md-6">
-					<form id="fileForm" action="amazontest.ps"
+					<form id="fileForm" action="vision.ps"
 						enctype="multipart/form-data" method="post">
 
 						<div class="fileinput fileinput-new text-center"
@@ -75,7 +75,6 @@ $(document).on("click", "#tagAdd", function() {
 								</a>
 							</div>
 						</div>
-						<!-- <input type="submit" class="btn btn-primary btn-round" value="보내기"> -->
 					</form>
 				</div>
 
@@ -124,7 +123,7 @@ $(document).on("click", "#tagAdd", function() {
 			console.log("클릭가능????")
 			console.log(formData)
 			$.ajax({
-				url : "/picsion/amazontest.ps",
+				url : "/picsion/vision.ps",
 				data : formData,
 				processData: false,
 				contentType: false,

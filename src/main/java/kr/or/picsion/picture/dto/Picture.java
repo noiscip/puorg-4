@@ -57,6 +57,7 @@ public class Picture {
 		this.transferState = transferState;
 	}
 
+
 	public int getPicNo() {
 		return picNo;
 	}
@@ -215,6 +216,16 @@ public class Picture {
 
 	public void setTransferState(String transferState) {
 		this.transferState = transferState;
+	}
+
+	@Override
+	public String toString() {
+		return "Picture [picNo=" + picNo + ", picTitle=" + picTitle + ", picContent=" + picContent + ", picReg="
+				+ picReg + ", picPath=" + picPath + ", picWater=" + picWater + ", picHit=" + picHit + ", picPrice="
+				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolution="
+				+ resolution + ", photoDate=" + photoDate + ", tagContent=" + tagContent + ", cartCheck=" + cartCheck
+				+ ", respectCheck=" + respectCheck + ", bookmarkCheck=" + bookmarkCheck + ", respectCount="
+				+ respectCount + ", bookmarkCount=" + bookmarkCount + ", transferState=" + transferState + "]";
 	}
 
 

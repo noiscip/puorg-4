@@ -1,6 +1,11 @@
 ﻿package kr.or.picsion.purchase.service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,30 @@ public class PurchaseService {
 		return purchaseDao.purchaseSearch(date);
 	}
 	
+	public Map<Integer, List<Object>> salesStatistics(Date startDate, Date endDate) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		Map<Integer, List<Object>> map = new HashMap<>();
+		List<Object> date = new ArrayList<>();
+		List<Object> sales = new ArrayList<>();		
+
+		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		long diff = endDate.getTime() - startDate.getTime();
+		long diffDays = diff / 7;
+		Date md = new Date(startDate.getTime() +diffDays);
+		
+        for(int i=0; i < 7; i++) {
+            date.add(reg.format(md));
+            sales.add(purchaseDao.salesStatistics(startDate, md));
+            
+            startDate = md;
+            md = new Date(md.getTime()+diffDays);
+        }
+        
+        map.put(1, date);
+        map.put(2, sales);
+		return map;
+	}
 	/**
 	* 날      짜 : 2018. 7. 2.
 	* 메소드명 : insertCart
@@ -120,23 +149,6 @@ public class PurchaseService {
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
 		int total = purchaseDao.cartTotal(userNo);
 		return total;
-	}
-	
-	
-	/**
-	* 날      짜 : 2018. 7. 2.
-	* 메소드명 : cartConfirm
-	* 작성자명 : 정도혁
-	* 기      능 : 장바구니 담김 여부
-	*
-	* @param picNo
-	* @param userNo
-	* @return Integer
-	*/
-	public int cartConfirm(int picNo, int userNo) {
-		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		int result = purchaseDao.cartConfirm(picNo, userNo);
-		return result;
 	}
 	
 	/**
@@ -234,4 +246,22 @@ public class PurchaseService {
 		
 		return result;
 	}
+
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : cartConfirm
+	* 작성자명 : 정도혁
+	* 기      능 : 장바구니에 물건 들어있는지 확인
+	*
+	* @param userNo
+	* @param picNo
+	* @return Integer
+	*/
+	public int cartConfirm(int userNo, int picNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.cartConfirm(userNo, picNo);
+		return result;
+	}
+
 }
