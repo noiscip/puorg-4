@@ -38,6 +38,7 @@
     <script src="<%=request.getContextPath()%>/assets/js/plugins/bootstrap-tagsinput.js"></script>
    	<!-- Plugin for Small Gallery in Product Page -->
     <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/js/plugins/jasny-bootstrap.min.js"></script>
 	<!-- ckEditor -->
 	<script src="<%=request.getContextPath()%>/ckeditor/ckeditor.js" type="text/javascript" ></script>
   	<!-- 네이버 로그인 -->

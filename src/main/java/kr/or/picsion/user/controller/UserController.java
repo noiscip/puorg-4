@@ -331,7 +331,7 @@ public class UserController {
 	/**
 	* 날      짜 : 2018. 6. 26.
 	* 메소드명 : updatePage
-	* 작성자명 : 정도혁
+	* 작성자명 : 박주원
 	* 기      능 : 정보 수정 페이지로 이동 (회원의 정보 검색해서)
 	*
 	* @param session
@@ -380,10 +380,12 @@ public class UserController {
 		
 		String dbPath=path+originalFileName;
 		
-		//자기소개 변경했을때
-		if(userSession.getPrContent().equals(user.getPrContent())) {
+		//자기소개 변경했을때 (변경하지 않으면 업데이트 X)
+		if(userSession.getPrContent() != null && userSession.getPrContent().equals(user.getPrContent())) {
 			System.out.println("같은거지?");
-		}else {		
+		}else if(userSession.getPrContent() == null && user.getPrContent().equals("")){
+			System.out.println("자기소개가 없지?");
+		}else {
 			userService.updateUserPr(user);
 		}
 		
