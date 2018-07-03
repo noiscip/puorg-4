@@ -98,7 +98,6 @@
 	 	
 		
 		var lastScrollTop = 0;
-		var page = ${};
 		$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
 	        
 	        var currentScrollTop = $(window).scrollTop();
@@ -153,46 +152,6 @@
 		                }); --%>
 	                }
 	                
-	                <%-- $.ajax({
-	                    type : 'post',  
-	                    url : '/picsion/user/bookmarklist.ps',
-	                    data : { 
-	                        page: page
-	                    },
-	                    success : function(data){
-	                        console.log("정상적으로 실행된거?")
-	                        
-	                        $.each(data.scrollPicList, function(index, obj){
-	                        	console.log(obj)
-	                        	console.log(data.scrollPicUserList[index].userName)
-	                        	
-	                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
-												"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-												"<img class='rounded img-size' src='<%=request.getContextPath()%>"+obj.picPath+"' alt='No Image'>"+
-												"</a>"+
-											   "<div>"+
-							                   "<div class='counts hide-xs hide-sm'>";
-							                   if(obj.respectCheck=="T"){
-							                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-							                   }else{
-							                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-							                   }
-							                   
-							                   if(obj.bookmarkCheck=="T"){
-							                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-							                   }else{
-							                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-							                   }
-							                   
-							                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
-							                 
-				                $('#bookpic').append(scrollPage);
-	                        })
-						    page+=data.endpage;
-	                        console.log(scrollPage);
-	         				
-	                    }
-	                }); --%>
 	                 
 	            }
 	            
