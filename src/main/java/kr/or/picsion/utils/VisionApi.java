@@ -155,7 +155,7 @@ public class VisionApi {
 		List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
 		Image image = null;
 		image = getImage(filePath);
-		List<String> test = new ArrayList<String>();
+		List<String> labelList = new ArrayList<String>();
 
 		Feature feature = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).build();
 		AnnotateImageRequest request = AnnotateImageRequest.newBuilder().addFeatures(feature).setImage(image).build();
@@ -167,7 +167,7 @@ public class VisionApi {
 
 			for (AnnotateImageResponse res : responses) {
 				for (EntityAnnotation annotation : res.getLabelAnnotationsList()) {
-					test.add(annotation.getDescription());
+					labelList.add(annotation.getDescription());
 					System.out.println(annotation.getDescription());
 				}
 			}
@@ -175,7 +175,7 @@ public class VisionApi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return test;
+		return labelList;
 	}
 
 	/**
@@ -326,9 +326,9 @@ public class VisionApi {
 	 * @param filePath
 	 * @throws Exception
 	 */
-	public static void detectWebDetections(String filePath) {
+	public static List<String> detectWebDetections(String filePath) {
 		List<AnnotateImageRequest> requests = new ArrayList<>();
-
+		List<String> labelList = new ArrayList<String>();
 		Image img = null;
 		img = getImage(filePath);
 		Feature feat = Feature.newBuilder().setType(Feature.Type.WEB_DETECTION).build();
@@ -340,10 +340,10 @@ public class VisionApi {
 			List<AnnotateImageResponse> responses = response.getResponsesList();
 
 			for (AnnotateImageResponse res : responses) {
-				if (res.hasError()) {
-					System.out.println("Error: " + res.getError().getMessage());
-					return;
-				}
+//				if (res.hasError()) {
+//					System.out.println("Error: " + res.getError().getMessage());
+//					return;
+//				}
 
 				// Search the web for usages of the image. You could use these signals later
 				// for user input moderation or linking external references.
@@ -351,25 +351,28 @@ public class VisionApi {
 				WebDetection annotation = res.getWebDetection();
 
 				for (WebEntity entity : annotation.getWebEntitiesList()) {
-					/*
-					 * if(entity.getScore()>0.7 && entity.getDescription()!=null) {
-					 * System.out.println(entity.getDescription() + " : " + entity.getEntityId() +
-					 * " : " + entity.getScore()); }
-					 */
-					if (entity.getDescription() == null) {
+					
+					 if(entity.getScore()>0.7 && entity.getDescription()!=null) {
+					 System.out.println(entity.getDescription() + " : " + entity.getEntityId() +
+					 " : " + entity.getScore());
+					 labelList.add(entity.getDescription());
+					 }
+					 
+					/*if (entity.getDescription() == null) {
 						System.out.println(
 								entity.getDescription() + " : " + entity.getEntityId() + " : " + entity.getScore());
-					}
+					}*/
 				}
-				for (WebLabel label : annotation.getBestGuessLabelsList()) {
+				/*for (WebLabel label : annotation.getBestGuessLabelsList()) {
 					System.out.println("Best guess label: " + label.getLabel());
 
-				}
+				}*/
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return labelList;
 	}
 
 	private static Image getImage(String filePath) {

@@ -55,11 +55,12 @@ public class VisionDetect {
 		String safecheck=vision.detectSafeSearch(uploadedPath);//vision : 유해감지
 		List<String> labelBag=vision.detectLabels(uploadedPath);//vision : 태그뽑기
 //		List<Face> faceList = vision.detectFaces(uploadedPath);//vision : 얼굴감지
-//		detectWebDetections(uploadedPath);
+		List<String> addLabel = vision.detectWebDetections(uploadedPath);
 
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
 		model.addAttribute("label", labelBag);
+		model.addAttribute("label2", addLabel);
 		model.addAttribute("picPath",vision.picturePath);
 //		model.addAttribute("face",faceList);
 		
