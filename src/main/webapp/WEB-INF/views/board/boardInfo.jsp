@@ -523,8 +523,8 @@
 						</div>
 		
 						<div class="col-md-6">
-							<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
-		
+							<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">									
+									<input type="hidden" class="form-control" name="transferState" value="${boardInfo.copyright}">
 								<div class="form-group">
 									<label for="title">제목</label> <input type="text"
 										class="form-control" id="pictureTitle" name="picTitle">

@@ -29,9 +29,9 @@ public class PictureService {
 	* @param myuserNo
 	* @return List<Picture>
 	*/
-	public List<Picture> studioPicList(int userNo, int myuserNo){
+	public List<Picture> studioPicList(int userNo, int myuserNo, int page, int endpage){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<Picture> list = picDao.studioPicList(userNo, myuserNo);
+		List<Picture> list = picDao.studioPicList(userNo, myuserNo, page, endpage);
 		return list;
 	}
 
@@ -79,9 +79,9 @@ public class PictureService {
 	* @param userNo
 	* @return List<User>
 	*/
-	public List<User> studioOwnerList(int userNo){
+	public List<User> studioOwnerList(int userNo, int page, int endpage){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<User> list = picDao.studioOwnerList(userNo);
+		List<User> list = picDao.studioOwnerList(userNo, page, endpage);
 		return list;
 	}
 	

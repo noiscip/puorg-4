@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -12,7 +12,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from PURCHASE where purchaseReg > #{date}
 	</select>
 	
-	
+	<select id="salesStatistics" resultType="String">
+	select sum(picPrice) from PICTURE where picNo in (select picNo from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg)
+	</select>
+
 	<!-- 장바구니 담기 -->
 	<insert id="insertCart">
 		INSERT INTO CART
