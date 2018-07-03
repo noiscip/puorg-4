@@ -206,6 +206,9 @@ $(document).on("click", "#tagAdd", function() {
 					$.each(data.label, function(i, elt) {
 						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
 					})
+					$.each(data.label2,function(i,elt){
+						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
+					})
 					
 					$('#picTags').append(tags)
 					
