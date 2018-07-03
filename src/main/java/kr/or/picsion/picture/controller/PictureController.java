@@ -240,7 +240,7 @@ public class PictureController {
 		}
 		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(14));
 		//워터마크 사진 이름 수정하여 저장
-		String renameWater ="w"+pictureService.renameFile(picture.getPicPath(), user.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
+		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", user.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
 		File output = new File("D:/imagePicsion/"+renameWater);
 
 //		System.out.println("워터마크되나?"+output.getPath().substring(16));//로직바꾸자
@@ -263,7 +263,7 @@ public class PictureController {
 		//s3 저장 (원본 사진)
 		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		//원본사진 변경
-		pictureService.renameFile(saveFileName, picture.getUserNo(), picture.getPicNo());
+		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
 				
 //		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
 		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);

@@ -340,18 +340,18 @@ public class PictureService {
 	* @param picNo
 	* @return String
 	*/
-	public String renameFile(String fileName, int userNo, int picNo) {
+	public String renameFile(String fileName,String identiChar, int userNo, int picNo) {
 
 		// 변경될 파일명
 		String newFileName = "";
 
 		// 확장자를 검색한다. jpg, bmp , png
 		if (fileName.toLowerCase().indexOf(".jpg") > 0) {
-			newFileName = userNo + "000" + picNo + ".jpg";
+			newFileName = identiChar+userNo + "000" + picNo + ".jpg";
 		} else if (fileName.toLowerCase().indexOf(".bmp") > 0) {
-			newFileName = userNo + "000" + picNo + ".bmp";
+			newFileName = identiChar+userNo + "000" + picNo + ".bmp";
 		} else if (fileName.toLowerCase().indexOf(".png") > 0) {
-			newFileName = userNo + "000" + picNo + ".png";
+			newFileName = identiChar+userNo + "000" + picNo + ".png";
 		} else {// 확장자가 벗어나면 파일명 그대로 셋팅
 			newFileName = fileName;
 		}
