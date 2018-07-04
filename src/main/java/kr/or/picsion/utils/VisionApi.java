@@ -42,6 +42,8 @@ import kr.or.picsion.picture.dto.Face;
 public class VisionApi {
 	
 	public String picturePath;
+	
+	
 	/**
 	 * 날 짜 : 2018. 6. 8. 
 	 * 메소드명 : fileUpload 작성자명 : 이아림, 아윤근 
@@ -52,8 +54,8 @@ public class VisionApi {
 	 */
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		String filePathh = "";
-		String uploadPath = "D:\\imagePicsion\\";
-		/* String uploadPath = "C:\\imagePicsion\\"; */
+		/*String uploadPath = "D:\\imagePicsion\\";*/
+		String uploadPath = "C:\\imagePicsion\\"; 
 		/*
 		 * String uploadPath =
 		 * "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
