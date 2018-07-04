@@ -186,8 +186,7 @@ public class PictureController {
 
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
-		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
-		
+		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];		
 		
 		
 		
@@ -238,6 +237,11 @@ public class PictureController {
 		
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
+		System.out.println(picture.getPicPath());
+if(!picture.getPicPath().startsWith("https:")) {
+			System.out.println("https 들어왔다");
+        	System.out.println(picture.getPicPath().split("//")[3]);
+        }
 		pictureService.insertPicture(picture);
 		System.out.println("유저번호:"+user.getUserNo());
 		System.out.println(picture);
