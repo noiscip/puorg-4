@@ -188,7 +188,26 @@ public class PurchaseController {
 		
 		return "mypage.buyhistory";
 	}
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : sellHistory
+	* 작성자명 : 박주원
+	* 기      능 :
+	*
+	* @param session
+	* @param model
+	* @return
+	*/
+	@RequestMapping("sellhistory.ps")
+	public String sellHistory(HttpSession session, Model model){
+		User user = (User) session.getAttribute("user");
+		
+		return "mypage.sellhistory";
+	}
 
+	
 	/**
 	* 날      짜 : 2018. 7. 3.
 	* 메소드명 : addCart
