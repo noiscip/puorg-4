@@ -100,6 +100,17 @@ public class PurchaseController {
 		return "purchase.buy";
 	}
 	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : salesStatistics
+	* 작성자명 : 김보경
+	* 기      능 : 기간별 매출 보기
+	*
+	* @param startDate
+	* @param endDate
+	* @param model
+	* @return
+	*/
 	@RequestMapping("salesAmount.ps")
 	public View salesStatistics(Date startDate, Date endDate, Model model) {
 		
