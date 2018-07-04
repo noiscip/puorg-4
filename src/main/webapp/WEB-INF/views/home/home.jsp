@@ -970,10 +970,9 @@ $(document).ready(function() {
 				<c:when test="${empty imagelist}">
 				<h1 class="text-center">팔로잉을 시작 하세요</h1>
 				<div class="row">
-				
 					<c:forEach items="${randomuser}" var="rand" varStatus='status'>
 					
-					<div class="col-md-3">
+					<div class="col-md-3 mr-auto ml-auto">
                         <div class="card card-profile card-plain">
                             <div class="card-avatar">
                                 <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${rand.userNo}">
@@ -987,22 +986,12 @@ $(document).ready(function() {
                                     ${rand.prContent}
                                 </p>
                             </div>
-                           <!--  <div class="card-footer justify-content-center">
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-facebook">
-                                    <i class="fa fa-facebook-square"></i>
-                                </a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-google">
-                                    <i class="fa fa-google"></i>
-                                </a>
-                            </div> -->
+                         
                         </div>
                     </div>
 					
 					</c:forEach>
-                </div>
+					</div>
 				</c:when>
 				<c:otherwise>
 				

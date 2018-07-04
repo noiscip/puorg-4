@@ -6,7 +6,8 @@
 $(function(){
 	console.log($('#loginUserNo').val())
 	if($('#loginUserNo').val() != 0){
-		newNoticeCount()
+		newNoticeCount();
+		myCart();
 	}
 	
 	var isRun =false
@@ -134,6 +135,22 @@ $(function(){
 			}
 		})
 	}
+	
+	function myCart(){
+		$.ajax({
+			url : "/picsion/purchase/myCart.ps?userNo="+$('#loginUserNo').val(),
+			success: function (data) {
+				console.log(data.myCartCount);
+				console.log(data.cartPicList);
+				$('#cartnav').append(data.myCartCount);
+				if(data.mayCartCount==0){
+					
+				}
+			}
+		})
+		
+	}
+	
 	var generateRandom = function (min, max) {
 		  var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
 		  return ranNum;
@@ -143,7 +160,7 @@ $(function(){
 </script>
 <input type="hidden" value='<c:choose><c:when test="${sessionScope.user eq null}">0</c:when><c:otherwise>${sessionScope.user.userNo}</c:otherwise></c:choose>' id="loginUserNo">
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
-    <div class="container">
+    <div class="container-fluid">
       <div class="navbar-translate">
         <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,14 +193,37 @@ $(function(){
 						</li>
 					</c:when>
 					<c:otherwise>
+					
+							                  
+		                  <li class="nav-item">
+							<a href="" class="nav-link" data-toggle="dropdown" id="cartnav">
+							 <i class="material-icons">shopping_cart</i>
+							</a>						
+							
+								<ul class="dropdown-menu" id="addcartnav">
+								</ul>
+															
+						</li>
+						<li class="nav-item">
+							<a href="#" data-toggle="dropdown" id="newNoticePlace">
+							</a>
+								<ul class="dropdown-menu" id="noticeList">
+								</ul>
+															
+						</li>
+					
+					
 						<li class="dropdown nav-item">
 		                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 		                      <i class="material-icons">apps</i> Components
 		                  </a>
 		                  <div class="dropdown-menu dropdown-with-icons">
+		                  <h6 class="dropdown-header">게시판</h6>
 		                    <a href="<%=request.getContextPath()%>/board/board.ps" class="dropdown-item">
 		                        <i class="material-icons">list</i> 요청 게시판
 		                    </a>
+		                    <div class="dropdown-divider"></div>
+		                      <h6 class="dropdown-header">마이 페이지</h6>
 		                    <a href="<%=request.getContextPath()%>/upload.ps" class="dropdown-item">
 		                        <i class="material-icons">add_circle_outline</i>업로드
 		                    </a>
@@ -205,6 +245,7 @@ $(function(){
 		                    <a href="<%=request.getContextPath()%>/user/updatebefore.ps" class="dropdown-item">
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
+		                 
 		                    <c:if test="${sessionScope.user.naver eq null}">
 			                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>네이버 계정 연동 
@@ -235,13 +276,7 @@ $(function(){
 							  	${sessionScope.user.userName}
 							</a>
 						</li>
-						<li class="nav-item">
-							<a href="#" data-toggle="dropdown" id="newNoticePlace">
-							</a>
-								<ul class="dropdown-menu" id="noticeList">
-								</ul>
-															
-						</li>
+						
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/logout.ps" onclick="scrollToDownload()"> 
 								<i class="material-icons">highlight_off</i> 로그아웃
