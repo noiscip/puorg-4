@@ -456,8 +456,22 @@
 						</div>
 						
 						<div align="center">
-							<button type="button" class="btn btn-success">작업자 확인</button>
-							<button type="button" class="btn btn-danger">요청자 확인</button>
+							<c:choose>
+								<c:when test="${operation.operatorEnd ne 'T'}">
+									<button type="button" class="btn btn-danger">작업자 확인</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button" class="btn btn-success">작업자 확인</button>
+								</c:otherwise>
+							</c:choose>
+							<c:choose>
+								<c:when test="${operation.requesterEnd ne 'T'}">
+									<button type="button" class="btn btn-danger">요청자 확인</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button" class="btn btn-success">요청자 확인</button>
+								</c:otherwise>
+							</c:choose>
 						</div>
 						
 						
@@ -509,68 +523,82 @@
 		</div>
 	</div>
 	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
-	<div id="upload">
-		<div class="card card-collapse">
-			<div class="card-header" role="tab" id="picupload1">
-				<h5 class="mb-0 title">
-					<a class="collapsed" data-toggle="collapse" href="#picupload" style="text-align: center;"
-						aria-expanded="false" aria-controls="picupload">사진 업로드</a>
-				</h5>
-			</div>
-			<div id="picupload" class="collapse" role="tabpanel"
-				aria-labelledby="picupload1" data-parent="#upload">
-				<div class="card-body">
-						<form id="fileForm" action=""
-						enctype="multipart/form-data" method="post">
-							<input type="hidden" name="operNo" value="${operation.operNo}">
-							<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
-						<div class="fileinput fileinput-new text-center"
-							data-provides="fileinput">
-							<div class="fileinput-new thumbnail img-raised">
-								<img
-									src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
-									alt="...">
-							</div>
-							<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
-							<%-- <canvas id="canvasdiv"></canvas> --%>
-								
-							</div> 
-							<div>
-								<span class="btn btn-raised btn-round btn-default btn-file"> 
-									<span class="fileinput-new">Select image</span> <span
-									class="fileinput-exists">Change</span> <input type="file"
-									name="file" accept=".jpg, .png, .bmp" />
-								</span> <a href="#pablo"
-									class="btn btn-danger btn-round fileinput-exists"
-									data-dismiss="fileinput"> <i class="fa fa-times"></i>
-									Remove
-								</a>
+		<c:choose>
+			<c:when test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
+				<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
+				<input type="hidden" value="${operPicture.picPath}" name="filePath">
+				<input type="button" id ="operPicture" class="btn btn-primary btn-round" value="사진 업로드">			
+			</c:when>
+			
+			<c:otherwise>
+				<div id="upload">
+					<div class="card card-collapse">
+						<div class="card-header" role="tab" id="picupload1">
+							<h5 class="mb-0 title">
+								<a class="collapsed" data-toggle="collapse" href="#picupload" style="text-align: center;"
+									aria-expanded="false" aria-controls="picupload">사진 업로드</a>
+							</h5>
+						</div>
+						<div id="picupload" class="collapse" role="tabpanel"
+							aria-labelledby="picupload1" data-parent="#upload">
+							<div class="card-body">
+									<form id="fileForm" action=""
+									enctype="multipart/form-data" method="post">
+										<input type="hidden" name="operNo" value="${operation.operNo}">
+										<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
+									<div class="fileinput fileinput-new text-center"
+										data-provides="fileinput">
+										<div class="fileinput-new thumbnail img-raised">
+											<img
+												src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
+												alt="...">
+										</div>
+										<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
+										<%-- <canvas id="canvasdiv"></canvas> --%>
+											
+										</div> 
+										<div>
+											<span class="btn btn-raised btn-round btn-default btn-file"> 
+												<span class="fileinput-new">Select image</span> <span
+												class="fileinput-exists">Change</span> <input type="file"
+												name="file" accept=".jpg, .png, .bmp" />
+											</span> <a href="#pablo"
+												class="btn btn-danger btn-round fileinput-exists"
+												data-dismiss="fileinput"> <i class="fa fa-times"></i>
+												Remove
+											</a>
+										</div>
+									</div>
+									<input type="button" id ="operpic" class="btn btn-primary btn-round" value="요청자 보여주기">
+								</form>
 							</div>
 						</div>
-						<input type="button" id ="operpic" class="btn btn-primary btn-round" value="요청자 보여주기">
-					</form>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+			</c:otherwise>
+		</c:choose>
+		
 	</c:if>
 	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.requesterNo}">
 	<div  align="center">
 	<h5>작업자가 올린 사진</h5>
-		<div style="height: 350px; width : 350px;">
+		<div>
 			<c:choose>
 				<c:when test="${empty operPicture}">
 					아직 사진 안올림
 				</c:when>
 				<c:otherwise>
-					<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
+					<div style="height: 350px; width : 350px;">
+						<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
+					</div>
+					<button type="button" id="opercomplete" class="btn btn-success">작업 수락</button>
+					<button type="button" class="btn btn-success">재촬영신청</button>
+					<button type="button" class="btn btn-success">신고</button>
 				</c:otherwise>
 			</c:choose>
 			
 		</div>
-		<button type="button" id="opercomplete" class="btn btn-success">작업 수락</button>
-		<button type="button" class="btn btn-success">재촬영신청</button>
-		<button type="button" class="btn btn-success">신고</button>
+		
 	</div>
 	</c:if>
 </div>
@@ -660,4 +688,119 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(function() {
+		
 
+		$('#operpicture').change(function() {
+			console.log($(this))
+			var formData = new FormData($('#fileForm')[0])
+			console.log("클릭가능????")
+			console.log(formData)
+			$.ajax({
+				url : "/picsion/vision.ps",
+				data : formData,
+				processData: false,
+				contentType: false,
+				type :'POST',
+				success : function(data){
+					console.log(data)
+					$("#loaderIcon").empty();
+					if(data.logo != null){
+					var logo =''
+						logo += '<div class="alert alert-warning">'
+						logo += 	'<div class="container-fluid">'
+						logo += 		'<div class="alert-icon">'
+						logo += 			'<i class="material-icons">warning</i>'
+						logo += 		'</div>'
+						logo += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+						logo += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+						logo += 		'</button>'
+						logo += 		'<b>Warning Alert</b>' + data.logo
+						logo += 	'</div>'
+						logo += '</div>'
+						
+						$('h1').after(logo)
+					}
+ 					/*얼굴감지*/
+ 					 if(data.face != null){
+ 						console.log("얼굴그리기")
+ 						/* $('canvas').drawImage({
+ 							source: $('.fileinput-preview')["0"].children["0"].src,
+ 							x: 10, y: 10,
+ 							load:rec
+ 						});
+ 						function rec(){
+ 							console.log("이게 되낭?");
+ 							$('canvas').drawRect({
+								strokeStyle:"#FF0000",
+								strokeWidth:4,
+								x:data.face["0"].x_0, y:data.face["0"].y_1,
+								width:data.face["0"].width,
+								height:data.face["0"].height
+ 							});
+ 						}
+ 						 */
+ 						 
+ 						  /* $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */ 
+ 						//이 밑에 잠시 주석걸겠습니다
+ 						/* $('canvas').drawImage({
+ 							source: $('.fileinput-preview')['0'].children['0'].src,
+ 							x: 100, y: 100,
+ 							load:rec
+ 						});
+ 						function rec(){
+ 							console.log("이게 되낭?");
+ 							$('canvas').drawRect({
+ 							strokeStyle:"#FF0000",
+ 							strokeWidth:2,
+ 							x:100, y:100,
+ 							width:20,
+ 							height:20
+ 							});
+ 						}
+ */ 						
+ 					} 
+					var safe = ''
+					if(data.safe != null){
+						safe += '<div class="alert alert-danger">'
+						safe += 	'<div class="container-fluid">'
+						safe += 		'<div class="alert-icon">'
+						safe += 			'<i class="material-icons">warning</i>'
+						safe += 		'</div>'
+						safe += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+						safe += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+						safe += 		'</button>'
+						safe += 		'<b>Warning Alert</b>' + data.safe
+						safe += 	'</div>'
+						safe += '</div>'
+						$('h1').after(safe)
+					}
+					
+					var tags = ''
+					$.each(data.label, function(i, elt) {
+						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
+					})
+					$.each(data.label2,function(i,elt){
+						tags += '<input type="text" value="' + elt + '" data-role="tagsinput" name="tag">'
+					})
+					
+					$('#picTags').append(tags)
+					
+					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
+					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
+					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
+					$('#tagA').append(tags)
+					/* $('#taginputtest').attr("data-role","tagsinput"); */
+					console.log('와요?')
+					$("input[data-role=tagsinput]").tagsinput();
+					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
+				}
+			,beforeSend:function(){
+				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
+			}
+				
+			})
+		})
+	})
+</script>

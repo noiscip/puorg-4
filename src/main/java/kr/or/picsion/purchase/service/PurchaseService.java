@@ -253,7 +253,70 @@ public class PurchaseService {
 		
 		return result;
 	}
-
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : selectPicSell
+	* 작성자명 : 박주원
+	* 기      능 : 판매한 사진 리스트
+	*
+	* @param userNo
+	* @return List<Picture>
+	*/
+	public List<Picture> selectPicSell(int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		List<Picture> list = purchaseDao.selectPicSell(userNo);
+		
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : selectPicPurUser
+	* 작성자명 : 박주원
+	* 기      능 : 판매한 사진 구매 사람 정보
+	*
+	* @param userNo
+	* @return List<User>
+	*/
+	public List<User> selectPicPurUser(int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		List<User> list = purchaseDao.selectPicPurUser(userNo);
+		
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : selectSell
+	* 작성자명 : 박주원
+	* 기      능 : 판매한 정보 리스트
+	*
+	* @param userNo
+	* @return List<Purchase>
+	*/
+	public List<Purchase> selectSell(int userNo){
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		List<Purchase> list = purchaseDao.selectSell(userNo);
+		
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : sumSell
+	* 작성자명 : 박주원
+	* 기      능 : 판매한 사진의 총 합계
+	*
+	* @param userNo
+	* @return Integer
+	*/
+	public int sumSell(int userNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.sumSell(userNo);
+		
+		return result;
+	}
 	
 	/**
 	* 날      짜 : 2018. 7. 3.
