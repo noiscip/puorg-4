@@ -7,13 +7,13 @@ import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
 public interface PictureDao {
-	public int insertPicture(Picture picture);
-	public int insertTag(int picNo,String tag);////////////////////////////뀨?
+	public int insertPicture(Picture picture); //사진업로드 저장
+	public int insertTag(int picNo,String tag);//태그 저장
 	public int updateWater(String picWater,int picNo); // 워터마크 사진 저장
 	public List<String> selectTag(int picNo);  			//태그 리스트
-	public int searchPath(int picNo);////////////////////////////뀨?
+	public int searchPath(int picNo);//
 	public int deletePicture(int picNo);
-	public int updatePicture(String picPath,int picNo);  //일단 아무도 안쓰는거 같은데 사진 s3에 저장할때 쓰겠음 from 아림
+	public int updatePicture(String picPath,int picNo);  //s3 경로 저장
 	public List<Picture> pictureList();
 	public Picture selectPicture(int userNo, int picNo); //사진 상세
 	public List<Picture> studioPicList(int userNo, int myuserNo, int page, int endpage);//userNo로 스튜디오에서 사진 불러오기
