@@ -168,18 +168,11 @@ public class PurchaseController {
 	@RequestMapping("history.ps")
 	public String buyHistory(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		System.out.println("여기능??");
-		System.out.println(user.getUserNo());
 		
 		List<Picture> pictureInfo = purchaseService.selectPicPurchase(user.getUserNo());
 		List<User> userInfo = purchaseService.selectPicUser(user.getUserNo());
 		List<Purchase> purchaseInfo = purchaseService.selectPurchase(user.getUserNo());
 		int sumPurchase = purchaseService.sumPurchase(user.getUserNo());
-		
-		System.out.println(pictureInfo+"사진정보********");
-		System.out.println(userInfo+"유저정보********");
-		System.out.println(purchaseInfo+"구매정보********");
-		System.out.println(sumPurchase+"합계********");
 		
 		model.addAttribute("pictureInfo", pictureInfo);
 		model.addAttribute("userInfo", userInfo);
@@ -194,15 +187,25 @@ public class PurchaseController {
 	* 날      짜 : 2018. 7. 3.
 	* 메소드명 : sellHistory
 	* 작성자명 : 박주원
-	* 기      능 :
+	* 기      능 : 판매내역 페이지 이동
 	*
 	* @param session
 	* @param model
-	* @return
+	* @return String
 	*/
 	@RequestMapping("sellhistory.ps")
 	public String sellHistory(HttpSession session, Model model){
 		User user = (User) session.getAttribute("user");
+		
+		List<Picture> pictureInfo=purchaseService.selectPicSell(user.getUserNo());
+		List<User> userInfo = purchaseService.selectPicPurUser(user.getUserNo());
+		List<Purchase> purchaseInfo = purchaseService.selectSell(user.getUserNo());
+		int sumSell= purchaseService.sumSell(user.getUserNo());
+		
+		model.addAttribute("pictureInfo", pictureInfo);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("purchaseInfo", purchaseInfo);
+		model.addAttribute("sumSell", sumSell);
 		
 		return "mypage.sellhistory";
 	}
