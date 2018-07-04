@@ -55,7 +55,7 @@ $(function() {
 	})
 	
 	var lastScrollTop = 0;
-    /* var page = ${page}; */
+    var page = ${page};
 
 	$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
          
@@ -67,47 +67,37 @@ $(function() {
             // 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
             if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
                 
-            	console.log("여기 오는거지???");
-                <%-- $.ajax({
+                $.ajax({
                     type : 'post',  
-                    url : '/picsion/user/bookmarklist.ps',
+                    url : '<%=request.getContextPath()%>/user/popular.ps',
                     data : { 
                         page: page
                     },
                     success : function(data){
-                        console.log("정상적으로 실행된거?")
                         
-                        $.each(data.scrollPicList, function(index, obj){
-                        	console.log(obj)
-                        	console.log(data.scrollPicUserList[index].userName)
-                        	
+                        $.each(data.followingScrollPic, function(index, obj){
                         	scrollPage="<div class='item col-sm-6 col-md-4'>"+
-											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-											"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-											"</a>"+
-										   "<div>"+
-						                   "<div class='counts hide-xs hide-sm'>";
-						                   if(obj.respectCheck=="T"){
-						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-						                   }else{
-						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-						                   }
-						                   
-						                   if(obj.bookmarkCheck=="T"){
-						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-						                   }else{
-						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-						                   }
-						                   
-						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
-						                 
-			                $('#bookpic').append(scrollPage);
+                        			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+                                	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+		                    		   "</a><div><div class='counts hide-xs hide-sm'>";
+			                           if(obj.respectCheck=="T"){
+					                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+					                   }else{
+					                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+					                   }
+					                   
+					                   if(obj.bookmarkCheck=="T"){
+					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+					                   }else{
+					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+					                   }
+		                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.followingScrollPicOwner[index].userNo+"'>"+data.followingScrollPicOwner[index].userName+"</a></div></div>";
+		            		
+			                $('#followpic').append(scrollPage);
                         })
 					    page+=data.endpage;
-                        console.log(scrollPage);
-         				
                     }
-                }); --%>
+                });
                  
             }
             
@@ -134,7 +124,7 @@ $(function() {
 		<div class="container-fluid">
 			<div class="flex_grid credits">
 			<div class="tz-gallery">
-				<div class="row">
+				<div class="row" id="followpic">
 				<c:forEach items="${followingPicList}" var="followingListAll" varStatus="status">					
 						  <div class="item col-sm-6 col-md-4"> 
 			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followingListAll.picNo}"> 
