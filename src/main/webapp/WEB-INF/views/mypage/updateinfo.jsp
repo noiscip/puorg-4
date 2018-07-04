@@ -162,7 +162,7 @@
 	                  	<!-- 프로필 수정 -->
 	                  	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 						   <div class="fileinput-new">
-							<img src="<%=request.getContextPath()%>${userinfo.prPicture}" class="img-raised rounded-circle img-fluid update-pr">
+							<img src="${userinfo.prPicture}" class="img-raised rounded-circle img-fluid update-pr">
 							<input value="${userinfo.prPicture}" name="prPicture" style="display: none;">
 						   </div>
 						   <div class="fileinput-preview fileinput-exists thumbnail img-raised rounded-circle img-fluid update-pr"></div>

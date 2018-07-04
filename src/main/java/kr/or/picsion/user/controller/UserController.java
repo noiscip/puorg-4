@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
+
+import com.amazonaws.AmazonServiceException;
+
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
+import kr.or.picsion.utils.AmazonUpload;
 import kr.or.picsion.utils.VisionApi;
 
 
@@ -33,6 +37,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AmazonUpload amazonService;
 	
 	@Autowired
 	private VisionApi vision;
@@ -159,14 +166,46 @@ public class UserController {
 	@RequestMapping(value="popular.ps", method=RequestMethod.GET)
 	public String popularPicList(HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
-		List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo()); //팔로잉 최신 사진 리스트
-		List<User> followingPicListOwner = userService.followingUserPicOwnerList(user.getUserNo()); //사진 주인 리스트
+		int page=0;
+		int endpage=9;
+		
+		List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo(), page, endpage); //팔로잉 최신 사진 리스트
+		List<User> followingPicListOwner = userService.followingUserPicOwnerList(user.getUserNo(), page, endpage); //사진 주인 리스트
 		System.out.println(followingPicList);
 		model.addAttribute("followingPicList", followingPicList);
 		model.addAttribute("followingPicListOwner",followingPicListOwner);
+		model.addAttribute("page", followingPicList.size());
 		
 		return "popular.followingpicall";
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : popularPicScroll
+	* 작성자명 : 박주원
+	* 기      능 : 팔로잉한 유저의 사진 스크롤 페이징
+	*
+	* @param session
+	* @param model
+	* @param page
+	* @return View
+	*/
+	@RequestMapping(value="popular.ps", method=RequestMethod.POST)
+	public View popularPicScroll(HttpSession session, Model model, int page) {
+		User user = (User) session.getAttribute("user");
+		int endpage=9;
+		
+		List<Picture> followingScrollPic = userService.followingUserPicList(user.getUserNo(), page, endpage); //팔로잉 최신 사진 리스트
+		List<User> followingScrollPicOwner = userService.followingUserPicOwnerList(user.getUserNo(), page, endpage); //사진 주인 리스트
+		
+		model.addAttribute("followingScrollPic", followingScrollPic);
+		model.addAttribute("followingScrollPicOwner",followingScrollPicOwner);
+		model.addAttribute("endpage", followingScrollPic.size());
+		
+		return jsonview;
+	}
+	
+	
 	
 	//삭제 여부?? 테스트용인가요??
 	@RequestMapping(value="userlist.ps")
@@ -220,7 +259,7 @@ public class UserController {
 	public String myBookmark(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		int page=0;
-		int endpage=6;
+		int endpage=9;
 		
 		List<Picture> bookmarkPicList = userService.bookmarkPicList(user.getUserNo(), page, endpage);
 		List<User> bookmarkPicUserList = userService.bookmarkPicUserList(user.getUserNo(), page, endpage);
@@ -245,7 +284,7 @@ public class UserController {
 	@RequestMapping(value="bookmarklist.ps", method=RequestMethod.POST)
 	public View myBookmarkScroll(HttpSession session, Model model, int page) {
 		User user = (User)session.getAttribute("user");
-		int endpage=6;
+		int endpage=9;
 		
 		List<Picture> scrollPicList = userService.bookmarkPicList(user.getUserNo(), page, endpage);
 		List<User> scrollPicUserList = userService.bookmarkPicUserList(user.getUserNo(), page, endpage);
@@ -369,8 +408,7 @@ public class UserController {
 		
 		System.out.println(file.getOriginalFilename());
 		String filePathh="";
-		String uploadPath = "C:\\bitcamp104\\PICSION\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\Final_Picsion\\assets\\img\\faces\\";
-		String path="/assets/img/faces/";
+		String uploadPath = "D:\\imagePicsion\\";
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -378,10 +416,9 @@ public class UserController {
 		}
 
 		String originalFileName = file.getOriginalFilename();
-		String saveFileName = originalFileName;
-		filePathh = uploadPath + saveFileName;
-		
-		String dbPath=path+originalFileName;
+		String saveFileName = "prPic"+user.getUserNo()+"."+originalFileName.split("\\.")[1];
+
+		String dbPath="";
 		
 		//프로필 사진 변경 했을때
 		if(originalFileName.equals("")) {
@@ -394,6 +431,7 @@ public class UserController {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
+					dbPath=amazonService.uploadObject(saveFileName, "picsion/profile");
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();

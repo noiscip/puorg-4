@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -57,7 +57,8 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */ 
 			 	
-			 	 wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도  
+			 	wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도  
+
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}

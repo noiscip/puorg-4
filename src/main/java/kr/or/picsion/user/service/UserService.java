@@ -100,9 +100,9 @@ public class UserService {
 	* @param userNo
 	* @return List<Picture>
 	*/
-	public List<Picture> followingUserPicList(int userNo) {
+	public List<Picture> followingUserPicList(int userNo, int page, int endpage) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		List<Picture> followingUserPicList = userDao.followingUserPictureList(userNo);
+		List<Picture> followingUserPicList = userDao.followingUserPictureList(userNo, page, endpage);
 		return followingUserPicList;
 	}
 
@@ -115,9 +115,9 @@ public class UserService {
 	* @param userNo
 	* @return List<User>
 	*/
-	public List<User> followingUserPicOwnerList(int userNo) {
+	public List<User> followingUserPicOwnerList(int userNo, int page, int endpage) {
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		List<User> followingUserPicOwnerList = userDao.followingUserPictureOwnerList(userNo);
+		List<User> followingUserPicOwnerList = userDao.followingUserPictureOwnerList(userNo, page, endpage);
 		return followingUserPicOwnerList;
 	}
 		

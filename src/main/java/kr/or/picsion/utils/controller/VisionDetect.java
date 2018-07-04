@@ -91,7 +91,6 @@ public class VisionDetect {
 		
 		List<String> labelListKo = googleTranslation.translation(labelList);
 		
-		
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
 		model.addAttribute("label", labelList);
