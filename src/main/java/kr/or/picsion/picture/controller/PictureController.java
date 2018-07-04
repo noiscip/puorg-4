@@ -279,7 +279,7 @@ public class PictureController {
 		//s3 저장 (원본 사진)
 		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		//원본사진 변경
-		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
+//		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
 		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 		new File(picture.getPicPath()).renameTo(reFile);
 		
