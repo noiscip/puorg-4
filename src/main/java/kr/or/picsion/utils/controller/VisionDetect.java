@@ -1,6 +1,5 @@
 package kr.or.picsion.utils.controller;
 
-import java.io.File;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.View;
 
-import kr.or.picsion.picture.service.PictureService;
+import kr.or.picsion.utils.GoogleTranslationApi;
 import kr.or.picsion.utils.VisionApi;
 
 @Controller
@@ -18,6 +17,9 @@ public class VisionDetect {
 	
 	@Autowired
 	private VisionApi vision;
+	
+	@Autowired
+	private GoogleTranslationApi googleTranslation;
 	
 	@Autowired
 	private View jsonview;
@@ -71,18 +73,22 @@ public class VisionDetect {
 		String uploadedPath= vision.fileUpload(filePath);//실경로 파일 업로드
 		String logocheck=vision.detectLogos(uploadedPath);//vision : 로고감지
 		String safecheck=vision.detectSafeSearch(uploadedPath);//vision : 유해감지
-		List<String> labelBag=vision.detectLabels(uploadedPath);//vision : 태그뽑기
+		List<String> labelList=vision.detectLabels(uploadedPath);//vision : 태그뽑기
 //		List<Face> faceList = vision.detectFaces(uploadedPath);//vision : 얼굴감지
-		List<String> addLabel = vision.detectWebDetections(uploadedPath);
-
+		for(String label : vision.detectWebDetections(uploadedPath)) {
+			labelList.add(label);
+		}
+		
+		List<String> labelListKo = googleTranslation.translation(labelList);
+		
+		
 		model.addAttribute("logo", logocheck);
 		model.addAttribute("safe", safecheck);
-		model.addAttribute("label", labelBag);
-		model.addAttribute("label2", addLabel);
+		model.addAttribute("label", labelList);
+		model.addAttribute("label2", labelListKo);
 		model.addAttribute("picPath",vision.picturePath);
 //		model.addAttribute("face",faceList);
 		
-		System.out.println("labelBag: "+labelBag);//지워라라라라라라라라라ㅏㄹㄹㄹ
 		return jsonview;
 	}
 }
