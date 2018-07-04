@@ -186,8 +186,7 @@ public class PictureController {
 
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
-		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
-		
+		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];		
 		
 		
 		
@@ -238,6 +237,11 @@ public class PictureController {
 		
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
+		System.out.println(picture.getPicPath());
+if(!picture.getPicPath().startsWith("https:")) {
+			System.out.println("https 들어왔다");
+        	System.out.println(picture.getPicPath().split("//")[3]);
+        }
 		pictureService.insertPicture(picture);
 		System.out.println("유저번호:"+user.getUserNo());
 		System.out.println(picture);
@@ -279,7 +283,7 @@ public class PictureController {
 		//s3 저장 (원본 사진)
 		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		//원본사진 변경
-		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
+//		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
 		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 		new File(picture.getPicPath()).renameTo(reFile);
 		

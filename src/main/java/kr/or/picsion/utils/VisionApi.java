@@ -54,8 +54,8 @@ public class VisionApi {
 	 */
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		String filePathh = "";
-		/*String uploadPath = "D:\\imagePicsion\\";*/
-		String uploadPath = "C:\\imagePicsion\\"; 
+		String uploadPath = "D:\\imagePicsion\\";
+//		String uploadPath = "C:\\imagePicsion\\"; 
 		/*
 		 * String uploadPath =
 		 * "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
@@ -380,9 +380,10 @@ public class VisionApi {
 	private static Image getImage(String filePath) {
 		Image image;
 
-		if (filePath.startsWith("gs://")) { // GCS에서 이미지를 가져올때 image 생성
+		if (filePath.startsWith("https://")) { // GCS에서 이미지를 가져올때 image 생성
 			/*ImageSource imgSource = ImageSource.newBuilder().setGcsImageUri(filePath).build();*/
-			ImageSource imgSource = ImageSource.newBuilder().setImageUri(filePath.split("gs://")[1]).build();
+			System.out.println("https잘 탔고");
+			ImageSource imgSource = ImageSource.newBuilder().setImageUri(filePath).build();
 			image = Image.newBuilder().setSource(imgSource).build();
 		} else { // 로컬에서 이미지를 가져올때 image 생성
 			System.out.println("여기탔니?~~~~~~~~~~~~~~~~~~~~~");

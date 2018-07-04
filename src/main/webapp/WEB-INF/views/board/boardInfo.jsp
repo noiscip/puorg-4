@@ -531,7 +531,9 @@
 				
 					<div class="col-md-6">
 						<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
-	
+								<input type="hidden" name="transferState" value="${boardInfo.copyright}">
+								<input type="hidden" name="picPath" value="${operPicture.picPath}">
+								
 							<div class="form-group">
 								<label for="title">제목</label> <input type="text"
 									class="form-control" id="pictureTitle" name="picTitle">
@@ -724,7 +726,7 @@
 	$(function() {		
 		$('#operPicture').on("click",function() {
 			console.log("클릭");
-			var filePath = "gs://"+$("#filePath").attr("src");
+			var filePath = $("#filePath").attr("src");
 			console.log(filePath);
 			$.ajax({
 				url : "/picsion/opervision.ps",

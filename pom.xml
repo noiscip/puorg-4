@@ -243,6 +243,12 @@
 		    <version>2.10.1</version>
 		</dependency>
 				
+		<!-- Scheduler -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>4.0.4.RELEASE</version>
+		</dependency>
 	</dependencies>
     <build>
         <plugins>
