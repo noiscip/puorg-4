@@ -54,8 +54,8 @@ public class VisionApi {
 	 */
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		String filePathh = "";
-		/*String uploadPath = "D:\\imagePicsion\\";*/
-		String uploadPath = "C:\\imagePicsion\\"; 
+		String uploadPath = "D:\\imagePicsion\\";
+//		String uploadPath = "C:\\imagePicsion\\"; 
 		/*
 		 * String uploadPath =
 		 * "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
