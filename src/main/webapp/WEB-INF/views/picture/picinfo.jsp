@@ -156,13 +156,9 @@ $(document).ready(function() {
 			      $.each(data.newcommentUserList,function(index,element){
 			    	  console.log(element)
 						media += "<div class='media'>"+
-					    "<a class='float-left' href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+element.userNo+"'>"+
+					    "<a class='float-left' href='/picsion/picture/mystudio.ps?userNo="+element.userNo+"'>"+
 						"<div class='avatar'>";
-						if(element.prPicture == null){
-							 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
-						}else{
-							media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
-						}
+						media += "<img class='media-object' alt='64x64' src='"+element.prPicture+"'>";
 						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
@@ -339,18 +335,8 @@ $(document).ready(function() {
 								<div class="row">
 									<div class="col-md-5">
 										<div class="card-header card-header-image">
-											<a
-												href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${userInfo.userNo}">
-												<c:choose>
-													<c:when test="${userInfo.prPicture eq null}">
-														<img class="img"
-															src="<%=request.getContextPath()%>/assets/img/user.png">
-													</c:when>
-													<c:otherwise>
-														<img class="img"
-															src="${userInfo.prPicture}">
-													</c:otherwise>
-												</c:choose>
+											<a	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${userInfo.userNo}">
+												<img class="img" src="${userInfo.prPicture}">
 											</a>
 											<div class="colored-shadow"
 												style="background-image: url(&quot;${userInfo.prPicture}&quot;); opacity: 1;"></div>
@@ -447,17 +433,7 @@ $(document).ready(function() {
 												<div class="media">
 													<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentUserList[status.index].userNo}">
 														<div class="avatar">
-															<c:choose>
-																<c:when
-																	test="${commentUserList[status.index].prPicture eq null}">
-																	<img class="media-object" alt="64x64"
-																		src="<%=request.getContextPath()%>/assets/img/user.png">
-																</c:when>
-																<c:otherwise>
-																	<img class="media-object" alt="64x64"
-																		src="${commentUserList[status.index].prPicture}">
-																</c:otherwise>
-															</c:choose>
+												         <img class="media-object" alt="64x64" src="${commentUserList[status.index].prPicture}">
 														</div>
 													</a>
 													<div style="width: 70%;" class="media-body">
@@ -493,15 +469,7 @@ $(document).ready(function() {
 										<c:otherwise>
 											<a class="author float-left" href="#pablo">
 												<div class="avatar">
-													<c:choose>
-														<c:when test="${sessionScope.user.prPicture eq null}">
-															<img class="media-object" alt="64x64"
-																src="<%=request.getContextPath()%>/assets/img/user.png">
-														</c:when>
-														<c:otherwise>
-															<img class="media-object" alt="64x64" src="${sessionScope.user.prPicture}">
-														</c:otherwise>
-													</c:choose>
+												  <img class="media-object" alt="64x64" src="${sessionScope.user.prPicture}">
 												</div>
 											</a>
 											<div class="media-body">
