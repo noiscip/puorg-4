@@ -14,7 +14,7 @@ $(function(){
 	$(document).on('click','#newNotice',function(){
 		
 		$('#noticeList').hide() 
-
+ 
 		if(isRun == true) {
        		return;
   	  	}
@@ -124,26 +124,39 @@ $(function(){
 	}) */
 	
 	function newNoticeCount() {
-		var newMessage = '<img id="newNotice" src="https://png.icons8.com/doodle/50/000000/new.png">'
-		
+		var alon = "<i id='newNotice' class='material-icons'>notifications_active</i>";
 		$.ajax({
 			url : "/picsion/notice/noticeMsg.ps",
 			success: function (data) {
 				if (data.count > 0 ){
-					$('#newNoticePlace').append(newMessage)
+					$('#al').empty();
+					$('#al').append(alon);
+					$('#newNotice').css('color','red');
 				}
 			}
 		})
 	}
-	
+	var nocart ='<li class="divider"><a>장바구니가 비었습니다</a></li>';
 	function myCart(){
+		var mycartlist="";
 		$.ajax({
 			url : "/picsion/purchase/myCart.ps?userNo="+$('#loginUserNo').val(),
 			success: function (data) {
-				console.log(data.myCartCount);
-				console.log(data.cartPicList);
 				$('#cartnav').append(data.myCartCount);
-				if(data.mayCartCount==0){
+				mycartlist+='<li class="divider"><a>장바구니</a></li>'; 
+				mycartlist+='<div class="dropdown-divider"></div>';
+				if(data.myCartCount==0){
+					$('#addcartnav').append(nocart);
+				}else{
+					$('#addcartnav').empty();
+					mycartlist+='<h6 class="dropdown-header">장바구니 목록</h6>';
+					$.each(data.cartPicList, function(i, elt){
+						mycartlist +='<li class="divider"><a>'
+						mycartlist +='<img style="width: 30px;" class="rounded" src="'+elt.picPath+'">&nbsp&nbsp';
+						mycartlist +=elt.picTitle+'<i class="material-icons">chevron_right</i>'+elt.picPrice+'원';
+						mycartlist +='</a></li>'; 	
+					})					
+					$('#addcartnav').append(mycartlist);
 					
 				}
 			}
@@ -193,21 +206,19 @@ $(function(){
 						</li>
 					</c:when>
 					<c:otherwise>
-					
-							                  
-		                  <li class="nav-item">
-							<a href="" class="nav-link" data-toggle="dropdown" id="cartnav">
-							 <i class="material-icons">shopping_cart</i>
-							</a>						
-							
-								<ul class="dropdown-menu" id="addcartnav">
+						<li class="nav-item">
+							<a href="" class="nav-link" data-toggle="dropdown" id="al">
+						
+							</a>
+								<ul class="dropdown-menu" id="noticeList">
 								</ul>
 															
 						</li>
-						<li class="nav-item">
-							<a href="#" data-toggle="dropdown" id="newNoticePlace">
-							</a>
-								<ul class="dropdown-menu" id="noticeList">
+		                <li class="nav-item">
+							<a href="" class="nav-link" data-toggle="dropdown" id="cartnav">
+							 <i class="material-icons">shopping_cart</i>
+							</a>						
+								<ul class="dropdown-menu" id="addcartnav">
 								</ul>
 															
 						</li>
@@ -270,7 +281,7 @@ $(function(){
 									  <img style="width:30px;" class="rounded-circle" src="<%=request.getContextPath()%>/assets/img/user.png">
 									</c:when>
 									<c:otherwise>
-									  <img style ="width: 30px;" class="rounded-circle" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
+									  <img style ="width: 30px;" class="rounded-circle" src="${sessionScope.user.prPicture}">
 									</c:otherwise>
 								</c:choose> 
 							  	${sessionScope.user.userName}
