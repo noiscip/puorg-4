@@ -7,7 +7,6 @@
 		  //top으로ws
 		  	
 			$(function() {
-
 				if($('#loginUserNo').val()!= ""){
 					connect() 
 				}
@@ -56,10 +55,9 @@
 		  	var wsocket
 		  
 			function connect(){
-			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
+			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */ 
 			 	
-
-			 	wsocket = new WebSocket("ws://192.168.0.20:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도  
 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
@@ -196,3 +194,8 @@
     </div>
   </div>
 </div>
+
+
+<script>
+
+</script>

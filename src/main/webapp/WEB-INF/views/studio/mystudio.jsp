@@ -174,6 +174,11 @@
 		width:50px;
 		height:50px;
 	}
+	
+	/* 스튜디오 프로필 사진 크기 */
+	.studio-prPic-wid{
+		max-width:240px !important;
+	}
 </style>
 
 <input type="hidden" value="${userinfo.tableNo},${userinfo.userNo},0,0" id="info">
@@ -191,7 +196,7 @@
 	                	<img src="<%=request.getContextPath()%>/assets/img/user.png" alt="Circle Image" class="img-raised rounded-circle img-fluid">
               		</c:when>
               		<c:otherwise>
-              			<img src="<%=request.getContextPath()%>${userinfo.prPicture}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+              			<img src="${userinfo.prPicture}" alt="Circle Image" class="img-raised rounded-circle img-fluid studio-prPic-wid">
               		</c:otherwise>
               	</c:choose>
               </div>
@@ -321,7 +326,7 @@
 			          				</c:when>
 			          				<c:otherwise>
 			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${follow.userName}">
-			          						<img src="<%=request.getContextPath()%>${follow.prPicture}" class="rounded user-img">
+			          						<img src="${follow.prPicture}" class="rounded user-img">
 			          					</a>
 			          				</c:otherwise>
 			          			</c:choose>
@@ -349,7 +354,7 @@
 			          				</c:when>
 			          				<c:otherwise>
 			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${following.userName}">
-			          						<img title="${following.userId}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded user-img">
+			          						<img title="${following.userId}" src="${following.prPicture}" class="rounded user-img">
 			          					</a>
 			          				</c:otherwise>
 			          			</c:choose>

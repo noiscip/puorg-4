@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<insert id="insertProfile">
-		INSERT INTO PROFILE (userNo,prPicture) VALUES	(#{userNo},'/assets/img/user.png')
+		INSERT INTO PROFILE (userNo,prPicture) VALUES	(#{userNo},'https://s3.ap-northeast-2.amazonaws.com/picsion/profile/user.png')
 	</insert>
 	
 	<!-- userId랑 userNo로 검색해서 회원의 프로필, 유저정보, 계정 연동 -->
