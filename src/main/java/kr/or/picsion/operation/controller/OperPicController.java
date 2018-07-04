@@ -36,6 +36,13 @@ import com.google.protobuf.ByteString;
 
 import kr.or.picsion.picture.dto.Face;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operation.controller 
+ * @className OperPicController
+ * @date 2018. 7. 2.
+ */
+
 @Controller
 public class OperPicController {
 	

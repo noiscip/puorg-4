@@ -5,6 +5,13 @@ import java.util.List;
 
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.message.dto 
+ * @className Message
+ * @date 2018. 6. 4.
+ */
+
 public class Message {
 
 	private int msgNo;

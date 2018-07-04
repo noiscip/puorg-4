@@ -22,6 +22,13 @@ import kr.or.picsion.picture.dao.PictureDao;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.service 
+ * @className PictureService
+ * @date 2018. 6. 4.
+ */
+
 @Service
 public class PictureService {
 
@@ -393,12 +400,17 @@ public class PictureService {
         FontMetrics fontMetrics = w.getFontMetrics();
         Rectangle2D rect = fontMetrics.getStringBounds(text, w);
 
-        // calculate center of the image
+        //calculate center of the image
         int centerX = (image.getWidth() - (int) rect.getWidth()) / 2;
         int centerY = image.getHeight() / 2;
+        
+//        for(double scale=0.0625;scale<=1;scale=scale*2) {
+//        int centerX = (int)(image.getWidth() -  rect.getWidth() / scale);
+//        int centerY = (int)(image.getHeight() / scale);
 
         // add text overlay to the image
         w.drawString(text, centerX, centerY);
+//        }
         ImageIO.write(watermarked, type, destination);
         w.dispose();
 

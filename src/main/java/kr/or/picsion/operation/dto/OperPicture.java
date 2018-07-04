@@ -2,6 +2,13 @@ package kr.or.picsion.operation.dto;
 
 import java.util.Date;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operation.dto 
+ * @className OperPicture
+ * @date 2018. 7. 2.
+ */
+
 public class OperPicture {
 
 	private int operNo;

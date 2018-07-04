@@ -1,5 +1,12 @@
 package kr.or.picsion.picture.dto;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.dto 
+ * @className Face
+ * @date 2018. 6. 24.
+ */
+
 public class Face {
 	
 	private int x_0;

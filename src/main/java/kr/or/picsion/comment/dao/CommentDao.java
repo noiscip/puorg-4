@@ -5,6 +5,13 @@ import java.util.List;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.comment.dao 
+ * @className CommentDao
+ * @date 2018. 6. 4.
+ */
+
 public interface CommentDao {
 	
 	public int insertComment(Comment comment);

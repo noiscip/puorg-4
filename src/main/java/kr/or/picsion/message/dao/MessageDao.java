@@ -5,6 +5,13 @@ import java.util.List;
 import kr.or.picsion.message.dto.Message;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.message.dao 
+ * @className MessageDao
+ * @date 2018. 6. 4.
+ */
+
 public interface MessageDao {
 
 	public int insertMessage(Message message);

@@ -5,6 +5,13 @@ import java.util.List;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.user.dao 
+ * @className UserDao
+ * @date 2018. 6. 4.
+ */
+
 public interface UserDao {
 
 	public List<User> userList();						//유저 리스트

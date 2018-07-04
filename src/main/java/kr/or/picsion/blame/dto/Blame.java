@@ -2,6 +2,13 @@ package kr.or.picsion.blame.dto;
 
 import java.util.Date;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.blame.dto 
+ * @className Blame
+ * @date 2018. 6. 4.
+ */
+
 public class Blame {
 
 	private int blaNo;

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-	<div class="page-header header-filter" filter-color="purple" style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg')">
+	<div class="page-header header" style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg')">
     <div class="container">
       <div class="row">
         <div class="col-md-10 ml-auto mr-auto">

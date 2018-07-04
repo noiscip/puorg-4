@@ -2,6 +2,13 @@ package kr.or.picsion.utils;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.utils 
+ * @className NaverLoginApi
+ * @date 2018. 6. 15.
+ */
+
 public class NaverLoginApi extends DefaultApi20{
 
 	public NaverLoginApi() {}
