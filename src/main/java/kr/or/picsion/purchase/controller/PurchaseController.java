@@ -213,4 +213,24 @@ public class PurchaseController {
 		model.addAttribute("result",result);
 		return jsonview;
 	}
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : myCart
+	* 작성자명 : 정도혁
+	* 기      능 : 헤더에 장바구니 확인
+	*
+	* @param model
+	* @param userNo
+	* @return View
+	*/
+	@RequestMapping("myCart.ps")
+	public View myCart(Model model, int userNo) {
+		List<Picture> cartPicList =  purchaseService.selectCart(userNo);
+		int count = purchaseService.cartCount(userNo);
+		model.addAttribute("cartPicList",cartPicList);
+		model.addAttribute("myCartCount",count);
+		return jsonview;
+	}
 }

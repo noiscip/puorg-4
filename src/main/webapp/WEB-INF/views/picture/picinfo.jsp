@@ -182,21 +182,6 @@ $(document).ready(function() {
 		}
 	})
 	
-	/* $(document).on('click','a[data-original-title=보내버리기]',function(){
-		var info = (this.id).split(',')
-		console.log(info)
-		console.log(this.parentNode.children[1].innerHTML)
-		var content = this.parentNode.children[1].innerHTML
-		var data = {
-						tableNo : info[0],
-						userNo : info[1],
-						picNo : info[2],
-						cmtNo : info[3],
-						blaContent : content
-					}
-		console.log(data)
-	}) */
-	
 	//댓글 삭제
 	$(document).on('click', '#commentDel', function(){
 		var commbody = $(this).parent().parent()
@@ -247,20 +232,6 @@ $(document).ready(function() {
 			 }) 
 		}
 	})
-<%-- 	
-	//사진 카트 추가
-	$(document).on('click', '#buy', function(){
-		if(loginUserNo==0){
-			alert("로그인 후 이용하세요");
-		}else{
-			if($('#addcart')["0"].children["0"].innerHTML=="remove_shopping_cart"){
-				alert("이미 장바구니에 추가되어있습니다.")
-			}else{
-				location.href="<%=request.getContextPath()%>/purchase/userPurchase.ps?userNo="+loginUserNo+"&picNo="+picNo;
-			}
-		}
-	})
-	 --%>
 	
 	
 })
@@ -337,7 +308,17 @@ $(document).ready(function() {
 							<div class="colored-shadow colored-shadow-big"
 								style="background-image: url(&quot;<%=request.getContextPath()%>/${picture.picPath}?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div>
 						</div>
-						<div class="card-body"></div>
+						<div class="card-body">
+						<c:choose>
+						<c:when test="${sessionScope.user eq null}">
+						</c:when>
+						<c:otherwise>
+						<c:if test="${sessionScope.user.userNo ne userInfo.userNo}">
+						<button class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#reportModal">신고</button>
+						</c:if>
+						</c:otherwise>
+						</c:choose>
+						</div>
 					</div>
 					<div class="team">
 						<div class="col-md-12">
@@ -520,8 +501,6 @@ $(document).ready(function() {
 													<button type="button" id="commentbtn"
 														class="btn btn-primary btn-round btn-wd float-right">Post
 														Comment</button>
-														<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
-														<a href="${picture.picPath}" class="btn btn-primary btn-sm">안졸린데?</a>
 												</div>
 											</div>
 										</c:otherwise>
@@ -531,15 +510,7 @@ $(document).ready(function() {
 						</div>
 					</div>
 				</div>
-				<!-- <div class="col-md-12 col-sm-12">
-					<div align="center">
-						
-						<button class="btn btn-rose btn-round card-title">
-							Buy &nbsp;<i class="material-icons">shopping_cart</i>
-						</button>
-					</div>
-
-				</div> -->
+				
 			</div>
 		</div>
 		<div class="related-products">
