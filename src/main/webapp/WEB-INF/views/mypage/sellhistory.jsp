@@ -40,8 +40,8 @@
 				</form> -->
 				<div class="tabs-underline">
 				<ul>
-					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
-					<li><a href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
+					<li><a href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
+					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
 				</ul>
 				<div class="table-responsive">
 				
@@ -51,9 +51,8 @@
 								<th class="text-center"></th>
 								<th>사진</th>
 								<th class="text-center">해상도</th>
-								<th class="text-center">구매일</th>
+								<th class="text-center">판매일</th>
 								<th class="text-center">가격</th>
-								<th class="text-center">다운로드</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -70,7 +69,6 @@
 								<td class="text-center"></td>
 								<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${purchaseInfo[status.index].purchaseReg}" /></td>
 								<td class="td-number text-center">${picture.picPrice}<small>원</small></td>
-								<td class="text-center"><a id="download" href="${picture.picPath}"><i class="material-icons">vertical_align_bottom</i></a></td>
 							</tr>
 						</c:forEach>
 						
@@ -78,7 +76,7 @@
 								<td colspan="2"></td>
 								<td colspan="1"></td>
 								<td class="td-total">Total</td>
-								<td id="total2" class="td-price text-center">${sumPurchase}<small>원</small></td>
+								<td id="total2" class="td-price text-center">${sumSell}<small>원</small></td>
 								<td colspan="1"></td>
 							</tr>
 						</tbody>
