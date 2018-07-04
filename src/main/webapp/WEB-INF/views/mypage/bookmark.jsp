@@ -71,7 +71,7 @@ $(function() {
                  
                 $.ajax({
                     type : 'post',  
-                    url : '/picsion/user/bookmarklist.ps',
+                    url : '<%=request.getContextPath()%>/user/bookmarklist.ps',
                     data : { 
                         page: page
                     },
