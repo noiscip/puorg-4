@@ -22,7 +22,25 @@ public class VisionDetect {
 	@Autowired
 	private View jsonview;
 	
+	@RequestMapping(value = "opervision.ps", method=RequestMethod.POST)
+	public View opervision(String filePath,Model model) {
+		
+		String logocheck=vision.detectLogos(filePath);//vision : 로고감지
+		String safecheck=vision.detectSafeSearch(filePath);//vision : 유해감지
+		List<String> labelBag=vision.detectLabels(filePath);//vision : 태그뽑기
+//		List<Face> faceList = vision.detectFaces(uploadedPath);//vision : 얼굴감지
+		List<String> addLabel = vision.detectWebDetections(filePath);
 
+		model.addAttribute("logo", logocheck);
+		model.addAttribute("safe", safecheck);
+		model.addAttribute("label", labelBag);
+		model.addAttribute("label2", addLabel);
+		model.addAttribute("picPath",vision.picturePath);
+//		model.addAttribute("face",faceList);
+		
+		System.out.println("labelBag: "+labelBag);//지워라라라라라라라라라ㅏㄹㄹㄹ
+		return jsonview;
+	}
 	
 	/**
 	* 날      짜 : 2018. 6. 8.
