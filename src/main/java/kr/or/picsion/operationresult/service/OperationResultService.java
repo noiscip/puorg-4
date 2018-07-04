@@ -1,5 +1,12 @@
 package kr.or.picsion.operationresult.service;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operationresult.service 
+ * @className OperationResultService
+ * @date 2018. 7. 2.
+ */
+
 public class OperationResultService {
 
 	private int operNo;

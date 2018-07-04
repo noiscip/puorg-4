@@ -9,6 +9,13 @@ import org.springframework.stereotype.Service;
 import kr.or.picsion.operation.dao.OperationDao;
 import kr.or.picsion.operation.dto.Operation;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operation.service 
+ * @className OperationService
+ * @date 2018. 6. 4.
+ */
+
 @Service
 public class OperationService {
 
@@ -51,7 +58,24 @@ public class OperationService {
 
 		return operation;
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : operNoselectOper
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param operNo
+	* @return
+	*/
+	public Operation operNoselectOper(int operNo) {
 
+		System.out.println("operNoselectOper 서비스 ");
+		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+		Operation operation = operationDao.operNoselectOper(operNo);
+
+		return operation;
+	}
 	/**
 	 * 날 짜 : 2018. 6. 29. 
 	 * 메소드명 : operBoardList 
@@ -99,5 +123,23 @@ public class OperationService {
 		System.out.println("requestList 서비스 시작 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		return operationDao.requestList(userNo);
+	}
+	
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 3.
+	* 메소드명 : updateOperation
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param operation
+	* @return
+	*/
+	public int updateOperation(Operation operation) {
+		System.out.println("updateOperation 서비스 시작 ");
+		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+		int result = operationDao.updateOperation(operation);
+		return result;
 	}
 }

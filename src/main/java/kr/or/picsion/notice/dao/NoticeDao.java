@@ -5,6 +5,13 @@ import java.util.Map;
 
 import kr.or.picsion.notice.dto.Notice;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.notice.dao 
+ * @className NoticeDao
+ * @date 2018. 6. 14.
+ */
+
 public interface NoticeDao {
 
 	public int insertNotice(Map<String, Object> map);  //알림등록

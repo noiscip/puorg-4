@@ -5,6 +5,13 @@ import java.util.List;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.user.dao 
+ * @className UserDao
+ * @date 2018. 6. 4.
+ */
+
 public interface UserDao {
 
 	public List<User> userList();						//유저 리스트
@@ -30,5 +37,6 @@ public interface UserDao {
 	public User selectAccountNo(String accountNo, String portalSite);      		//계정 연동 확인
 	public int updateRole(int userNo); 				//계정 연동 되었을 경우 권한 업데이트
 	public int pointCharge(int point, int userNo);	//캐시 충전
+	public List<User> randomUsers(int userNo);      //랜덤 유저 추천
 	
 }

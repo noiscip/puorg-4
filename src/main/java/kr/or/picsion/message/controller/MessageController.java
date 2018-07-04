@@ -23,6 +23,13 @@ import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.message.controller 
+ * @className MessageController
+ * @date 2018. 6. 4.
+ */
+
 @Controller
 @RequestMapping("/message/")
 public class MessageController {

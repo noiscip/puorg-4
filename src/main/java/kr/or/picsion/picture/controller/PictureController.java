@@ -36,7 +36,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.operation.dto.OperPicture;
+import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperPictureService;
+import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.purchase.service.PurchaseService;
@@ -45,6 +47,13 @@ import kr.or.picsion.user.service.UserService;
 import kr.or.picsion.utils.AmazonUpload;
 import software.amazon.ion.SystemSymbols;
 
+
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.controller 
+ * @className PictureController
+ * @date 2018. 6. 4.
+ */
 
 @Controller
 @RequestMapping("/picture/")
@@ -55,6 +64,12 @@ public class PictureController {
 
   	@Autowired
 	private PictureService pictureService;
+  	
+  	@Autowired
+	private OperationService operationService;
+
+	@Autowired
+	private PurchaseService purchaseService;
   	
 	@Autowired
 	private UserService userService;
@@ -150,22 +165,20 @@ public class PictureController {
 	* 작성자명 : 김준수 
 	* 기      능 : 
 	*
-	* @param picture
-	* @param tag
+	* @param file
 	* @param session
 	* @param operNo
 	* @return
 	*/
 	@RequestMapping("operpicupload.ps")
-	public String insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
+	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo) {
 		System.out.println("inseroper 들어왔다");
 		User user = (User) session.getAttribute("user");	
 		OperPicture operPicture = new OperPicture();
+		Operation operation = operationService.operNoselectOper(Integer.parseInt(operNo));
 		System.out.println(file.getOriginalFilename());
-		String filePathh="";
-		String uploadPath = "D:\\bitcamp104\\finalproject\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\Picsion\\assets\\img\\operpic\\";
-		String path="/assets/img/operpic/";
-		
+		String uploadPath = "D:\\imagePicsion\\";
+		String dbPath="";
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
@@ -174,14 +187,9 @@ public class PictureController {
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
 		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
-		filePathh = uploadPath + saveFileName;
 		
-		String dbPath=path+saveFileName;
-		operPicture.setOperNo(Integer.parseInt(operNo));
-		operPicture.setPicPath(dbPath);
-		operPicture.setUserNo(user.getUserNo());
-		System.out.println(operPicture);
-		operPictureService.insertOperPicture(operPicture);
+		
+		
 		
 		
 		
@@ -192,6 +200,13 @@ public class PictureController {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
+					dbPath=amazonService.uploadObject(saveFileName,"picsion/operpic");
+					operPicture.setOperNo(Integer.parseInt(operNo));
+					operPicture.setPicPath(dbPath);
+					operPicture.setUserNo(user.getUserNo());
+					operation.setOperatorEnd("T");
+					operationService.updateOperation(operation);
+					operPictureService.insertOperPicture(operPicture);
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
@@ -199,8 +214,11 @@ public class PictureController {
 					e.printStackTrace();
 				} 
 			} 	
-		
-		return "boardInfo.ps?brdNo="+brdNo;
+			System.out.println("디비 패쓰"+dbPath);			
+			System.out.println(operPicture);
+			
+			
+		return jsonview;
 	}
 	
 	/**
@@ -355,12 +373,14 @@ public class PictureController {
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
+		int buycheck = purchaseService.purchaseConfirm(user.getUserNo(), picNo);
 		List<String> tagList = pictureService.selectTag(picNo);
 		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
 		int followResult = 0;
 		if(user.getUserNo() != userInfo.getUserNo()) {
 			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
 		}
+		model.addAttribute("buycheck",buycheck);
 		model.addAttribute("respectList",respectPhotoList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("tagList",tagList);

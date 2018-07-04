@@ -126,25 +126,35 @@
 				});
 		
 		$('#operpic').on("click",function() {
-			var brdNo=${boardInfo.brdNo};			
-			var operNo=${operation.operNo};		
-			var operNo=${operation.operNo};
-			
+			var formData = new FormData($('#fileForm')[0]);
+			console.log(formData);
 					$.ajax({
 						url : "/picsion//picture/operpicupload.ps",
-						type : "post",
-						data : {	
-							brdNo : brdNo,
-							operNo : operNo
-						}, 
+						data : formData,
+						processData: false,
+						contentType: false,
+						type :'POST',						
 						success : function(data) {
-							console.log("test");
-							console.log(data.check);
-							location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+							console.log("성공");
 						}
 					});	
-				});
+			});
 		
+		
+		$('#opercomplete').on("click",function() {
+			console.log("haha");
+			var brdNo=${boardInfo.brdNo};
+					$.ajax({
+						url : "/picsion/operation/opercomplete.ps",						
+						type :'POST',	
+						data : {
+							brdNo : brdNo
+						},
+						success : function(data) {
+							console.log("성공");
+						}
+					});	
+			});
 		
 		
 		$('.applyModal').on("click",function() {
@@ -512,7 +522,8 @@
 				<div class="card-body">
 						<form id="fileForm" action=""
 						enctype="multipart/form-data" method="post">
-							
+							<input type="hidden" name="operNo" value="${operation.operNo}">
+							<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
 						<div class="fileinput fileinput-new text-center"
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail img-raised">
@@ -544,16 +555,23 @@
 	</div>
 	</c:if>
 	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.requesterNo}">
-	<c:choose>
-		<c:when test="${empty operPicture}">
-			아직 사진 안올림
-		</c:when>
-		<c:otherwise>
-			<img alt="No Image" src="<%=request.getContextPath()%>${operPicture.picPath}">
-		</c:otherwise>
-	</c:choose>
-	
-	
+	<div  align="center">
+	<h5>작업자가 올린 사진</h5>
+		<div style="height: 350px; width : 350px;">
+			<c:choose>
+				<c:when test="${empty operPicture}">
+					아직 사진 안올림
+				</c:when>
+				<c:otherwise>
+					<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
+				</c:otherwise>
+			</c:choose>
+			
+		</div>
+		<button type="button" id="opercomplete" class="btn btn-success">작업 수락</button>
+		<button type="button" class="btn btn-success">재촬영신청</button>
+		<button type="button" class="btn btn-success">신고</button>
+	</div>
 	</c:if>
 </div>
 <!-- 신청Modal -->

@@ -4,6 +4,13 @@ import java.util.List;
 
 import kr.or.picsion.operationapply.dto.OperationApply;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operationapply.dao 
+ * @className OperationApplyDao
+ * @date 2018. 6. 4.
+ */
+
 public interface OperationApplyDao {
 
 	public int insertOperationApply(OperationApply operationApply);

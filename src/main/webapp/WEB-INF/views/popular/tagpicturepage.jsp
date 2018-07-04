@@ -73,9 +73,6 @@
 			<div class="row">
 				<div class="col-md-12 ml-auto mr-auto">
 					<select class="selectpicker " data-style="select-with-transition" title="#${tag}" data-size="7">
-					    <option value="1">#TEST1</option>
-					    <option value="2">#TEST2</option>
-					    <option value="3">#TEST3</option>
 					</select>
 				</div>
 			</div> 

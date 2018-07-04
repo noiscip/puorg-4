@@ -3,24 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Insert title here</title>
-		  <style>
-		  	  footer {
-			  	  background-color:  #e5faf5;
-			  }
-			  footer a{
-			  	  color : #3e9c9d
-			  }		
-			  footer p{
-			  	  color : #3e9c9d;
-			  	  margin : 0px 0px 0px 0px;
-			  }		
-  
-		  </style>
-		  <script type="text/javascript">
+  	<script type="text/javascript">
 		  //top으로ws
 		  	
 			$(function() {
@@ -75,7 +58,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.32:8090/picsion/message.ps") //테스트 용도 
+			 	wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -188,7 +171,6 @@
 		  	
 		  	
 		</script>
-	</head>
 
 <!-- 메시지 Modal -->
 <div class="modal fade" id="reportModal" tabindex="1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
@@ -215,13 +197,3 @@
     </div>
   </div>
 </div>
-		
-	<body>
-		<footer class="text-center">
-		  <a title="Go to top" onclick="topFunction()">
-		   <i class="fas fa-angle-up fa-2x"></i>
-		  </a><br><br>
-		  <p>CSS ⓒ DB</p> 
-		</footer>
-	</body>
-</html>

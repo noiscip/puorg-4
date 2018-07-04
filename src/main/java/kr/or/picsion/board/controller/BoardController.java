@@ -26,6 +26,13 @@ import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.board.controller 
+ * @className BoardController
+ * @date 2018. 6. 4.
+ */
+
 @Controller
 @RequestMapping("/board/")
 public class BoardController {
@@ -51,14 +58,15 @@ public class BoardController {
 	@Autowired
 	private OperPictureService operPictureService;
 	/**
-	 * 날 짜 : 2018. 6. 14. 메소드명 : selectBoard 
+	 * 날      짜 : 2018. 6. 14. 
+	 * 메소드명 : selectBoard 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 요청게시판 상세보기
+	 * 기      능 : 요청게시판 상세보기
 	 *
 	 * @param brdNo
 	 * @param model
 	 * @param session
-	 * @return
+	 * @return String
 	 */
 	@RequestMapping(value = "boardInfo.ps")
 	public String selectBoard(int brdNo, Model model, HttpSession session) {
@@ -92,9 +100,10 @@ public class BoardController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 15. 메소드명 : postwriteBoard 
+	 * 날      짜 : 2018. 6. 15. 
+	 * 메소드명 : postwriteBoard 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 요청 글 작성
+	 * 기      능 : 요청 글 작성
 	 *
 	 * @param board
 	 * @param session
@@ -110,15 +119,16 @@ public class BoardController {
 		inboard.setOperStateNo(1);
 		System.out.println(inboard);
 		boardService.insertBoard(inboard);
-		return "board.writeBoard";
+		return "redirect:/board/board.ps";
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 16. 메소드명 : getwriteBoard 
+	 * 날      짜 : 2018. 6. 16. 
+	 * 메소드명 : getwriteBoard 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 요청글 작성 뷰단 보내기
+	 * 기      능 : 요청글 작성 뷰단 보내기
 	 *
-	 * @return
+	 * @return String
 	 */
 	@RequestMapping(value = "writeboard.ps", method = RequestMethod.GET)
 	public String getwriteBoard() {
@@ -127,34 +137,23 @@ public class BoardController {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 19. 메소드명 : boardList 
+	 * 날      짜 : 2018. 6. 19. 
+	 * 메소드명 : boardList 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 요청게시판 리스트
+	 * 기      능 : 요청게시판 리스트
 	 *
 	 * @param model
-	 * @return
+	 * @return String
 	 */
 	@RequestMapping("board.ps")
 	public String boardList(Model model) {
-		System.out.println("요청게시판 컨트롤러");
 		List<Board> list = new ArrayList<Board>();
 		List<Operation> operlist = new ArrayList<Operation>();
-		try {
-			list = boardService.boardList();
-			operlist = operationService.operBoardList();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(list);
-		System.out.println(operlist);
+		list = boardService.boardList();
+		operlist = operationService.operBoardList();
 
 		model.addAttribute("list", list);
 		model.addAttribute("operlist", operlist);
-		System.out.println("뷰단 보내기");
 		return "board.board";
 	}
 

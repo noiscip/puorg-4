@@ -3,6 +3,13 @@ package kr.or.picsion.picture.dto;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.dto 
+ * @className Picture
+ * @date 2018. 6. 4.
+ */
+
 public class Picture {
 
 	private int picNo;

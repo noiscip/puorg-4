@@ -1,5 +1,12 @@
 package kr.or.picsion.notice.dto;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.notice.dto 
+ * @className Notice
+ * @date 2018. 6. 14.
+ */
+
 public class Notice {
 
 	private int noticeNo;

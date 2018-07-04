@@ -970,21 +970,24 @@ $(document).ready(function() {
 				<c:when test="${empty imagelist}">
 				<h1 class="text-center">팔로잉을 시작 하세요</h1>
 				<div class="row">
-                    <div class="col-md-3">
+				
+					<c:forEach items="${randomuser}" var="rand" varStatus='status'>
+					
+					<div class="col-md-3">
                         <div class="card card-profile card-plain">
                             <div class="card-avatar">
-                                <a href="#pablo">
-                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/marc.jpg">
+                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${rand.userNo}">
+                                    <img class="img" src="<%=request.getContextPath()%>${rand.prPicture}">
                                 </a>
                             </div>
                             <div class="card-body">
-                                <h4 class="card-title">Alec Thompson</h4>
-                                <h6 class="category text-muted">CEO / Co-Founder</h6>
+                                <h4 class="card-title">${rand.userName}</h4>
+                                <h6 class="category text-muted">photographer</h6>
                                 <p class="card-description">
-                                    And I love you like Kanye loves Kanye. We need to restart the human foundation.
+                                    ${rand.prContent}
                                 </p>
                             </div>
-                            <div class="card-footer justify-content-center">
+                           <!--  <div class="card-footer justify-content-center">
                                 <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter">
                                     <i class="fa fa-twitter"></i>
                                 </a>
@@ -994,77 +997,11 @@ $(document).ready(function() {
                                 <a href="#pablo" class="btn btn-just-icon btn-link btn-google">
                                     <i class="fa fa-google"></i>
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card card-profile card-plain">
-                            <div class="card-avatar">
-                                <a href="#pablo">
-                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/kendall.jpg">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Tania Andrew</h4>
-                                <h6 class="category text-muted">Designer</h6>
-                                <p class="card-description">
-                                    Don't be scared of the truth because we need to restart the human foundation. And I love you like Kanye loves Kanye.
-                                </p>
-                            </div>
-                            <div class="card-footer justify-content-center">
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble">
-                                    <i class="fa fa-dribbble"></i>
-                                </a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-linkedin">
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card card-profile card-plain">
-                            <div class="card-avatar">
-                                <a href="#pablo">
-                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/christian.jpg">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Christian Mike</h4>
-                                <h6 class="category text-muted">Web Developer</h6>
-                                <p class="card-description">
-                                    I love you like Kanye loves Kanye. Don't be scared of the truth because we need to restart the human foundation.
-                                </p>
-                            </div>
-                            <div class="card-footer justify-content-center">
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-facebook"><i class="fa fa-facebook-square"></i></a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble"><i class="fa fa-dribbble"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card card-profile card-plain">
-                            <div class="card-avatar">
-                                <a href="#pablo">
-                                    <img class="img" src="<%=request.getContextPath()%>/assets/img/faces/avatar.jpg">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Rebecca Stormvile</h4>
-                                <h6 class="category text-muted">Web Developer</h6>
-                                <p class="card-description">
-                                    Don't be scared of the truth because we need to restart the human foundation.
-                                </p>
-                            </div>
-                            <div class="card-footer justify-content-center">
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-google"><i class="fa fa-google"></i></a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter"><i class="fa fa-twitter"></i></a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble"><i class="fa fa-dribbble"></i></a>
-                            </div>
-                        </div>
-                    </div>
+					
+					</c:forEach>
                 </div>
 				</c:when>
 				<c:otherwise>

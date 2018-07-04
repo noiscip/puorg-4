@@ -18,6 +18,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 select * from OPERATION where brdNo=#{brdNo}
 </select>
 
+<select id="operNoselectOper" resultType="kr.or.picsion.operation.dto.Operation">
+select * from OPERATION where operNo=#{operNo}
+</select>
 
 <!-- operBoardList(전체조회) -->
  <select id="operBoardList" 
@@ -38,4 +41,15 @@ select * from OPERATION where brdNo=#{brdNo}
       select * from OPERATION where requesterNo=#{userNo} order by operStartReg desc
  </select>
  
+ 
+ <!-- updateOperation(요청 수정) -->
+ <update id="updateOperation" parameterType="kr.or.picsion.operation.dto.Operation">
+      update OPERATION set 
+      				operPrice=#{operPrice}
+			      	<if test="operatorEnd != null">, operatorEnd=#{operatorEnd}</if>
+			      	<if test="requesterEnd != null">, requesterEnd=#{requesterEnd}</if>
+			      	<if test="operatorCancel != null">, operatorCancel=#{operatorCancel}</if>
+			      	<if test="requesterCancel != null">, requesterCancel=#{requesterCancel}</if>
+      where operNo=#{operNo}
+ </update>
 </mapper>
