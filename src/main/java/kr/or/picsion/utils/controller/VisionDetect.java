@@ -24,9 +24,19 @@ public class VisionDetect {
 	@Autowired
 	private View jsonview;
 	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : opervision
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param filePath
+	* @param model
+	* @return
+	*/
 	@RequestMapping(value = "opervision.ps", method=RequestMethod.POST)
 	public View opervision(String filePath,Model model) {
-		
+		System.out.println(filePath);
 		String logocheck=vision.detectLogos(filePath);//vision : 로고감지
 		String safecheck=vision.detectSafeSearch(filePath);//vision : 유해감지
 		List<String> labelBag=vision.detectLabels(filePath);//vision : 태그뽑기
