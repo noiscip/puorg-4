@@ -4,6 +4,7 @@
 
 
 <script type="text/javascript">
+/* 
 	$(function(){
 		$('#pointCharge').click(function(){
 			var chargePoint = $('#chargePrice').val()
@@ -18,25 +19,59 @@
 				alert('잘못 입력하셨습니다! 숫자만 입력해주세요.');
 				$('#chargePrice').val("");
 			}else{
-				$.ajax({
-					url:"/picsion/user/charge.ps",
-					data: {point:chargePoint},
-					success: function(data){
-						if(data.result==1){
-							$('#point').val(parseInt(nowPoint)+parseInt(chargePoint));
-							alert('충전이 완료되었습니다!');
-						}else{
-							alert('충전 실패했습니다. 잠시후 다시 시도해주세요.');
-						}
-					}
-				})
-				$('#chargePrice').val("");
+				
+				
 			}
 		})
 		
 		
+	}) 
+*/
+	$(function(){
+		var nowPoint = $('#point').val()
+		
+		var IMP = window.IMP
+		IMP.init('imp27054314')
+		
+		$('#pointCharge').click(function(){
+			IMP.request_pay({
+			    pg : 'inicis', // version 1.1.0부터 지원.
+			    pay_method : 'card',
+			    merchant_uid : 'merchant_' + new Date().getTime(),
+			    name : '주문명:포인트 충전',
+			    amount : $('#chargePrice').val(),
+			    buyer_name : $('#userName').val(),
+			    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
+		}, function(rsp) {
+			if ( rsp.success ) {
+				var msg = '결제가 완료되었습니다.'
+				msg += '결제 금액 : ' + rsp.paid_amount
+				msg += '카드 승인번호 : ' + rsp.apply_num
+				
+				$.ajax({
+					url:"/picsion/user/charge.ps",
+					data: {point:rsp.paid_amount},
+					success: function(data){
+						if(data.result == 0){
+							msg = '결제 완료 BUT 업데이트 실패'
+						}else{
+							console.log(data.point)
+							$('#point').val(data.point)
+						}
+						
+					}
+				})
+			
+				$('#chargePrice').val("")
+			} else {
+			    var msg = '결제에 실패하였습니다.'
+			    msg += '에러내용 : ' + rsp.error_msg
+			}
+			alert(msg)
+		});
+			
+		})	
 	})
-	
 </script>
 <style>
 /* 뿌려주는 이미지의 크기 */
@@ -215,7 +250,7 @@
 	                    <div class="form-group">
 	                      <label for="exampleInput1" class="bmd-label-floating">이름</label>
 	                      <div class="input-group">
-	                        <input type="text" class="form-control" name="userName" value="${userinfo.userName}">
+	                        <input type="text" class="form-control" id="userName" name="userName" value="${userinfo.userName}">
 	                      </div>
 		                    </div>
 		                    <div class="form-group">
