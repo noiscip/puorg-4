@@ -282,9 +282,9 @@ public class PictureService {
 	* @param tag
 	* @return List<Picture>
 	*/
-	public List<Picture> searchTagPicList(int userNo, String tag){
+	public List<Picture> searchTagPicList(int userNo, String tag, int page, int endpage){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<Picture> list = picDao.searchTagPicList(userNo, tag);
+		List<Picture> list = picDao.searchTagPicList(userNo, tag, page, endpage);
 		return list;
 	}
 	
@@ -297,9 +297,9 @@ public class PictureService {
 	* @param tag
 	* @return List<User>
 	*/
-	public List<User> searchTagUserList(String tag){
+	public List<User> searchTagUserList(String tag, int page, int endpage){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<User> list = picDao.searchTagUserList(tag);
+		List<User> list = picDao.searchTagUserList(tag, page, endpage);
 		return list;
 	} 
 	

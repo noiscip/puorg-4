@@ -4,6 +4,7 @@
 
 
 <script type="text/javascript">
+$(function() {
 	var loginUserNo = $('#loginUserNo').val();
 
 	$(document).on('click','#like',function(){
@@ -52,7 +53,59 @@
 				}
 			 }) 
 		}
-	}) 
+	})
+	
+	var lastScrollTop = 0;
+    var page = ${page};
+
+	$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
+         
+        var currentScrollTop = $(window).scrollTop();
+        var scrollPage="";
+        
+        if( currentScrollTop - lastScrollTop > 0 ){
+            
+            // 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
+            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
+                
+                $.ajax({
+                    type : 'post',  
+                    url : '<%=request.getContextPath()%>/picture/tagpicList.ps',
+                    data : { 
+                        page: page
+                    },
+                    success : function(data){
+                        
+                        $.each(data.tagpicList, function(index, obj){
+                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
+                        			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+                                	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+		                    		   "</a><div><div class='counts hide-xs hide-sm'>";
+			                           if(obj.respectCheck=="T"){
+					                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+					                   }else{
+					                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+					                   }
+					                   
+					                   if(obj.bookmarkCheck=="T"){
+					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+					                   }else{
+					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+					                   }
+		                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.tagUserList[index].userNo+"'>"+data.tagUserList[index].userName+"</a></div></div>";
+		            		
+			                $('#searchpic').append(scrollPage);
+                        })
+					    page+=data.endpage;
+                    }
+                });
+                 
+            }
+            
+        }
+
+    })
+})
 </script>
 
 <style type="text/css">
@@ -79,7 +132,7 @@
 			
 				<div class="flex_grid credits">
 				<div class="tz-gallery">
-				<div class="row">
+				<div class="row" id="searchpic">
 					<c:forEach items="${tagpicList}" var="tagpic"
 						varStatus="status">
 						<div class="item col-sm-6 col-md-4">

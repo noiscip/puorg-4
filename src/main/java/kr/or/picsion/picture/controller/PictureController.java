@@ -98,7 +98,7 @@ public class PictureController {
 	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
 		int page=0;
-		int endpage=6;
+		int endpage=9;
 		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
@@ -141,7 +141,7 @@ public class PictureController {
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.POST)
 	public View studioScroll(HttpSession session, Model model, int userNo, int page){
 		User user = new User(); 
-		int endpage=6;
+		int endpage=9;
 		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
@@ -163,12 +163,12 @@ public class PictureController {
 	* 날      짜 : 2018. 7. 3.
 	* 메소드명 : insertOperPicture
 	* 작성자명 : 김준수 
-	* 기      능 : 
+	* 기      능 : 작업 사진 업로드
 	*
 	* @param file
 	* @param session
 	* @param operNo
-	* @return
+	* @return View
 	*/
 	@RequestMapping("operpicupload.ps")
 	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo) {
@@ -438,9 +438,12 @@ public class PictureController {
 	* @param tag
 	* @return String
 	*/
-	@RequestMapping("tagpicList.ps")
+	@RequestMapping(value="tagpicList.ps", method=RequestMethod.GET)
 	public String searchTagPicList(HttpSession session, Model model, String tag) {
 		User user = new User(); 
+		int page=0;
+		int endpage=9;
+		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -449,13 +452,49 @@ public class PictureController {
 		}
 		System.out.println("이건 값이 없나?"+tag);
 		
-		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
-		List<User> tagUserList = pictureService.searchTagUserList(tag);
+		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag, page, endpage);
+		List<User> tagUserList = pictureService.searchTagUserList(tag, page, endpage);
 		model.addAttribute("tagpicList",tagpicList);
 		model.addAttribute("tagUserList",tagUserList);
 		model.addAttribute("tag",tag);
+		model.addAttribute("page", tagpicList.size());
+		
 		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
 		return "popular.tagpicturepage";
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : searchTagPicList
+	* 작성자명 : 박주원
+	* 기      능 : 검색한 사진 보기 페이지 스크롤 페이징
+	*
+	* @param session
+	* @param model
+	* @param tag
+	* @return View
+	*/
+	@RequestMapping(value="tagpicList.ps", method=RequestMethod.POST)
+	public View searchTagPicList(HttpSession session, Model model, String tag, int page) {
+		User user = new User(); 
+		int endpage=9;
+		
+		if(session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");					  //로그인 사용자
+		}
+		else {
+			user.setUserNo(0);
+		}
+		
+		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag, page, endpage);
+		List<User> tagUserList = pictureService.searchTagUserList(tag, page, endpage);
+		
+		model.addAttribute("tagpicList",tagpicList);
+		model.addAttribute("tagUserList",tagUserList);
+		model.addAttribute("tag",tag);
+		model.addAttribute("endpage", tagpicList.size());
+		
+		return jsonview;
 	}
 }
 
