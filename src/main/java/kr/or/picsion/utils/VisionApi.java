@@ -379,9 +379,10 @@ public class VisionApi {
 		Image image;
 
 		System.out.println("getimage");
-
+System.out.println(filePath.split("gs://")[1]);
 		if (filePath.startsWith("gs://")) { // GCS에서 이미지를 가져올때 image 생성
-			ImageSource imgSource = ImageSource.newBuilder().setGcsImageUri(filePath).build();
+			/*ImageSource imgSource = ImageSource.newBuilder().setGcsImageUri(filePath).build();*/
+			ImageSource imgSource = ImageSource.newBuilder().setImageUri(filePath.split("gs://")[1]).build();
 			image = Image.newBuilder().setSource(imgSource).build();
 		} else { // 로컬에서 이미지를 가져올때 image 생성
 			System.out.println("여기탔니?~~~~~~~~~~~~~~~~~~~~~");

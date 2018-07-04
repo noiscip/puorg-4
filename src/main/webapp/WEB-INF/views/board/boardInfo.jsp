@@ -525,9 +525,41 @@
 	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
 		<c:choose>
 			<c:when test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
-				<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
-				<input type="hidden" value="${operPicture.picPath}" name="filePath">
-				<input type="button" id ="operPicture" class="btn btn-primary btn-round" value="사진 업로드">			
+				<img alt="No Image" height="100%" id="filePath" width="100%" src="${operPicture.picPath}">
+				
+				<input type="button" id ="operPicture" class="btn btn-primary btn-round" value="사진 업로드">
+				
+					<div class="col-md-6">
+						<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
+	
+							<div class="form-group">
+								<label for="title">제목</label> <input type="text"
+									class="form-control" id="pictureTitle" name="picTitle">
+							</div>
+	
+							<div class="form-group">
+								<label for="description">설명</label> <input type="text"
+									class="form-control" id="pictureDesc" name="picContent">
+							</div>
+	
+							<!-- <form action=""> -->
+							<div id="picTags" class="form-group">
+								<label for="comment">Tags</label> <br>
+									<div id="loaderIcon">
+								
+									</div>
+							</div>
+							<!-- </form> -->
+					<%--	<div class="form-group">
+								<input type="text" name="picPath" value="${picPath}"> 
+							</div> --%>
+							<div id="tagA">
+							
+							</div>
+							<button type="submit" class="btn btn-primary">저장하기</button>
+						</form>
+					</div>
+							
 			</c:when>
 			
 			<c:otherwise>
@@ -689,19 +721,14 @@
 	</div>
 </div>
 <script>
-	$(function() {
-		
-
-		$('#operpicture').change(function() {
-			console.log($(this))
-			var formData = new FormData($('#fileForm')[0])
-			console.log("클릭가능????")
-			console.log(formData)
+	$(function() {		
+		$('#operPicture').on("click",function() {
+			console.log("클릭");
+			var filePath = "gs://"+$("#filePath").attr("src");
+			console.log(filePath);
 			$.ajax({
-				url : "/picsion/vision.ps",
-				data : formData,
-				processData: false,
-				contentType: false,
+				url : "/picsion/opervision.ps",
+				data : {filePath:filePath},
 				type :'POST',
 				success : function(data){
 					console.log(data)

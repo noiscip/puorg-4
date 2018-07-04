@@ -24,7 +24,7 @@ public class VisionDetect {
 	
 	@RequestMapping(value = "opervision.ps", method=RequestMethod.POST)
 	public View opervision(String filePath,Model model) {
-		
+		System.out.println(filePath);
 		String logocheck=vision.detectLogos(filePath);//vision : 로고감지
 		String safecheck=vision.detectSafeSearch(filePath);//vision : 유해감지
 		List<String> labelBag=vision.detectLabels(filePath);//vision : 태그뽑기
