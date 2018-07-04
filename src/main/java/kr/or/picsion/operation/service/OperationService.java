@@ -51,7 +51,24 @@ public class OperationService {
 
 		return operation;
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : operNoselectOper
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param operNo
+	* @return
+	*/
+	public Operation operNoselectOper(int operNo) {
 
+		System.out.println("operNoselectOper 서비스 ");
+		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
+		Operation operation = operationDao.operNoselectOper(operNo);
+
+		return operation;
+	}
 	/**
 	 * 날 짜 : 2018. 6. 29. 
 	 * 메소드명 : operBoardList 
@@ -113,9 +130,9 @@ public class OperationService {
 	* @return
 	*/
 	public int updateOperation(Operation operation) {
-
 		System.out.println("updateOperation 서비스 시작 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
-		return operationDao.updateOperation(operation);
+		int result = operationDao.updateOperation(operation);
+		return result;
 	}
 }

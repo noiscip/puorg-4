@@ -103,13 +103,26 @@ public class OperationController {
 		model.addAttribute("operationBoardList", boardService.operationBoardList(user.getUserNo()));
 		return "mypage.operequest";
 	}
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : opercomplete
+	* 작성자명 : 김준수 
+	* 기      능 : 
+	*
+	* @param session
+	* @param model
+	* @param brdNo
+	* @return
+	*/
 	@RequestMapping(value = "opercomplete.ps")
 	public View opercomplete(HttpSession session, Model model,int brdNo) {
 		User user = (User) session.getAttribute("user");
 		Operation operation = operationService.selectOper(brdNo);
 		operation.setRequesterEnd("T");
 		System.out.println(operation);
-		operationService.updateOperation(operation);
+		int result = operationService.updateOperation(operation);
 		
 
 		
