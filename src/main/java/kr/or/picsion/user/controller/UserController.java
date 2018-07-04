@@ -483,7 +483,10 @@ public class UserController {
 	public View pointCharge(HttpSession session, int point, Model model) {
 		User user = (User)session.getAttribute("user");
 		int result=userService.pointCharge(point, user.getUserNo());
+		user = userService.userInfo(user.getUserNo());
+		session.setAttribute("user", user);
 		
+		model.addAttribute("point",user.getPoint());
 		model.addAttribute("result", result);
 		
 		return jsonview;
