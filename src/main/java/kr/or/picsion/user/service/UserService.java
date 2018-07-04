@@ -341,4 +341,19 @@ public class UserService {
 		userDao.updateUserPic(user);
 	}
 	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : randomUsers
+	* 작성자명 : 정도혁
+	* 기      능 : 랜덤 회원 추천
+	*
+	* @param userNo
+	* @return List<User>
+	*/
+	public List<User> randomUsers(int userNo){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> list = userDao.randomUsers(userNo);
+		return list;
+	}
+	
 }

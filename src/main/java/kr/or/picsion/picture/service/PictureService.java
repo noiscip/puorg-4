@@ -400,12 +400,17 @@ public class PictureService {
         FontMetrics fontMetrics = w.getFontMetrics();
         Rectangle2D rect = fontMetrics.getStringBounds(text, w);
 
-        // calculate center of the image
+        //calculate center of the image
         int centerX = (image.getWidth() - (int) rect.getWidth()) / 2;
         int centerY = image.getHeight() / 2;
+        
+//        for(double scale=0.0625;scale<=1;scale=scale*2) {
+//        int centerX = (int)(image.getWidth() -  rect.getWidth() / scale);
+//        int centerY = (int)(image.getHeight() / scale);
 
         // add text overlay to the image
         w.drawString(text, centerX, centerY);
+//        }
         ImageIO.write(watermarked, type, destination);
         w.dispose();
 
