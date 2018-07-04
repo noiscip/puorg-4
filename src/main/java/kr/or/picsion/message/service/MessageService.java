@@ -10,13 +10,12 @@ import kr.or.picsion.message.dao.MessageDao;
 import kr.or.picsion.message.dto.Message;
 
 /**
- * @author Bit
- *
+ * @project Final_Picsion
+ * @package kr.or.picsion.message.service 
+ * @className MessageService
+ * @date 2018. 6. 4.
  */
-/**
- * @author Bit
- *
- */
+
 @Service
 public class MessageService {
 	

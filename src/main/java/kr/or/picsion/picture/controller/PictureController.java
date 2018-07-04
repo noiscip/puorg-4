@@ -46,6 +46,13 @@ import kr.or.picsion.utils.AmazonUpload;
 import software.amazon.ion.SystemSymbols;
 
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.controller 
+ * @className PictureController
+ * @date 2018. 6. 4.
+ */
+
 @Controller
 @RequestMapping("/picture/")
 public class PictureController {
@@ -55,6 +62,9 @@ public class PictureController {
 
   	@Autowired
 	private PictureService pictureService;
+  	
+  	@Autowired
+	private PurchaseService purchaseService;
   	
 	@Autowired
 	private UserService userService;
@@ -157,15 +167,14 @@ public class PictureController {
 	* @return
 	*/
 	@RequestMapping("operpicupload.ps")
-	public String insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
+	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
 		System.out.println("inseroper 들어왔다");
 		User user = (User) session.getAttribute("user");	
 		OperPicture operPicture = new OperPicture();
 		System.out.println(file.getOriginalFilename());
 		String filePathh="";
-		String uploadPath = "D:\\bitcamp104\\finalproject\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\Picsion\\assets\\img\\operpic\\";
-		String path="/assets/img/operpic/";
-		
+		String uploadPath = "D:\\imagePicsion\\";
+		String dbPath="";
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
@@ -176,12 +185,7 @@ public class PictureController {
 		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
 		filePathh = uploadPath + saveFileName;
 		
-		String dbPath=path+saveFileName;
-		operPicture.setOperNo(Integer.parseInt(operNo));
-		operPicture.setPicPath(dbPath);
-		operPicture.setUserNo(user.getUserNo());
-		System.out.println(operPicture);
-		operPictureService.insertOperPicture(operPicture);
+		
 		
 		
 		
@@ -192,6 +196,7 @@ public class PictureController {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
+					dbPath=amazonService.uploadObject(saveFileName,"picsion/operpic");
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
@@ -199,8 +204,15 @@ public class PictureController {
 					e.printStackTrace();
 				} 
 			} 	
+			System.out.println("디비 패쓰"+dbPath);
+
+			operPicture.setOperNo(Integer.parseInt(operNo));
+			operPicture.setPicPath(dbPath);
+			operPicture.setUserNo(user.getUserNo());
+			System.out.println(operPicture);
+			operPictureService.insertOperPicture(operPicture);
 		
-		return "boardInfo.ps?brdNo="+brdNo;
+		return jsonview;
 	}
 	
 	/**
@@ -355,12 +367,14 @@ public class PictureController {
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
 		List<User> commentUserList = commentService.picCommentUserList(picNo);//댓글 작성자 목록
+		int buycheck = purchaseService.purchaseConfirm(user.getUserNo(), picNo);
 		List<String> tagList = pictureService.selectTag(picNo);
 		List<Picture> respectPhotoList = pictureService.photograherRespectPicList(picture.getUserNo());
 		int followResult = 0;
 		if(user.getUserNo() != userInfo.getUserNo()) {
 			followResult = userService.followingConfirm(user.getUserNo(), userInfo.getUserNo());
 		}
+		model.addAttribute("buycheck",buycheck);
 		model.addAttribute("respectList",respectPhotoList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("tagList",tagList);

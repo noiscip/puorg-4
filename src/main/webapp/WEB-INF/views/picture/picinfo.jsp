@@ -277,6 +277,11 @@ $(document).ready(function() {
                 	</script>
                 	</c:when>
                 	<c:otherwise>
+                	<c:choose>
+                	<c:when test="${buycheck eq 1}">
+                    	<a id="download" href="${picture.picPath}" class="btn btn-primary float-right"><i class="material-icons">vertical_align_bottom</i> Down Load</a>
+                	</c:when>
+                	<c:otherwise>
                 		<c:choose>
                 		<c:when test="${picture.cartCheck eq 'T'}">
                 			<button id="addcart" class="btn btn-primary float-right"><i class="material-icons">remove_shopping_cart</i> Remove Cart</button>
@@ -285,8 +290,11 @@ $(document).ready(function() {
                 			<button id="addcart" class="btn btn-white float-right"><i class="material-icons">shopping_cart</i> Add Cart</button>
                 		</c:otherwise>
                 		</c:choose>
-                		<!-- <button id="buy" type="button" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</button> -->
                     	<a id="buy" href="<%=request.getContextPath()%>/purchase/userPurchase.ps?userNo=${sessionScope.user.userNo}&picNo=${picture.picNo}" class="btn btn-primary float-right"><i class="material-icons">credit_card</i> Buy</a>
+                	</c:otherwise>
+                	</c:choose>
+                	
+                		
                 	</c:otherwise>
                 </c:choose>
                 </div>
@@ -393,8 +401,7 @@ $(document).ready(function() {
 				</div>
 				<div class="col-md-6 col-sm-6">
 					<h2 class="title">${picture.picTitle}</h2>
-				<!--  <h3 class="main-price">$335</h3> -->
-				 <h1 class="card-title"><small>$199</small></h1> 
+				 <h1 class="card-title"><small>${picture.picPrice}원</small></h1> 
 					<div id="accordion" role="tablist">
 						<div class="card card-collapse">
 							<div class="card-header" id="headingOne">
@@ -543,7 +550,7 @@ $(document).ready(function() {
 					<div class="card card-product">
 						<div class="card-header card-header-image">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${rList.picNo}">
-							<img class="img" src="<%=request.getContextPath()%>${rList.picPath}"></a>
+							<img class="img" src="${rList.picWater}"></a>
 							<div class="colored-shadow"	style="background-image: url(&quot;<%=request.getContextPath()%>${rList.picPath}&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">

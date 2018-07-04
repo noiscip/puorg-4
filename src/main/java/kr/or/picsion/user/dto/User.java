@@ -2,6 +2,13 @@ package kr.or.picsion.user.dto;
 
 import java.util.Date;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.user.dto 
+ * @className User
+ * @date 2018. 6. 4.
+ */
+
 public class User {
 
 	private int userNo;

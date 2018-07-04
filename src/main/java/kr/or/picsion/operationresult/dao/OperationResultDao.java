@@ -1,5 +1,12 @@
 package kr.or.picsion.operationresult.dao;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operationresult.dao 
+ * @className OperationResultDao
+ * @date 2018. 7. 2.
+ */
+
 public class OperationResultDao {
 
 	private int operNo;

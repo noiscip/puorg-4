@@ -22,6 +22,13 @@ import kr.or.picsion.picture.dao.PictureDao;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.picture.service 
+ * @className PictureService
+ * @date 2018. 6. 4.
+ */
+
 @Service
 public class PictureService {
 

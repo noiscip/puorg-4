@@ -38,10 +38,11 @@ public class NoticeController {
 	 * 날      짜 : 2018. 6. 19.
 	 * 메소드명 : noticeList
 	 * 작성자명 : 아윤근
-	 *
+	 * 기      능 : 접속한 유저의 알림 정보 map에 담아서 전송
+	 * 
 	 * @param session
 	 * @param model
-	 * @return
+	 * @return View
 	*/
 	@RequestMapping("notice.ps")
 	public View noticeList(HttpSession session, Model model) {
@@ -53,6 +54,16 @@ public class NoticeController {
 		return jsonview;
 	}
 	
+	/**
+	 * 날      짜 : 2018. 6. 19.
+	 * 메소드명 : noticeMsg
+	 * 작성자명 : 아윤근
+	 * 기      능 : 알림 갯수를 조회해서 전송
+	 *
+	 * @param session
+	 * @param model
+	 * @return View
+	*/
 	@RequestMapping("noticeMsg.ps")
 	public View noticeMsg(HttpSession session,Model model) {
 		User user = (User)session.getAttribute("user");
@@ -69,6 +80,16 @@ public class NoticeController {
 		return jsonview;
 	}
 	
+	/**
+	 * 날      짜 : 2018. 6. 27.
+	 * 메소드명 : readCheck
+	 * 작성자명 : 아윤근
+	 * 기      능 : 알림 클릭 할 경우 읽음 표시
+	 *
+	 * @param notice
+	 * @param model
+	 * @return View
+	*/
 	@RequestMapping("readCheck.ps")
 	public View readCheck(Notice notice, Model model) {
 		noticeService.readCheck(notice);

@@ -13,6 +13,13 @@ import kr.or.picsion.operationapply.dto.OperationApply;
 import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
 
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operationapply.controller 
+ * @className OperationApplyController
+ * @date 2018. 6. 4.
+ */
+
 @Controller
 @RequestMapping("/operationApply/")
 public class OperationApplyController {

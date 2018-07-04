@@ -2,6 +2,7 @@ package kr.or.picsion.operation.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,13 @@ import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.user.dto.User;
+
+/**
+ * @project Final_Picsion
+ * @package kr.or.picsion.operation.controller 
+ * @className OperationController
+ * @date 2018. 6. 4.
+ */
 
 @Controller
 @RequestMapping("/operation/")
@@ -102,5 +110,17 @@ public class OperationController {
 		model.addAttribute("operationBoardList", boardService.operationBoardList(user.getUserNo()));
 		return "mypage.operequest";
 	}
+	@RequestMapping(value = "opercomplete.ps")
+	public View opercomplete(HttpSession session, Model model,int brdNo) {
+		User user = (User) session.getAttribute("user");
+		Operation operation = operationService.selectOper(brdNo);
+		operation.setRequesterEnd("T");
+		System.out.println(operation);
+		operationService.updateOperation(operation);
+		
 
+		
+		return jsonview;
+	}
+	
 }
