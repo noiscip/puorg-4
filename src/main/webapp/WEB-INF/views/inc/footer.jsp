@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -58,7 +58,9 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도 
+
+			 	wsocket = new WebSocket("ws://192.168.0.20:8090/picsion/message.ps") //테스트 용도 
+
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
 			}
@@ -72,10 +74,8 @@
 				var sendUserNo = evt.data.split(':')[0]
 				var removeDiv = $('#commentstart').find('p[data-no='+sendUserNo+']').closest('.media');
 				var url = "";
-				if(table=4 && evt.data.split(':')[3] != null){
-					
-					
-				console.log("메시지 받았다");
+				
+				if(table==4 && evt.data.split(':')[3] != null){
 				
 					 $.ajax({
                     	url:"/picsion/comment/readreview.ps",
@@ -107,8 +107,7 @@
                         }
                         }); 
 				}
-				else if(table=5 && evt.data.split(':')[3] != null){
-		  			
+				else if(table==5 && evt.data.split(':')[3] != null){
 		  			
                     $.ajax({
                     	url:"/picsion/message/readmsg.ps",

@@ -37,7 +37,11 @@ public interface PurchaseDao {
 	public List<Picture> selectPicPurchase(int userNo);	//구매한 사진 리스트
 	public List<User> selectPicUser(int userNo);		//구매한 사진 작가 리스트
 	public List<Purchase> selectPurchase(int userNo);	//구매한 정보 리스트
-	public int sumPurchase(int userNo);				//구매한 사진의 총 합계
+	public int sumPurchase(int userNo);					//구매한 사진의 총 합계
+	public List<Picture> selectPicSell(int userNo);		//판매한 사진 리스트
+	public List<User> selectPicPurUser(int userNo);		//판매한 사진 구매 사람 정보
+	public List<Purchase> selectSell(int userNo);		//판매한 정보 리스트
+	public int sumSell(int userNo);						//판매한 사진의 총 합계
 	public int updatePoint(int point, int userNo);
 
 }

@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <insert id="insertOperPicture" parameterType="kr.or.picsion.operation.dto.OperPicture">
 	insert into OPERPICTURE (operNo,picPath,userNo) values (#{operNo},#{picPath},#{userNo})
 </insert>
+
 <select id="selectOperpicture" parameterType="Integer" resultType="kr.or.picsion.operation.dto.OperPicture">
 	select * from OPERPICTURE where operNo=#{operNo}
 </select>

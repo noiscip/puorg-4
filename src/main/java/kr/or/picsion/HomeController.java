@@ -53,7 +53,7 @@ public class HomeController {
 		List<Picture> ranPicture = pictureService.selectRandom();
 		
 		if(user2 != null) {
-			List<Picture> followingPicList = userService.followingUserPicList(user2.getUserNo());
+			List<Picture> followingPicList = userService.followingUserPicList(user2.getUserNo(), 0, 10);
 			List<User> randomuser = userService.randomUsers(user2.getUserNo());
 		    model.addAttribute("imagelist", followingPicList);
 		    model.addAttribute("randomuser",randomuser);

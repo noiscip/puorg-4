@@ -34,8 +34,8 @@ public interface PictureDao {
 	public void bookmarkIncrease(int picNo, int userNo);//사진 북마크 증가(생성)
 	public List<Picture> photograherRespectPicList(int userNo); //작가의 인기순 사진리스트
 	public List<String> searchTag(String value);	        //검색 태그 리스트
-	public List<Picture> searchTagPicList(int userNo, String value);//태그 사진 리스트
-	public List<User> searchTagUserList(String value); //태그 사진 주인 리스트
+	public List<Picture> searchTagPicList(int userNo, String value, int page, int endpage);//태그 사진 리스트
+	public List<User> searchTagUserList(String value, int page, int endpage); //태그 사진 주인 리스트
 	public List<String> wordChartList();  		 	   //워드 차트 태그 리스트
 	public List<Picture> selectRandom();			//메인 화면 랜덤 사진
 }

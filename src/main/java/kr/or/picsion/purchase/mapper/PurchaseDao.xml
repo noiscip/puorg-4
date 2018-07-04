@@ -112,6 +112,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where p.purchaseUserNo=#{userNo}
 	</select>
 	
+	<!-- 판매한 사진 리스트 -->
+	<select id="selectPicSell" resultType="kr.or.picsion.picture.dto.Picture">
+		select ph.*
+		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		where p.saleUserNo=#{userNo}
+		order by p.purchaseReg DESC
+	</select>
+	
+	<!-- 구매한 사람 정보 -->
+	<select id="selectPicPurUser" resultType="kr.or.picsion.user.dto.User">
+		select u.*
+		from PURCHASE p join USERS u on p.purchaseUserNo=u.userNo
+		where p.saleUserNo=#{userNo}
+		order by p.purchaseReg DESC
+	</select>
+	
+	<!-- 판매한 정보 리스트 -->
+	<select id="selectSell" resultType="kr.or.picsion.purchase.dto.Purchase">
+		select *
+		from PURCHASE 
+		where saleUserNo=#{userNo}
+		order by purchaseReg DESC
+	</select>
+	
+	<!-- 판매한 사진 가격 합계 -->
+	<select id="sumSell" resultType="Integer">
+		select ifNULL(sum(ph.picPrice),0) as sum
+		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		where p.saleUserNo=#{userNo}
+	</select>
+	
+	
 	<!-- 유저 금액 업데이트 -->
 	<update id="updatePoint">
 		update USERS set point = #{param1} where userNo = #{param2};

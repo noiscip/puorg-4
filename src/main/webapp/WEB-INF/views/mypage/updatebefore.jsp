@@ -10,6 +10,16 @@
 	padding-bottom: 30px;
 }
 
+/* 위에 여백 */
+.update-pad-top{
+	padding-top: 50px !important;
+}
+
+/* 아래 여백 */
+.update-pad-bottom{
+	padding-bottom: 50px;
+}
+
 </style>
 
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -30,7 +40,7 @@
 					<div class="col-md-4 ml-auto mr-auto">
 		            <div class="card card-signup">
 					<form class="form" method="post" action="<%=request.getContextPath()%>/user/updatebefore.ps">
-		                <div class="card-body">
+		                <div class="card-body update-pad-top">
 							<span class="bmd-form-group">
 			                  	<div class="input-group my-ul">
 			                    	<div class="input-group-prepend">
@@ -43,7 +53,7 @@
 							</span>
 		
 		                </div>
-		                <div align="center">
+		                <div align="center" class="update-pad-bottom">
 		                  	<button type="submit" class="btn btn-default update-btn-save">확인</button>
 		                 </div>
 		              </form>
