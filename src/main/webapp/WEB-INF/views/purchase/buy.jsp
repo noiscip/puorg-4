@@ -18,6 +18,7 @@
    $(document).ready(function() {
         	var loginUserNo = $('#loginUserNo').val();
         	var tot = ${total};
+        	var userPoint = ${user.point}
             var widget = $('.tabs-underline');
             var tabs = widget.find('ul a'),
                 content = widget.find('.tabs-content-placeholder > div');
@@ -45,7 +46,7 @@
         		var picNo = $(this).attr("value");
         		var price = $(this).attr("price");
         		var userpoint = $('#change').attr('value');
-        		userpoint *= 1;
+        		
         		console.log($('#change'));
         		   $.ajax({
         			url:"/picsion/purchase/deleteItem.ps",
@@ -55,12 +56,15 @@
         				console.log($('#total2'));
         				if(data.result==1){
             			tot-=price;
+            			userpoint *= 1;
+            			price *= 1;
             			userpoint+=price;
             			$('#total1')["0"].childNodes["0"].data=tot;
             			$('#total2')["0"].childNodes["0"].data=tot;
         				$(tr).remove();
         				$("#cartNo"+picNo).remove();
         				$('#change')["0"].childNodes["0"].data=userpoint;
+        				$('#changehidden').val(userPoint);
         				alert("항목 삭제 완료");
         				}else{
         					alert("항목 삭제 실패");
@@ -108,7 +112,7 @@
 								</div>
 								<div class="total">
 									구매 후 잔액<span id="change" value="${user.point-total}" class="price">${user.point-total}<small>원</small></span>
-									<input name="point" value="${user.point-total}" type="hidden">
+									<input id="changehidden" name="point" value="${user.point-total}" type="hidden">
 								</div> 
 								<br>
 								<div class="form-group col-sm-12">
