@@ -5,6 +5,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="kr.or.picsion.user.dao.UserDao">
 
+	<select id="randomUsers" resultType="kr.or.picsion.user.dto.User">
+	  select * from USERS u join PROFILE p on u.userNo = p.userNo where u.userNo != #{userNo} and u.roleNo !=3 order by rand() limit 4;
+	</select>
+
 	<select id="getPicsionList" resultType="kr.or.picsion.user.dto.User">
 		SELECT * FROM USERS
 	</select>
