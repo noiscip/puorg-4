@@ -1,26 +1,23 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
 	<meta charset="utf-8">
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<title>PICSION</title>
+	
 	
 	<!-- Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
-    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css?v=2" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
     <%-- <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" /> --%>
-    <link href="<%=request.getContextPath()%>/assets/css/fluid-gallery.css" rel="stylesheet" />
-    <link href="<%=request.getContextPath()%>/assets/css/tabs-underlined.css" rel="stylesheet">
-	<link href="<%=request.getContextPath()%>/assets/css/payment.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.theme.css" rel="stylesheet" /> 
     <!-- Js -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+	
 	<!-- Core JS Files   -->
 	<script src="<%=request.getContextPath()%>/assets/js/core/jquery.min.js" type="text/javascript"></script>
 	<script src="<%=request.getContextPath()%>/assets/js/core/popper.min.js" type="text/javascript"></script>

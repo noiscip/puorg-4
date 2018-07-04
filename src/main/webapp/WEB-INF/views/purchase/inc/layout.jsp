@@ -55,6 +55,8 @@
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script> 
     --%>
 	<tiles:insertAttribute name="script"/>
+	<link href="<%=request.getContextPath()%>/assets/css/tabs-underlined.css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/assets/css/payment.css" rel="stylesheet">
 </head>
 
 <body class="product-page">

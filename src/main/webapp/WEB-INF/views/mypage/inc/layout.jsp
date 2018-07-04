@@ -6,6 +6,8 @@
 
 <html>
 <head>
+	<link href="<%=request.getContextPath()%>/assets/css/base40.min.css" rel="stylesheet" />
+	<link href="<%=request.getContextPath()%>/assets/css/fluid-gallery.css" rel="stylesheet" />
 	<tiles:insertAttribute name="script"/>
 </head>
 

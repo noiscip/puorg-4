@@ -49,6 +49,8 @@
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script> 
     --%>
 	<tiles:insertAttribute name="script"/>
+	<link href="<%=request.getContextPath()%>/assets/css/base40.min.css" rel="stylesheet" />
+	<link href="<%=request.getContextPath()%>/assets/css/fluid-gallery.css" rel="stylesheet" />
 </head>
 
 <body class="profile-page sidebar-collapse">

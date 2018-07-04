@@ -143,7 +143,7 @@ $(function(){
 			url : "/picsion/purchase/myCart.ps?userNo="+$('#loginUserNo').val(),
 			success: function (data) {
 				$('#cartnav').append(data.myCartCount);
-				mycartlist+='<li class="divider"><a>장바구니</a></li>'; 
+				mycartlist+='<li class="divider"><a href="<%=request.getContextPath()%>/purchase/myCartPage.ps?userNo='+$('#loginUserNo').val()+'">장바구니</a></li>'; 
 				mycartlist+='<div class="dropdown-divider"></div>';
 				if(data.myCartCount==0){
 					$('#addcartnav').append(nocart);
@@ -151,10 +151,11 @@ $(function(){
 					$('#addcartnav').empty();
 					mycartlist+='<h6 class="dropdown-header">장바구니 목록</h6>';
 					$.each(data.cartPicList, function(i, elt){
-						mycartlist +='<li class="divider"><a>'
-						mycartlist +='<img style="width: 30px;" class="rounded" src="'+elt.picPath+'">&nbsp&nbsp';
-						mycartlist +=elt.picTitle+'<i class="material-icons">chevron_right</i>'+elt.picPrice+'원';
-						mycartlist +='</a></li>'; 	
+						mycartlist += '<li class="divider"><a href="/picsion/picture/picinfo.ps?picNo='+elt.picNo+'">';
+						mycartlist += '<img style="width: 30px;" class="rounded" src="'+elt.picWater+'">&nbsp&nbsp';
+						mycartlist += elt.picTitle+'<i class="material-icons">chevron_right</i>'+elt.picPrice+'원';
+						mycartlist += '<input id="'+elt.picNo+'tt" type="hidden">';
+						mycartlist += '</a></li>'; 	
 					})					
 					$('#addcartnav').append(mycartlist);
 					
