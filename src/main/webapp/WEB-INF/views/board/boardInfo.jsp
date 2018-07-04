@@ -726,7 +726,7 @@
 	$(function() {		
 		$('#operPicture').on("click",function() {
 			console.log("클릭");
-			var filePath = "gs://"+$("#filePath").attr("src");
+			var filePath = $("#filePath").attr("src");
 			console.log(filePath);
 			$.ajax({
 				url : "/picsion/opervision.ps",
