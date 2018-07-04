@@ -119,7 +119,7 @@ public class BoardController {
 		inboard.setOperStateNo(1);
 		System.out.println(inboard);
 		boardService.insertBoard(inboard);
-		return "board.writeBoard";
+		return "redirect:/board.ps";
 	}
 
 	/**

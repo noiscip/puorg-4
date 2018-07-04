@@ -36,7 +36,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.operation.dto.OperPicture;
+import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperPictureService;
+import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.purchase.service.PurchaseService;
@@ -64,6 +66,9 @@ public class PictureController {
 	private PictureService pictureService;
   	
   	@Autowired
+	private OperationService operationService;
+
+	@Autowired
 	private PurchaseService purchaseService;
   	
 	@Autowired
@@ -160,19 +165,18 @@ public class PictureController {
 	* 작성자명 : 김준수 
 	* 기      능 : 
 	*
-	* @param picture
-	* @param tag
+	* @param file
 	* @param session
 	* @param operNo
 	* @return
 	*/
 	@RequestMapping("operpicupload.ps")
-	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo, String brdNo) {
+	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo) {
 		System.out.println("inseroper 들어왔다");
 		User user = (User) session.getAttribute("user");	
 		OperPicture operPicture = new OperPicture();
+		Operation operation = operationService.operNoselectOper(Integer.parseInt(operNo));
 		System.out.println(file.getOriginalFilename());
-		String filePathh="";
 		String uploadPath = "D:\\imagePicsion\\";
 		String dbPath="";
 		File dir = new File(uploadPath);
@@ -183,7 +187,7 @@ public class PictureController {
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
 		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
-		filePathh = uploadPath + saveFileName;
+		
 		
 		
 		
@@ -197,6 +201,12 @@ public class PictureController {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
 					dbPath=amazonService.uploadObject(saveFileName,"picsion/operpic");
+					operPicture.setOperNo(Integer.parseInt(operNo));
+					operPicture.setPicPath(dbPath);
+					operPicture.setUserNo(user.getUserNo());
+					operation.setOperatorEnd("T");
+					operationService.updateOperation(operation);
+					operPictureService.insertOperPicture(operPicture);
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
@@ -204,14 +214,10 @@ public class PictureController {
 					e.printStackTrace();
 				} 
 			} 	
-			System.out.println("디비 패쓰"+dbPath);
-
-			operPicture.setOperNo(Integer.parseInt(operNo));
-			operPicture.setPicPath(dbPath);
-			operPicture.setUserNo(user.getUserNo());
+			System.out.println("디비 패쓰"+dbPath);			
 			System.out.println(operPicture);
-			operPictureService.insertOperPicture(operPicture);
-		
+			
+			
 		return jsonview;
 	}
 	
