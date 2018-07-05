@@ -1,6 +1,7 @@
 package kr.or.picsion;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +49,9 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
-		
+		System.out.println("formattedDate : " + formattedDate);
+		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");		
+		System.out.println("regDate : " + reg.format(date));
 		User user2 = (User) session.getAttribute("user");
 		List<Picture> ranPicture = pictureService.selectRandom();
 		
