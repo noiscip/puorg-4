@@ -70,7 +70,7 @@
 															<img title="${following.userName}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded following-pr following-pr-mar">
 														</c:when>
 														<c:otherwise>
-															<img title="${following.userName}" src="<%=request.getContextPath()%>${following.prPicture}" class="rounded following-pr following-pr-mar">
+															<img title="${following.userName}" src="${following.prPicture}" class="rounded following-pr following-pr-mar">
 														</c:otherwise>
 													</c:choose>
 												</a>

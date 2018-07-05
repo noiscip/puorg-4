@@ -266,4 +266,28 @@ public class PurchaseController {
 		model.addAttribute("myCartCount",count);
 		return jsonview;
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : myCartPage
+	* 작성자명 : 정도혁
+	* 기      능 : 유저번호로 장바구니 페이지로 이동
+	*
+	* @param model
+	* @param userNo
+	* @return String
+	*/
+	@RequestMapping("myCartPage.ps")
+	public String myCartPage(Model model, int userNo, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		List<Picture> myCartList = purchaseService.selectCart(userNo);
+		List<User> CartPhotographer = purchaseService.CartPhotographer(userNo);
+		int total = purchaseService.cartTotal(userNo);
+		model.addAttribute("user",user);
+		model.addAttribute("total", total);
+		model.addAttribute("photographerName",CartPhotographer);
+		model.addAttribute("myCartList",myCartList);
+		return "purchase.buy";
+	}
+	
 }
