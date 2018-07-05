@@ -32,7 +32,7 @@ $(function(){
 					var noticeMenu = '';
 					$.each(data.map, function(i, elt) {
 						noticeMenu += '<li class="divider"><a>'
-						noticeMenu += '<img style="width: 30px;" class="rounded-circle" src="/picsion/'+elt[1].prPicture + '">&nbsp&nbsp' 
+						noticeMenu += '<img class="rounded-circle header-prPic" src="'+elt[1].prPicture + '">&nbsp&nbsp' 
 						noticeMenu += '"'+ elt[1].userName +'"'
 						var value = elt[0].tableNo + ',' + elt[0].sendUserNo
 						
@@ -143,7 +143,7 @@ $(function(){
 			url : "/picsion/purchase/myCart.ps?userNo="+$('#loginUserNo').val(),
 			success: function (data) {
 				$('#cartnav').append(data.myCartCount);
-				mycartlist+='<li class="divider"><a>장바구니</a></li>'; 
+				mycartlist+='<li class="divider"><a href="<%=request.getContextPath()%>/purchase/myCartPage.ps?userNo='+$('#loginUserNo').val()+'">장바구니</a></li>'; 
 				mycartlist+='<div class="dropdown-divider"></div>';
 				if(data.myCartCount==0){
 					$('#addcartnav').append(nocart);
@@ -151,10 +151,11 @@ $(function(){
 					$('#addcartnav').empty();
 					mycartlist+='<h6 class="dropdown-header">장바구니 목록</h6>';
 					$.each(data.cartPicList, function(i, elt){
-						mycartlist +='<li class="divider"><a>'
-						mycartlist +='<img style="width: 30px;" class="rounded" src="'+elt.picPath+'">&nbsp&nbsp';
-						mycartlist +=elt.picTitle+'<i class="material-icons">chevron_right</i>'+elt.picPrice+'원';
-						mycartlist +='</a></li>'; 	
+						mycartlist += '<li class="divider"><a href="/picsion/picture/picinfo.ps?picNo='+elt.picNo+'">';
+						mycartlist += '<img style="width: 30px;" class="rounded" src="'+elt.picWater+'">&nbsp&nbsp';
+						mycartlist += elt.picTitle+'<i class="material-icons">chevron_right</i>'+elt.picPrice+'원';
+						mycartlist += '<input id="'+elt.picNo+'tt" type="hidden">';
+						mycartlist += '</a></li>'; 	
 					})					
 					$('#addcartnav').append(mycartlist);
 					
@@ -171,6 +172,15 @@ $(function(){
 	$('.page-header').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)'); 
 })
 </script>
+
+<style>
+	/* 헤더 프로필 사진 크기 고정 */
+	.header-prPic{
+		width: 30px;
+		height: 30px;
+	}
+</style>
+
 <input type="hidden" value='<c:choose><c:when test="${sessionScope.user eq null}">0</c:when><c:otherwise>${sessionScope.user.userNo}</c:otherwise></c:choose>' id="loginUserNo">
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container-fluid">
@@ -276,14 +286,7 @@ $(function(){
 		                </li>
 						<li class="nav-item">
 							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}">
-								<c:choose>
-									<c:when test="${sessionScope.user.prPicture eq null}">
-									  <img style="width:30px;" class="rounded-circle" src="<%=request.getContextPath()%>/assets/img/user.png">
-									</c:when>
-									<c:otherwise>
-									  <img style ="width: 30px;" class="rounded-circle" src="${sessionScope.user.prPicture}">
-									</c:otherwise>
-								</c:choose> 
+									  <img class="rounded-circle header-prPic" src="${sessionScope.user.prPicture}">
 							  	${sessionScope.user.userName}
 							</a>
 						</li>

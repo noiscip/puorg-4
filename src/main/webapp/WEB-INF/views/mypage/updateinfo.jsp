@@ -4,6 +4,7 @@
 
 
 <script type="text/javascript">
+/* 
 	$(function(){
 		$('#pointCharge').click(function(){
 			var chargePoint = $('#chargePrice').val()
@@ -18,25 +19,59 @@
 				alert('잘못 입력하셨습니다! 숫자만 입력해주세요.');
 				$('#chargePrice').val("");
 			}else{
-				$.ajax({
-					url:"/picsion/user/charge.ps",
-					data: {point:chargePoint},
-					success: function(data){
-						if(data.result==1){
-							$('#point').val(parseInt(nowPoint)+parseInt(chargePoint));
-							alert('충전이 완료되었습니다!');
-						}else{
-							alert('충전 실패했습니다. 잠시후 다시 시도해주세요.');
-						}
-					}
-				})
-				$('#chargePrice').val("");
+				
+				
 			}
 		})
 		
 		
+	}) 
+*/
+	$(function(){
+		var nowPoint = $('#point').val()
+		
+		var IMP = window.IMP
+		IMP.init('imp27054314')
+		
+		$('#pointCharge').click(function(){
+			IMP.request_pay({
+			    pg : 'inicis', // version 1.1.0부터 지원.
+			    pay_method : 'card',
+			    merchant_uid : 'merchant_' + new Date().getTime(),
+			    name : '주문명:포인트 충전',
+			    amount : $('#chargePrice').val(),
+			    buyer_name : $('#userName').val(),
+			    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
+		}, function(rsp) {
+			if ( rsp.success ) {
+				var msg = '결제가 완료되었습니다.'
+				msg += '결제 금액 : ' + rsp.paid_amount
+				msg += '카드 승인번호 : ' + rsp.apply_num
+				
+				$.ajax({
+					url:"/picsion/user/charge.ps",
+					data: {point:rsp.paid_amount},
+					success: function(data){
+						if(data.result == 0){
+							msg = '결제 완료 BUT 업데이트 실패'
+						}else{
+							console.log(data.point)
+							$('#point').val(data.point)
+						}
+						
+					}
+				})
+			
+				$('#chargePrice').val("")
+			} else {
+			    var msg = '결제에 실패하였습니다.'
+			    msg += '에러내용 : ' + rsp.error_msg
+			}
+			alert(msg)
+		});
+			
+		})	
 	})
-	
 </script>
 <style>
 /* 뿌려주는 이미지의 크기 */
@@ -64,8 +99,8 @@
 
 /* 정보 수정페이지에서 프로필 사진 크기 */
 .update-pr{
-	width: 250px;
-	height: 250px;
+	width: 300px;
+	max-height:300px;
 }
 
 /* 정보 수정페이지 상단 여백 */
@@ -128,7 +163,7 @@
 	                  	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 						   <div class="fileinput-new">
 							<img src="${userinfo.prPicture}" class="img-raised rounded-circle img-fluid update-pr">
-							<input value="${userinfo.prPicture}" name="prPicture" style="display: none;">
+							<%-- <input value="${userinfo.prPicture}" name="prPicture" style="display: none;"> --%>
 						   </div>
 						   <div class="fileinput-preview fileinput-exists thumbnail img-raised rounded-circle img-fluid update-pr"></div>
 						   <div>
@@ -143,8 +178,14 @@
 				      		<button type="button" class="btn btn-default update-btn-margin btn-file">프로필 수정</button> --%>
 	                  	</div>
 	                  	<div class="form-group update-margin">
-	                  		<label for="exampleInput1" class="bmd-label-floating">다음 계정으로 연동</label>
-	                  		<label for="exampleInput1" class="bmd-label-floating" style="float: right">계정 연동 여부</label>
+	                  		<div class="row">
+		                  		<div class="col-md-6">
+		                  			<label for="exampleInput1" class="bmd-label-floating">다음 계정으로 연동</label>
+		                  		</div>
+		                  		<div class="col-md-6" align="right">
+		                  			<label for="exampleInput1" class="bmd-label-floating">계정 연동 여부</label>
+		                  		</div>
+	                  		</div>
 		                      <div class="form-check update-btn-margin">
 			                      <c:choose>
 			                      	<c:when test="${userinfo.google eq null}">
@@ -175,7 +216,6 @@
 							      </div>
 							  	</div>
 	                  </div>
-	                  
                       <div class="form-check update-btn-margin">
 	                      <label class="form-check-label linked-lab-color"><b>
 						      <c:choose>
@@ -215,7 +255,7 @@
 	                    <div class="form-group">
 	                      <label for="exampleInput1" class="bmd-label-floating">이름</label>
 	                      <div class="input-group">
-	                        <input type="text" class="form-control" name="userName" value="${userinfo.userName}">
+	                        <input type="text" class="form-control" id="userName" name="userName" value="${userinfo.userName}">
 	                      </div>
 		                    </div>
 		                    <div class="form-group">

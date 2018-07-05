@@ -186,8 +186,7 @@ public class PictureController {
 
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
-		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];
-		
+		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];		
 		
 		
 		
@@ -238,6 +237,11 @@ public class PictureController {
 		
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
+		System.out.println(picture.getPicPath());
+		if(picture.getPicPath().startsWith("https:")) {
+			picture.setPicPath("D:\\imagePicsion\\"+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+        	System.out.println(picture.getPicPath());
+        }
 		pictureService.insertPicture(picture);
 		System.out.println("유저번호:"+user.getUserNo());
 		System.out.println(picture);
@@ -276,8 +280,16 @@ public class PictureController {
 			System.out.println("워터마크 생성 실패");
 		}
 		System.out.println("picture.getPicPath : "+picture.getPicPath());
+		System.out.println(picture.getPicPath());
 		//s3 저장 (원본 사진)
-		String saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+		String saveFileName="";
+		if(picture.getPicPath().startsWith("D:")) {
+			System.out.println("D:드루왔고"+picture.getPicPath());
+		System.out.println(picture.getPicPath().split("\\\\")[2]);
+		saveFileName=picture.getPicPath().split("\\\\")[2];
+		}else {		
+		saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+		}
 		//원본사진 변경
 //		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
 		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 

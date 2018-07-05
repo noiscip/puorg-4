@@ -53,6 +53,8 @@
     <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script>
      --%>
 	<tiles:insertAttribute name="script"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
 </head>
 
 <body class="product-page">

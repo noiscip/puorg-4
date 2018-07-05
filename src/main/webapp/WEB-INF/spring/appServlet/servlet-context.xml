@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
@@ -11,8 +12,12 @@
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context.xsd
 						http://www.springframework.org/schema/websocket  
-						http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+						http://www.springframework.org/schema/websocket/spring-websocket.xsd        
+						http://www.springframework.org/schema/task
+       					http://www.springframework.org/schema/task/spring-task.xsd">
 
+	<task:annotation-driven/>
+	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -23,7 +28,8 @@
 	
 	<context:component-scan base-package="kr.or.*" />
 	<context:component-scan base-package="kr.or.picsion.*" />
-	 
+	
+
 	<mvc:interceptors>
 		<mvc:interceptor>
            <mvc:mapping path="/board/*"/>
