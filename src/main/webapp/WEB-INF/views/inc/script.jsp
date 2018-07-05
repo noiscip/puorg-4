@@ -13,7 +13,7 @@
    <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=3" rel="stylesheet" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
    <link href="<%=request.getContextPath()%>/assets/css/base40.min.css?v=1" rel="stylesheet" />
-   <%-- <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" /> --%> 
+   <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css?v=4" rel="stylesheet" />  
    <link href="<%=request.getContextPath()%>/assets/css/fluid-gallery.css" rel="stylesheet" />
    <link href="<%=request.getContextPath()%>/assets/css/tabs-underlined.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/assets/css/payment.css" rel="stylesheet">
