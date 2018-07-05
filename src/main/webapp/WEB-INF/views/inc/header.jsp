@@ -169,7 +169,9 @@ $(function(){
 		  var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
 		  return ranNum;
 	}
-	$('.page-header').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)'); 
+	<%-- $('.page-header').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)'); --%>
+	$('#changemain').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)');
+	
 })
 </script>
 
