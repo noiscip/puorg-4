@@ -177,7 +177,7 @@
 	
 	/* 스튜디오 프로필 사진 크기 */
 	.studio-prPic-wid{
-		max-width:240px !important;
+		height: 160px;
 	}
 </style>
 
