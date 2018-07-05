@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -32,6 +33,7 @@ import com.google.cloud.vision.v1.WebDetection.WebLabel;
 import com.google.protobuf.ByteString;
 
 import kr.or.picsion.picture.dto.Face;
+import kr.or.picsion.picture.service.PictureService;
 
 
 /**
@@ -43,7 +45,8 @@ public class VisionApi {
 	
 	public String picturePath;
 	
-	
+	@Autowired
+	private PictureService pictureService;
 	/**
 	 * 날 짜 : 2018. 6. 8. 
 	 * 메소드명 : fileUpload 작성자명 : 이아림, 아윤근 
@@ -83,15 +86,11 @@ public class VisionApi {
 			System.out.println("saveFileName: " + saveFileName);
 			System.out.println("filePathh: " + filePathh);
 			picturePath = "/imagePicsion/" + saveFileName;
-			/* picturePath = filePathh; */
 
 			System.out.println("이것이!!! " + uploadPath + saveFileName);
 
 			if (saveFileName != null && !saveFileName.equals("")) {
-				/*
-				 * if(saveFileName.toLowerCase().indexOf(".jpg")>0){ saveFileName =
-				 * header+"check01"+".jpg"; }
-				 */
+				//이거 고쳐야함
 				if (new File(uploadPath + saveFileName).exists()) {
 					saveFileName = saveFileName + "_" + System.currentTimeMillis();
 				}
@@ -109,6 +108,17 @@ public class VisionApi {
 							for (Tag tag : directory.getTags()) {
 								System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(),
 										tag.getDescription());
+								
+								if(tag.getTagName().equals("File Size")) {
+									System.out.println("우잉"+tag.getDescription().split(" ")[0]);
+									if(Integer.parseInt(tag.getDescription().split(" ")[0])>10485760) {
+										System.out.println("10MB 넘는 사진입니다");
+										//사진 크기 압축
+										String ss = saveFileName.split("\\.")[0];
+										filePathh=pictureService.imageCompr(newFile,uploadPath + ss+"com.jpg");
+									}
+								}
+								
 								if (!directory.getName().equals("Exif Thumbnail")
 										&& tag.getTagName().split(" ")[0].equals("Image")) {
 									System.out.println("---------------------------------");
@@ -117,8 +127,8 @@ public class VisionApi {
 									System.out.println(tag.getDirectoryName());
 									System.out.println("---------------------------------");
 									picInfo += tag.getDescription().split(" ")[0];
+																		
 								}
-
 							}
 							if (directory.hasErrors()) {
 								for (String error : directory.getErrors()) {
