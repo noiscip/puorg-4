@@ -12,10 +12,12 @@
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context.xsd
 						http://www.springframework.org/schema/websocket  
-						http://www.springframework.org/schema/websocket/spring-websocket.xsd
+						http://www.springframework.org/schema/websocket/spring-websocket.xsd        
 						http://www.springframework.org/schema/task
-						http://www.springframework.org/schema/task/spring-task.xsd">
+       					http://www.springframework.org/schema/task/spring-task.xsd">
 
+	<task:annotation-driven/>
+	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -27,10 +29,7 @@
 	<context:component-scan base-package="kr.or.*" />
 	<context:component-scan base-package="kr.or.picsion.*" />
 	
-	<task:annotation-driven executor="executor" scheduler="scheduler"/>
-	<task:scheduler id="scheduler"/>
-	<task:executor id="executor"/>
-	
+
 	<mvc:interceptors>
 		<mvc:interceptor>
            <mvc:mapping path="/board/*"/>
