@@ -150,11 +150,12 @@ $(document).on("click", "#tagAdd", function() {
  					/*얼굴감지*/
  					 if(data.face != null){
  						console.log("얼굴그리기")
- 						/* $('canvas').drawImage({
+ 						 $('canvas').drawImage({
  							source: $('.fileinput-preview')["0"].children["0"].src,
  							x: 10, y: 10,
  							load:rec
  						});
+ 						
  						function rec(){
  							console.log("이게 되낭?");
  							$('canvas').drawRect({
@@ -165,11 +166,11 @@ $(document).on("click", "#tagAdd", function() {
 								height:data.face["0"].height
  							});
  						}
- 						 */
  						 
- 						  /* $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */ 
+ 						 
+ 						   $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>");  
  						//이 밑에 잠시 주석걸겠습니다
- 						/* $('canvas').drawImage({
+ 						 $('canvas').drawImage({
  							source: $('.fileinput-preview')['0'].children['0'].src,
  							x: 100, y: 100,
  							load:rec
@@ -184,7 +185,7 @@ $(document).on("click", "#tagAdd", function() {
  							height:20
  							});
  						}
- */ 						
+  						
  					} 
 					var safe = ''
 					if(data.safe != null){

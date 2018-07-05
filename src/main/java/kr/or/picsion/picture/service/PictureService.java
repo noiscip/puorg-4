@@ -400,7 +400,7 @@ public class PictureService {
         AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
         w.setComposite(alphaChannel);
         w.setColor(Color.GRAY);
-        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, (image.getWidth()/50)));
+        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, (image.getWidth()/40)));
         FontMetrics fontMetrics = w.getFontMetrics();
         Rectangle2D rect = fontMetrics.getStringBounds(text, w);
 
@@ -419,13 +419,31 @@ public class PictureService {
         double yMove = -1;
 //        int centerX = (int)(image.getWidth() -  rect.getWidth() / scale);
 //        int centerY = (int)(image.getHeight() / scale);
-        orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, image.getHeight()-rect.getHeight());
+        orig.setToRotation(Math.toRadians(angle), wid-x, hei+(yMove*y));
         w.setTransform(orig);
         // add text overlay to the image
         w.drawString(text, (int)(wid-x), (int)(hei+(yMove*y)));
+        
+        //top left
+        orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, rect.getHeight());
+        w.setTransform(orig);
+        w.drawString(text, (int)(rect.getHeight()/2), (int)(rect.getHeight()));
+        
+        //y=top x=right
+        orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, rect.getHeight());
+        w.setTransform(orig);
+        w.drawString(text, (int)(rect.getHeight()/2), (int)(rect.getHeight()));
+        //y=bottom x=left
+        orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, image.getHeight()-rect.getHeight());    
+        w.setTransform(orig);
+        w.drawString(text, (int)(rect.getHeight()/2), (int)(image.getHeight()-rect.getHeight()));
+        //y=bottom x=right
+        orig.setToRotation(Math.toRadians(angle), image.getWidth() - (rect.getHeight()), image.getHeight()-rect.getHeight());    
+        w.setTransform(orig);
+        w.drawString(text, (int)(image.getWidth() - rect.getHeight()), (int)(image.getHeight()-rect.getHeight()));
+        
         ImageIO.write(watermarked, type, destination);
         w.dispose();
-
     }
 	/**
 	* 날      짜 : 2018. 7. 4.

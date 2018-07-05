@@ -41,7 +41,7 @@ import kr.or.picsion.utils.AmazonUpload;
 @RequestMapping("/picture/")
 public class PictureController {
 	
-	public static String imagePicsion ="C:\\imagePicsion\\";
+	public static String imagePicsion ="D:\\imagePicsion\\";
 	
    	@Autowired
     private View jsonview;
