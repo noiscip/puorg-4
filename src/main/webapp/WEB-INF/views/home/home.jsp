@@ -7,7 +7,7 @@
 <input type="hidden" value="${sessionScope.result}" id="result">
 
 <style>
-a {
+/* a {
 	color: white;
 	background-color: transparent;
 }
@@ -21,7 +21,7 @@ a:focus {
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
-
+ */
 .hashTag {
 	color: hotpink;
 }
@@ -718,6 +718,11 @@ label.btn.btn-default.btn-circle.focus {
 	height: 900px;
 	margin: 20px
 }
+
+.img-size {
+	height: 300px;
+	width: 100%;
+}
 </style>
 <script>
 //postid 가져와서 댓글달기
@@ -909,64 +914,64 @@ $(document).ready(function() {
 			function(){$('body').css("overflow","visible")	}
 	);
 	
+	
 })
 </script>
-<div class="page-header header-filter clear-filter purple-filter"
-	data-parallax="true">
-	<div class="container">
-		<c:choose>
-			<c:when test="${sessionScope.user eq null}">
-				<div class="row">
-					<div class="col-md-12 mr-auto ml-auto">
-						<div class="card card-raised card-carousel">
-							<div id="carouselExampleIndicators" class="carousel slide"
-								data-ride="carousel">
-								<ol class="carousel-indicators">
-								<li data-target="#carouselExampleIndicators" data-slide-to="0"
-										class="active"></li>
-								<c:forEach items="${ranPicture}" var="randNum" varStatus='status' begin="1" end="9">
-								<li data-target="#carouselExampleIndicators" data-slide-to="${status.count}"></li>
-								</c:forEach>
-								</ol>
-								<div style="max-height: 500px" class="carousel-inner">
-								
-								<c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
-								<c:choose>
-								<c:when test="${status.index eq 0}">
-								<div class="carousel-item active">
-										<img class="d-block w-100"
-											src="${randPic.picWater}"
-											alt="No Image">
-								</div>
-								</c:when>
-								<c:otherwise>
-								<div class="carousel-item">
-										<img class="d-block w-100"
-											src="${randPic.picWater}"
-											alt="No Image">
-									</div>
-								</c:otherwise>
-								</c:choose>
-								</c:forEach>
-								</div>
-								<a class="carousel-control-prev"
-									href="#carouselExampleIndicators" role="button"
-									data-slide="prev"> <span class="carousel-control-prev-icon"
-									aria-hidden="true"></span> <span class="sr-only">Previous</span>
-								</a> <a class="carousel-control-next"
-									href="#carouselExampleIndicators" role="button"
-									data-slide="next"> <span class="carousel-control-next-icon"
-									aria-hidden="true"></span> <span class="sr-only">Next</span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</c:when>
-			<c:otherwise>
+<c:choose>
+<c:when test="${sessionScope.user eq null}">
 
-				
+		<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                
+              <c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
 				<c:choose>
+					<c:when test="${status.index eq 0}">
+						<div class="carousel-item active">
+                        <div class="page-header header-filter"data-parallax="true" style="background-image: url('${randPic.picWater}');">
+                            
+                            <div class="container">
+							<div class="row">
+								<div class="col-md-8 ml-auto mr-auto text-center">
+									<div class="brand">
+										<h1 class="title">Sell Your Picture!</h1>
+										<h4><b>PICSION</b>을 통해 당신의 꿈을 보여주세요</h4>
+									</div>
+								</div>
+							</div>
+							</div>
+                            
+                        </div>
+                    </div>	
+								
+					</c:when>
+					<c:otherwise>
+						
+						  <div class="carousel-item">
+                        <div class="page-header header-filter"data-parallax="true" style="background-image: url('${randPic.picWater}');">
+                           
+                        </div>
+                    </div>
+						
+						
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+                  
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+		</c:when>
+		<c:otherwise>
+		   <div id="changemain" class="page-header header-filter clear-filter purple-filter" data-parallax="true">
+		   	<div class="container">
+                 <c:choose>
 				<c:when test="${empty imagelist}">
 				<h1 class="text-center">팔로잉을 시작 하세요</h1>
 				<div class="row">
@@ -976,7 +981,7 @@ $(document).ready(function() {
                         <div class="card card-profile card-plain">
                             <div class="card-avatar">
                                 <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${rand.userNo}">
-                                    <img class="img" src="<%=request.getContextPath()%>${rand.prPicture}">
+                                    <img class="img" src="${rand.prPicture}">
                                 </a>
                             </div>
                             <div class="card-body">
@@ -992,8 +997,8 @@ $(document).ready(function() {
 					
 					</c:forEach>
 					</div>
-				</c:when>
-				<c:otherwise>
+				</c:when> 
+                 <c:otherwise>
 				
 
 				<div class="row">
@@ -1048,19 +1053,82 @@ $(document).ready(function() {
 				</div>
 				</c:otherwise>
 				</c:choose>
-				
+				</div>
+				</div>
 			</c:otherwise>
 		</c:choose>
-	</div>
-</div>
-
- 
-
+		
 <div class="main main-raised">
 	<div class="section section-basic">
-	
-		<div class="container">
+		<div class="container-fluid">
+		 
+		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" id="photo-tab" data-toggle="tab" href="#photos" role="tab" aria-controls="photos" aria-selected="true">사진</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="wordchart-tab" data-toggle="tab" href="#wordtab" role="tab" aria-controls="wordtab" aria-selected="false" >태그</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">사진 작가</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link disabled" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Disabled</a>
+		  </li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+		<!-- 최신 사진 탭 -->
+		  <div class="tab-pane active" id="photos" role="tabpanel" aria-labelledby="photo-tab">
+			
+				<div class="flex_grid credits">
+					<div class="tz-gallery">
+					<div class="row" id="searchpic">
+						<c:forEach items="${latestPicList}" var="lapic"
+							varStatus="status">
+							<div class="item col-sm-6 col-md-4">
+								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
+								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
+								</a>
+								<div>
+				                    <div class="counts hide-xs hide-sm ">
+				                    <c:choose>
+										<c:when test="${lapic.respectCheck eq 'T'}">
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite</i>${lapic.respectCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite_border</i>${lapic.respectCount}</em>
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${lapic.bookmarkCheck eq 'T'}">
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark</i>${lapic.bookmarkCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark_border</i>${lapic.bookmarkCount}</em>
+										</c:otherwise>
+									</c:choose>
+				                    </div>
+				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
+	               				</div>
+							</div>
+						</c:forEach>
+					</div>	
+				</div>
+			</div> 
+			
+			
+			
+			</div>
+		  <div class="tab-pane" id="wordtab" role="tabpanel" aria-labelledby="wordchart-tab">
 			<div id="wordchart"></div>
+		  </div>
+		  <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">...</div>
+		  <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+		</div>
+		
+			
 		</div>
 	</div>
 </div>

@@ -152,6 +152,39 @@ public class UserService {
 	}
 	
 	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : followingUserPaging
+	* 작성자명 : 박주원
+	* 기      능 : 유저의 팔로잉 리스트(페이징)
+	*
+	* @param userNo
+	* @param start
+	* @param rowSize
+	* @return List<User>
+	*/
+	public List<User> followingUserPaging(int userNo, int start, int rowSize){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> followingList = userDao.followingUserPaging(userNo, start, rowSize);
+		return followingList;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : getFollowingCount
+	* 작성자명 : 박주원
+	* 기      능 : 유저의 팔로잉 총 명수
+	*
+	* @param userNo
+	* @return Integer
+	*/
+	public int getFollowingCount(int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		int result = userDao.getFollowingCount(userNo);
+		
+		return result;
+	}
+	
+	/**
 	* 날      짜 : 2018. 6. 13.
 	* 메소드명 : followingConfirm
 	* 작성자명 : 박주원

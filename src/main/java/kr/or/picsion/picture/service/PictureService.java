@@ -479,4 +479,36 @@ public class PictureService {
 		writer.dispose();
 		return comPath;
 	}
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : LatestPicList
+	* 작성자명 : 정도혁
+	* 기      능 : 메인 화면 최신 사진 리스트
+	*
+	* @param userNo
+	* @return List<Picture>
+	*/
+	public List<Picture> latestPicList(int userNo){
+    	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	List<Picture> list = pictureDao.latestPicList(userNo);
+    	return list;
+    }
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : latestPicOwnList
+	* 작성자명 : 정도혁
+	* 기      능 : 메인 화면 최신 사진 주인 리스트
+	*
+	* @param userNo
+	* @return List<User>
+	*/
+	public List<User> latestPicOwnList(){
+    	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	List<User> list = pictureDao.latestPicOwnList();
+    	return list;
+    }
 }

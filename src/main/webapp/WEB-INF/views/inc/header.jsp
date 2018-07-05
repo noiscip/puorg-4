@@ -37,7 +37,7 @@ $(function(){
 						var value = elt[0].tableNo + ',' + elt[0].sendUserNo
 						
 						if(elt[0].tableNo == 3){
-							value += ',' +  elt[0].brdNo + ',0'
+							value += ',' +  elt[0].brdNo + ',0' 
 							noticeMenu += '님이 ' + elt[2].brdTitle
 							noticeMenu += ((elt[0].operNo ==0)? ' 작업을 신청 하였습니다':' 작업을 수락 하였습니다' )
 						}else if(elt[0].tableNo == 4){
@@ -169,7 +169,8 @@ $(function(){
 		  var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
 		  return ranNum;
 	}
-	$('.page-header').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)'); 
+	$('#changemain').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)');
+	
 })
 </script>
 

@@ -216,13 +216,44 @@ public class PictureController {
 		User user = (User) session.getAttribute("user");
 		
 		picture.setTagContent(tag);
-		picture.setUserNo(user.getUserNo());
+		picture.setUserNo(user.getUserNo());		
+		wpS3(picture);
+		return "redirect:mystudio.ps?userNo="+user.getUserNo();
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : operationComplete
+	* 작성자명 : 김준수 
+	* 기      능 : 작업이 완료된 후 양도여부에 따라 사진게시판에 게시가 되고 구매가 이루어짐
+	*
+	* @param picture
+	* @param tag
+	* @param session
+	* @return
+	*/
+	@RequestMapping("operationComplete.ps")
+	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session) {
+		User user = (User) session.getAttribute("user");
 		
-		if(picture.getPicPath().startsWith("https:")) {
-			picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
-        	System.out.println(picture.getPicPath());
-        }
-		
+		picture.setTagContent(tag);
+		picture.setUserNo(user.getUserNo());		
+		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+        System.out.println(picture.getPicPath());
+        	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
+        		
+		wpS3(picture);
+		return "redirect:mystudio.ps?userNo="+user.getUserNo();
+	}
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : wpS3
+	* 작성자명 : 김준수, 이아림
+	* 기      능 : 사진을 워터마크와 일반사진으로 나누어 s3에 저장
+	*
+	* @param picture
+	*/
+	public void wpS3(Picture picture) {
 		pictureService.insertPicture(picture);
 		String upath=picture.getPicPath();
 		
@@ -239,7 +270,7 @@ public class PictureController {
 		
 		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(14));
 		//워터마크 사진 이름 수정하여 저장
-		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", user.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
+		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", picture.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
 		File output = new File(imagePicsion+renameWater);
 
 		// adding text as overlay to an image
@@ -263,8 +294,7 @@ public class PictureController {
 
 		//s3 저장 (원본 사진)
 		String saveFileName="";
-		if(picture.getPicPath().startsWith("D:")) {
-			System.out.println("D:드루왔고"+picture.getPicPath());
+		if(picture.getPicPath().startsWith("C:")) {
 			System.out.println(picture.getPicPath().split("\\\\")[2]);
 			saveFileName=picture.getPicPath().split("\\\\")[2];
 		}else {		
@@ -283,10 +313,8 @@ public class PictureController {
 			System.out.println("s3 경로 생성");
 		}else {
 			System.out.println("s3 경로 생성 실패");
-		}		
-		return "redirect:mystudio.ps?userNo="+user.getUserNo();
+		}	
 	}
-	
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : pictureRespect
@@ -487,5 +515,6 @@ public class PictureController {
 		
 		return jsonview;
 	}
+	
 }
 

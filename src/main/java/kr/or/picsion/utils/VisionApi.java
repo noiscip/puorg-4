@@ -1,4 +1,4 @@
-package kr.or.picsion.utils;
+﻿package kr.or.picsion.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -92,8 +92,10 @@ public class VisionApi {
 	 */
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		String filePath = "";
-		String uploadPath = "D:\\imagePicsion\\";
-//		String uploadPath = "C:\\imagePicsion\\"; 
+
+//		String uploadPath = "D:\\imagePicsion\\";
+		String uploadPath = "C:\\imagePicsion\\"; 
+//		String uploadPath = "/home/ubuntu/image"; 
 
 		// 파일 저장하는 폴더
 		File dir = new File(uploadPath);

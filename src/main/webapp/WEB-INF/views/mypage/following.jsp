@@ -85,6 +85,37 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
+					
+					<nav aria-label="Page navigation example">
+					  <ul class="pagination justify-content-center">
+					  
+					  	<!-- 처음 이전 링크 -->
+	                    <c:if test="${pg>block}">
+	                         <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/user/followinglist.ps?pg=${fromPage-1}">Previous</a></li>
+	                    </c:if>
+                     	
+                     	<!-- 블록 범위 찍기 -->
+	                    <c:forEach begin="${fromPage}" end="${toPage}" var="i">
+	                         <c:if test="${i==pg}">
+	                             <li class="page-item active">
+	                             	<a class="page-link" href="#">${i}</a>
+	                             </li>
+	                         </c:if>
+	                         <c:if test="${i!=pg}">
+	                             <li class="page-item"><a href="<%=request.getContextPath()%>/user/followinglist.ps?pg=${i}"
+	                                 class="page-link">${i}</a></li>
+	                         </c:if>
+	                    </c:forEach>
+					    
+					    <!-- 다음, 이후 -->
+	                    <c:if test="${toPage<allPage}">
+	                        <li class="page-item">
+					      		<a class="page-link" href="<%=request.getContextPath()%>/user/followinglist.ps?pg=${toPage+1}">Next</a>
+					    	</li>
+	                    </c:if>
+					    
+					  </ul>
+					</nav>
 			</div>
 		</div>
 	</div>

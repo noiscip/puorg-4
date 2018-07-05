@@ -26,6 +26,8 @@ public interface UserDao {
 	public List<Picture> bookmarkPicList(int userNo, int page, int endpage);	//내가 북마크한 사진 리스트
 	public List<User> bookmarkPicUserList(int userNo, int page, int endpage);  //내가 북마크한 사진의 유저 리스트
 	public List<User> followingUserList(int userNo);	//내가 따르는 유저 리스트 (팔로잉 회원들)
+	public List<User> followingUserPaging(int userNo, int start, int rowSize);	//내가 따르는 유저 리스트 (팔로잉 회원들/페이징)
+	public int getFollowingCount(int userNo);			//내가 따르는 유저의 총 명수
 	public List<User> followerUserList(int userNo);		//나를 따르는 유저 리스트 (팔로워 회원들)
 	public int followingConfirm(int userNo, int followingUserNo);	//팔로잉하고 있는지 확인
 	public List<Picture> followingUserPictureList(int userNo, int page, int endpage);		//내가 팔로잉한 유저 최신 사진 리스트
