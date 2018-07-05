@@ -178,8 +178,14 @@
 				      		<button type="button" class="btn btn-default update-btn-margin btn-file">프로필 수정</button> --%>
 	                  	</div>
 	                  	<div class="form-group update-margin">
-	                  		<label for="exampleInput1" class="bmd-label-floating">다음 계정으로 연동</label>
-	                  		<label for="exampleInput1" class="bmd-label-floating" style="float: right">계정 연동 여부</label>
+	                  		<div class="row">
+		                  		<div class="col-md-6">
+		                  			<label for="exampleInput1" class="bmd-label-floating">다음 계정으로 연동</label>
+		                  		</div>
+		                  		<div class="col-md-6" align="right">
+		                  			<label for="exampleInput1" class="bmd-label-floating">계정 연동 여부</label>
+		                  		</div>
+	                  		</div>
 		                      <div class="form-check update-btn-margin">
 			                      <c:choose>
 			                      	<c:when test="${userinfo.google eq null}">
@@ -210,7 +216,6 @@
 							      </div>
 							  	</div>
 	                  </div>
-	                  
                       <div class="form-check update-btn-margin">
 	                      <label class="form-check-label linked-lab-color"><b>
 						      <c:choose>
