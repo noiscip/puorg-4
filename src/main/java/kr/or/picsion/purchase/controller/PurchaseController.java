@@ -2,6 +2,7 @@
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -177,18 +178,51 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("history.ps")
-	public String buyHistory(HttpSession session, Model model) {
+	public String buyHistory(HttpSession session, Model model, String pg) {
 		User user = (User) session.getAttribute("user");
 		
-		List<Picture> pictureInfo = purchaseService.selectPicPurchase(user.getUserNo());
-		List<User> userInfo = purchaseService.selectPicUser(user.getUserNo());
-		List<Purchase> purchaseInfo = purchaseService.selectPurchase(user.getUserNo());
+        int total=0;
+        
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 5;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //구매목록 count 해서 가져오기 
+        total = purchaseService.getPurCount(user.getUserNo());
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+
+		List<Picture> pictureInfo = purchaseService.selectPicPurchase(user.getUserNo(), start, rowSize);
+		List<User> userInfo = purchaseService.selectPicUser(user.getUserNo(), start, rowSize);
+		List<Purchase> purchaseInfo = purchaseService.selectPurchase(user.getUserNo(), start, rowSize);
 		int sumPurchase = purchaseService.sumPurchase(user.getUserNo());
 		
 		model.addAttribute("pictureInfo", pictureInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("purchaseInfo", purchaseInfo);
 		model.addAttribute("sumPurchase", sumPurchase);
+		
+        model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
 		
 		return "mypage.buyhistory";
 	}
@@ -205,18 +239,51 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("sellhistory.ps")
-	public String sellHistory(HttpSession session, Model model){
+	public String sellHistory(HttpSession session, Model model, String pg){
 		User user = (User) session.getAttribute("user");
 		
-		List<Picture> pictureInfo=purchaseService.selectPicSell(user.getUserNo());
-		List<User> userInfo = purchaseService.selectPicPurUser(user.getUserNo());
-		List<Purchase> purchaseInfo = purchaseService.selectSell(user.getUserNo());
+		int total=0;
+        
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 5;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //구매목록 count 해서 가져오기 
+        total = purchaseService.getSaleCount(user.getUserNo());
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+		List<Picture> pictureInfo=purchaseService.selectPicSell(user.getUserNo(), start, rowSize);
+		List<User> userInfo = purchaseService.selectPicPurUser(user.getUserNo(), start, rowSize);
+		List<Purchase> purchaseInfo = purchaseService.selectSell(user.getUserNo(), start, rowSize);
 		int sumSell= purchaseService.sumSell(user.getUserNo());
 		
 		model.addAttribute("pictureInfo", pictureInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("purchaseInfo", purchaseInfo);
 		model.addAttribute("sumSell", sumSell);
+		
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
 		
 		return "mypage.sellhistory";
 	}

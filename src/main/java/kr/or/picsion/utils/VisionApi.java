@@ -94,6 +94,7 @@ public class VisionApi {
 		String filePath = "";
 //		String uploadPath = "D:\\imagePicsion\\";
 		String uploadPath = "C:\\imagePicsion\\"; 
+//		String uploadPath = "/home/ubuntu/image"; 
 
 		// 파일 저장하는 폴더
 		File dir = new File(uploadPath);

@@ -83,57 +83,109 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 구매한 사진 리스트 -->
 	<select id="selectPicPurchase" resultType="kr.or.picsion.picture.dto.Picture">
-		select ph.*
+		<!-- select ph.*
 		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
 		where p.purchaseUserNo=#{userNo}
-		order by p.purchaseReg DESC
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg
+			from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+			where p.purchaseUserNo=#{param1}) pp order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
 	</select>
 	
 	<!-- 구매한 사진 작가 리스트 -->
 	<select id="selectPicUser" resultType="kr.or.picsion.user.dto.User">
-		select u.*
+		<!-- select u.*
 		from PURCHASE p join USERS u on p.saleUserNo=u.userNo
 		where p.purchaseUserNo=#{userNo}
-		order by p.purchaseReg DESC
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select u.*, p.purchaseReg
+			from PURCHASE p join USERS u on p.saleUserNo=u.userNo
+			where p.purchaseUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
 	</select>
 	
 	<!-- 구매한 정보 리스트 -->
 	<select id="selectPurchase" resultType="kr.or.picsion.purchase.dto.Purchase">
-		select *
+		<!-- select *
 		from PURCHASE 
 		where purchaseUserNo=#{userNo}
-		order by purchaseReg DESC
+		order by purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select *
+			from PURCHASE 
+			where purchaseUserNo=#{param1}) p
+			order by p.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
 	</select>
 	
-	<!-- 구매한 사진의 총 합계 -->
+	<!-- 구매한 사진의 총 금액 합계 -->
 	<select id="sumPurchase" resultType="Integer">
 		select ifNULL(sum(ph.picPrice),0) as sum
 		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
 		where p.purchaseUserNo=#{userNo}
 	</select>
 	
+	<!-- 구매한 사진의 총 개수-->
+	<select id="getPurCount" resultType="Integer">
+		select count(*) from PURCHASE where purchaseUserNo=#{userNo};
+	</select>
+	
 	<!-- 판매한 사진 리스트 -->
 	<select id="selectPicSell" resultType="kr.or.picsion.picture.dto.Picture">
-		select ph.*
+		<!-- select ph.*
 		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
 		where p.saleUserNo=#{userNo}
-		order by p.purchaseReg DESC
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg
+			from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+			where p.saleUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
 	</select>
 	
 	<!-- 구매한 사람 정보 -->
 	<select id="selectPicPurUser" resultType="kr.or.picsion.user.dto.User">
-		select u.*
+		<!-- select u.*
 		from PURCHASE p join USERS u on p.purchaseUserNo=u.userNo
 		where p.saleUserNo=#{userNo}
-		order by p.purchaseReg DESC
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select u.*, p.purchaseReg
+			from PURCHASE p join USERS u on p.purchaseUserNo=u.userNo
+			where p.saleUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
 	</select>
 	
 	<!-- 판매한 정보 리스트 -->
 	<select id="selectSell" resultType="kr.or.picsion.purchase.dto.Purchase">
-		select *
+		<!-- select *
 		from PURCHASE 
 		where saleUserNo=#{userNo}
-		order by purchaseReg DESC
+		order by purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select *
+			from PURCHASE 
+			where saleUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
 	</select>
 	
 	<!-- 판매한 사진 가격 합계 -->
@@ -143,6 +195,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where p.saleUserNo=#{userNo}
 	</select>
 	
+	<!-- 판매한 사진의 총 개수 -->
+	<select id="getSaleCount" resultType="Integer">
+		select count(*) from PURCHASE where saleUserNo=#{userNo};
+	</select>
 	
 	<!-- 유저 금액 업데이트 -->
 	<update id="updatePoint">
