@@ -64,7 +64,7 @@
 							var userList = "<div class='media'>"+
 										   "<a class='float-left'>"+
 										   		"<div class='avatar'>"+
-										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'></a>"+
+										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='"+data.userinfo.prPicture+"'></a>"+
 										   		"</div></a>"+
 										   	"<div class='media-body media-body-custom'>"+
 										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
@@ -127,7 +127,7 @@
 						selList="<div class='media'>"+
 										"<a class='float-left'>"+
 											"<div class='avatar'>"+
-										"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.user[0].userNo+"'><img class='media-object' src='<%=request.getContextPath()%>"+obj.user[0].prPicture+"'></a>"+
+										"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.user[0].userNo+"'><img class='media-object' src='"+obj.user[0].prPicture+"'></a>"+
 									"</div></a>"+
 									"<div class='media-body media-body-custom'>"+
 									"<h4 class='media-heading msgUserName' data-name='"+obj.user[0].userName+"'>"+
@@ -306,6 +306,11 @@ function msgList(userNo,myNo,msgUser) {
     padding-bottom: 100px !important;
 }
 
+/* 프로필 사진 100% */
+.prPic-height{
+	height: 100%;
+}
+
 </style>
 
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -342,7 +347,7 @@ function msgList(userNo,myNo,msgUser) {
 										<div class="media"> <!-- style="border: 1px red solid; border-radius:10px;" -->
 											<a class="float-left">
 												<div class="avatar">
-												  <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${recentMsg2.user[0].userNo}"><img class="media-object" src="<%=request.getContextPath()%>${recentMsg2.user[0].prPicture}"></a>
+												  <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${recentMsg2.user[0].userNo}"><img class="media-object prPic-height" src="${recentMsg2.user[0].prPicture}"></a>
 												</div>
 											</a>
 											<div class="media-body media-body-custom">

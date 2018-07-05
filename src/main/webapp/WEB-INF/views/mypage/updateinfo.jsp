@@ -99,8 +99,7 @@
 
 /* 정보 수정페이지에서 프로필 사진 크기 */
 .update-pr{
-	width: 250px;
-	height: 250px;
+	width: 300px;
 }
 
 /* 정보 수정페이지 상단 여백 */
@@ -163,7 +162,7 @@
 	                  	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 						   <div class="fileinput-new">
 							<img src="${userinfo.prPicture}" class="img-raised rounded-circle img-fluid update-pr">
-							<input value="${userinfo.prPicture}" name="prPicture" style="display: none;">
+							<%-- <input value="${userinfo.prPicture}" name="prPicture" style="display: none;"> --%>
 						   </div>
 						   <div class="fileinput-preview fileinput-exists thumbnail img-raised rounded-circle img-fluid update-pr"></div>
 						   <div>

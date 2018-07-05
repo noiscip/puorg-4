@@ -156,13 +156,9 @@ $(document).ready(function() {
 			      $.each(data.newcommentUserList,function(index,element){
 			    	  console.log(element)
 						media += "<div class='media'>"+
-					    "<a class='float-left' href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+element.userNo+"'>"+
+					    "<a class='float-left' href='/picsion/picture/mystudio.ps?userNo="+element.userNo+"'>"+
 						"<div class='avatar'>";
-						if(element.prPicture == null){
-							 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
-						}else{
-							media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
-						}
+						media += "<img class='media-object' alt='64x64' src='"+element.prPicture+"'>";
 						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
@@ -205,6 +201,7 @@ $(document).ready(function() {
 	
 	
 	
+	
 	//사진 카트 추가
 	$(document).on('click', '#addcart', function(){
 		if(loginUserNo==0){
@@ -213,20 +210,32 @@ $(document).ready(function() {
 			var data = {userNo : loginUserNo,
 				    picNo : picNo};
 			var btn = $(this);
-		
+			var ctn = $('#cartnav')["0"].childNodes[3].data;
+			ctn*=1;
+			var cartinsert=''
+				cartinsert +='<li class="divider"><a href="/picsion/picture/picinfo.ps?picNo=${picture.picNo}">';
+			    cartinsert +='<img style="width: 30px;" class="rounded" src="${picture.picWater}">&nbsp&nbsp';
+				cartinsert +='${picture.picTitle}<i class="material-icons">chevron_right</i>${picture.picPrice}원';
+				cartinsert +='<input id="${picture.picNo}tt" type="hidden">';
+				cartinsert +='</a></li>';
+			
 			 $.ajax({
 				url : "<%=request.getContextPath()%>/purchase/addCart.ps",
 				data : data,
 				success : function(data){
-					console.log(btn);
+					console.log(ctn);
 					if(data.result==1){
+						$('#cartnav')["0"].childNodes[3].data--;
 						btn.attr('class','btn btn-white float-right');
 						btn["0"].childNodes[1].nodeValue = " Add Cart";
 						btn["0"].children["0"].innerHTML = "shopping_cart";
+						$('#${picture.picNo}tt').parent().parent().remove();
 					  }else{
+						$('#cartnav')["0"].childNodes[3].data++;
 						btn.attr('class','btn btn-primary float-right');
 						btn["0"].childNodes[1].nodeValue = " Remove Cart";
 						btn["0"].children["0"].innerHTML = "remove_shopping_cart";
+						$('#addcartnav').append(cartinsert);
 					  }
 				}
 			 }) 
@@ -306,7 +315,7 @@ $(document).ready(function() {
 								</div>
 							
 							<div class="colored-shadow colored-shadow-big"
-								style="background-image: url(&quot;<%=request.getContextPath()%>/${picture.picPath}?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div>
+								style="background-image: url(&quot;${picture.picPath}?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">
 						<c:choose>
@@ -326,21 +335,11 @@ $(document).ready(function() {
 								<div class="row">
 									<div class="col-md-5">
 										<div class="card-header card-header-image">
-											<a
-												href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${userInfo.userNo}">
-												<c:choose>
-													<c:when test="${userInfo.prPicture eq null}">
-														<img class="img"
-															src="<%=request.getContextPath()%>/assets/img/user.png">
-													</c:when>
-													<c:otherwise>
-														<img class="img"
-															src="<%=request.getContextPath()%>${userInfo.prPicture}">
-													</c:otherwise>
-												</c:choose>
+											<a	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${userInfo.userNo}">
+												<img class="img" src="${userInfo.prPicture}">
 											</a>
 											<div class="colored-shadow"
-												style="background-image: url(&quot;<%=request.getContextPath()%>/${userInfo.prPicture}&quot;); opacity: 1;"></div>
+												style="background-image: url(&quot;${userInfo.prPicture}&quot;); opacity: 1;"></div>
 										</div>
 									</div>
 									<div class="col-md-7">
@@ -434,17 +433,7 @@ $(document).ready(function() {
 												<div class="media">
 													<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentUserList[status.index].userNo}">
 														<div class="avatar">
-															<c:choose>
-																<c:when
-																	test="${commentUserList[status.index].prPicture eq null}">
-																	<img class="media-object" alt="64x64"
-																		src="<%=request.getContextPath()%>/assets/img/user.png">
-																</c:when>
-																<c:otherwise>
-																	<img class="media-object" alt="64x64"
-																		src="<%=request.getContextPath()%>${commentUserList[status.index].prPicture}">
-																</c:otherwise>
-															</c:choose>
+												         <img class="media-object" alt="64x64" src="${commentUserList[status.index].prPicture}">
 														</div>
 													</a>
 													<div style="width: 70%;" class="media-body">
@@ -480,15 +469,7 @@ $(document).ready(function() {
 										<c:otherwise>
 											<a class="author float-left" href="#pablo">
 												<div class="avatar">
-													<c:choose>
-														<c:when test="${sessionScope.user.prPicture eq null}">
-															<img class="media-object" alt="64x64"
-																src="<%=request.getContextPath()%>/assets/img/user.png">
-														</c:when>
-														<c:otherwise>
-															<img class="media-object" alt="64x64" src="<%=request.getContextPath()%>${sessionScope.user.prPicture}">
-														</c:otherwise>
-													</c:choose>
+												  <img class="media-object" alt="64x64" src="${sessionScope.user.prPicture}">
 												</div>
 											</a>
 											<div class="media-body">
@@ -522,7 +503,7 @@ $(document).ready(function() {
 						<div class="card-header card-header-image">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${rList.picNo}">
 							<img class="img" src="${rList.picWater}"></a>
-							<div class="colored-shadow"	style="background-image: url(&quot;<%=request.getContextPath()%>${rList.picPath}&quot;); opacity: 1;"></div>
+							<div class="colored-shadow"	style="background-image: url(&quot;${rList.picPath}&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">
 							<h6 class="card-category text-rose">Popular</h6>
