@@ -279,6 +279,7 @@ public class PictureController {
 		}else {
 			System.out.println("워터마크 생성 실패");
 		}
+		System.out.println("picture.getPicPath : "+picture.getPicPath());
 		System.out.println(picture.getPicPath());
 		//s3 저장 (원본 사진)
 		String saveFileName="";
@@ -293,10 +294,10 @@ public class PictureController {
 //		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
 		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 		new File(picture.getPicPath()).renameTo(reFile);
-		
+		System.out.println("혹시 너니?"+reFile.getName());
 //		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
-		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-		String webFilePath = amazonService.uploadObject(saveFileName,"picsion/img");
+		System.out.println("너는 파일 이름만 나와야 해 : "+reFile.getName());
+		String webFilePath = amazonService.uploadObject(reFile.getName(),"picsion/img");
 		
 		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
 		if(s3Result!=0) {
