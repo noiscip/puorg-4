@@ -2,6 +2,7 @@ package kr.or.picsion;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -52,18 +53,27 @@ public class HomeController {
 		System.out.println("formattedDate : " + formattedDate);
 		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");		
 		System.out.println("regDate : " + reg.format(date));
-		User user2 = (User) session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		List<Picture> ranPicture = pictureService.selectRandom();
-		
-		if(user2 != null) {
-			List<Picture> followingPicList = userService.followingUserPicList(user2.getUserNo(), 0, 10);
-			List<User> randomuser = userService.randomUsers(user2.getUserNo());
+		List<Picture> latestPicList = new ArrayList<>();
+		List<User> latestPicOwnList = pictureService.latestPicOwnList();
+		if(user != null) {
+			List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo(), 0, 10);
+			List<User> randomuser = userService.randomUsers(user.getUserNo());
+			latestPicList = pictureService.latestPicList(user.getUserNo());
 		    model.addAttribute("imagelist", followingPicList);
 		    model.addAttribute("randomuser",randomuser);
+		    model.addAttribute("latestPicList",latestPicList);
+		}else{
+		 latestPicList = pictureService.latestPicList(0);
+		 System.out.println(latestPicList);
+		 model.addAttribute("latestPicList",latestPicList);
+		 
 		}
 		
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("ranPicture",ranPicture);
+		model.addAttribute("latestPicOwnList",latestPicOwnList);
 		
 		return "home.home";
 	}

@@ -7,7 +7,7 @@
 <input type="hidden" value="${sessionScope.result}" id="result">
 
 <style>
-a {
+/* a {
 	color: white;
 	background-color: transparent;
 }
@@ -21,7 +21,7 @@ a:focus {
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
-
+ */
 .hashTag {
 	color: hotpink;
 }
@@ -718,6 +718,11 @@ label.btn.btn-default.btn-circle.focus {
 	height: 900px;
 	margin: 20px
 }
+
+.img-size {
+	height: 300px;
+	width: 100%;
+}
 </style>
 <script>
 //postid 가져와서 댓글달기
@@ -1052,18 +1057,78 @@ $(document).ready(function() {
 				</div>
 			</c:otherwise>
 		</c:choose>
- 
+		
 <div class="main main-raised">
 	<div class="section section-basic">
-	<nav class="nav">
-  <a class="nav-link active" href="#0">Active</a>
-  <a class="nav-link" href="#0">Link</a>
-  <a class="nav-link" href="#0">Link</a>
-  <a class="nav-link disabled" href="#0">Disabled</a>
-</nav>
-	
-		<div class="container">
+		<div class="container-fluid">
+		 
+		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" id="photo-tab" data-toggle="tab" href="#photos" role="tab" aria-controls="photos" aria-selected="true">사진</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="wordchart-tab" data-toggle="tab" href="#wordtab" role="tab" aria-controls="wordtab" aria-selected="false" >태그</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">사진 작가</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link disabled" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Disabled</a>
+		  </li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+		<!-- 최신 사진 탭 -->
+		  <div class="tab-pane active" id="photos" role="tabpanel" aria-labelledby="photo-tab">
+			
+				<div class="flex_grid credits">
+					<div class="tz-gallery">
+					<div class="row" id="searchpic">
+						<c:forEach items="${latestPicList}" var="lapic"
+							varStatus="status">
+							<div class="item col-sm-6 col-md-4">
+								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
+								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
+								</a>
+								<div>
+				                    <div class="counts hide-xs hide-sm ">
+				                    <c:choose>
+										<c:when test="${lapic.respectCheck eq 'T'}">
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite</i>${lapic.respectCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite_border</i>${lapic.respectCount}</em>
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${lapic.bookmarkCheck eq 'T'}">
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark</i>${lapic.bookmarkCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark_border</i>${lapic.bookmarkCount}</em>
+										</c:otherwise>
+									</c:choose>
+				                    </div>
+				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
+	               				</div>
+							</div>
+						</c:forEach>
+					</div>	
+				</div>
+			</div> 
+			
+			
+			
+			</div>
+		  <div class="tab-pane" id="wordtab" role="tabpanel" aria-labelledby="wordchart-tab">
 			<div id="wordchart"></div>
+		  </div>
+		  <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">...</div>
+		  <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+		</div>
+		
+			
 		</div>
 	</div>
 </div>
