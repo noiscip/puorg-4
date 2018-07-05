@@ -15,7 +15,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 
 /**
@@ -55,7 +54,7 @@ public class AmazonUpload {
         if(!fileObjKeyName.startsWith("w")) {
         	
         }
-        String fileName = "D:/imagePicsion/" + fileObjKeyName;
+        String fileName = "C:/imagePicsion/" + fileObjKeyName;
         /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
         System.out.println("너야?");

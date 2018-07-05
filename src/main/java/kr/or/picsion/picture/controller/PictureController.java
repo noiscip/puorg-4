@@ -1,18 +1,9 @@
 ﻿package kr.or.picsion.picture.controller;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -25,14 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.operation.dto.OperPicture;
@@ -45,7 +28,6 @@ import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 import kr.or.picsion.utils.AmazonUpload;
-import software.amazon.ion.SystemSymbols;
 
 
 /**
@@ -58,7 +40,9 @@ import software.amazon.ion.SystemSymbols;
 @Controller
 @RequestMapping("/picture/")
 public class PictureController {
-
+	
+	public static String imagePicsion ="C:\\imagePicsion\\";
+	
    	@Autowired
     private View jsonview;
 
@@ -172,13 +156,13 @@ public class PictureController {
 	*/
 	@RequestMapping("operpicupload.ps")
 	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo) {
-		System.out.println("inseroper 들어왔다");
 		User user = (User) session.getAttribute("user");	
 		OperPicture operPicture = new OperPicture();
 		Operation operation = operationService.operNoselectOper(Integer.parseInt(operNo));
 		System.out.println(file.getOriginalFilename());
-		String uploadPath = "D:\\imagePicsion\\";
+		String uploadPath = imagePicsion;
 		String dbPath="";
+		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
@@ -187,10 +171,6 @@ public class PictureController {
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
 		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];		
-		
-		
-		
-		
 		
 			if(saveFileName != null && !saveFileName.equals("")) {
 				if(new File(uploadPath + saveFileName).exists()) {
@@ -237,65 +217,64 @@ public class PictureController {
 		
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
-		System.out.println(picture.getPicPath());
+		
 		if(picture.getPicPath().startsWith("https:")) {
-			picture.setPicPath("D:\\imagePicsion\\"+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+			picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
         	System.out.println(picture.getPicPath());
         }
+		
 		pictureService.insertPicture(picture);
-		System.out.println("유저번호:"+user.getUserNo());
-		System.out.println(picture);
-		System.out.println(picture.getTagContent());
-//		String upath="D:/imagePicsion"+picture.getPicPath();
 		String upath=picture.getPicPath();
+		
 		System.out.println("파일경로라서 워터마크에 쓸것이다: "+upath);
 			
 		String waterText = "PICSION";
 		File input = new File(upath);
+		
 		//워터마크 폴더 생성
-		File dir = new File("D:\\imagePicsion\\");
+		File dir = new File(imagePicsion);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
+		
 		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(14));
 		//워터마크 사진 이름 수정하여 저장
 		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", user.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
-		File output = new File("D:/imagePicsion/"+renameWater);
+		File output = new File(imagePicsion+renameWater);
 
-//		System.out.println("워터마크되나?"+output.getPath().substring(16));//로직바꾸자
 		// adding text as overlay to an image
 		try {
 			pictureService.addTextWatermark(waterText, "jpg", input, output);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		//워터마크사진 s3에 저장
 		String waterPath = amazonService.uploadObject(output.getPath().substring(16),"picsion/water");
 		
 		int waterResult = pictureService.updateWater(waterPath, picture.getPicNo());
+		
 		if(waterResult!=0) {
 			System.out.println("워터마크 생성");
 		}else {
 			System.out.println("워터마크 생성 실패");
 		}
 		System.out.println("picture.getPicPath : "+picture.getPicPath());
-		System.out.println(picture.getPicPath());
+
 		//s3 저장 (원본 사진)
 		String saveFileName="";
 		if(picture.getPicPath().startsWith("D:")) {
 			System.out.println("D:드루왔고"+picture.getPicPath());
-		System.out.println(picture.getPicPath().split("\\\\")[2]);
-		saveFileName=picture.getPicPath().split("\\\\")[2];
+			System.out.println(picture.getPicPath().split("\\\\")[2]);
+			saveFileName=picture.getPicPath().split("\\\\")[2];
 		}else {		
-		saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+			saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		}
 		//원본사진 변경
 //		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
-		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
+		File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 		new File(picture.getPicPath()).renameTo(reFile);
-		System.out.println("혹시 너니?"+reFile.getName());
-//		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
+		
 		System.out.println("너는 파일 이름만 나와야 해 : "+reFile.getName());
 		String webFilePath = amazonService.uploadObject(reFile.getName(),"picsion/img");
 		

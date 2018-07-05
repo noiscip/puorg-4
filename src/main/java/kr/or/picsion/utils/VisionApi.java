@@ -2,7 +2,6 @@ package kr.or.picsion.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -29,7 +29,6 @@ import com.google.cloud.vision.v1.ImageSource;
 import com.google.cloud.vision.v1.SafeSearchAnnotation;
 import com.google.cloud.vision.v1.WebDetection;
 import com.google.cloud.vision.v1.WebDetection.WebEntity;
-import com.google.cloud.vision.v1.WebDetection.WebLabel;
 import com.google.protobuf.ByteString;
 
 import kr.or.picsion.picture.dto.Face;
@@ -47,23 +46,55 @@ public class VisionApi {
 	
 	@Autowired
 	private PictureService pictureService;
+
+	@Autowired
+	private GoogleTranslationApi googleTranslation;
+	
+	
+	
 	/**
-	 * 날 짜 : 2018. 6. 8. 
-	 * 메소드명 : fileUpload 작성자명 : 이아림, 아윤근 
-	 * 기 능 : 실경로 파일 업로드 및 메타데이터 뽑기
+	 * 날      짜 : 2018. 7. 5.
+	 * 메소드명 : visionPocket
+	 * 작성자명 : 이아림, 김준수
+	 * 기      능 : 
+	 *
+	 * @param filePath
+	 * @param model
+	*/
+	public void visionPocket(String filePath,Model model) {
+		String logocheck=detectLogos(filePath);				//vision : 로고감지
+		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
+		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
+//		List<Face> faceList = detectFaces(uploadedPath);	//vision : 얼굴감지
+		for(String label : detectWebDetections(filePath)) {
+			labelList.add(label);
+		}
+		
+		List<String> labelListKo = googleTranslation.translation(labelList);
+		
+		model.addAttribute("logo", logocheck);
+		model.addAttribute("safe", safecheck);
+		model.addAttribute("label", labelList);
+		model.addAttribute("label2", labelListKo);
+		model.addAttribute("picPath",picturePath);
+//		model.addAttribute("face",faceList);
+		
+	}	
+	
+	/**
+	 * 날      짜 : 2018. 6. 8. 
+	 * 메소드명 : fileUpload 
+	 * 작성자명 : 이아림, 아윤근 
+	 * 기      능 : 실경로 파일 업로드 및 메타데이터 뽑기
 	 *
 	 * @param mRequest
 	 * @return String
 	 */
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
-		String filePathh = "";
-		String uploadPath = "D:\\imagePicsion\\";
-//		String uploadPath = "C:\\imagePicsion\\"; 
-		/*
-		 * String uploadPath =
-		 * "C:\\Users\\Bit\\Documents\\bitcamp104\\Final_4Group\\Final_Picsion\\src\\main\\webapp\\assets\\img\\examples\\";
-		 */
-		System.out.println("파일업로드 너는? "+mRequest);
+		String filePath = "";
+//		String uploadPath = "D:\\imagePicsion\\";
+		String uploadPath = "C:\\imagePicsion\\"; 
+
 		// 파일 저장하는 폴더
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -71,27 +102,29 @@ public class VisionApi {
 		}
 
 		Iterator<String> iter = mRequest.getFileNames();
-		System.out.println(iter);
+
 		while (iter.hasNext()) {
 			String uploadFileName = iter.next();
 
 			MultipartFile mFile = mRequest.getFile(uploadFileName);
 
-			String originalFileName = mFile.getOriginalFilename();
-			System.out.println("오리진파일네임: " + originalFileName);
-			String saveFileName = originalFileName;
-			filePathh = uploadPath + saveFileName;
+			String saveFileName = mFile.getOriginalFilename();
+			System.out.println("---------------------------------------------------");
+			System.out.println("mfile GetName : " + mFile.getName());
+			System.out.println("---------------------------------------------------");
+			System.out.println("오리진파일네임: " + saveFileName);
+			filePath = uploadPath + saveFileName;
 
-			System.out.println("uploadPath: " + uploadPath);
-			System.out.println("saveFileName: " + saveFileName);
-			System.out.println("filePathh: " + filePathh);
+			System.out.println("filePath: " + filePath);
+			
 			picturePath = "/imagePicsion/" + saveFileName;
 
 			System.out.println("이것이!!! " + uploadPath + saveFileName);
 
+			
 			if (saveFileName != null && !saveFileName.equals("")) {
 				//이거 고쳐야함
-				if (new File(uploadPath + saveFileName).exists()) {
+				if (new File(filePath).exists()) {
 					saveFileName = saveFileName + "_" + System.currentTimeMillis();
 				}
 				try {
@@ -106,8 +139,7 @@ public class VisionApi {
 						for (Directory directory : metadata.getDirectories()) {
 							System.out.println(directory);
 							for (Tag tag : directory.getTags()) {
-								System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(),
-										tag.getDescription());
+								System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(), tag.getDescription());
 								
 								if(tag.getTagName().equals("File Size")) {
 									System.out.println("우잉"+tag.getDescription().split(" ")[0]);
@@ -115,17 +147,11 @@ public class VisionApi {
 										System.out.println("10MB 넘는 사진입니다");
 										//사진 크기 압축
 										String ss = saveFileName.split("\\.")[0];
-										filePathh=pictureService.imageCompr(newFile,uploadPath + ss+"com.jpg");
+										filePath=pictureService.imageCompr(newFile,uploadPath + ss+"com.jpg");
 									}
 								}
 								
-								if (!directory.getName().equals("Exif Thumbnail")
-										&& tag.getTagName().split(" ")[0].equals("Image")) {
-									System.out.println("---------------------------------");
-									System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(),
-											tag.getDescription());
-									System.out.println(tag.getDirectoryName());
-									System.out.println("---------------------------------");
+								if (!directory.getName().equals("Exif Thumbnail") && tag.getTagName().split(" ")[0].equals("Image")) {
 									picInfo += tag.getDescription().split(" ")[0];
 																		
 								}
@@ -136,7 +162,6 @@ public class VisionApi {
 								}
 							}
 						}
-						System.out.println("픽미픽미픽미픽미업픽미픽미 픽쳐인포");
 						System.out.println(picInfo);
 
 					} catch (Exception e1) {
@@ -152,12 +177,15 @@ public class VisionApi {
 			} // if end
 
 		}
-		System.out.println("완성 ?" + filePathh);
-		return filePathh;
+		System.out.println("완성 ?" + filePath);
+		return filePath;
 	} // fileUpload end
 
 	/**
-	 * 날 짜 : 2018. 7. 2. 메소드명 : detectLabels 작성자명 : 이아림 기 능 : 사진에서 태그 뽑기
+	 * 날      짜 : 2018. 7. 2. 
+	 * 메소드명 : detectLabels 
+	 * 작성자명 : 이아림 
+	 * 기      능 : 사진에서 태그 뽑기
 	 *
 	 * @param filePath
 	 * @return
@@ -184,14 +212,16 @@ public class VisionApi {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return labelList;
 	}
 
 	/**
-	 * 날 짜 : 2018. 7. 2. 메소드명 : detectLogos 작성자명 : 이아림 기 능 : 로고발견
+	 * 날      짜 : 2018. 7. 2. 
+	 * 메소드명 : detectLogos 
+	 * 작성자명 : 이아림 
+	 * 기      능 : 로고발견
 	 *
 	 * @param filePath
 	 * @return String
@@ -212,10 +242,6 @@ public class VisionApi {
 			List<AnnotateImageResponse> responses = response.getResponsesList();
 
 			for (AnnotateImageResponse res : responses) {
-				/*
-				 * if (res.hasError()) { System.out.println("Error: " +
-				 * res.getError().getMessage()); return; }
-				 */
 				// For full list of available annotations, see http://g.co/cloud/vision/docs
 				for (EntityAnnotation annotation : res.getLogoAnnotationsList()) {
 					if (annotation.getDescription() != null) {
@@ -227,17 +253,19 @@ public class VisionApi {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return logoExist;
 	}
 
 	/**
-	 * 날 짜 : 2018. 7. 2. 메소드명 : detectSafeSearch 작성자명 : 이아림 기 능 :
+	 * 날      짜 : 2018. 7. 2. 
+	 * 메소드명 : detectSafeSearch 
+	 * 작성자명 : 이아림 
+	 * 기      능 : 유해 컨텐츠 검사
 	 *
 	 * @param filePath
-	 * @return
+	 * @return String
 	 * @throws Exception
 	 * @throws IOException
 	 */
@@ -273,14 +301,16 @@ public class VisionApi {
 				safeExist = null;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return safeExist;
 	}
 
 	/**
-	 * 날 짜 : 2018. 7. 2. 메소드명 : detectFaces 작성자명 : 이아림 기 능 : 얼굴감지
+	 * 날      짜 : 2018. 7. 2. 
+	 * 메소드명 : detectFaces 
+	 * 작성자명 : 이아림 
+	 * 기      능 : 얼굴감지
 	 *
 	 * @param filePath
 	 * @return
@@ -312,12 +342,6 @@ public class VisionApi {
 				for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
 					System.out.println("position: %s" + annotation.getBoundingPoly() + "\n");
 					// faceXY+=annotation.getBoundingPoly();
-					/*
-					 * System.out.println("왼상?"+annotation.getBoundingPoly().getVertices(0));
-					 * System.out.println("오상?"+annotation.getBoundingPoly().getVertices(1));
-					 * System.out.println("오하?"+annotation.getBoundingPoly().getVertices(2));
-					 * System.out.println("왼하?"+annotation.getBoundingPoly().getVertices(3));
-					 */
 					facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
 							annotation.getBoundingPoly().getVertices(1).getX(),
 							annotation.getBoundingPoly().getVertices(1).getY(),
@@ -326,14 +350,16 @@ public class VisionApi {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return facePoly;
 	}
 
 	/**
-	 * 날 짜 : 2018. 7. 2. 메소드명 : detectWebDetections 작성자명 : 이아림 기 능 : 웹에서 태그가져오기
+	 * 날      짜 : 2018. 7. 2. 
+	 * 메소드명 : detectWebDetections 
+	 * 작성자명 : 이아림 
+	 * 기      능 : 웹에서 태그가져오기
 	 *
 	 * @param filePath
 	 * @throws Exception
@@ -352,41 +378,30 @@ public class VisionApi {
 			List<AnnotateImageResponse> responses = response.getResponsesList();
 
 			for (AnnotateImageResponse res : responses) {
-//				if (res.hasError()) {
-//					System.out.println("Error: " + res.getError().getMessage());
-//					return;
-//				}
 
-				// Search the web for usages of the image. You could use these signals later
-				// for user input moderation or linking external references.
-				// For a full list of available annotations, see http://g.co/cloud/vision/docs
 				WebDetection annotation = res.getWebDetection();
-
 				for (WebEntity entity : annotation.getWebEntitiesList()) {
-					
 					 if(entity.getScore()>0.7 && entity.getDescription()!=null) {
-					 System.out.println(entity.getDescription() + " : " + entity.getEntityId() +
-					 " : " + entity.getScore());
-					 labelList.add(entity.getDescription());
+						 System.out.println(entity.getDescription() + " : " + entity.getEntityId() + " : " + entity.getScore());
+						 labelList.add(entity.getDescription());
 					 }
-					 
-					/*if (entity.getDescription() == null) {
-						System.out.println(
-								entity.getDescription() + " : " + entity.getEntityId() + " : " + entity.getScore());
-					}*/
 				}
-				/*for (WebLabel label : annotation.getBestGuessLabelsList()) {
-					System.out.println("Best guess label: " + label.getLabel());
-
-				}*/
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return labelList;
 	}
 
+	/**
+	 * 날      짜 : 2018. 6. 8.
+	 * 메소드명 : getImage
+	 * 작성자명 : 김준수
+	 * 기      능 : 로컬에서 이미지 가져오기
+	 *
+	 * @param filePath
+	 * @return Image
+	*/
 	private static Image getImage(String filePath) {
 		Image image;
 
@@ -400,16 +415,11 @@ public class VisionApi {
 			ByteString imgBytes = null;
 			try {
 				imgBytes = ByteString.readFrom(new FileInputStream(filePath));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			image = Image.newBuilder().setContent(imgBytes).build();
 		}
-
 		return image;
 	}
 }

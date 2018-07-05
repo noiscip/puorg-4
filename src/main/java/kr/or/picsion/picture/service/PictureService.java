@@ -8,10 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.*;
 import java.io.*;
 import java.util.*;
-import java.util.HashMap;
 import java.util.List;
 
 
