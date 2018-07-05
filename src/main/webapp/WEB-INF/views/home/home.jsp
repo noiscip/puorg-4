@@ -909,64 +909,64 @@ $(document).ready(function() {
 			function(){$('body').css("overflow","visible")	}
 	);
 	
+	
 })
 </script>
-<div class="page-header header-filter clear-filter purple-filter"
-	data-parallax="true">
-	<div class="container">
-		<c:choose>
-			<c:when test="${sessionScope.user eq null}">
-				<div class="row">
-					<div class="col-md-12 mr-auto ml-auto">
-						<div class="card card-raised card-carousel">
-							<div id="carouselExampleIndicators" class="carousel slide"
-								data-ride="carousel">
-								<ol class="carousel-indicators">
-								<li data-target="#carouselExampleIndicators" data-slide-to="0"
-										class="active"></li>
-								<c:forEach items="${ranPicture}" var="randNum" varStatus='status' begin="1" end="9">
-								<li data-target="#carouselExampleIndicators" data-slide-to="${status.count}"></li>
-								</c:forEach>
-								</ol>
-								<div style="max-height: 500px" class="carousel-inner">
-								
-								<c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
-								<c:choose>
-								<c:when test="${status.index eq 0}">
-								<div class="carousel-item active">
-										<img class="d-block w-100"
-											src="${randPic.picWater}"
-											alt="No Image">
-								</div>
-								</c:when>
-								<c:otherwise>
-								<div class="carousel-item">
-										<img class="d-block w-100"
-											src="${randPic.picWater}"
-											alt="No Image">
-									</div>
-								</c:otherwise>
-								</c:choose>
-								</c:forEach>
-								</div>
-								<a class="carousel-control-prev"
-									href="#carouselExampleIndicators" role="button"
-									data-slide="prev"> <span class="carousel-control-prev-icon"
-									aria-hidden="true"></span> <span class="sr-only">Previous</span>
-								</a> <a class="carousel-control-next"
-									href="#carouselExampleIndicators" role="button"
-									data-slide="next"> <span class="carousel-control-next-icon"
-									aria-hidden="true"></span> <span class="sr-only">Next</span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</c:when>
-			<c:otherwise>
+<c:choose>
+<c:when test="${sessionScope.user eq null}">
 
-				
+		<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                
+              <c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
 				<c:choose>
+					<c:when test="${status.index eq 0}">
+						<div class="carousel-item active">
+                        <div class="page-header header-filter"data-parallax="true" style="background-image: url('${randPic.picWater}');">
+                            
+                            <div class="container">
+							<div class="row">
+								<div class="col-md-8 ml-auto mr-auto text-center">
+									<div class="brand">
+										<h1 class="title">Sell Your Picture!</h1>
+										<h4><b>PICSION</b>을 통해 당신의 꿈을 보여주세요</h4>
+									</div>
+								</div>
+							</div>
+							</div>
+                            
+                        </div>
+                    </div>	
+								
+					</c:when>
+					<c:otherwise>
+						
+						  <div class="carousel-item">
+                        <div class="page-header header-filter"data-parallax="true" style="background-image: url('${randPic.picWater}');">
+                           
+                        </div>
+                    </div>
+						
+						
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+                  
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+		</c:when>
+		<c:otherwise>
+		   <div id="changemain" class="page-header header-filter clear-filter purple-filter" data-parallax="true">
+		   	<div class="container">
+                 <c:choose>
 				<c:when test="${empty imagelist}">
 				<h1 class="text-center">팔로잉을 시작 하세요</h1>
 				<div class="row">
@@ -976,7 +976,7 @@ $(document).ready(function() {
                         <div class="card card-profile card-plain">
                             <div class="card-avatar">
                                 <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${rand.userNo}">
-                                    <img class="img" src="<%=request.getContextPath()%>${rand.prPicture}">
+                                    <img class="img" src="${rand.prPicture}">
                                 </a>
                             </div>
                             <div class="card-body">
@@ -992,8 +992,8 @@ $(document).ready(function() {
 					
 					</c:forEach>
 					</div>
-				</c:when>
-				<c:otherwise>
+				</c:when> 
+                 <c:otherwise>
 				
 
 				<div class="row">
@@ -1048,16 +1048,19 @@ $(document).ready(function() {
 				</div>
 				</c:otherwise>
 				</c:choose>
-				
+				</div>
+				</div>
 			</c:otherwise>
 		</c:choose>
-	</div>
-</div>
-
  
-
 <div class="main main-raised">
 	<div class="section section-basic">
+	<nav class="nav">
+  <a class="nav-link active" href="#0">Active</a>
+  <a class="nav-link" href="#0">Link</a>
+  <a class="nav-link" href="#0">Link</a>
+  <a class="nav-link disabled" href="#0">Disabled</a>
+</nav>
 	
 		<div class="container">
 			<div id="wordchart"></div>
