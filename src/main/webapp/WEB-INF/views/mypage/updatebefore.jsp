@@ -20,6 +20,12 @@
 	padding-bottom: 50px;
 }
 
+/* div row 여백  */
+.row-pad-tb{
+	padding-top: 60px;
+	padding-bottom: 160px;
+}
+
 </style>
 
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
@@ -36,7 +42,7 @@
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
 		
-				<div class="row">
+				<div class="row row-pad-tb">
 					<div class="col-md-4 ml-auto mr-auto">
 		            <div class="card card-signup">
 					<form class="form" method="post" action="<%=request.getContextPath()%>/user/updatebefore.ps">
