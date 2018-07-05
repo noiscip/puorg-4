@@ -531,7 +531,8 @@
 				<input type="button" id ="operPicture" class="btn btn-primary btn-round" value="사진 업로드">
 				
 					<div class="col-md-6">
-						<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
+						<form action="<%=request.getContextPath()%>/picture/operationComplete.ps">
+								<input type="hidden" name="picPrice" value="${operation.operPrice}">
 								<input type="hidden" name="transferState" value="${boardInfo.copyright}">
 								<input type="hidden" name="picPath" value="${operPicture.picPath}">
 								
