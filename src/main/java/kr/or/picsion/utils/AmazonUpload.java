@@ -54,7 +54,7 @@ public class AmazonUpload {
         if(!fileObjKeyName.startsWith("w")) {
         	
         }
-        String fileName = "D:/imagePicsion/" + fileObjKeyName;
+        String fileName = "C:/imagePicsion/" + fileObjKeyName;
         /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
         System.out.println("너야?");

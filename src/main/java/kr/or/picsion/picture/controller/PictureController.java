@@ -41,7 +41,7 @@ import kr.or.picsion.utils.AmazonUpload;
 @RequestMapping("/picture/")
 public class PictureController {
 	
-	public static String imagePicsion ="D:\\imagePicsion\\";
+	public static String imagePicsion ="C:\\imagePicsion\\";
 	
    	@Autowired
     private View jsonview;
@@ -294,7 +294,7 @@ public class PictureController {
 
 		//s3 저장 (원본 사진)
 		String saveFileName="";
-		if(picture.getPicPath().startsWith("D:")) {
+		if(picture.getPicPath().startsWith("C:")) {
 			System.out.println(picture.getPicPath().split("\\\\")[2]);
 			saveFileName=picture.getPicPath().split("\\\\")[2];
 		}else {		
