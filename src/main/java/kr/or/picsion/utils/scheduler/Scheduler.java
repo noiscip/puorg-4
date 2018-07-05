@@ -27,7 +27,7 @@ public class Scheduler {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	@Scheduled(cron="0 0/5 * * * *")
+	@Scheduled(cron="0 0 0 * * *")
 	public void deleteMsg() {
 		System.out.println("스케쥴러");
 		User user = new User();
