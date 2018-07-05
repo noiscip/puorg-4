@@ -525,8 +525,9 @@
 	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
 		<c:choose>
 			<c:when test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
+			<div style="height: 350px; width : 350px;">
 				<img alt="No Image" height="100%" id="filePath" width="100%" src="${operPicture.picPath}">
-				
+				</div>
 				<input type="button" id ="operPicture" class="btn btn-primary btn-round" value="사진 업로드">
 				
 					<div class="col-md-6">
@@ -582,7 +583,7 @@
 										<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
 									<div class="fileinput fileinput-new text-center"
 										data-provides="fileinput">
-										<div class="fileinput-new thumbnail img-raised">
+										<div class="fileinput-new thumbnail img-raised" >
 											<img
 												src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
 												alt="...">
@@ -622,6 +623,8 @@
 					아직 사진 안올림
 				</c:when>
 				<c:otherwise>
+							
+				
 					<div style="height: 350px; width : 350px;">
 						<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
 					</div>
