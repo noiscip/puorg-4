@@ -15,7 +15,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 
 /**
