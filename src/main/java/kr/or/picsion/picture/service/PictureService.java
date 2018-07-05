@@ -5,14 +5,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 import java.util.List;
 
+
 import javax.imageio.ImageIO;
+import javax.imageio.*;
+import javax.imageio.stream.ImageOutputStream;
+
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -396,23 +400,65 @@ public class PictureService {
         AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
         w.setComposite(alphaChannel);
         w.setColor(Color.GRAY);
-        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, (image.getWidth()/50)));
         FontMetrics fontMetrics = w.getFontMetrics();
         Rectangle2D rect = fontMetrics.getStringBounds(text, w);
 
         //calculate center of the image
-        int centerX = (image.getWidth() - (int) rect.getWidth()) / 2;
-        int centerY = image.getHeight() / 2;
+//        int centerX = (image.getWidth() - (int) rect.getWidth()) / 2;
+//        int centerY = image.getHeight() / 2;
+        AffineTransform orig = new AffineTransform();
         
-//        for(double scale=0.0625;scale<=1;scale=scale*2) {
+        int angle = -45;
+        int wid = image.getWidth()/2;
+        int hei = image.getHeight()/2;
+        double radians = Math.toRadians(angle);
+        double x = Math.cos(radians)*(rect.getWidth()/2);
+        double y = Math.sin(radians)*(rect.getWidth()/2);
+        
+        double yMove = -1;
 //        int centerX = (int)(image.getWidth() -  rect.getWidth() / scale);
 //        int centerY = (int)(image.getHeight() / scale);
-
+        orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, image.getHeight()-rect.getHeight());
+        w.setTransform(orig);
         // add text overlay to the image
-        w.drawString(text, centerX, centerY);
-//        }
+        w.drawString(text, (int)(wid-x), (int)(hei+(yMove*y)));
         ImageIO.write(watermarked, type, destination);
         w.dispose();
 
     }
+	/**
+	* 날      짜 : 2018. 7. 4.
+	* 메소드명 : imageCompr
+	* 작성자명 : 이아림
+	* 기      능 : 사진 크기 압축
+	*
+	* @param file
+	* @param comPath
+	* @return
+	* @throws IOException
+	*/
+	public String imageCompr(File file,String comPath) throws IOException {
+		BufferedImage image = ImageIO.read(file);
+
+		File compressedImageFile = new File(comPath);
+		OutputStream os = new FileOutputStream(compressedImageFile);
+
+		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+		ImageWriter writer = (ImageWriter) writers.next();
+
+		ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+		writer.setOutput(ios);
+
+		ImageWriteParam param = writer.getDefaultWriteParam();
+
+		param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+		param.setCompressionQuality(0.6f);
+		writer.write(null, new IIOImage(image, null, null), param);
+
+		os.close();
+		ios.close();
+		writer.dispose();
+		return comPath;
+	}
 }

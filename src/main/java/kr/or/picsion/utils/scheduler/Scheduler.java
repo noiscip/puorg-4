@@ -3,6 +3,9 @@
  */
 package kr.or.picsion.utils.scheduler;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,7 +33,10 @@ public class Scheduler {
 		User user = new User();
 		user.setUserId("scheduler");
 		user.setPwd("1234");
-		user.setUserName("24:00:00");
+		Date date = new Date();
+
+		SimpleDateFormat reg = new SimpleDateFormat("hh:mm:ss");		
+		user.setUserName(reg.format(date));
 		
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		
