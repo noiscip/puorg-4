@@ -10,15 +10,16 @@
    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%7CRoboto+Slab:400,700%7CMaterial+Icons" />
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
    <!-- CSS Files -->
-   <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=3" rel="stylesheet" />
+   <link href="<%=request.getContextPath()%>/assets/css/material-kit.min.css?v=2.0.3" rel="stylesheet" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
-   <link href="<%=request.getContextPath()%>/assets/css/base40.min.css?v=2" rel="stylesheet" />
-  <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" /> 
+   <link href="<%=request.getContextPath()%>/assets/css/base40.min.css" rel="stylesheet" />
+   <%-- <link href="<%=request.getContextPath()%>/assets/demo/vertical-nav.css" rel="stylesheet" /> --%> 
    <link href="<%=request.getContextPath()%>/assets/css/fluid-gallery.css" rel="stylesheet" />
    <link href="<%=request.getContextPath()%>/assets/css/tabs-underlined.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/assets/css/payment.css" rel="stylesheet">
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.css" rel="stylesheet" />
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.theme.css" rel="stylesheet" />
+   
    <!-- Js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
@@ -40,11 +41,6 @@
       <!-- Plugin for Small Gallery in Product Page -->
    <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
    <script src="<%=request.getContextPath()%>/assets/js/plugins/jasny-bootstrap.min.js"></script>
-
-      <!-- Plugins for presentation and navigation  -->
-   <script src="<%=request.getContextPath()%>/assets/demo/js/vertical-nav.js"></script>
-   <!-- Fixed Sidebar Nav - js With initialisations -->
-   <script src="<%=request.getContextPath()%>/assets/demo/js/material-kit-demo.js"></script> 
 
 
     <!-- ckEditor -->
