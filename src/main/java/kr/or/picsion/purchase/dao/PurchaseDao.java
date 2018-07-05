@@ -1,6 +1,7 @@
 ﻿package kr.or.picsion.purchase.dao;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import kr.or.picsion.picture.dto.Picture;
@@ -34,14 +35,16 @@ public interface PurchaseDao {
 	public int cartConfirm(int userNo, int picNo); //장바구니 확인
 	public int purchaseConfirm(int purchaseUserNo, int picNo); //구매 확인
 	public int buyPicture(List<Purchase> purcahseList); //사진 결제
-	public List<Picture> selectPicPurchase(int userNo);	//구매한 사진 리스트
-	public List<User> selectPicUser(int userNo);		//구매한 사진 작가 리스트
-	public List<Purchase> selectPurchase(int userNo);	//구매한 정보 리스트
-	public int sumPurchase(int userNo);					//구매한 사진의 총 합계
-	public List<Picture> selectPicSell(int userNo);		//판매한 사진 리스트
-	public List<User> selectPicPurUser(int userNo);		//판매한 사진 구매 사람 정보
-	public List<Purchase> selectSell(int userNo);		//판매한 정보 리스트
+	public List<Picture> selectPicPurchase(int userNo, int start, int rowSize);	//구매한 사진 리스트
+	public List<User> selectPicUser(int userNo, int start, int rowSize);		//구매한 사진 작가 리스트
+	public List<Purchase> selectPurchase(int userNo, int start, int rowSize);	//구매한 정보 리스트
+	public int sumPurchase(int userNo);					//구매한 사진의 총 금액 합계
+	public int getPurCount(int userNo);					//구매한 사진의 총 개수
+	public List<Picture> selectPicSell(int userNo, int start, int rowSize);		//판매한 사진 리스트
+	public List<User> selectPicPurUser(int userNo, int start, int rowSize);		//판매한 사진 구매 사람 정보
+	public List<Purchase> selectSell(int userNo, int start, int rowSize);		//판매한 정보 리스트
 	public int sumSell(int userNo);						//판매한 사진의 총 합계
+	public int getSaleCount(int userNo);				//판매한 사진의 총 개수
 	public int updatePoint(int point, int userNo);
 
 }

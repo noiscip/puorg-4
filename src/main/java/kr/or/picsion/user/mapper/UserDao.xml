@@ -197,5 +197,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			set prPicture=#{prPicture}
 		where userNo=#{userNo}
 	</update>
-
+	
+	<!-- 유저가 팔로잉하고 있는 회원 리스트(팔로잉) -->
+	<select id="followingUserPaging" resultType="kr.or.picsion.user.dto.User">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (SELECT f.followingUserNo as userNo, u.userId as userId, u.userName as userName, p.prPicture as prPicture, p.prContent as prContent
+			FROM FOLLOW f JOIN PROFILE p ON f.followingUserNo=p.userNo
+			              JOIN USERS u ON f.followingUserNo=u.userNo
+			WHERE f.userNo=#{param1})pp LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 유저가 팔로잉하고 있는 회원 총 명수 -->
+	<select id="getFollowingCount" resultType="Integer">
+		select count(*) 
+		from FOLLOW f JOIN USERS u on f.followingUserNo=u.userNo
+		where f.userNo=#{userNo};
+	</select>
+	
 </mapper>
