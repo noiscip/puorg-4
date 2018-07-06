@@ -2,6 +2,7 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.board.dto.Board;
+import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.operation.dto.OperPicture;
@@ -24,6 +27,7 @@ import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
+import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
@@ -52,6 +56,9 @@ public class PictureController {
   	@Autowired
 	private OperationService operationService;
 
+  	@Autowired
+	private BoardService boardService;
+  	
 	@Autowired
 	private PurchaseService purchaseService;
   	
@@ -216,7 +223,8 @@ public class PictureController {
 		User user = (User) session.getAttribute("user");
 		
 		picture.setTagContent(tag);
-		picture.setUserNo(user.getUserNo());		
+		picture.setUserNo(user.getUserNo());
+		pictureService.insertPicture(picture);
 		wpS3(picture);
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
@@ -233,16 +241,40 @@ public class PictureController {
 	* @return
 	*/
 	@RequestMapping("operationComplete.ps")
-	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session) {
+	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session, int brdNo) {
 		User user = (User) session.getAttribute("user");
 		
 		picture.setTagContent(tag);
+		User requestorUser = userService.userInfo(picture.getUserNo());
 		picture.setUserNo(user.getUserNo());		
 		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+		pictureService.insertPicture(picture);
         System.out.println(picture.getPicPath());
+        int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
         	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
+        if(tradeMoney>0) {
+        	Purchase purchase = new Purchase();
+        	Board board = boardService.selectBoard(brdNo);
+        	List<Purchase> purlist = new ArrayList<>();
+        	System.out.println("돈은 충분 거래 합시다");
+        	requestorUser.setPoint(tradeMoney);
+        	user.setPoint(user.getPoint()+picture.getPicPrice());
+        	purchase.setPicNo(picture.getPicNo());
+        	purchase.setPurchaseUserNo(requestorUser.getUserNo());
+        	purchase.setSaleUserNo(user.getUserNo());
+        	purlist.add(purchase);
+        	purchaseService.buyPicture(purlist);
+        	
+    		board.setOperStateNo(3);    		
+    		boardService.updateBoard(board);
+        	
+        	wpS3(picture);
+        	
+        }else {
+        	System.out.println("돈 부족으로 거래 안됨");
+        }
         		
-		wpS3(picture);
+		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	/**
@@ -254,7 +286,6 @@ public class PictureController {
 	* @param picture
 	*/
 	public void wpS3(Picture picture) {
-		pictureService.insertPicture(picture);
 		String upath=picture.getPicPath();
 		
 		System.out.println("파일경로라서 워터마크에 쓸것이다: "+upath);
