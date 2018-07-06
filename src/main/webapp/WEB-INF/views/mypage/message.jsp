@@ -314,7 +314,7 @@ function msgList(userNo,myNo,msgUser) {
 </style>
 
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
-<div class="main main-raised">
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">

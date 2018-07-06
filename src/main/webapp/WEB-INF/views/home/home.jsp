@@ -1118,7 +1118,7 @@ $(document).ready(function() {
 			</c:otherwise>
 		</c:choose>
 		
-<div class="main main-raised">
+<div class="main">
 	<div class="section section-basic">
 		<div class="container-fluid">
 		 

@@ -111,7 +111,7 @@
 	data-parallax="true">
 	<div class="container"></div>
 </div>
-<div class="main main-raised">
+<div class="main">
 	<div class="section section-basic">
 		<div class="container">
 		

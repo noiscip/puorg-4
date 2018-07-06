@@ -33,7 +33,7 @@ $(document).on("click", "#tagAdd", function() {
 	data-parallax="true">
 	<div class="container"></div>
 </div>
-<div class="main main-raised">
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
