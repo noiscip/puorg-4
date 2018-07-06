@@ -246,7 +246,7 @@ $(document).ready(function() {
 })
 
 </script>
-<div class="page-header header-filter" data-parallax="true"	style="background-image: url('<%=request.getContextPath()%>/assets/img/bg7.jpg');">
+<div id="changemain" class="page-header header-filter" data-parallax="true">
 <div class="container">
             <div class="row title-row">
                 <div class="col-md-4 ml-auto">

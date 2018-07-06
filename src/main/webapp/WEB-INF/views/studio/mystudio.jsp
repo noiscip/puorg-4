@@ -181,8 +181,8 @@
 
 <input type="hidden" value="${userinfo.tableNo},${userinfo.userNo},0,0" id="info">
 
-  <div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-  <div class="main main-raised">
+  <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+  <div class="main">
     <div class="profile-content">
       <div class="container-fluid">
         <div class="row">
