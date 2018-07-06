@@ -2,6 +2,7 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
+import kr.or.picsion.board.dto.Board;
+import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.operation.dto.OperPicture;
@@ -24,6 +27,7 @@ import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
+import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
@@ -52,6 +56,9 @@ public class PictureController {
   	@Autowired
 	private OperationService operationService;
 
+  	@Autowired
+	private BoardService boardService;
+  	
 	@Autowired
 	private PurchaseService purchaseService;
   	
@@ -79,11 +86,39 @@ public class PictureController {
 	* @return String
 	*/
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
-	public String myStudio(HttpSession session, Model model, int userNo){
+	public String myStudio(HttpSession session, Model model, int userNo, String pg){
 		User user = new User(); 
-		int page=0;
+		int scpage=0;
 		int endpage=9;
 		
+		int total=0;
+        
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 12;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //팔로잉 유저 count 해서 가져오기 
+        total = userService.getFollowingCount(userNo);
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+        
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -91,22 +126,30 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), page, endpage); //스튜디오 사진리스트
-		List<User> ownerList = pictureService.studioOwnerList(userNo, page, endpage);
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), scpage, endpage); //스튜디오 사진리스트
+		List<User> ownerList = pictureService.studioOwnerList(userNo, scpage, endpage);
  		List<User> followerList = userService.followerUserList(userNo);
-		List<User> followingList = userService.followingUserList(userNo);
+		List<User> followingList = userService.followingUserPaging(userNo, start, rowSize);
+		
 		int followResult = 0;
 		if(user.getUserNo() != userNo) {
 			followResult = userService.followingConfirm(user.getUserNo(),userInfo.getUserNo());
 		}
-		System.out.println(picList);
+		System.out.println("왜안와??" + followingList);
+		
 		model.addAttribute("userinfo", userInfo);
 		model.addAttribute("piclist", picList);
 		model.addAttribute("ownerList",ownerList);
-		model.addAttribute("followerlist", followerList);
-		model.addAttribute("followinglist", followingList);
+		model.addAttribute("followerList", followerList);
+		model.addAttribute("followingList", followingList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("page", picList.size());
+		
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
 		
 		return "studio.mystudio";
 	}
@@ -216,7 +259,8 @@ public class PictureController {
 		User user = (User) session.getAttribute("user");
 		
 		picture.setTagContent(tag);
-		picture.setUserNo(user.getUserNo());		
+		picture.setUserNo(user.getUserNo());
+		pictureService.insertPicture(picture);
 		wpS3(picture);
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
@@ -233,16 +277,40 @@ public class PictureController {
 	* @return
 	*/
 	@RequestMapping("operationComplete.ps")
-	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session) {
+	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session, int brdNo) {
 		User user = (User) session.getAttribute("user");
 		
 		picture.setTagContent(tag);
+		User requestorUser = userService.userInfo(picture.getUserNo());
 		picture.setUserNo(user.getUserNo());		
 		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+		pictureService.insertPicture(picture);
         System.out.println(picture.getPicPath());
+        int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
         	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
+        if(tradeMoney>0) {
+        	Purchase purchase = new Purchase();
+        	Board board = boardService.selectBoard(brdNo);
+        	List<Purchase> purlist = new ArrayList<>();
+        	System.out.println("돈은 충분 거래 합시다");
+        	requestorUser.setPoint(tradeMoney);
+        	user.setPoint(user.getPoint()+picture.getPicPrice());
+        	purchase.setPicNo(picture.getPicNo());
+        	purchase.setPurchaseUserNo(requestorUser.getUserNo());
+        	purchase.setSaleUserNo(user.getUserNo());
+        	purlist.add(purchase);
+        	purchaseService.buyPicture(purlist);
+        	
+    		board.setOperStateNo(3);    		
+    		boardService.updateBoard(board);
+        	
+        	wpS3(picture);
+        	
+        }else {
+        	System.out.println("돈 부족으로 거래 안됨");
+        }
         		
-		wpS3(picture);
+		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	/**
@@ -254,7 +322,6 @@ public class PictureController {
 	* @param picture
 	*/
 	public void wpS3(Picture picture) {
-		pictureService.insertPicture(picture);
 		String upath=picture.getPicPath();
 		
 		System.out.println("파일경로라서 워터마크에 쓸것이다: "+upath);

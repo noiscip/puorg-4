@@ -205,7 +205,7 @@
 						<font>${boardInfo.brdContent}</font>
 					</p>
 					<c:choose>
-						<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
+						<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
 						<button type="button" class="btn btn-default btn-sm" style="float:right"
 							data-toggle="modal" data-target="#exampleModal">신청하기</button>
 						</c:when>
@@ -534,7 +534,8 @@
 								<input type="hidden" name="picPrice" value="${operation.operPrice}">
 								<input type="hidden" name="transferState" value="${boardInfo.copyright}">
 								<input type="hidden" name="picPath" value="${operPicture.picPath}">
-								
+								<input type="hidden" name="userNo" value="${boardInfo.userNo}">
+								<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
 							<div class="form-group">
 								<label for="title">제목</label> <input type="text"
 									class="form-control" id="pictureTitle" name="picTitle">
