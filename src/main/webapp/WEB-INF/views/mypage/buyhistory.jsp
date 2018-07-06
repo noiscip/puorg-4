@@ -16,8 +16,8 @@
 	}
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
@@ -68,13 +68,6 @@
 							</tr>
 						</c:forEach>
 						
-							<%-- <tr>
-								<td colspan="2"></td>
-								<td colspan="1"></td>
-								<td class="td-total">Total</td>
-								<td id="total2" class="td-price text-center">${sumPurchase}<small>원</small></td>
-								<td colspan="1"></td>
-							</tr> --%>
 						</tbody>
 					</table>
 				</div>

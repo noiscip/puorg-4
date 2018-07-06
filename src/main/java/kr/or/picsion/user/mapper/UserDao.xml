@@ -217,4 +217,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where f.userNo=#{userNo};
 	</select>
 	
+	<!-- 최근 7주일간 가장 많은 사진 업로더 -->
+	<select id="bestUploader" resultType="kr.or.picsion.user.dto.User">
+	SELECT u.userNo, u.userName, pr.prPicture, pr.prContent
+	FROM USERS u JOIN PICTURE p ON u.userNo=p.userNo
+				JOIN PROFILE pr ON u.userNo=pr.userNo
+	WHERE DATE(p.picReg) >= DATE(SUBDATE(NOW(),INTERVAL 7 DAY)) and DATE(p.picReg) &lt;= DATE(NOW())
+	GROUP BY u.userNo ORDER BY COUNT(u.userNo) DESC LIMIT 4
+	</select>
+	
 </mapper>

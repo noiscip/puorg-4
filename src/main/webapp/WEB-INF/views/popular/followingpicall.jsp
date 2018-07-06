@@ -89,7 +89,7 @@ $(function() {
 					                   if(obj.bookmarkCheck=="T"){
 					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
 					                   }else{
-					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 					                   }
 		                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.followingScrollPicOwner[index].userNo+"'>"+data.followingScrollPicOwner[index].userName+"</a></div></div>";
 		            		
@@ -115,10 +115,9 @@ $(function() {
 } 
 </style>
 
-<div class="page-header header-filter" data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');">
+<div id="changemain" class="page-header header-filter" data-parallax="true">
 </div>
-<div class="main main-raised">
+<div class="main">
 	<div class="profile-content">
 
 		<div class="container-fluid">

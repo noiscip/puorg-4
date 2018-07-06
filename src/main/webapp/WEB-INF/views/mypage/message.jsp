@@ -64,7 +64,7 @@
 							var userList = "<div class='media'>"+
 										   "<a class='float-left'>"+
 										   		"<div class='avatar'>"+
-										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='"+data.userinfo.prPicture+"'></a>"+
+										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object prPic-height' src='"+data.userinfo.prPicture+"'></a>"+
 										   		"</div></a>"+
 										   	"<div class='media-body media-body-custom'>"+
 										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
@@ -313,8 +313,8 @@ function msgList(userNo,myNo,msgUser) {
 
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
