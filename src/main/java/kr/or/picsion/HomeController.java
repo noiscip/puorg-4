@@ -63,6 +63,7 @@ public class HomeController {
 		List<Picture> ranPicture = pictureService.selectRandom();
 		List<Picture> latestPicList = new ArrayList<>();								//사진
 		List<User> latestPicOwnList = pictureService.latestPicOwnList(page, endpage);	//주인 찾는거
+		List<User> bestUploader = userService.bestUploader();
 		if(user != null) {
 			List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo(), 0, 10);
 			List<User> randomuser = userService.randomUsers(user.getUserNo());
@@ -75,7 +76,7 @@ public class HomeController {
 			 System.out.println(latestPicList);
 			 model.addAttribute("latestPicList",latestPicList);
 		}
-		
+		model.addAttribute("bestUploader",bestUploader);
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("ranPicture",ranPicture);
 		model.addAttribute("latestPicOwnList",latestPicOwnList);

@@ -723,6 +723,13 @@ label.btn.btn-default.btn-circle.focus {
 	height: 300px;
 	width: 100%;
 }
+
+.container-fluid ul li a.active{
+	border-bottom: 2px solid #9c27b0; 
+}
+.img-uploader{
+	height: 120px;
+}
 </style>
 <script>
 //postid 가져와서 댓글달기
@@ -809,7 +816,7 @@ $(document).ready(function() {
 										name : '태그'
 									} ],
 									title : {
-										text : '인기 태그'
+										text : false
 									}
 								});
 								  },
@@ -938,8 +945,6 @@ $(document).ready(function() {
                         success : function(data){
                             
                             $.each(data.latestPicList, function(index, obj){
-                            	console.log(obj)
-                            	console.log(data.latestPicOwnList[index].userName)
                             	
                             	scrollPage="<div class='item col-sm-6 col-md-4'>"+
     											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
@@ -956,7 +961,7 @@ $(document).ready(function() {
     						                   if(obj.bookmarkCheck=="T"){
     						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
     						                   }else{
-    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
     						                   }
     						                   
     						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
@@ -995,8 +1000,28 @@ $(document).ready(function() {
 									<div class="brand">
 										<h1 class="title">Sell Your Picture!</h1>
 										<h4><b>PICSION</b>을 통해 당신의 꿈을 보여주세요</h4>
+										
 									</div>
 								</div>
+								<div class="col-md-10 ml-auto mr-auto">
+		                            <div class="card card-raised card-form-horizontal">
+		                                <div class="card-body ">
+		                                    <form method="" action="">
+		                                        <div class="row">
+		                                            <div class="col-md-9">
+		                                                <div class="form-group bmd-form-group">
+		                                                    <input type="text" value="" placeholder="Search" class="form-control">
+		                                                </div>
+		                                            </div>
+		                                            
+		                                            <div class="col-md-3">
+		                                                <button type="button" class="btn btn-primary btn-block">PICSION</button>
+		                                            </div>
+		                                        </div>
+		                                    </form>
+		                                </div>
+		                            </div>
+                        		</div>
 							</div>
 							</div>
                             
@@ -1130,10 +1155,7 @@ $(document).ready(function() {
 		    <a class="nav-link" id="wordchart-tab" data-toggle="tab" href="#wordtab" role="tab" aria-controls="wordtab" aria-selected="false" >태그</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">사진 작가</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link disabled" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Disabled</a>
+		    <a class="nav-link" id="user-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="false">사진 작가</a>
 		  </li>
 		</ul>
 
@@ -1141,7 +1163,13 @@ $(document).ready(function() {
 		<div class="tab-content">
 		<!-- 최신 사진 탭 -->
 		  <div class="tab-pane active" id="photos" role="tabpanel" aria-labelledby="photo-tab">
-			
+			  
+		  <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h2 class="title">Latest photos</h2>
+              </div>
+          </div>
+          <hr>
 				<div class="flex_grid credits">
 					<div class="tz-gallery">
 					<div class="row" id="picall">
@@ -1182,10 +1210,44 @@ $(document).ready(function() {
 			
 			</div>
 		  <div class="tab-pane" id="wordtab" role="tabpanel" aria-labelledby="wordchart-tab">
+		  <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h2 class="title">PICSION의 인기 태그들</h2>
+              </div>
+          </div>
+          <hr>
 			<div id="wordchart"></div>
 		  </div>
-		  <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">...</div>
-		  <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+		  <div class="tab-pane" id="users" role="tabpanel" aria-labelledby="user-tab">
+		  <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h2 class="title">Best uploader</h2>
+                     <h5 class="description">최근 7일간 가장 많은 사진을 올린 사진작가들 입니다.</h5>
+              </div>
+          </div>
+		    <div class="col-md-10 col-lg-10 mr-auto ml-auto">
+		 		 <div class="row">
+		 		 <c:forEach items="${bestUploader}" var="Uploader" varStatus='status'>
+		 		 <div class="col-md-1 col-lg-2 mr-auto ml-auto">
+                        <div class="card card-profile card-plain">
+                            <div class="card-header card-header-image">
+                                <a href="#pablo">
+                                    <img class="img" src="${Uploader.prPicture}">
+                                </a>
+                            <div class="colored-shadow" style="background-image: url(&quot;${Uploader.prPicture}&quot;); opacity: 1;"></div></div>
+                            <div class="card-body ">
+                                <h4 class="card-title">${Uploader.userName}</h4>
+                                <h6 class="card-category text-muted">${Uploader.prContent}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    </c:forEach>
+		  		</div>
+		  </div>
+		  
+		   <hr>
+		   
+		  </div>
 		</div>
 		
 			
