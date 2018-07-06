@@ -41,5 +41,6 @@ public interface UserDao {
 	public int pointCharge(int point, int userNo);	//캐시 충전
 	public List<User> randomUsers(int userNo);      //랜덤 유저 추천
 	public List<User> bestUploader();				//최근 7일간 최다 업로더 4명
+	public List<User> mostFollowingUser(); 		    //팔로워가 많은 순서 유저 리스트
 	 
 }

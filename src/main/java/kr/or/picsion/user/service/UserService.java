@@ -403,4 +403,18 @@ public class UserService {
 		return list;
 	}
 	
+	/**
+	* 날      짜 : 2018. 7. 6.
+	* 메소드명 : mostFollowingUser
+	* 작성자명 : 정도혁
+	* 기      능 : 팔로워가 많은 유저 리스트
+	*
+	* @return List<User>
+	*/
+	public List<User> mostFollowingUser(){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> list = userDao.mostFollowingUser();
+		return list;
+	}
+	
 }

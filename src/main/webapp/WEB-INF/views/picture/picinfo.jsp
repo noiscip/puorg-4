@@ -200,7 +200,7 @@ $(document).ready(function() {
 	})
 	
 	
-	
+	var nocart2 ='<li class="divider" id="nonecart"><a>장바구니가 비었습니다</a></li>';
 	
 	//사진 카트 추가
 	$(document).on('click', '#addcart', function(){
@@ -210,8 +210,6 @@ $(document).ready(function() {
 			var data = {userNo : loginUserNo,
 				    picNo : picNo};
 			var btn = $(this);
-			var ctn = $('#cartnav')["0"].childNodes[3].data;
-			ctn*=1;
 			var cartinsert=''
 				cartinsert +='<li class="divider"><a href="/picsion/picture/picinfo.ps?picNo=${picture.picNo}">';
 			    cartinsert +='<img style="width: 30px;" class="rounded" src="${picture.picWater}">&nbsp&nbsp';
@@ -223,19 +221,30 @@ $(document).ready(function() {
 				url : "<%=request.getContextPath()%>/purchase/addCart.ps",
 				data : data,
 				success : function(data){
-					console.log(ctn);
-					if(data.result==1){
+					var mycartlist ='<li class="divider"><a href="<%=request.getContextPath()%>/purchase/myCartPage.ps?userNo='+$('#loginUserNo').val()+'">장바구니</a></li>'; 
+					mycartlist+='<div class="dropdown-divider"></div>';
+					if(data.result==1){ //장바구니에 해당 물품이 있을때 -> 물건 빼기
 						$('#cartnav')["0"].childNodes[3].data--;
 						btn.attr('class','btn btn-white float-right');
 						btn["0"].childNodes[1].nodeValue = " Add Cart";
 						btn["0"].children["0"].innerHTML = "shopping_cart";
 						$('#${picture.picNo}tt').parent().parent().remove();
-					  }else{
-						$('#cartnav')["0"].childNodes[3].data++;
-						btn.attr('class','btn btn-primary float-right');
-						btn["0"].childNodes[1].nodeValue = " Remove Cart";
-						btn["0"].children["0"].innerHTML = "remove_shopping_cart";
-						$('#addcartnav').append(cartinsert);
+						if(data.again==0){
+							$('#addcartnav').empty();
+							$('#addcartnav').append(nocart2);
+						}
+					  }else{ //장바구니에 해당 물건이 없을때 -> 물건 추가
+						  if(data.count==0){
+							  $('#nonecart').remove();  
+							  mycartlist+='<h6 class="dropdown-header">장바구니 목록</h6>';
+							  $('#addcartnav').append(mycartlist);
+							    
+						  }
+						  $('#cartnav')["0"].childNodes[3].data++;
+						  btn.attr('class','btn btn-primary float-right');
+						  btn["0"].childNodes[1].nodeValue = " Remove Cart";
+						  btn["0"].children["0"].innerHTML = "remove_shopping_cart";
+						  $('#addcartnav').append(cartinsert);
 					  }
 				}
 			 }) 

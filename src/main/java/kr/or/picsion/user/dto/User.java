@@ -23,11 +23,13 @@ public class User {
 	private String google;
 	private String prPicture;
 	private String prContent;
+	private int follower;
 
 	public User() {}
 
 	public User(int userNo, String userId, String pwd, String userName, int point, Date userReg, int tableNo,
-			int roleNo, String naver, String google, String prPicture, String prContent) {
+			int roleNo, String naver, String google, String prPicture, String prContent, int follower) {
+		super();
 		this.userNo = userNo;
 		this.userId = userId;
 		this.pwd = pwd;
@@ -40,6 +42,7 @@ public class User {
 		this.google = google;
 		this.prPicture = prPicture;
 		this.prContent = prContent;
+		this.follower = follower;
 	}
 
 	public int getUserNo() {
@@ -138,11 +141,20 @@ public class User {
 		this.prContent = prContent;
 	}
 
+	public int getFollower() {
+		return follower;
+	}
+
+	public void setFollower(int follower) {
+		this.follower = follower;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userNo=" + userNo + ", userId=" + userId + ", pwd=" + pwd + ", userName=" + userName + ", point="
 				+ point + ", userReg=" + userReg + ", tableNo=" + tableNo + ", roleNo=" + roleNo + ", naver=" + naver
-				+ ", google=" + google + ", prPicture=" + prPicture + ", prContent=" + prContent + "]";
+				+ ", google=" + google + ", prPicture=" + prPicture + ", prContent=" + prContent + ", follower="
+				+ follower + "]";
 	}
 
 }
