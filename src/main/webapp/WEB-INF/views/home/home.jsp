@@ -724,16 +724,18 @@ label.btn.btn-default.btn-circle.focus {
 	width: 100%;
 }
 
-.container-fluid ul li a.active{
+.container ul li a.active{
 	border-bottom: 2px solid #9c27b0; 
-}
-.img-uploader{
-	height: 120px;
+} 
+
+.pr-img{
+	height: 110px;
 }
 </style>
 <script>
 //postid 가져와서 댓글달기
 $(document).ready(function() {
+	var loginUserNo = $('#loginUserNo').val();
 						console.log($('#result').val())
 						if ($('#result').val() == "F") {
 							alert('이미 연동된 계정 입니다. 다른 아이디를 등록 하세요.')
@@ -980,6 +982,52 @@ $(document).ready(function() {
         }
 
     })
+    
+    $(document).on('click','#like',function(){
+			if(loginUserNo == 0){
+			}else{
+				var data = {userNo : loginUserNo,
+					    picNo : $(this).attr("value")};
+				var respect =  $(this);
+				var rpa = $(this).parent();
+				 $.ajax({
+					url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
+					data : data,
+					success : function(data){
+						if(data.result==1){
+							  $(respect)[0].innerHTML = 'favorite_border';
+							  $(rpa)[0].childNodes[1].nodeValue--;
+						  }else{
+							  $(respect)[0].innerHTML = 'favorite';
+							  $(rpa)[0].childNodes[1].nodeValue++;
+						  } 
+					}
+				 }) 
+			}
+		})
+	
+		$(document).on('click','#down',function(){
+			if(loginUserNo == 0){
+			}else{
+				var data = {userNo : loginUserNo,
+					    picNo : $(this).attr("value")};
+				var bookmark = $(this);
+				var bpa = $(this).parent();
+				 $.ajax({
+					url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
+					data : data,
+					success : function(data){
+						if(data.result==1){
+							  $(bookmark)[0].innerHTML = 'bookmark_border';
+							  $(bpa)[0].childNodes[1].nodeValue--;
+						  }else{
+							  $(bookmark)[0].innerHTML = 'bookmark';
+							  $(bpa)[0].childNodes[1].nodeValue++;
+						  }
+					}
+				 }) 
+			}
+		})
 })
 </script>
 <c:choose>
@@ -1053,7 +1101,7 @@ $(document).ready(function() {
                 </a>
             </div>
 		</c:when>
-		<c:otherwise>
+		<c:otherwise>            
 		   <div id="changemain" class="page-header header-filter clear-filter purple-filter" data-parallax="true">
 		   	<div class="container">
                  <c:choose>
@@ -1145,7 +1193,7 @@ $(document).ready(function() {
 		
 <div class="main">
 	<div class="section section-basic">
-		<div class="container-fluid">
+		<div class="container">
 		 
 		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
 		  <li class="nav-item">
@@ -1222,22 +1270,22 @@ $(document).ready(function() {
 		  <div class="row">
               <div class="col-md-8 ml-auto mr-auto text-center">
                      <h2 class="title">Best uploader</h2>
-                     <h5 class="description">최근 7일간 가장 많은 사진을 올린 사진작가들 입니다.</h5>
+                     <h5 class="description">최근 7일간 가장 많은 사진을 올린 사진 작가들</h5>
               </div>
           </div>
 		    <div class="col-md-10 col-lg-10 mr-auto ml-auto">
 		 		 <div class="row">
-		 		 <c:forEach items="${bestUploader}" var="Uploader" varStatus='status'>
+		 		 <c:forEach items="${bestUploader}" var="uploader" varStatus='status'>
 		 		 <div class="col-md-1 col-lg-2 mr-auto ml-auto">
                         <div class="card card-profile card-plain">
                             <div class="card-header card-header-image">
-                                <a href="#pablo">
-                                    <img class="img" src="${Uploader.prPicture}">
+                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${uploader.userNo}">
+                                    <img class="img pr-img" src="${uploader.prPicture}">
                                 </a>
-                            <div class="colored-shadow" style="background-image: url(&quot;${Uploader.prPicture}&quot;); opacity: 1;"></div></div>
+                            <div class="colored-shadow" style="background-image: url(&quot;${uploader.prPicture}&quot;); opacity: 1;"></div></div>
                             <div class="card-body ">
-                                <h4 class="card-title">${Uploader.userName}</h4>
-                                <h6 class="card-category text-muted">${Uploader.prContent}</h6>
+                                <h4 class="card-title">${uploader.userName}</h4>
+                                <h6 class="card-category text-muted">${uploader.prContent}</h6>
                             </div>
                         </div>
                     </div>
@@ -1246,7 +1294,32 @@ $(document).ready(function() {
 		  </div>
 		  
 		   <hr>
-		   
+		    <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h5 class="description">많은 팔로워를 보유한 사진 작가들</h5>
+              </div>
+          </div>
+           <div class="col-md-10 col-lg-10 mr-auto ml-auto">
+		 		 <div class="row">
+		 		 <c:forEach items="${mostFollowingUser}" var="mostfollow" varStatus='status'>
+		 		 <div class="col-md-1 col-lg-2">
+                        <div class="card card-profile card-plain">
+                            <div class="card-header card-header-image">
+                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${mostfollow.userNo}">
+                                    <img class="img pr-img" src="${mostfollow.prPicture}">
+                                </a>
+                            <div class="colored-shadow" style="background-image: url(&quot;${mostfollow.prPicture}&quot;); opacity: 1;"></div></div>
+                            <div class="card-body ">
+                                <h4 class="card-title">${mostfollow.userName}</h4>
+                                <h6 class="card-category text-muted"><i class="material-icons">supervisor_account</i>팔로워 : ${mostfollow.follower}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    </c:forEach>
+		  		</div>
+		  </div>
+          
+          
 		  </div>
 		</div>
 		

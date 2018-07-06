@@ -137,6 +137,8 @@ public class PurchaseController {
 		int result = purchaseService.deleteCart(picNo, userNo);
 		if(result!=0) {
 			System.out.println("삭제 완료");
+			int again = purchaseService.cartCount(userNo);
+			model.addAttribute("again",again);
 		}else {
 			System.out.println("삭제 실패");
 		}
@@ -306,7 +308,11 @@ public class PurchaseController {
 		if(result!=0) {	 //장바구니에 담겨 있을때 -> 장바구니에서 삭제
 			purchaseService.deleteCart(picNo, userNo);
 			System.out.println("장바구니 항목 삭제");
+			int again = purchaseService.cartCount(userNo);
+			model.addAttribute("again",again);
 		}else {	//장바구니에 없을때 -> 장바구니에 추가
+			int count = purchaseService.cartCount(userNo);
+			model.addAttribute("count",count);
 			purchaseService.insertCart(picNo, userNo);
 			System.out.println("장바구니 항목 추가");
 		}

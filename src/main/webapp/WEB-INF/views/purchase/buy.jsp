@@ -31,7 +31,7 @@
 
             });
             
-            
+            var nocart2 ='<li class="divider" id="nonecart"><a>장바구니가 비었습니다</a></li>';
           //장바구니 사진 삭제
         	$(document).on('click', '#deleteItem', function(){
         		var tr = $(this).parent().parent();
@@ -46,7 +46,7 @@
         				  picNo:picNo},
         			success:function(data){
         				console.log($('#total2'));
-        				if(data.result==1){
+        				if(data.result==1){ //물품이 있을때 항목 삭제
             			tot-=price;
             			userpoint *= 1;
             			price *= 1;
@@ -58,6 +58,16 @@
         				$('#change')["0"].childNodes["0"].data=userpoint;
         				$('#changehidden').val(userPoint);
         				alert("항목 삭제 완료");
+        				
+        				if(data.again==0){
+        					$('#cartnav')["0"].childNodes[3].data--;
+        					$('#addcartnav').empty();
+							$('#addcartnav').append(nocart2);
+        				}else{
+        					$('#cartnav')["0"].childNodes[3].data--;
+    						$('#'+picNo+'tt').parent().parent().remove();
+        				}
+        				
         				}else{
         					alert("항목 삭제 실패");
         				}
