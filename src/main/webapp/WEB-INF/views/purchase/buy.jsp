@@ -67,8 +67,7 @@
    });
 
     </script>
-<div class="page-header header-filter" data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/faces/giphy.gif');">
+<div id="changemain" class="page-header header-filter" data-parallax="true">
 </div>
 
 <div class="section">

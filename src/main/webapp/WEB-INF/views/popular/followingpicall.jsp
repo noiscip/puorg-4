@@ -115,8 +115,7 @@ $(function() {
 } 
 </style>
 
-<div class="page-header header-filter" data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');">
+<div id="changemain" class="page-header header-filter" data-parallax="true">
 </div>
 <div class="main main-raised">
 	<div class="profile-content">

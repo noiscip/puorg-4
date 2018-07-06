@@ -29,9 +29,8 @@ $(document).on("click", "#tagAdd", function() {
 </style>
 
 
-<div class="page-header header-filter clear-filter purple-filter"
-	data-parallax="true"
-	style="background-image: url(&quot;./assets/img/bg2.jpg&quot;); transform: translate3d(0px, 0px, 0px);">
+<div id="changemain" class="page-header header-filter clear-filter purple-filter"
+	data-parallax="true">
 	<div class="container"></div>
 </div>
 <div class="main main-raised">
