@@ -87,12 +87,12 @@ public class PictureController {
 		int total=0;
         
         int page = 1;
-        String Strpg = pg;
+        /*String Strpg = pg;
         if (Strpg != null) {
             page = Integer.parseInt(Strpg);
-        }
+        }*/
 
-        int rowSize = 12;
+        int rowSize = 6;
         int start = (page * rowSize) - (rowSize - 1) - 1;
 
         //팔로잉 유저 count 해서 가져오기 
@@ -138,6 +138,7 @@ public class PictureController {
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("page", picList.size());
 		
+		model.addAttribute("userNo", userNo);
 		model.addAttribute("pg", page);
         model.addAttribute("allPage", allPage);
         model.addAttribute("block", block);
@@ -145,6 +146,56 @@ public class PictureController {
         model.addAttribute("toPage", toPage);
 		
 		return "studio.mystudio";
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 6.
+	* 메소드명 : followingPaging
+	* 작성자명 : 박주원
+	* 기      능 : 팔로잉 페이징
+	*
+	* @return View
+	*/
+	@RequestMapping(value="followpaging.ps", method=RequestMethod.GET)
+	public View followingPaging(HttpSession session, Model model, int userNo, String pg) {
+		int total=0;
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 6;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //팔로잉 유저 count 해서 가져오기 
+        total = userService.getFollowingCount(userNo);
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+        List<User> followingPaging = userService.followingUserPaging(userNo, start, rowSize);
+        
+        model.addAttribute("followingPaging", followingPaging);
+        
+        model.addAttribute("userNo", userNo);
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
+        
+		return jsonview;
 	}
 	
 	/**
@@ -178,6 +229,7 @@ public class PictureController {
 		
 		return jsonview;
 	}
+	
 	
 	/**
 	* 날      짜 : 2018. 7. 3.

@@ -38,7 +38,6 @@
 				  url : "/picsion/user/following.ps",
 				  data: data,
 				  success : function(data){
-					  console.log(data.result);
 					  if(data.result==1){
 						  $('#follow-icon')[0].innerHTML = 'favorite_border';
 						  $('#follow')[0].childNodes[2].data = '팔로우';
@@ -101,7 +100,6 @@
 		var page=${page};
 		
 		$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
-	        console.log(page);
 	        var currentScrollTop = $(window).scrollTop();
 	        var scrollPage="";
 	        
@@ -122,9 +120,6 @@
 		                        
 		                        $.each(data.scrollPicList, function(index, obj){
 		                        	
-		                        	console.log(obj);
-		                        	console.log(data.scrollOwnerList[index].userName)
-		                        	
 		                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
 												"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 												"<img class='rounded img-size' src='"+obj.picWater+"' alt=''>"+
@@ -143,7 +138,6 @@
 					                    		}
 									scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"'>"+data.scrollOwnerList[index].userName+"</a></div></div>";
 									
-									console.log(scrollPage);
 		                        	$('#studioview').append(scrollPage);
 		                        })
 		                        
@@ -155,27 +149,87 @@
 	        }
 	    })
 		
-	    var widget = $('.tabs-underline');
-        var tabs = widget.find('ul a'),
-            content = widget.find('.tabs-content-placeholder > div');
-
-        tabs.on('click', function (e) {
-
-            e.preventDefault();
-
-            // Get the data-index attribute, and show the matching content div
-
-            var index = $(this).data('index');
-
-            tabs.removeClass('tab-active');
-            content.removeClass('tab-content-active');
-
-            $(this).addClass('tab-active');
-            content.eq(index).addClass('tab-content-active');
-
-        });
-		
+	    
+	    $(document).on('click','#followPre',function(){
+	    	var userNo = ${userNo};
+	    	var pg = $(this).data("pg");
+	    	console.log(userNo+":"+pg)
+	    	
+	    	followingPaging(userNo, pg)
+	    })
+	    
+	    $(document).on('click', '#followCha', function(){
+	    	var userNo = ${userNo};
+	    	var pg = $(this).data("pg");
+	    	console.log(userNo+":"+pg)
+	    	
+	    	followingPaging(userNo, pg)
+	    })
+	    
+	    $(document).on('click', '#followNe', function(){
+	    	var userNo = ${userNo};
+	    	var pg = $(this).data("pg");
+	    	console.log(userNo+":"+pg)
+	    	
+	    	followingPaging(userNo, pg)
+	    })
 	})
+	
+function followingPaging(userNo, pg){
+		var following = "";
+		
+		$.ajax({
+			url:"/picsion/picture/followpaging.ps",
+			data:{
+					userNo:userNo,
+					pg:pg
+				},
+			success:function(data){
+				console.log(data.followingPaging)
+				$('#followPage').empty();
+				
+				following="<div class='row'>";
+				$.each(data.followingPaging, function(index, obj){
+					following+="<div class='col-md-1 col-lg-2'>"+
+							   "<div class='card card-profile card-plain'>"+
+							   	"<div class='card-header card-header-image'>"+
+							   		"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"' class='prPic-height'>"+
+							   				"<img class='img prPic-height' src='"+obj.prPicture+"'></a>"+
+							   	"<div class='colored-shadow' style='background-image: url(&quot;"+obj.prPicture+"&quot;); opacity: 1;'></div></div>"+
+							   	"<div class='card-body'>"+
+							   		"<h4 class='card-title'>"+obj.userName+"</h4>"+
+							   	"</div></div></div>";
+				})
+				
+				following+="</div><div class='row'>"+
+							"<div class='com-md-12 mr-auto ml-auto'>"+
+								"<nav aria-label='Page navigation example'>"+
+								"<ul class='pagination justify-content-center'>";
+								if(data.pg>data.block){
+									following+="<li class='page-item'><a class='page-link' data-pg='"+data.fromPage-1+"' id='followPre'>Previous</a></li>";
+								}
+			 		 			
+								for(var i=data.fromPage; i<data.toPage; i++){
+									if(i==data.pg){
+										following+="<li class='page-item active'>"+
+		                             				"<a class='page-link' href='#'>"+i+"</a></li>";
+									}else{
+										following+="<li class='page-item'>"+
+		                             			"<a class='page-link' data-pg='"+i+"' id='followCha'>"+i+"</a></li>";
+									}
+									
+								}
+								
+								if(data.toPage<data.allPage){
+									following+="<li class='page-item'>"+
+						      					"<a class='page-link' data-pg='"+data.toPage+1+"' id='followNe'>Next</a>"+
+						    				   "</li>";
+								}
+				following+=	"</ul></nav></div></div>";
+				$('#followPage').append(following);
+			}
+		})
+}
 </script>
 
 <style>
@@ -230,6 +284,14 @@
 		padding-bottom: 70px !important;
 	}
 	
+	/* 프로필 사진 높이 고정 */
+	.prPic-height{
+		height: 110px;
+	}
+	
+	.container ul li a.active{
+		border-bottom: 2px solid #9c27b0; 
+	}
 </style>
 
 <input type="hidden" value="${userinfo.tableNo},${userinfo.userNo},0,0" id="info">
@@ -237,7 +299,7 @@
   <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
   <div class="main">
     <div class="profile-content">
-      <div class="container-fluid">
+      <div class="container">
         <div class="row">
           <div class="col-md-6 ml-auto mr-auto">
             <div class="profile">
@@ -252,13 +314,14 @@
               	</c:choose>
               </div>
               
+              <div class="name">
+                <h3 class="title">${userinfo.userName}</h3>
+              </div>
+              
               <c:choose>
               <c:when test="${sessionScope.user eq null}">
               </c:when>
               <c:otherwise>
-              <div class="name">
-                <h3 class="title">${userinfo.userName}</h3>
-              </div>
               <c:if test="${sessionScope.user.userNo ne userinfo.userNo}">
 	              <div align="center" style="float: inherit;">
 				  	<button class="btn btn-primary btn-sm" id="follow">
@@ -300,13 +363,11 @@
             <div class="profile-tabs">
               <ul class="nav nav-pills nav-pills-icons justify-content-center" role="tablist">
                 <li class="nav-item">
-                  <%-- <a class="nav-link active" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"> --%>
                   <a class="nav-link active" href="#studio"  role="tab" data-toggle="tab" id="photo-library">
                     <i class="material-icons">photo_library</i> Studio
                   </a>
                 </li>
                 <li class="nav-item">
-                  <%-- <a class="nav-link" href="<%=request.getContextPath()%>/user/follower.ps?userNo=${sessionScope.user.userNo}"> --%>
                   <a class="nav-link" href="#favorite"  role="tab" data-toggle="tab">
                     <i class="material-icons">favorite</i> Favorite
                   </a>
@@ -359,72 +420,118 @@
           </div>
           
           <div class="tab-pane text-center following-tab-pad" id="favorite">
-          	<div class="tabs-underline footer-big">
+          		<ul class="nav nav-tabs-center justify-content-center following-tab-tb"  id="myTab"  role="tablist">
+				  <li class="nav-item">
+				    <a class="nav-link active" id="following-tab" data-toggle="tab" href="#following" role="tab" aria-controls="following" aria-selected="true">팔로잉</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" id="follower-tab" data-toggle="tab" href="#follower" role="tab" aria-controls="follower" aria-selected="false" >팔로워</a>
+				  </li>
+				</ul>
+				
+				<div class="tab-content">
+					<div class="tab-pane active" id="following" role="tabpanel" aria-labelledby="following-tab">
+						<div class="col-md-10 col-lg-10 mr-auto ml-auto" id="followPage">
+		 		 			<div class="row">
+			 		 			<c:choose>
+									<c:when test="${empty followingList}">
+										<div class="col-md-12 mr-auto ml-auto">
+											<h3 class="text-center">팔로잉을 시작해보세요~</h3><br>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<c:forEach items="${followingList}" var="following">
+								 		   <div class="col-md-1 col-lg-2">
+						                        <div class="card card-profile card-plain">
+						                            <div class="card-header card-header-image">
+						                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" class="prPic-height">
+						                                    <img class="img prPic-height" src="${following.prPicture}">
+						                                </a>
+						                            <div class="colored-shadow" style="background-image: url(&quot;${following.prPicture}&quot;); opacity: 1;"></div></div>
+						                            <div class="card-body ">
+						                                <h4 class="card-title">${following.userName}</h4>
+						                            </div>
+						                        </div>
+						                    </div>
+						                 </c:forEach>
+									</c:otherwise>
+								</c:choose>
+								</div>
+								<div class="row">
+			 		 				<div class="com-md-12 mr-auto ml-auto">
+				 		 				<nav aria-label="Page navigation example">
+										  <ul class="pagination justify-content-center">
+										  
+										  	<!-- 처음 이전 링크 -->
+						                    <c:if test="${pg>block}">
+						                         <li class="page-item"><a class="page-link" data-pg="${fromPage-1}" id="followPre">Previous</a></li>
+						                    </c:if>
+					                     	
+					                     	<!-- 블록 범위 찍기 -->
+						                    <c:forEach begin="${fromPage}" end="${toPage}" var="i">
+						                         <c:if test="${i==pg}">
+						                             <li class="page-item active">
+						                             	<a class="page-link" href="#">${i}</a>
+						                             </li>
+						                         </c:if>
+						                         <c:if test="${i!=pg}">
+						                             <li class="page-item">
+						                             	<a class="page-link" data-pg="${i}" id="followCha">${i}</a>
+						                             </li>
+						                         </c:if>
+						                    </c:forEach>
+										    
+										    <!-- 다음, 이후 -->
+						                    <c:if test="${toPage<allPage}">
+						                        <li class="page-item">
+										      		<a class="page-link" data-pg="${toPage+1}" id="followNe">Next</a>
+										    	</li>
+						                    </c:if>
+										    
+										  </ul>
+										</nav>
+									</div>
+		 		 			</div>
+	 		 			</div>
+					</div>
 					
+					<div class="tab-pane" id="follower" role="tabpanel" aria-labelledby="follower-tab">
+						<h4>여기는 팔로워</h4>
+					</div>
+				</div>
+          	<%-- <div class="tabs-underline">
 					<ul class="text-center following-tab-tb">
 						<li><a class="tab-active" data-index="0" href="#">팔로잉</a></li>
 						<li><a data-index="1" href="#">팔로워</a></li>
 					</ul>
-	
+					
 					<div class="tabs-content-placeholder">
 						<div class="tab-content-active" id="following">
-							
-							<%-- <div class="flex_grid credits">
-								<div class="tz-gallery following-pr-pad">
-									<div class="row">
-										<div class="col-md-12 mr-auto ml-auto">
-										 <div class="container-fluid">
-												<div class="row">
-													<c:choose>
-														<c:when test="${empty followingList}">
-															<h3 class="text-center">팔로잉을 시작해보세요~</h3><br>
-														</c:when>
-														<c:otherwise>
-															<c:forEach items="${followingList}" var="following">
-																<div class="following-div">
-																	<div class="item col-md-2">
-																		<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
-																			<img title="${following.userName}" src="${following.prPicture}" class="rounded following-pr following-pr-mar rounded">
-																		</a>
-																		<div class="counts hide-xs hide-sm ">
-																			<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">${following.userName}</a>
-																		</div>
-																	</div>
-																</div>
-															</c:forEach>
-														</c:otherwise>
-													</c:choose>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-								</div>
-							</div> --%>
-							
-							<%-- <c:choose>
-									<c:when test="${empty followerlist}">
-										<h3 class="text-center">팔로워가 아무도 없네요ㅠㅠ</h3><br>
+							<div class="col-md-10 col-lg-10 mr-auto ml-auto">
+						 		<div class="row">
+						 		<c:choose>
+									<c:when test="${empty followingList}">
+										<h3 class="text-center">팔로잉을 시작해보세요~</h3><br>
 									</c:when>
 									<c:otherwise>
-						          		<!-- DB에서 해당 계정의 follower 프로필 불러와서 스튜디오로 이동하게끔 구현 -->
-						          		<c:forEach items="${followerlist}" var="follow">
-						          			<c:choose>
-						          				<c:when test="${follow.prPicture eq null}">
-						          					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
-						          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${follow.userName}">
-						          						<img src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
-						          					</a>
-						          				</c:when>
-						          				<c:otherwise>
-						          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${follow.userName}">
-						          						<img src="${follow.prPicture}" class="rounded user-img">
-						          					</a>
-						          				</c:otherwise>
-						          			</c:choose>
-						          		</c:forEach>
-			          				</c:otherwise>
-							</c:choose> --%>
+										<c:forEach items="${followingList}" var="following" >
+								 		   <div class="col-md-1 col-lg-2 mr-auto ml-auto">
+						                        <div class="card card-profile card-plain">
+						                            <div class="card-header card-header-image">
+						                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
+						                                    <img class="img" src="${following.prPicture}">
+						                                </a>
+						                            <div class="colored-shadow" style="background-image: url(&quot;${following.prPicture}&quot;); opacity: 1;"></div></div>
+						                            <div class="card-body ">
+						                                <h4 class="card-title">${following.userName}</h4>
+						                            </div>
+						                        </div>
+						                    </div>
+					                    </c:forEach>
+									</c:otherwise>
+								</c:choose>
+						  		</div>
+						    </div>
 						</div>
 						
 						<div id="follower">
@@ -443,61 +550,7 @@
 						</div>
 						
 					</div>
-			</div>
-          	<%-- <h4 align="center"><b>팔로워</b></h4><hr>
-          	<div id="follower">
-          		<c:choose>
-						<c:when test="${empty followerlist}">
-							<h3 class="text-center">팔로워가 아무도 없네요ㅠㅠ</h3><br>
-						</c:when>
-						<c:otherwise>
-			          		<!-- DB에서 해당 계정의 follower 프로필 불러와서 스튜디오로 이동하게끔 구현 -->
-			          		<c:forEach items="${followerlist}" var="follow">
-			          			<c:choose>
-			          				<c:when test="${follow.prPicture eq null}">
-			          					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
-			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${follow.userName}">
-			          						<img src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
-			          					</a>
-			          				</c:when>
-			          				<c:otherwise>
-			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follow.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${follow.userName}">
-			          						<img src="${follow.prPicture}" class="rounded user-img">
-			          					</a>
-			          				</c:otherwise>
-			          			</c:choose>
-			          		</c:forEach>
-          				</c:otherwise>
-				</c:choose>
-            </div>
-              
-              
-            <h4 align="center"><b>팔로잉</b></h4><hr>
-            <div id="following">
-            		<c:choose>
-						<c:when test="${empty followinglist}">
-							<h3 class="text-center">팔로잉을 시작해보세요~</h3><br>
-						</c:when>
-						<c:otherwise>
-			            	<!-- DB에서 해당 계정의 following 프로필 불러와서 스튜디오로 이동하게끔 구현 -->
-			          		<c:forEach items="${followinglist}" var="following">
-			          			<c:choose>
-			          				<c:when test="${following.prPicture eq null}">
-			          					<!-- 해당 회원의 스튜디오로 이동하게 Controller 링크 -->
-			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${following.userName}">
-			          						<img title="${following.userId}" src="<%=request.getContextPath()%>/assets/img/user.png" class="rounded user-img">
-			          					</a>
-			          				</c:when>
-			          				<c:otherwise>
-			          					<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="${following.userName}">
-			          						<img title="${following.userId}" src="${following.prPicture}" class="rounded user-img">
-			          					</a>
-			          				</c:otherwise>
-			          			</c:choose>
-			          		</c:forEach>
-		          		</c:otherwise>
-          			</c:choose>
-            </div> --%>
+			</div> --%>
           </div>
         </div>
       </div>
