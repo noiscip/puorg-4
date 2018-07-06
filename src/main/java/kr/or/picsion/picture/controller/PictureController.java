@@ -79,11 +79,39 @@ public class PictureController {
 	* @return String
 	*/
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
-	public String myStudio(HttpSession session, Model model, int userNo){
+	public String myStudio(HttpSession session, Model model, int userNo, String pg){
 		User user = new User(); 
-		int page=0;
+		int scpage=0;
 		int endpage=9;
 		
+		int total=0;
+        
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 12;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //팔로잉 유저 count 해서 가져오기 
+        total = userService.getFollowingCount(userNo);
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+        
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -91,22 +119,30 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), page, endpage); //스튜디오 사진리스트
-		List<User> ownerList = pictureService.studioOwnerList(userNo, page, endpage);
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), scpage, endpage); //스튜디오 사진리스트
+		List<User> ownerList = pictureService.studioOwnerList(userNo, scpage, endpage);
  		List<User> followerList = userService.followerUserList(userNo);
-		List<User> followingList = userService.followingUserList(userNo);
+		List<User> followingList = userService.followingUserPaging(userNo, start, rowSize);
+		
 		int followResult = 0;
 		if(user.getUserNo() != userNo) {
 			followResult = userService.followingConfirm(user.getUserNo(),userInfo.getUserNo());
 		}
-		System.out.println(picList);
+		System.out.println("왜안와??" + followingList);
+		
 		model.addAttribute("userinfo", userInfo);
 		model.addAttribute("piclist", picList);
 		model.addAttribute("ownerList",ownerList);
-		model.addAttribute("followerlist", followerList);
-		model.addAttribute("followinglist", followingList);
+		model.addAttribute("followerList", followerList);
+		model.addAttribute("followingList", followingList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("page", picList.size());
+		
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
 		
 		return "studio.mystudio";
 	}
