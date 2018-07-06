@@ -96,7 +96,7 @@ $(function() {
 						                   if(obj.bookmarkCheck=="T"){
 						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
 						                   }else{
-						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 						                   }
 						                   
 						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";

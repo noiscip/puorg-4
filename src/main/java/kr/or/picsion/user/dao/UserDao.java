@@ -40,5 +40,6 @@ public interface UserDao {
 	public int updateRole(int userNo); 				//계정 연동 되었을 경우 권한 업데이트
 	public int pointCharge(int point, int userNo);	//캐시 충전
 	public List<User> randomUsers(int userNo);      //랜덤 유저 추천
-	
+	public List<User> bestUploader();				//최근 7일간 최다 업로더 4명
+	 
 }

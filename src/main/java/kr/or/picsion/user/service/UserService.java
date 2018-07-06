@@ -389,4 +389,18 @@ public class UserService {
 		return list;
 	}
 	
+	/**
+	* 날      짜 : 2018. 7. 6.
+	* 메소드명 : bestUploader
+	* 작성자명 : 정도혁
+	* 기      능 : 최근 7일간 최다 업로더 4명
+	*
+	* @return List<User>
+	*/
+	public List<User> bestUploader(){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> list = userDao.bestUploader();
+		return list;
+	}
+	
 }
