@@ -110,7 +110,6 @@
 	            // 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
 	            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
 	            	if($('#photo-library').hasClass('active')){
-		            	console.log("여기 오는거야?")
 		            	
 		            	$.ajax({
 		                    type : 'post',  
@@ -120,7 +119,6 @@
 		                        userNo: receiveUserNo
 		                    },
 		                    success : function(data){
-		                        console.log("정상적으로 실행된거?")
 		                        
 		                        $.each(data.scrollPicList, function(index, obj){
 		                        	

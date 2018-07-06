@@ -472,9 +472,9 @@ public class PictureService {
 	* @param userNo
 	* @return List<Picture>
 	*/
-	public List<Picture> latestPicList(int userNo){
+	public List<Picture> latestPicList(int userNo, int page, int endpage){
     	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
-    	List<Picture> list = pictureDao.latestPicList(userNo);
+    	List<Picture> list = pictureDao.latestPicList(userNo, page, endpage);
     	return list;
     }
 	
@@ -488,9 +488,9 @@ public class PictureService {
 	* @param userNo
 	* @return List<User>
 	*/
-	public List<User> latestPicOwnList(){
+	public List<User> latestPicOwnList(int page, int endpage){
     	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
-    	List<User> list = pictureDao.latestPicOwnList();
+    	List<User> list = pictureDao.latestPicOwnList(page, endpage);
     	return list;
     }
 }

@@ -76,7 +76,6 @@ $(function() {
                         page: page
                     },
                     success : function(data){
-                        console.log("정상적으로 실행된거?")
                         
                         $.each(data.scrollPicList, function(index, obj){
                         	console.log(obj)
