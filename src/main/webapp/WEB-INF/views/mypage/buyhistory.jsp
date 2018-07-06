@@ -68,13 +68,6 @@
 							</tr>
 						</c:forEach>
 						
-							<%-- <tr>
-								<td colspan="2"></td>
-								<td colspan="1"></td>
-								<td class="td-total">Total</td>
-								<td id="total2" class="td-price text-center">${sumPurchase}<small>원</small></td>
-								<td colspan="1"></td>
-							</tr> --%>
 						</tbody>
 					</table>
 				</div>
