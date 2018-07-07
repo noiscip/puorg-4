@@ -86,20 +86,15 @@ public class PictureController {
 	* @return String
 	*/
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
-	public String myStudio(HttpSession session, Model model, int userNo, String pg){
+	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
 		int scpage=0;
 		int endpage=9;
 		
 		int total=0;
-        
         int page = 1;
-        /*String Strpg = pg;
-        if (Strpg != null) {
-            page = Integer.parseInt(Strpg);
-        }*/
 
-        int rowSize = 6;
+        int rowSize = 12;
         int start = (page * rowSize) - (rowSize - 1) - 1;
 
         //팔로잉 유저 count 해서 가져오기 
@@ -118,6 +113,21 @@ public class PictureController {
             toPage = allPage;
         }
         
+        int werTotal=0;
+        //팔로워 유저 count 해서 가져오기
+        werTotal=userService.getFollowerCount(userNo);
+        
+        // ... 목록
+        int werAllPage = (int) Math.ceil(werTotal / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        // [10] >>
+        int werFromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int werToPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (werToPage > werAllPage) { // 예) 20>17
+            werToPage = werAllPage;
+        }
         
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
@@ -128,14 +138,14 @@ public class PictureController {
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
 		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), scpage, endpage); //스튜디오 사진리스트
 		List<User> ownerList = pictureService.studioOwnerList(userNo, scpage, endpage);
- 		List<User> followerList = userService.followerUserList(userNo);
+		
 		List<User> followingList = userService.followingUserPaging(userNo, start, rowSize);
+		List<User> followerList = userService.followerUserPaging(userNo, start, rowSize);
 		
 		int followResult = 0;
 		if(user.getUserNo() != userNo) {
 			followResult = userService.followingConfirm(user.getUserNo(),userInfo.getUserNo());
 		}
-		System.out.println("왜안와??" + followingList);
 		
 		model.addAttribute("userinfo", userInfo);
 		model.addAttribute("piclist", picList);
@@ -151,7 +161,11 @@ public class PictureController {
         model.addAttribute("block", block);
         model.addAttribute("fromPage", fromPage);
         model.addAttribute("toPage", toPage);
-		
+        
+        model.addAttribute("werAllPage", werAllPage);
+        model.addAttribute("werFromPage", werFromPage);
+        model.addAttribute("werToPage", werToPage);
+        
 		return "studio.mystudio";
 	}
 	
@@ -163,7 +177,7 @@ public class PictureController {
 	*
 	* @return View
 	*/
-	@RequestMapping(value="followpaging.ps", method=RequestMethod.GET)
+	@RequestMapping(value="followpaging.ps")
 	public View followingPaging(HttpSession session, Model model, int userNo, String pg) {
 		int total=0;
         int page = 1;
@@ -172,7 +186,7 @@ public class PictureController {
             page = Integer.parseInt(Strpg);
         }
 
-        int rowSize = 6;
+        int rowSize = 12;
         int start = (page * rowSize) - (rowSize - 1) - 1;
 
         //팔로잉 유저 count 해서 가져오기 
@@ -194,6 +208,58 @@ public class PictureController {
         List<User> followingPaging = userService.followingUserPaging(userNo, start, rowSize);
         
         model.addAttribute("followingPaging", followingPaging);
+        
+        model.addAttribute("userNo", userNo);
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
+        
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 7.
+	* 메소드명 : followerPaging
+	* 작성자명 : 박주원
+	* 기      능 : 팔로워 페이징
+	*
+	* @return View
+	*/
+	@RequestMapping(value="followerpaging.ps")
+	public View followerPaging(HttpSession session, Model model, int userNo, String pg) {
+		
+		int total=0;
+        int page = 1;
+        
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 12;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //팔로잉 유저 count 해서 가져오기 
+        total = userService.getFollowerCount(userNo);
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+        List<User> followerPaging = userService.followerUserPaging(userNo, start, rowSize);
+        
+        model.addAttribute("followerPaging", followerPaging);
         
         model.addAttribute("userNo", userNo);
 		model.addAttribute("pg", page);

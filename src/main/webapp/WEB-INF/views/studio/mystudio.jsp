@@ -149,30 +149,44 @@
 	        }
 	    })
 		
+	    var userNo = ${userNo};
 	    
 	    $(document).on('click','#followPre',function(){
-	    	var userNo = ${userNo};
 	    	var pg = $(this).data("pg");
-	    	console.log(userNo+":"+pg)
 	    	
 	    	followingPaging(userNo, pg)
 	    })
 	    
 	    $(document).on('click', '#followCha', function(){
-	    	var userNo = ${userNo};
 	    	var pg = $(this).data("pg");
-	    	console.log(userNo+":"+pg)
 	    	
 	    	followingPaging(userNo, pg)
 	    })
 	    
 	    $(document).on('click', '#followNe', function(){
-	    	var userNo = ${userNo};
 	    	var pg = $(this).data("pg");
-	    	console.log(userNo+":"+pg)
 	    	
 	    	followingPaging(userNo, pg)
 	    })
+	    
+	    $(document).on('click','#followerPre',function(){
+	    	var pg = $(this).data("pg");
+	    	
+	    	followerPaging(userNo, pg)
+	    })
+	    
+	    $(document).on('click', '#followerCha', function(){
+	    	var pg = $(this).data("pg");
+	    	
+	    	followerPaging(userNo, pg)
+	    })
+	    
+	    $(document).on('click', '#followerNe', function(){
+	    	var pg = $(this).data("pg");
+	    	
+	    	followerPaging(userNo, pg)
+	    })
+	    
 	})
 	
 function followingPaging(userNo, pg){
@@ -185,8 +199,10 @@ function followingPaging(userNo, pg){
 					pg:pg
 				},
 			success:function(data){
-				console.log(data.followingPaging)
 				$('#followPage').empty();
+				
+				var fromPage = data.fromPage-1;
+				var toPage = data.toPage+1;
 				
 				following="<div class='row'>";
 				$.each(data.followingPaging, function(index, obj){
@@ -205,11 +221,12 @@ function followingPaging(userNo, pg){
 							"<div class='com-md-12 mr-auto ml-auto'>"+
 								"<nav aria-label='Page navigation example'>"+
 								"<ul class='pagination justify-content-center'>";
+								
 								if(data.pg>data.block){
-									following+="<li class='page-item'><a class='page-link' data-pg='"+data.fromPage-1+"' id='followPre'>Previous</a></li>";
+									following+="<li class='page-item'><a class='page-link' data-pg='"+ fromPage + "' id='followPre'>Previous</a></li>";
 								}
-			 		 			
-								for(var i=data.fromPage; i<data.toPage; i++){
+								
+								for(var i=data.fromPage; i<=data.toPage; i++){
 									if(i==data.pg){
 										following+="<li class='page-item active'>"+
 		                             				"<a class='page-link' href='#'>"+i+"</a></li>";
@@ -217,12 +234,11 @@ function followingPaging(userNo, pg){
 										following+="<li class='page-item'>"+
 		                             			"<a class='page-link' data-pg='"+i+"' id='followCha'>"+i+"</a></li>";
 									}
-									
 								}
 								
 								if(data.toPage<data.allPage){
 									following+="<li class='page-item'>"+
-						      					"<a class='page-link' data-pg='"+data.toPage+1+"' id='followNe'>Next</a>"+
+						      					"<a class='page-link' data-pg='"+toPage+"' id='followNe'>Next</a>"+
 						    				   "</li>";
 								}
 				following+=	"</ul></nav></div></div>";
@@ -230,6 +246,65 @@ function followingPaging(userNo, pg){
 			}
 		})
 }
+	
+function followerPaging(userNo, pg){
+	var follower = "";
+	
+	$.ajax({
+		url:"/picsion/picture/followerpaging.ps",
+		data:{
+				userNo:userNo,
+				pg:pg
+			},
+		success:function(data){
+			$('#followerPage').empty();
+			
+			var fromPage = data.fromPage-1;
+			var toPage = data.toPage+1;
+			
+			follower="<div class='row'>";
+			$.each(data.followerPaging, function(index, obj){
+				follower+="<div class='col-md-1 col-lg-2'>"+
+						   "<div class='card card-profile card-plain'>"+
+						   	"<div class='card-header card-header-image'>"+
+						   		"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"' class='prPic-height'>"+
+						   				"<img class='img prPic-height' src='"+obj.prPicture+"'></a>"+
+						   	"<div class='colored-shadow' style='background-image: url(&quot;"+obj.prPicture+"&quot;); opacity: 1;'></div></div>"+
+						   	"<div class='card-body'>"+
+						   		"<h4 class='card-title'>"+obj.userName+"</h4>"+
+						   	"</div></div></div>";
+			})
+			
+			follower+="</div><div class='row'>"+
+						"<div class='com-md-12 mr-auto ml-auto'>"+
+							"<nav aria-label='Page navigation example'>"+
+							"<ul class='pagination justify-content-center'>";
+							
+							if(data.pg>data.block){
+								follower+="<li class='page-item'><a class='page-link' data-pg='"+ fromPage + "' id='followerPre'>Previous</a></li>";
+							}
+							
+							for(var i=data.fromPage; i<=data.toPage; i++){
+								if(i==data.pg){
+									follower+="<li class='page-item active'>"+
+	                             				"<a class='page-link' href='#'>"+i+"</a></li>";
+								}else{
+									follower+="<li class='page-item'>"+
+	                             			"<a class='page-link' data-pg='"+i+"' id='followerCha'>"+i+"</a></li>";
+								}
+							}
+							
+							if(data.toPage<data.allPage){
+								follower+="<li class='page-item'>"+
+					      					"<a class='page-link' data-pg='"+toPage+"' id='followerNe'>Next</a>"+
+					    				   "</li>";
+							}
+			follower+=	"</ul></nav></div></div>";
+			$('#followerPage').append(follower);
+		}
+	})
+}
+	
 </script>
 
 <style>
@@ -496,7 +571,68 @@ function followingPaging(userNo, pg){
 					</div>
 					
 					<div class="tab-pane" id="follower" role="tabpanel" aria-labelledby="follower-tab">
-						<h4>여기는 팔로워</h4>
+						<div class="col-md-10 col-lg-10 mr-auto ml-auto" id="followerPage">
+			 		 			<div class="row">
+				 		 			<c:choose>
+					 		 			<c:when test="${empty followerList}">
+					 		 				<div class="col-md-12 mr-auto ml-auto">
+												<h3 class="text-center">팔로워가 없네요..ㅠㅠ</h3><br>
+											</div>
+										</c:when>
+										<c:otherwise>
+											<c:forEach items="${followerList}" var="follower" >
+									 		   <div class="col-md-1 col-lg-2">
+							                        <div class="card card-profile card-plain">
+							                            <div class="card-header card-header-image">
+							                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${follower.userNo}" class="prPic-height">
+							                                    <img class="img prPic-height" src="${follower.prPicture}">
+							                                </a>
+							                            <div class="colored-shadow" style="background-image: url(&quot;${follower.prPicture}&quot;); opacity: 1;"></div></div>
+							                            <div class="card-body ">
+							                                <h4 class="card-title">${follower.userName}</h4>
+							                            </div>
+							                        </div>
+							                    </div>
+						                    </c:forEach>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<div class="row">
+			 		 				<div class="com-md-12 mr-auto ml-auto">
+				 		 				<nav aria-label="Page navigation example">
+										  <ul class="pagination justify-content-center">
+										  
+										  	<!-- 처음 이전 링크 -->
+						                    <c:if test="${pg>block}">
+						                         <li class="page-item"><a class="page-link" data-pg="${werFromPage-1}" id="followerPre">Previous</a></li>
+						                    </c:if>
+					                     	
+					                     	<!-- 블록 범위 찍기 -->
+						                    <c:forEach begin="${werFromPage}" end="${werToPage}" var="i">
+						                         <c:if test="${i==pg}">
+						                             <li class="page-item active">
+						                             	<a class="page-link" href="#">${i}</a>
+						                             </li>
+						                         </c:if>
+						                         <c:if test="${i!=pg}">
+						                             <li class="page-item">
+						                             	<a class="page-link" data-pg="${i}" id="followerCha">${i}</a>
+						                             </li>
+						                         </c:if>
+						                    </c:forEach>
+										    
+										    <!-- 다음, 이후 -->
+						                    <c:if test="${werToPage<werAllPage}">
+						                        <li class="page-item">
+										      		<a class="page-link" data-pg="${werToPage+1}" id="followerNe">Next</a>
+										    	</li>
+						                    </c:if>
+										    
+										  </ul>
+										</nav>
+									</div>
+			 		 			</div>
+						</div>
 					</div>
 				</div>
           	<%-- <div class="tabs-underline">
