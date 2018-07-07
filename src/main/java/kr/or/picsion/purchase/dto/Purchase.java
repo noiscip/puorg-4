@@ -15,14 +15,17 @@ public class Purchase {
 	private int purchaseUserNo;
 	private int saleUserNo;
 	private Date purchaseReg;
+	private int picPrice;
 
 	public Purchase() {}
 
-	public Purchase(int picNo, int purchaseUserNo, int saleUserNo, Date purchaseReg) {
+	public Purchase(int picNo, int purchaseUserNo, int saleUserNo, Date purchaseReg, int picPrice) {
+		super();
 		this.picNo = picNo;
 		this.purchaseUserNo = purchaseUserNo;
 		this.saleUserNo = saleUserNo;
 		this.purchaseReg = purchaseReg;
+		this.picPrice = picPrice;
 	}
 
 	public int getPicNo() {
@@ -57,10 +60,18 @@ public class Purchase {
 		this.purchaseReg = purchaseReg;
 	}
 
+	public int getPicPrice() {
+		return picPrice;
+	}
+
+	public void setPicPrice(int picPrice) {
+		this.picPrice = picPrice;
+	}
+
 	@Override
 	public String toString() {
 		return "Purchase [picNo=" + picNo + ", purchaseUserNo=" + purchaseUserNo + ", saleUserNo=" + saleUserNo
-				+ ", purchaseReg=" + purchaseReg + "]";
+				+ ", purchaseReg=" + purchaseReg + ", picPrice=" + picPrice + "]";
 	}
-
+	
 }
