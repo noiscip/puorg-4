@@ -1,4 +1,4 @@
-package kr.or.picsion.utils;
+﻿package kr.or.picsion.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,7 +65,9 @@ public class VisionApi {
 		String logocheck=detectLogos(filePath);				//vision : 로고감지
 		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
 		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
-//		List<Face> faceList = detectFaces(uploadedPath);	//vision : 얼굴감지
+
+ 		List<Face> faceList = detectFaces(filePath);	//vision : 얼굴감지
+
 		for(String label : detectWebDetections(filePath)) {
 			labelList.add(label);
 		}
@@ -77,7 +79,8 @@ public class VisionApi {
 		model.addAttribute("label", labelList);
 		model.addAttribute("label2", labelListKo);
 		model.addAttribute("picPath",picturePath);
-//		model.addAttribute("face",faceList);
+
+		model.addAttribute("face",faceList);
 		
 	}	
 	
@@ -92,8 +95,9 @@ public class VisionApi {
 	 */
 	public String fileUpload(MultipartHttpServletRequest mRequest) {
 		String filePath = "";
-//		String uploadPath = "D:\\imagePicsion\\";
-		String uploadPath = "C:\\imagePicsion\\"; 
+
+		String uploadPath = "D:\\imagePicsion\\";
+//		String uploadPath = "C:\\imagePicsion\\"; 
 //		String uploadPath = "/home/ubuntu/image"; 
 
 		// 파일 저장하는 폴더
@@ -341,12 +345,12 @@ public class VisionApi {
 
 				// For full list of available annotations, see http://g.co/cloud/vision/docs
 				for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-					System.out.println("position: %s" + annotation.getBoundingPoly() + "\n");
+					System.out.println("position: %s" + annotation.getFdBoundingPoly() + "\n");
 					// faceXY+=annotation.getBoundingPoly();
-					facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
-							annotation.getBoundingPoly().getVertices(1).getX(),
-							annotation.getBoundingPoly().getVertices(1).getY(),
-							annotation.getBoundingPoly().getVertices(2).getY()));
+					facePoly.add(new Face(annotation.getFdBoundingPoly().getVertices(0).getX(),
+							annotation.getFdBoundingPoly().getVertices(1).getX(),
+							annotation.getFdBoundingPoly().getVertices(1).getY(),
+							annotation.getFdBoundingPoly().getVertices(2).getY()));
 				}
 			}
 

@@ -106,6 +106,7 @@
 									<input name="purchases[${status.index}].picNo" value="${cart.picNo}" type="hidden">
 									<input name="purchases[${status.index}].purchaseUserNo" value="${sessionScope.user.userNo}" type="hidden">
 									<input name="purchases[${status.index}].saleUserNo" value="${photographerName[status.index].userNo}" type="hidden">
+									<input name="purchases[${status.index}].picPrice" value="${cart.picPrice}" type="hidden">
 									</div>
 								</c:forEach>
 								<div class="total">

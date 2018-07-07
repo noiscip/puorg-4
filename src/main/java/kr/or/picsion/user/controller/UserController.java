@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -432,8 +434,71 @@ public class UserController {
 	* @return String
 	*/
 	@RequestMapping(value="updateinfo.ps", method=RequestMethod.POST)
+	@Transactional(propagation = Propagation.REQUIRED)
 	public String updateInfo(HttpSession session, User user, MultipartFile file) {
 		User userSession = (User)session.getAttribute("user");
+		try {
+			user.setUserNo(userSession.getUserNo());
+			
+			System.out.println(file.getOriginalFilename());
+			String uploadPath = "D:\\imagePicsion\\";
+			
+			File dir = new File(uploadPath);
+			if (!dir.isDirectory()) {
+				dir.mkdirs();
+			}
+
+			String originalFileName = file.getOriginalFilename();
+			
+			//프로필 사진 변경 했을때
+			if(originalFileName.equals("")) {
+				System.out.println("프로필 사진 변경 X");
+			}else {
+				String saveFileName = "prPic"+user.getUserNo()+ System.currentTimeMillis()+"."+originalFileName.split("\\.")[1];
+				String dbPath="";
+				if(saveFileName != null && !saveFileName.equals("")) {
+					if(new File(uploadPath + saveFileName).exists()) {
+						saveFileName = saveFileName + "_" + System.currentTimeMillis();
+					}
+					try {
+						File newFile = new File(uploadPath + saveFileName);
+						file.transferTo(newFile);
+						dbPath=amazonService.uploadObject(saveFileName, "picsion/profile");
+						
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} 
+				} 
+				
+				System.out.println(user);
+				user.setPrPicture(dbPath);
+				userService.updateUserPic(user);
+			}
+			
+			//자기소개 변경했을때 (변경하지 않으면 업데이트 X)
+			if(userSession.getPrContent() != null && userSession.getPrContent().equals(user.getPrContent())) {
+				System.out.println("같은거지?");
+			}else if(userSession.getPrContent() == null && user.getPrContent().equals("")){
+				System.out.println("자기소개가 없지?");
+			}else {
+				userService.updateUserPr(user);
+			}
+					
+			//비밀번호, 유저네임 변경했을때
+			if(user.getPwd()=="") {
+				System.out.println("안되 비었어");
+			}else if(userSession.getPwd().equals(user.getPwd())) {
+				System.out.println("안되 똑같아");
+			}else {
+				userService.updateUserInfo(user);
+			}
+			
+			session.setAttribute("user", userService.userInfo(user.getUserNo()));
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		user.setUserNo(userSession.getUserNo());
 		
 		String filePathh="";
@@ -490,8 +555,6 @@ public class UserController {
 			userService.updateUserInfo(user);
 		}
 		
-		session.setAttribute("user", userService.userInfo(user.getUserNo()));
-		
 		return "redirect:updateinfo.ps";
 	}
 	
@@ -507,15 +570,19 @@ public class UserController {
 	* @return View
 	*/
 	@RequestMapping("charge.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View pointCharge(HttpSession session, int point, Model model) {
 		User user = (User)session.getAttribute("user");
-		int result=userService.pointCharge(point, user.getUserNo());
-		user = userService.userInfo(user.getUserNo());
-		session.setAttribute("user", user);
-		
-		model.addAttribute("point",user.getPoint());
-		model.addAttribute("result", result);
-		
+		try {
+			int result=userService.pointCharge(point, user.getUserNo());
+			user = userService.userInfo(user.getUserNo());
+			session.setAttribute("user", user);
+			
+			model.addAttribute("point",user.getPoint());
+			model.addAttribute("result", result);
+			
+		} catch (Exception e) {
+		}
 		return jsonview;
 	}
 	
