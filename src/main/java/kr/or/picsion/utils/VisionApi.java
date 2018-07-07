@@ -65,7 +65,7 @@ public class VisionApi {
 		String logocheck=detectLogos(filePath);				//vision : 로고감지
 		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
 		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
-//		List<Face> faceList = detectFaces(uploadedPath);	//vision : 얼굴감지
+ 		List<Face> faceList = detectFaces(filePath);	//vision : 얼굴감지
 		for(String label : detectWebDetections(filePath)) {
 			labelList.add(label);
 		}
@@ -77,7 +77,7 @@ public class VisionApi {
 		model.addAttribute("label", labelList);
 		model.addAttribute("label2", labelListKo);
 		model.addAttribute("picPath",picturePath);
-//		model.addAttribute("face",faceList);
+ 		model.addAttribute("face",faceList);
 		
 	}	
 	
