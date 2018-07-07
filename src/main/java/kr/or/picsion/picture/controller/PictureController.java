@@ -270,6 +270,7 @@ public class PictureController {
 		
 		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(14));
 		//워터마크 사진 이름 수정하여 저장
+		
 		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", picture.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
 		File output = new File(imagePicsion+renameWater);
 
