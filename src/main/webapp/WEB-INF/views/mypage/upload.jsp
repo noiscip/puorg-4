@@ -64,12 +64,11 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 
 </script>
 
-<div class="page-header header-filter clear-filter purple-filter"
-	data-parallax="true"
-	style="background-image: url(&quot;./assets/img/bg2.jpg&quot;); transform: translate3d(0px, 0px, 0px);">
+<div id="changemain" class="page-header header-filter clear-filter purple-filter"
+	data-parallax="true">
 	<div class="container"></div>
 </div>
-<div class="main main-raised">
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">

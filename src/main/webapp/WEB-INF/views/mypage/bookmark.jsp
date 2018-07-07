@@ -76,11 +76,8 @@ $(function() {
                         page: page
                     },
                     success : function(data){
-                        console.log("정상적으로 실행된거?")
                         
                         $.each(data.scrollPicList, function(index, obj){
-                        	console.log(obj)
-                        	console.log(data.scrollPicUserList[index].userName)
                         	
                         	scrollPage="<div class='item col-sm-6 col-md-4'>"+
 											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
@@ -97,7 +94,7 @@ $(function() {
 						                   if(obj.bookmarkCheck=="T"){
 						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
 						                   }else{
-						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 						                   }
 						                   
 						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
@@ -105,7 +102,6 @@ $(function() {
 			                $('#bookpic').append(scrollPage);
                         })
 					    page+=data.endpage;
-                        console.log(scrollPage);
          				
                     }
                 });
@@ -138,8 +134,8 @@ $(function() {
 }
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container-fluid">
 		<ul class="nav nav-pills justify-content-center my-ul">

@@ -234,10 +234,8 @@ public class UserController {
 
 		if(result!=0) {		//result가 1이면 팔로잉 취소 처리
 			userService.deleteFollow(userNo, followingUserNo);
-			System.out.println("팔로잉 취소 완료!!");
 		}else {				//result가 0이면 팔로우 처리
 			userService.insertFollow(userNo, followingUserNo);
-			System.out.println("팔로잉 완료!!!");
 		}		
 		
 		model.addAttribute("result", result);
@@ -308,7 +306,6 @@ public class UserController {
 	*/
 	@RequestMapping("followinglist.ps")
 	public String myFollowing(HttpSession session, Model model, String pg) {
-		System.out.println("myFollowing 컨트롤");
 		User user = (User)session.getAttribute("user");
 		
 		int total=0;
@@ -439,7 +436,6 @@ public class UserController {
 		User userSession = (User)session.getAttribute("user");
 		user.setUserNo(userSession.getUserNo());
 		
-		System.out.println(file.getOriginalFilename());
 		String filePathh="";
 		String uploadPath = "D:\\imagePicsion\\";
 		
@@ -452,7 +448,7 @@ public class UserController {
 		
 		//프로필 사진 변경 했을때
 		if(originalFileName.equals("")) {
-			System.out.println("프로필 사진 변경 X");
+			
 		}else {
 			String saveFileName = "prPic"+user.getUserNo()+ System.currentTimeMillis()+"."+originalFileName.split("\\.")[1];
 			String dbPath="";
@@ -472,25 +468,24 @@ public class UserController {
 				} 
 			} 
 			
-			System.out.println(user);
 			user.setPrPicture(dbPath);
 			userService.updateUserPic(user);
 		}
 		
 		//자기소개 변경했을때 (변경하지 않으면 업데이트 X)
 		if(userSession.getPrContent() != null && userSession.getPrContent().equals(user.getPrContent())) {
-			System.out.println("같은거지?");
+			
 		}else if(userSession.getPrContent() == null && user.getPrContent().equals("")){
-			System.out.println("자기소개가 없지?");
+			
 		}else {
 			userService.updateUserPr(user);
 		}
 				
 		//비밀번호, 유저네임 변경했을때
 		if(user.getPwd()=="") {
-			System.out.println("안되 비었어");
+			
 		}else if(userSession.getPwd().equals(user.getPwd())) {
-			System.out.println("안되 똑같아");
+			
 		}else {
 			userService.updateUserInfo(user);
 		}
