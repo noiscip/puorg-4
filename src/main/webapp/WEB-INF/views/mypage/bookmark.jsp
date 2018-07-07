@@ -78,8 +78,6 @@ $(function() {
                     success : function(data){
                         
                         $.each(data.scrollPicList, function(index, obj){
-                        	console.log(obj)
-                        	console.log(data.scrollPicUserList[index].userName)
                         	
                         	scrollPage="<div class='item col-sm-6 col-md-4'>"+
 											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
@@ -104,7 +102,6 @@ $(function() {
 			                $('#bookpic').append(scrollPage);
                         })
 					    page+=data.endpage;
-                        console.log(scrollPage);
          				
                     }
                 });
