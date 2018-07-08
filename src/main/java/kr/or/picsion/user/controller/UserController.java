@@ -441,7 +441,7 @@ public class UserController {
 		
 		System.out.println(file.getOriginalFilename());
 		String filePathh="";
-		String uploadPath = "D:\\imagePicsion\\";
+		String uploadPath = "resources/upload";
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -463,7 +463,7 @@ public class UserController {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
-					dbPath=amazonService.uploadObject(saveFileName, "picsion/profile");
+					dbPath=amazonService.uploadObject(uploadPath,saveFileName, "picsion/profile");
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
