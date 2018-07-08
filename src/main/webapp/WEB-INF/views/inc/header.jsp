@@ -114,14 +114,6 @@ $(function(){
 					},
 				});
 	
-	/* $(document).on('click','#submitbtn',function(){
-		if($('#searchAll').val()==''){
-			alert("검색 내용이 없습니다");
-		}else{
-			$('form[class="form-inline"]').submit();
-		}
-		
-	}) */
 	
 	function newNoticeCount() {
 		var alon = "<i id='newNotice' class='material-icons'>notifications_active</i>";

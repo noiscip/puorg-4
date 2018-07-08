@@ -74,10 +74,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 결제 -->
 	<insert id="buyPicture" parameterType="java.util.List">
 		INSERT INTO PURCHASE
-		(picNo, purchaseUserNo, saleUserNo)
+		(picNo, purchaseUserNo, saleUserNo, picPrice)
 		VALUES
 		<foreach collection="list" item="item" separator=",">
-		(#{item.picNo}, #{item.purchaseUserNo}, #{item.saleUserNo})
+		(#{item.picNo}, #{item.purchaseUserNo}, #{item.saleUserNo}, #{item.picPrice})
 		</foreach>
 	</insert>
 
@@ -203,6 +203,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 유저 금액 업데이트 -->
 	<update id="updatePoint">
 		update USERS set point = #{param1} where userNo = #{param2};
+	</update>
+	
+	<!-- 판매자 리스트 금액 업데이트 -->
+	<update id="updateSalePoint" parameterType="java.util.List">
+		update USERS set point = case
+		<foreach collection="list" item="item"  index="index">
+		when userNo = #{item.saleUserNo} then point + #{item.picPrice}
+		</foreach>
+		end
+		where userNo in
+		<foreach collection="list" item="item"  open="(" close=")" separator=",">
+		#{item.saleUserNo}
+		</foreach>
 	</update>
 	
 </mapper>

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -133,16 +135,20 @@ public class PurchaseController {
 	* @return View
 	*/
 	@RequestMapping("deleteItem.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View deleteItem(Model model,int userNo, int picNo) {
-		int result = purchaseService.deleteCart(picNo, userNo);
-		if(result!=0) {
-			System.out.println("삭제 완료");
-			int again = purchaseService.cartCount(userNo);
-			model.addAttribute("again",again);
-		}else {
-			System.out.println("삭제 실패");
+		try {
+			int result = purchaseService.deleteCart(picNo, userNo);
+			if(result!=0) {
+				System.out.println("삭제 완료");
+				int again = purchaseService.cartCount(userNo);
+				model.addAttribute("again",again);
+			}else {
+				System.out.println("삭제 실패");
+			}
+			model.addAttribute("result",result);
+		} catch (Exception e) {
 		}
-		model.addAttribute("result",result);
 		return jsonview;
 	}
 	
@@ -159,13 +165,21 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("picturePurchase.ps")
+	@Transactional(propagation = Propagation.REQUIRED) // 트랜잭션으로 예외 발생시 결제와 포인트 반환
 	public String buyPicture(@ModelAttribute("PurchList") PurchList purchases, HttpSession session, Model model, int point) {
 		User user = (User) session.getAttribute("user");
 		if(user != null) {
-		    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
-		    purchaseService.updatePoint(point, user.getUserNo());
-			purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
-			return "redirect:/purchase/history.ps";
+			try {
+			    System.out.println("이거"+purchases.getPurchases());
+			    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
+			    purchaseService.updatePoint(point, user.getUserNo()); //구매자 포인트 변경
+			    purchaseService.updateSalePoint(purchases.getPurchases()); //판매자 포인트 변경
+				purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
+				return "redirect:/purchase/history.ps";
+			} catch (Exception e) {
+				System.out.println("트랜잭션 실행");
+				return "redirect:/home.ps";
+			}
 		}
 		return "home.home";
 	}
