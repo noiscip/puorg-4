@@ -152,6 +152,74 @@ public class UserService {
 	}
 	
 	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : followingUserPaging
+	* 작성자명 : 박주원
+	* 기      능 : 유저의 팔로잉 리스트(페이징)
+	*
+	* @param userNo
+	* @param start
+	* @param rowSize
+	* @return List<User>
+	*/
+	public List<User> followingUserPaging(int userNo, int start, int rowSize){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> followingList = userDao.followingUserPaging(userNo, start, rowSize);
+		
+		return followingList;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : getFollowingCount
+	* 작성자명 : 박주원
+	* 기      능 : 유저의 팔로잉 총 명수
+	*
+	* @param userNo
+	* @return Integer
+	*/
+	public int getFollowingCount(int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		int result = userDao.getFollowingCount(userNo);
+		
+		return result;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 7.
+	* 메소드명 : followerUserPaging
+	* 작성자명 : 박주원
+	* 기      능 : 유저의 팔로워 리스트 (페이징)
+	*
+	* @param userNo
+	* @param start
+	* @param rowSize
+	* @return List<User>
+	*/
+	public List<User> followerUserPaging(int userNo, int start, int rowSize){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> followerList = userDao.followerUserPaging(userNo, start, rowSize);
+		
+		return followerList;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 7.
+	* 메소드명 : getFollowerCount
+	* 작성자명 : 박주원
+	* 기      능 : 유저의 팔로워 총 명수
+	*
+	* @param userNo
+	* @return Integer
+	*/
+	public int getFollowerCount(int userNo) {
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		int result = userDao.getFollowerCount(userNo);
+		
+		return result;
+	}
+	
+	/**
 	* 날      짜 : 2018. 6. 13.
 	* 메소드명 : followingConfirm
 	* 작성자명 : 박주원
@@ -353,6 +421,34 @@ public class UserService {
 	public List<User> randomUsers(int userNo){
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
 		List<User> list = userDao.randomUsers(userNo);
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 6.
+	* 메소드명 : bestUploader
+	* 작성자명 : 정도혁
+	* 기      능 : 최근 7일간 최다 업로더 4명
+	*
+	* @return List<User>
+	*/
+	public List<User> bestUploader(){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> list = userDao.bestUploader();
+		return list;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 6.
+	* 메소드명 : mostFollowingUser
+	* 작성자명 : 정도혁
+	* 기      능 : 팔로워가 많은 유저 리스트
+	*
+	* @return List<User>
+	*/
+	public List<User> mostFollowingUser(){
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		List<User> list = userDao.mostFollowingUser();
 		return list;
 	}
 	

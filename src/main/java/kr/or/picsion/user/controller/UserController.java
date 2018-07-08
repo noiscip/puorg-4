@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -234,10 +236,8 @@ public class UserController {
 
 		if(result!=0) {		//result가 1이면 팔로잉 취소 처리
 			userService.deleteFollow(userNo, followingUserNo);
-			System.out.println("팔로잉 취소 완료!!");
 		}else {				//result가 0이면 팔로우 처리
 			userService.insertFollow(userNo, followingUserNo);
-			System.out.println("팔로잉 완료!!!");
 		}		
 		
 		model.addAttribute("result", result);
@@ -307,14 +307,46 @@ public class UserController {
 	* @return String
 	*/
 	@RequestMapping("followinglist.ps")
-	public String myFollowing(HttpSession session, Model model) {
-		System.out.println("myFollowing 컨트롤");
+	public String myFollowing(HttpSession session, Model model, String pg) {
 		User user = (User)session.getAttribute("user");
 		
-		List<User> followingList = userService.followingUserList(user.getUserNo());
+		int total=0;
+        
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 12;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //구매목록 count 해서 가져오기 
+        total = userService.getFollowingCount(user.getUserNo());
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+		
+		
+		List<User> followingList = userService.followingUserPaging(user.getUserNo(), start, rowSize);
 		
 		model.addAttribute("followingList", followingList);
-		
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
+        
 		return "mypage.following";
 	}
 
@@ -402,68 +434,74 @@ public class UserController {
 	* @return String
 	*/
 	@RequestMapping(value="updateinfo.ps", method=RequestMethod.POST)
+	@Transactional(propagation = Propagation.REQUIRED)    //정보 수정 트랜잭션
 	public String updateInfo(HttpSession session, User user, MultipartFile file) {
 		User userSession = (User)session.getAttribute("user");
-		user.setUserNo(userSession.getUserNo());
-		
-		System.out.println(file.getOriginalFilename());
-		String filePathh="";
-		String uploadPath = "D:\\imagePicsion\\";
-		
-		File dir = new File(uploadPath);
-		if (!dir.isDirectory()) {
-			dir.mkdirs();
-		}
 
-		String originalFileName = file.getOriginalFilename();
-		
-		//프로필 사진 변경 했을때
-		if(originalFileName.equals("")) {
-			System.out.println("프로필 사진 변경 X");
-		}else {
-			String saveFileName = "prPic"+user.getUserNo()+ System.currentTimeMillis()+"."+originalFileName.split("\\.")[1];
-			String dbPath="";
-			if(saveFileName != null && !saveFileName.equals("")) {
-				if(new File(uploadPath + saveFileName).exists()) {
-					saveFileName = saveFileName + "_" + System.currentTimeMillis();
-				}
-				try {
-					File newFile = new File(uploadPath + saveFileName);
-					file.transferTo(newFile);
-					dbPath=amazonService.uploadObject(saveFileName, "picsion/profile");
-					
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
-			} 
+		try {
+			user.setUserNo(userSession.getUserNo());
 			
-			System.out.println(user);
-			user.setPrPicture(dbPath);
-			userService.updateUserPic(user);
-		}
-		
-		//자기소개 변경했을때 (변경하지 않으면 업데이트 X)
-		if(userSession.getPrContent() != null && userSession.getPrContent().equals(user.getPrContent())) {
-			System.out.println("같은거지?");
-		}else if(userSession.getPrContent() == null && user.getPrContent().equals("")){
-			System.out.println("자기소개가 없지?");
-		}else {
-			userService.updateUserPr(user);
-		}
+			System.out.println(file.getOriginalFilename());
+			String uploadPath = "D:\\imagePicsion\\";
+			
+			File dir = new File(uploadPath);
+			if (!dir.isDirectory()) {
+				dir.mkdirs();
+			}
+
+			String originalFileName = file.getOriginalFilename();
+
+			
+			//프로필 사진 변경 했을때
+			if(originalFileName.equals("")) {
+				System.out.println("프로필 사진 변경 X");
+			}else {
+				String saveFileName = "prPic"+user.getUserNo()+ System.currentTimeMillis()+"."+originalFileName.split("\\.")[1];
+				String dbPath="";
+				if(saveFileName != null && !saveFileName.equals("")) {
+					if(new File(uploadPath + saveFileName).exists()) {
+						saveFileName = saveFileName + "_" + System.currentTimeMillis();
+					}
+					try {
+						File newFile = new File(uploadPath + saveFileName);
+						file.transferTo(newFile);
+						dbPath=amazonService.uploadObject(saveFileName, "picsion/profile");
+						
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} 
+				} 
 				
-		//비밀번호, 유저네임 변경했을때
-		if(user.getPwd()=="") {
-			System.out.println("안되 비었어");
-		}else if(userSession.getPwd().equals(user.getPwd())) {
-			System.out.println("안되 똑같아");
-		}else {
-			userService.updateUserInfo(user);
+				System.out.println(user);
+				user.setPrPicture(dbPath);
+				userService.updateUserPic(user);
+			}
+			
+			//자기소개 변경했을때 (변경하지 않으면 업데이트 X)
+			if(userSession.getPrContent() != null && userSession.getPrContent().equals(user.getPrContent())) {
+				System.out.println("같은거지?");
+			}else if(userSession.getPrContent() == null && user.getPrContent().equals("")){
+				System.out.println("자기소개가 없지?");
+			}else {
+				userService.updateUserPr(user);
+			}
+					
+			//비밀번호, 유저네임 변경했을때
+			if(user.getPwd()=="") {
+				System.out.println("안되 비었어");
+			}else if(userSession.getPwd().equals(user.getPwd())) {
+				System.out.println("안되 똑같아");
+			}else {
+				userService.updateUserInfo(user);
+			}
+			
+			session.setAttribute("user", userService.userInfo(user.getUserNo()));
+			
+		} catch (Exception e) {
+			System.out.println("정보수정  트랜잭션 실행");
 		}
-		
-		session.setAttribute("user", userService.userInfo(user.getUserNo()));
-		
 		return "redirect:updateinfo.ps";
 	}
 	
@@ -479,15 +517,20 @@ public class UserController {
 	* @return View
 	*/
 	@RequestMapping("charge.ps")
+	@Transactional(propagation = Propagation.REQUIRED)  //포인트 충전 트랜잭션
 	public View pointCharge(HttpSession session, int point, Model model) {
 		User user = (User)session.getAttribute("user");
-		int result=userService.pointCharge(point, user.getUserNo());
-		user = userService.userInfo(user.getUserNo());
-		session.setAttribute("user", user);
-		
-		model.addAttribute("point",user.getPoint());
-		model.addAttribute("result", result);
-		
+		try {
+			int result=userService.pointCharge(point, user.getUserNo());
+			user = userService.userInfo(user.getUserNo());
+			session.setAttribute("user", user);
+			
+			model.addAttribute("point",user.getPoint());
+			model.addAttribute("result", result);
+			
+		} catch (Exception e) {
+			System.out.println("포인트 충전 트랜잭션");
+		}
 		return jsonview;
 	}
 	

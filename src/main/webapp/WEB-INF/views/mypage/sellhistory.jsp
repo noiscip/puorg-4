@@ -16,8 +16,8 @@
 	}
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
@@ -31,17 +31,11 @@
 		</ul>
 		
 			<div id="tables" class="my-ul">
-				<!-- <form class="form-inline cat-margin-bot">
-						<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">거래 내역</a>
-						<ul class="nav dropdown-menu">
-							<li class="nav-item"><a class="nav-link" href="">구매 내역</a></li>
-							<li class="nav-item"><a class="nav-link" href="">판매 내역</a></li>
-						</ul>
-				</form> -->
 				<div class="tabs-underline">
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
 					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
+					<li style="float:right;"><b>총 판매 금액 : </b><small>${sumSell}원</small></li>
 				</ul>
 				<div class="table-responsive">
 				
@@ -65,23 +59,46 @@
 									</div>
 								</td>
 								<td class="td-name"><a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${picture.picNo}">${picture.picTitle}</a>
-									<br> <small>by ${userInfo[status.index].userName}</small></td>
+									<br> <small>to ${userInfo[status.index].userName}</small></td>
 								<td class="text-center"></td>
 								<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${purchaseInfo[status.index].purchaseReg}" /></td>
 								<td class="td-number text-center">${picture.picPrice}<small>원</small></td>
 							</tr>
 						</c:forEach>
-						
-							<tr>
-								<td colspan="2"></td>
-								<td colspan="1"></td>
-								<td class="td-total">Total</td>
-								<td id="total2" class="td-price text-center">${sumSell}<small>원</small></td>
-								<td colspan="1"></td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
+					<nav aria-label="Page navigation example">
+					  <ul class="pagination justify-content-center">
+					  
+					  	<!-- 처음 이전 링크 -->
+	                    <c:if test="${pg>block}">
+	                         <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/purchase/sellhistory.ps?pg=${fromPage-1}">Previous</a></li>
+	                    </c:if>
+                     	
+                     	<!-- 블록 범위 찍기 -->
+	                    <c:forEach begin="${fromPage}" end="${toPage}" var="i">
+	                         <c:if test="${i==pg}">
+	                             <li class="page-item active">
+	                             	<a class="page-link" href="#">${i}</a>
+	                             </li>
+	                         </c:if>
+	                         <c:if test="${i!=pg}">
+	                             <li class="page-item"><a href="<%=request.getContextPath()%>/purchase/sellhistory.ps?pg=${i}"
+	                                 class="page-link">${i}</a></li>
+	                         </c:if>
+	                    </c:forEach>
+					    
+					    <!-- 다음, 이후 -->
+	                    <c:if test="${toPage<allPage}">
+	                        <li class="page-item">
+					      		<a class="page-link" href="<%=request.getContextPath()%>/purchase/sellhistory.ps?pg=${toPage+1}">Next</a>
+					    	</li>
+	                    </c:if>
+					    
+					  </ul>
+					</nav>
+				
 				</div>
 			</div>
 			

@@ -16,8 +16,8 @@
 	}
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
@@ -35,6 +35,7 @@
 				<ul>
 					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
 					<li><a href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
+					<li style="float:right;"><b>총 구매 금액 : </b><small>${sumPurchase}원</small></li>
 				</ul>
 				<div class="table-responsive">
 				
@@ -67,27 +68,37 @@
 							</tr>
 						</c:forEach>
 						
-							<tr>
-								<td colspan="2"></td>
-								<td colspan="1"></td>
-								<td class="td-total">Total</td>
-								<td id="total2" class="td-price text-center">${sumPurchase}<small>원</small></td>
-								<td colspan="1"></td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
 					<nav aria-label="Page navigation example">
 					  <ul class="pagination justify-content-center">
-					    <li class="page-item disabled">
-					      <a class="page-link" href="#" tabindex="-1">Previous</a>
-					    </li>
-					    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-					    <li class="page-item"><a class="page-link" href="#">2</a></li>
-					    <li class="page-item"><a class="page-link" href="#">3</a></li>
-					    <li class="page-item">
-					      <a class="page-link" href="#">Next</a>
-					    </li>
+					  
+					  	<!-- 처음 이전 링크 -->
+	                    <c:if test="${pg>block}">
+	                         <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/purchase/history.ps?pg=${fromPage-1}">Previous</a></li>
+	                    </c:if>
+                     	
+                     	<!-- 블록 범위 찍기 -->
+	                    <c:forEach begin="${fromPage}" end="${toPage}" var="i">
+	                         <c:if test="${i==pg}">
+	                             <li class="page-item active">
+	                             	<a class="page-link" href="#">${i}</a>
+	                             </li>
+	                         </c:if>
+	                         <c:if test="${i!=pg}">
+	                             <li class="page-item"><a href="<%=request.getContextPath()%>/purchase/history.ps?pg=${i}"
+	                                 class="page-link">${i}</a></li>
+	                         </c:if>
+	                    </c:forEach>
+					    
+					    <!-- 다음, 이후 -->
+	                    <c:if test="${toPage<allPage}">
+	                        <li class="page-item">
+					      		<a class="page-link" href="<%=request.getContextPath()%>/purchase/history.ps?pg=${toPage+1}">Next</a>
+					    	</li>
+	                    </c:if>
+					    
 					  </ul>
 					</nav>
 				</div>
@@ -96,5 +107,4 @@
 		</div>
 	</div>
 </div>
-
 

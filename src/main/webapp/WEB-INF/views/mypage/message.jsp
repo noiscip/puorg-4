@@ -29,7 +29,6 @@
 		
 		//메시지 보내고, 메시지 대화창에 보낸 메시지 append, 회원 대화 목록 div에서 해당 div remove후 다시 append
 		$(document).on('click', '.messageSend', function(){
-			console.log("메시지 보내기 되는거야?")
 			var msgContent = $('#msgContent').val();
 			var receiveUserNo = $(this).data("no");
 			
@@ -64,7 +63,7 @@
 							var userList = "<div class='media'>"+
 										   "<a class='float-left'>"+
 										   		"<div class='avatar'>"+
-										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object' src='"+data.userinfo.prPicture+"'></a>"+
+										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object prPic-height' src='"+data.userinfo.prPicture+"'></a>"+
 										   		"</div></a>"+
 										   	"<div class='media-body media-body-custom'>"+
 										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
@@ -93,10 +92,7 @@
 			var userListDel=$(this).closest('.media');
 			var userNo=$(this).parent()[0].children[1].dataset.no;
 			
-			console.log(userListDel)
-			console.log("여기 와?")
 			if(confirm("회원과 대화목록을 정말 삭제하시겠습니까?")==true){
-				console.log("삭제완료~")
 				
 				$.ajax({
 					url:"/picsion/message/msgdel.ps",
@@ -114,7 +110,6 @@
 		//검색 버튼 클릭시 메시지 검색 비동기 처리
 		$('#searchBtn').click(function(){
 			var userName = $('.selectMsg').val();
-			console.log(userName)
 			
 			$.ajax({
 				url:"/picsion/message/msguser.ps",
@@ -313,8 +308,8 @@ function msgList(userNo,myNo,msgUser) {
 
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">

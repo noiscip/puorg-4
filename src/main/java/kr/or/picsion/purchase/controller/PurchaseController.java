@@ -2,6 +2,7 @@
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -132,14 +135,20 @@ public class PurchaseController {
 	* @return View
 	*/
 	@RequestMapping("deleteItem.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View deleteItem(Model model,int userNo, int picNo) {
-		int result = purchaseService.deleteCart(picNo, userNo);
-		if(result!=0) {
-			System.out.println("삭제 완료");
-		}else {
-			System.out.println("삭제 실패");
+		try {
+			int result = purchaseService.deleteCart(picNo, userNo);
+			if(result!=0) {
+				System.out.println("삭제 완료");
+				int again = purchaseService.cartCount(userNo);
+				model.addAttribute("again",again);
+			}else {
+				System.out.println("삭제 실패");
+			}
+			model.addAttribute("result",result);
+		} catch (Exception e) {
 		}
-		model.addAttribute("result",result);
 		return jsonview;
 	}
 	
@@ -156,13 +165,21 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("picturePurchase.ps")
+	@Transactional(propagation = Propagation.REQUIRED) // 트랜잭션으로 예외 발생시 결제와 포인트 반환
 	public String buyPicture(@ModelAttribute("PurchList") PurchList purchases, HttpSession session, Model model, int point) {
 		User user = (User) session.getAttribute("user");
 		if(user != null) {
-		    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
-		    purchaseService.updatePoint(point, user.getUserNo());
-			purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
-			return "redirect:/purchase/history.ps";
+			try {
+			    System.out.println("이거"+purchases.getPurchases());
+			    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
+			    purchaseService.updatePoint(point, user.getUserNo()); //구매자 포인트 변경
+			    purchaseService.updateSalePoint(purchases.getPurchases()); //판매자 포인트 변경
+				purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
+				return "redirect:/purchase/history.ps";
+			} catch (Exception e) {
+				System.out.println("트랜잭션 실행");
+				return "redirect:/home.ps";
+			}
 		}
 		return "home.home";
 	}
@@ -177,18 +194,51 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("history.ps")
-	public String buyHistory(HttpSession session, Model model) {
+	public String buyHistory(HttpSession session, Model model, String pg) {
 		User user = (User) session.getAttribute("user");
 		
-		List<Picture> pictureInfo = purchaseService.selectPicPurchase(user.getUserNo());
-		List<User> userInfo = purchaseService.selectPicUser(user.getUserNo());
-		List<Purchase> purchaseInfo = purchaseService.selectPurchase(user.getUserNo());
+        int total=0;
+        
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 5;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //구매목록 count 해서 가져오기 
+        total = purchaseService.getPurCount(user.getUserNo());
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+
+		List<Picture> pictureInfo = purchaseService.selectPicPurchase(user.getUserNo(), start, rowSize);
+		List<User> userInfo = purchaseService.selectPicUser(user.getUserNo(), start, rowSize);
+		List<Purchase> purchaseInfo = purchaseService.selectPurchase(user.getUserNo(), start, rowSize);
 		int sumPurchase = purchaseService.sumPurchase(user.getUserNo());
 		
 		model.addAttribute("pictureInfo", pictureInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("purchaseInfo", purchaseInfo);
 		model.addAttribute("sumPurchase", sumPurchase);
+		
+        model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
 		
 		return "mypage.buyhistory";
 	}
@@ -205,18 +255,51 @@ public class PurchaseController {
 	* @return String
 	*/
 	@RequestMapping("sellhistory.ps")
-	public String sellHistory(HttpSession session, Model model){
+	public String sellHistory(HttpSession session, Model model, String pg){
 		User user = (User) session.getAttribute("user");
 		
-		List<Picture> pictureInfo=purchaseService.selectPicSell(user.getUserNo());
-		List<User> userInfo = purchaseService.selectPicPurUser(user.getUserNo());
-		List<Purchase> purchaseInfo = purchaseService.selectSell(user.getUserNo());
+		int total=0;
+        
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 5;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //구매목록 count 해서 가져오기 
+        total = purchaseService.getSaleCount(user.getUserNo());
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+		List<Picture> pictureInfo=purchaseService.selectPicSell(user.getUserNo(), start, rowSize);
+		List<User> userInfo = purchaseService.selectPicPurUser(user.getUserNo(), start, rowSize);
+		List<Purchase> purchaseInfo = purchaseService.selectSell(user.getUserNo(), start, rowSize);
 		int sumSell= purchaseService.sumSell(user.getUserNo());
 		
 		model.addAttribute("pictureInfo", pictureInfo);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("purchaseInfo", purchaseInfo);
 		model.addAttribute("sumSell", sumSell);
+		
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
 		
 		return "mypage.sellhistory";
 	}
@@ -239,7 +322,11 @@ public class PurchaseController {
 		if(result!=0) {	 //장바구니에 담겨 있을때 -> 장바구니에서 삭제
 			purchaseService.deleteCart(picNo, userNo);
 			System.out.println("장바구니 항목 삭제");
+			int again = purchaseService.cartCount(userNo);
+			model.addAttribute("again",again);
 		}else {	//장바구니에 없을때 -> 장바구니에 추가
+			int count = purchaseService.cartCount(userNo);
+			model.addAttribute("count",count);
 			purchaseService.insertCart(picNo, userNo);
 			System.out.println("장바구니 항목 추가");
 		}

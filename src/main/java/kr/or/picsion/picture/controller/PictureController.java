@@ -1,18 +1,10 @@
 ﻿package kr.or.picsion.picture.controller;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -25,14 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import kr.or.picsion.board.dto.Board;
+import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.dto.Comment;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.operation.dto.OperPicture;
@@ -41,11 +27,11 @@ import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
+import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.purchase.service.PurchaseService;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 import kr.or.picsion.utils.AmazonUpload;
-import software.amazon.ion.SystemSymbols;
 
 
 /**
@@ -58,7 +44,13 @@ import software.amazon.ion.SystemSymbols;
 @Controller
 @RequestMapping("/picture/")
 public class PictureController {
+	
 
+	public static String imagePicsion ="/resources/upload/";
+
+//	public static String imagePicsion ="D:\\imagePicsion\\";
+
+	
    	@Autowired
     private View jsonview;
 
@@ -68,6 +60,9 @@ public class PictureController {
   	@Autowired
 	private OperationService operationService;
 
+  	@Autowired
+	private BoardService boardService;
+  	
 	@Autowired
 	private PurchaseService purchaseService;
   	
@@ -97,9 +92,47 @@ public class PictureController {
 	@RequestMapping(value="mystudio.ps", method=RequestMethod.GET)
 	public String myStudio(HttpSession session, Model model, int userNo){
 		User user = new User(); 
-		int page=0;
+		int scpage=0;
 		int endpage=9;
 		
+		int total=0;
+        int page = 1;
+
+        int rowSize = 12;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //팔로잉 유저 count 해서 가져오기 
+        total = userService.getFollowingCount(userNo);
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+        int werTotal=0;
+        //팔로워 유저 count 해서 가져오기
+        werTotal=userService.getFollowerCount(userNo);
+        
+        // ... 목록
+        int werAllPage = (int) Math.ceil(werTotal / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        // [10] >>
+        int werFromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int werToPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (werToPage > werAllPage) { // 예) 20>17
+            werToPage = werAllPage;
+        }
+        
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -107,24 +140,139 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
-		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), page, endpage); //스튜디오 사진리스트
-		List<User> ownerList = pictureService.studioOwnerList(userNo, page, endpage);
- 		List<User> followerList = userService.followerUserList(userNo);
-		List<User> followingList = userService.followingUserList(userNo);
+		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), scpage, endpage); //스튜디오 사진리스트
+		List<User> ownerList = pictureService.studioOwnerList(userNo, scpage, endpage);
+		
+		List<User> followingList = userService.followingUserPaging(userNo, start, rowSize);
+		List<User> followerList = userService.followerUserPaging(userNo, start, rowSize);
+		
 		int followResult = 0;
 		if(user.getUserNo() != userNo) {
 			followResult = userService.followingConfirm(user.getUserNo(),userInfo.getUserNo());
 		}
-		System.out.println(picList);
+		
 		model.addAttribute("userinfo", userInfo);
 		model.addAttribute("piclist", picList);
 		model.addAttribute("ownerList",ownerList);
-		model.addAttribute("followerlist", followerList);
-		model.addAttribute("followinglist", followingList);
+		model.addAttribute("followerList", followerList);
+		model.addAttribute("followingList", followingList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("page", picList.size());
 		
+		model.addAttribute("userNo", userNo);
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
+        
+        model.addAttribute("werAllPage", werAllPage);
+        model.addAttribute("werFromPage", werFromPage);
+        model.addAttribute("werToPage", werToPage);
+        
 		return "studio.mystudio";
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 6.
+	* 메소드명 : followingPaging
+	* 작성자명 : 박주원
+	* 기      능 : 팔로잉 페이징
+	*
+	* @return View
+	*/
+	@RequestMapping(value="followpaging.ps")
+	public View followingPaging(HttpSession session, Model model, int userNo, String pg) {
+		int total=0;
+        int page = 1;
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 12;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //팔로잉 유저 count 해서 가져오기 
+        total = userService.getFollowingCount(userNo);
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+        List<User> followingPaging = userService.followingUserPaging(userNo, start, rowSize);
+        
+        model.addAttribute("followingPaging", followingPaging);
+        
+        model.addAttribute("userNo", userNo);
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
+        
+		return jsonview;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 7.
+	* 메소드명 : followerPaging
+	* 작성자명 : 박주원
+	* 기      능 : 팔로워 페이징
+	*
+	* @return View
+	*/
+	@RequestMapping(value="followerpaging.ps")
+	public View followerPaging(HttpSession session, Model model, int userNo, String pg) {
+		
+		int total=0;
+        int page = 1;
+        
+        String Strpg = pg;
+        if (Strpg != null) {
+            page = Integer.parseInt(Strpg);
+        }
+
+        int rowSize = 12;
+        int start = (page * rowSize) - (rowSize - 1) - 1;
+
+        //팔로잉 유저 count 해서 가져오기 
+        total = userService.getFollowerCount(userNo);
+
+        // ... 목록
+        int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+
+        int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
+        // [10] >>
+        int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
+        // ((1-1)/10*10)
+        int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
+        if (toPage > allPage) { // 예) 20>17
+            toPage = allPage;
+        }
+        
+        List<User> followerPaging = userService.followerUserPaging(userNo, start, rowSize);
+        
+        model.addAttribute("followerPaging", followerPaging);
+        
+        model.addAttribute("userNo", userNo);
+		model.addAttribute("pg", page);
+        model.addAttribute("allPage", allPage);
+        model.addAttribute("block", block);
+        model.addAttribute("fromPage", fromPage);
+        model.addAttribute("toPage", toPage);
+        
+		return jsonview;
 	}
 	
 	/**
@@ -159,6 +307,7 @@ public class PictureController {
 		return jsonview;
 	}
 	
+	
 	/**
 	* 날      짜 : 2018. 7. 3.
 	* 메소드명 : insertOperPicture
@@ -171,14 +320,16 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("operpicupload.ps")
-	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo) {
-		System.out.println("inseroper 들어왔다");
+	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo) {
 		User user = (User) session.getAttribute("user");	
+		Operation operation = new Operation();
+		operation.setOperNo(operNo);
 		OperPicture operPicture = new OperPicture();
-		Operation operation = operationService.operNoselectOper(Integer.parseInt(operNo));
 		System.out.println(file.getOriginalFilename());
-		String uploadPath = "D:\\imagePicsion\\";
+		String uploadPath = imagePicsion;
 		String dbPath="";
+		
+		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
@@ -186,11 +337,7 @@ public class PictureController {
 
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
-		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];		
-		
-		
-		
-		
+		String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
 		
 			if(saveFileName != null && !saveFileName.equals("")) {
 				if(new File(uploadPath + saveFileName).exists()) {
@@ -199,8 +346,8 @@ public class PictureController {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
-					dbPath=amazonService.uploadObject(saveFileName,"picsion/operpic");
-					operPicture.setOperNo(Integer.parseInt(operNo));
+					dbPath=amazonService.uploadObject(imagePicsion,saveFileName,"picsion/operpic");
+					operPicture.setOperNo(operation.getOperNo());
 					operPicture.setPicPath(dbPath);
 					operPicture.setUserNo(user.getUserNo());
 					operation.setOperatorEnd("T");
@@ -234,79 +381,140 @@ public class PictureController {
 	@RequestMapping("uploadAfter.ps")
 	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		
+		System.out.println("업로드 애프터");
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
-		System.out.println(picture.getPicPath());
-		if(picture.getPicPath().startsWith("https:")) {
-			picture.setPicPath("D:\\imagePicsion\\"+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
-        	System.out.println(picture.getPicPath());
-        }
 		pictureService.insertPicture(picture);
-		System.out.println("유저번호:"+user.getUserNo());
-		System.out.println(picture);
-		System.out.println(picture.getTagContent());
-//		String upath="D:/imagePicsion"+picture.getPicPath();
+		
+		wpS3(picture);
+		return "redirect:mystudio.ps?userNo="+user.getUserNo();
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : operationComplete
+	* 작성자명 : 김준수 
+	* 기      능 : 작업이 완료된 후 양도여부에 따라 사진게시판에 게시가 되고 구매가 이루어짐
+	*
+	* @param picture
+	* @param tag
+	* @param session
+	* @return
+	*/
+	@RequestMapping("operationComplete.ps")
+	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session, int brdNo) {
+		User user = (User) session.getAttribute("user");
+		
+		picture.setTagContent(tag);
+		User requestorUser = userService.userInfo(picture.getUserNo());
+		picture.setUserNo(user.getUserNo());		
+
+		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[1]);
+
+//		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+		pictureService.insertPicture(picture);
+
+        System.out.println(picture.getPicPath());
+        int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
+        	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
+        if(tradeMoney>0) {
+        	Purchase purchase = new Purchase();
+        	Board board = boardService.selectBoard(brdNo);
+        	List<Purchase> purlist = new ArrayList<>();
+        	System.out.println("돈은 충분 거래 합시다");
+        	requestorUser.setPoint(tradeMoney);
+        	user.setPoint(user.getPoint()+picture.getPicPrice());
+        	purchase.setPicNo(picture.getPicNo());
+        	purchase.setPurchaseUserNo(requestorUser.getUserNo());
+        	purchase.setSaleUserNo(user.getUserNo());
+        	purlist.add(purchase);
+        	purchaseService.buyPicture(purlist);
+        	
+    		board.setOperStateNo(3);    		
+    		boardService.updateBoard(board);
+        	
+        	wpS3(picture);
+        	
+        }else {
+        	System.out.println("돈 부족으로 거래 안됨");
+        }
+        		
+		
+		return "redirect:mystudio.ps?userNo="+user.getUserNo();
+	}
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : wpS3
+	* 작성자명 : 김준수, 이아림
+	* 기      능 : 사진을 워터마크와 일반사진으로 나누어 s3에 저장
+	*
+	* @param picture
+	*/
+	public void wpS3(Picture picture) {
 		String upath=picture.getPicPath();
+		
 		System.out.println("파일경로라서 워터마크에 쓸것이다: "+upath);
 			
 		String waterText = "PICSION";
 		File input = new File(upath);
+		
 		//워터마크 폴더 생성
-		File dir = new File("D:\\imagePicsion\\");
+		File dir = new File(imagePicsion);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
-		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(14));
+		System.out.println(input.getPath());
+		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(18));
 		//워터마크 사진 이름 수정하여 저장
-		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", user.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
-		File output = new File("D:/imagePicsion/"+renameWater);
+		
+		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", picture.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
+		System.out.println("renameWater : " + renameWater + " : 276번째 줄");
+		System.out.println("imagePicsion : " + imagePicsion + " : 277번째 줄");
+		File output = new File(imagePicsion+renameWater);
 
-//		System.out.println("워터마크되나?"+output.getPath().substring(16));//로직바꾸자
 		// adding text as overlay to an image
 		try {
 			pictureService.addTextWatermark(waterText, "jpg", input, output);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		//워터마크사진 s3에 저장
-		String waterPath = amazonService.uploadObject(output.getPath().substring(16),"picsion/water");
+		String waterPath = amazonService.uploadObject(imagePicsion,output.getPath().substring(18),"picsion/water");
 		
 		int waterResult = pictureService.updateWater(waterPath, picture.getPicNo());
+		
 		if(waterResult!=0) {
 			System.out.println("워터마크 생성");
 		}else {
 			System.out.println("워터마크 생성 실패");
 		}
-		System.out.println(picture.getPicPath());
+		System.out.println("picture.getPicPath : "+picture.getPicPath());
+
 		//s3 저장 (원본 사진)
 		String saveFileName="";
-		if(picture.getPicPath().startsWith("D:")) {
-			System.out.println("D:드루왔고"+picture.getPicPath());
-		System.out.println(picture.getPicPath().split("\\\\")[2]);
-		saveFileName=picture.getPicPath().split("\\\\")[2];
+		if(picture.getPicPath().startsWith("C:")) {
+			System.out.println(picture.getPicPath().split("\\\\")[2]);
+			saveFileName=picture.getPicPath().split("\\\\")[2];
 		}else {		
-		saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+			saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		}
+		System.out.println("요기는 세이브 파일 네임 !!!!!!!!!!!!" + saveFileName);
 		//원본사진 변경
 //		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
-		File reFile = new File("D:/imagePicsion/"+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
+		File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 		new File(picture.getPicPath()).renameTo(reFile);
 		
-//		saveFileName = "a"+renameFile(saveFileName, user.getUserNo(), picture.getPicNo());//이름변경:a+사용자번호+000+사진번호
-		System.out.println("너는 파일 이름만 나와야 해 : "+saveFileName);
-		String webFilePath = amazonService.uploadObject(saveFileName,"picsion/img");
+		System.out.println("너는 파일 이름만 나와야 해 : "+reFile.getName());
+		String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/img");
 		
 		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
 		if(s3Result!=0) {
 			System.out.println("s3 경로 생성");
 		}else {
 			System.out.println("s3 경로 생성 실패");
-		}		
-		return "redirect:mystudio.ps?userNo="+user.getUserNo();
+		}	
 	}
-	
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : pictureRespect
@@ -507,5 +715,6 @@ public class PictureController {
 		
 		return jsonview;
 	}
+	
 }
 

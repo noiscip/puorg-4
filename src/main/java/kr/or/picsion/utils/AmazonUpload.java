@@ -1,4 +1,4 @@
-package kr.or.picsion.utils;
+﻿package kr.or.picsion.utils;
 
 import java.io.File;
 
@@ -15,7 +15,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 
 /**
@@ -26,10 +25,10 @@ import kr.or.picsion.picture.service.PictureService;
 public class AmazonUpload {
 	
 	@Value("#{config['s3.accessKey']}")
-	String ACCESS_KEY;
+	private String ACCESS_KEY;
 
 	@Value("#{config['s3.secretKey']}")
-	String SECRET_KEY;
+	private String SECRET_KEY;
 	
 	@Autowired
 	private PictureService pictureService;
@@ -44,7 +43,7 @@ public class AmazonUpload {
 	* @param bucketName
 	* @return String
 	*/
-	public String uploadObject(String file,String bucketName) {
+	public String uploadObject(String imagePicsion,String file,String bucketName) {
 
 	  	String clientRegion = "ap-northeast-2";
         /*bucketName = "picsion/img";*/
@@ -55,7 +54,11 @@ public class AmazonUpload {
         if(!fileObjKeyName.startsWith("w")) {
         	
         }
-        String fileName = "D:/imagePicsion/" + fileObjKeyName;
+
+        String fileName = imagePicsion + fileObjKeyName;
+
+ //       String fileName = "D:/imagePicsion/" + fileObjKeyName;
+
         /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
         System.out.println("너야?");

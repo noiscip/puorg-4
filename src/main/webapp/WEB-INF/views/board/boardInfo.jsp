@@ -39,11 +39,9 @@
 										media += "<div class='media'>"+
 									    "<a class='float-left' href='#pablo'>"+
 										"<div class='avatar'>";
-										if(element.prPicture == null){
-											 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
-										}else{
-											media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+element.prPicture+"'>";
-										}
+										
+										media += "<img class='media-object' alt='64x64' src='"+element.prPicture+"'>";
+										
 										media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 											element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
 										    "</h4><p>"+data.comment[index].cmtContent+"</p>"+
@@ -126,15 +124,17 @@
 				});
 		
 		$('#operpic').on("click",function() {
+			console.log($(this))
 			var formData = new FormData($('#fileForm')[0]);
 			console.log(formData);
 					$.ajax({
-						url : "/picsion//picture/operpicupload.ps",
+						url : "/picsion/picture/operpicupload.ps",
 						data : formData,
 						processData: false,
 						contentType: false,
 						type :'POST',						
 						success : function(data) {
+							console.log(data)
 							console.log("성공");
 						}
 					});	
@@ -194,9 +194,8 @@
 
 <input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
 
-<div class="page-header header-filter" data-parallax="true"
-	style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">	
 		<div class="container">
 			<div class="row" style="border-width: 1px; text-align: center;">
@@ -206,17 +205,64 @@
 						<font>${boardInfo.brdContent}</font>
 					</p>
 					<c:choose>
-						<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo ne 2}">
+						<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
 						<button type="button" class="btn btn-default btn-sm" style="float:right"
 							data-toggle="modal" data-target="#exampleModal">신청하기</button>
 						</c:when>
 					</c:choose>
+					
+					
 					<c:if test="${boardInfo.operStateNo eq 1}">
-							<div class="col-md-12 col-sm-12">
-										<h3 class="title">댓 	글</h3>
+					<div class="projects-4" id="projects-4">
+						<div class="row">
+							<div class="col-md-5 ml-auto mr-auto">
+								<div class="info info-horizontal">
+			                         <div class="icon icon-info">
+			                             <i class="material-icons">date_range</i>
+			                         </div>
+			                         <div class="description" align="left">
+			                             <h4 class="info-title">희망 완료 날짜</h4>
+			                             <p class="description">
+			                                 <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
+																				value="${boardInfo.brdExpectEndDate}" />
+			                             </p>
+			                         </div>
+			                    </div>
+			                    <div class="info info-horizontal">
+			                        <div class="icon icon-primary">
+			                            <i class="material-icons">attach_money</i>
+			                        </div>
+			                        <div class="description" align="left">
+			                            <h4 class="info-title">희망 가격</h4>
+			                            <p class="description">
+			                                ${boardInfo.brdExpectPrice}원
+			                            </p>
+			                        </div>
+			                    </div>
+			                    <div class="info info-horizontal">
+			                        <div class="icon icon-danger">
+			                            <i class="material-icons">copyright</i>
+			                        </div>
+			                        <div class="description" align="left">
+			                            <h4 class="info-title">저작권</h4>
+			                            <p class="description">
+			                            	<c:choose>
+			                            		<c:when test="${boardInfo.copyright eq 'T'}">
+			                            			저작권 양도 허용
+			                            		</c:when>
+			                            		<c:otherwise>
+			                            			저작권 양도 거부
+			                            		</c:otherwise>
+			                            	</c:choose>
+			                            </p>
+			                        </div>
+			                    </div>
+							</div>
+							
+							<div class="col-md-5 ml-auto mr-auto">
+								<h3 class="title">댓 	글</h3>
 										<!-- <h3 class="main-price">$335</h3> -->
 										<div id="accordion" role="tablist">
-
 											<div class="card card-collapse">
 
 												<div id="collapseThree" class="collapse show"
@@ -233,7 +279,7 @@
 																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
 																	<div class="avatar">
 																		<img class="media-object" alt="Tim Picture"
-																			src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
+																			src="${commentuser[status.index].prPicture}">
 																	</div>
 																</a>
 																<div class="media-body">
@@ -270,7 +316,7 @@
 														<a class="author float-left" href="#pablo">
 															<div class="avatar">
 																<img class="media-object" alt="64x64"
-																	src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
+																	src="${sessionScope.user.prPicture}">
 															</div>
 														</a>
 														<div class="media-body">
@@ -292,9 +338,10 @@
 												</div>
 											</div>
 										</div>
-
-									</div>
-							
+							</div>
+						</div>
+					</div>
+										
 						</c:if>
 				</div>
 			</div>
@@ -390,7 +437,7 @@
 																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
 																	<div class="avatar">
 																		<img class="media-object" alt="Tim Picture"
-																			src="<%=request.getContextPath()%>/${commentuser[status.index].prPicture}">
+																			src="${commentuser[status.index].prPicture}">
 																	</div>
 																</a>
 																<div class="media-body">
@@ -427,7 +474,7 @@
 														<a class="author float-left" href="#pablo">
 															<div class="avatar">
 																<img class="media-object" alt="64x64"
-																	src="<%=request.getContextPath()%>/${sessionScope.user.prPicture}">
+																	src="${sessionScope.user.prPicture}">
 															</div>
 														</a>
 														<div class="media-body">
@@ -525,15 +572,18 @@
 	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
 		<c:choose>
 			<c:when test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
+			<div style="height: 350px; width : 350px;">
 				<img alt="No Image" height="100%" id="filePath" width="100%" src="${operPicture.picPath}">
-				
+				</div>
 				<input type="button" id ="operPicture" class="btn btn-primary btn-round" value="사진 업로드">
 				
 					<div class="col-md-6">
-						<form action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
+						<form action="<%=request.getContextPath()%>/picture/operationComplete.ps">
+								<input type="hidden" name="picPrice" value="${operation.operPrice}">
 								<input type="hidden" name="transferState" value="${boardInfo.copyright}">
 								<input type="hidden" name="picPath" value="${operPicture.picPath}">
-								
+								<input type="hidden" name="userNo" value="${boardInfo.userNo}">
+								<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
 							<div class="form-group">
 								<label for="title">제목</label> <input type="text"
 									class="form-control" id="pictureTitle" name="picTitle">
@@ -582,7 +632,7 @@
 										<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
 									<div class="fileinput fileinput-new text-center"
 										data-provides="fileinput">
-										<div class="fileinput-new thumbnail img-raised">
+										<div class="fileinput-new thumbnail img-raised" >
 											<img
 												src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
 												alt="...">
@@ -622,6 +672,8 @@
 					아직 사진 안올림
 				</c:when>
 				<c:otherwise>
+							
+				
 					<div style="height: 350px; width : 350px;">
 						<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
 					</div>

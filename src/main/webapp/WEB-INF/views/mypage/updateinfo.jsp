@@ -100,7 +100,7 @@
 /* 정보 수정페이지에서 프로필 사진 크기 */
 .update-pr{
 	width: 300px;
-	max-height:300px;
+	height:200px;
 }
 
 /* 정보 수정페이지 상단 여백 */
@@ -139,8 +139,8 @@
 
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
@@ -178,8 +178,14 @@
 				      		<button type="button" class="btn btn-default update-btn-margin btn-file">프로필 수정</button> --%>
 	                  	</div>
 	                  	<div class="form-group update-margin">
-	                  		<label for="exampleInput1" class="bmd-label-floating">다음 계정으로 연동</label>
-	                  		<label for="exampleInput1" class="bmd-label-floating" style="float: right">계정 연동 여부</label>
+	                  		<div class="row">
+		                  		<div class="col-md-6">
+		                  			<label for="exampleInput1" class="bmd-label-floating">다음 계정으로 연동</label>
+		                  		</div>
+		                  		<div class="col-md-6" align="right">
+		                  			<label for="exampleInput1" class="bmd-label-floating">계정 연동 여부</label>
+		                  		</div>
+	                  		</div>
 		                      <div class="form-check update-btn-margin">
 			                      <c:choose>
 			                      	<c:when test="${userinfo.google eq null}">
@@ -210,7 +216,6 @@
 							      </div>
 							  	</div>
 	                  </div>
-	                  
                       <div class="form-check update-btn-margin">
 	                      <label class="form-check-label linked-lab-color"><b>
 						      <c:choose>

@@ -169,9 +169,9 @@ public class PurchaseService {
 	* @param saleUserNo
 	* @return Integer
 	*/
-	public int buyPicture(List<Purchase> purlist) {
+	public int buyPicture(List<Purchase> purcahseList) {
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		int result = purchaseDao.buyPicture(purlist);
+		int result = purchaseDao.buyPicture(purcahseList);
 		return result;
 	}
 	
@@ -199,9 +199,9 @@ public class PurchaseService {
 	* @param userNo
 	* @return List<Picture>
 	*/
-	public List<Picture> selectPicPurchase(int userNo){
+	public List<Picture> selectPicPurchase(int userNo, int start, int rowSize){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		List<Picture> list = purchaseDao.selectPicPurchase(userNo);
+		List<Picture> list = purchaseDao.selectPicPurchase(userNo, start, rowSize);
 		
 		return list;
 	}
@@ -215,9 +215,9 @@ public class PurchaseService {
 	* @param userNo
 	* @return List<User>
 	*/
-	public List<User> selectPicUser(int userNo){
+	public List<User> selectPicUser(int userNo, int start, int rowSize){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		List<User> list = purchaseDao.selectPicUser(userNo);
+		List<User> list = purchaseDao.selectPicUser(userNo, start, rowSize);
 		
 		return list;
 	}
@@ -231,9 +231,9 @@ public class PurchaseService {
 	* @param userNo
 	* @return List<Purchase>
 	*/
-	public List<Purchase> selectPurchase(int userNo){
+	public List<Purchase> selectPurchase(int userNo, int start, int rowSize){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		List<Purchase> list = purchaseDao.selectPurchase(userNo);
+		List<Purchase> list = purchaseDao.selectPurchase(userNo, start, rowSize);
 		
 		return list;
 	}
@@ -255,6 +255,22 @@ public class PurchaseService {
 	}
 	
 	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : getPurCount
+	* 작성자명 : 박주원
+	* 기      능 : 구매한 사진의 총 개수
+	*
+	* @param userNo
+	* @return Integer
+	*/
+	public int getPurCount(int userNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.getPurCount(userNo);
+		
+		return result;
+	}
+	
+	/**
 	* 날      짜 : 2018. 7. 4.
 	* 메소드명 : selectPicSell
 	* 작성자명 : 박주원
@@ -263,9 +279,9 @@ public class PurchaseService {
 	* @param userNo
 	* @return List<Picture>
 	*/
-	public List<Picture> selectPicSell(int userNo){
+	public List<Picture> selectPicSell(int userNo, int start, int rowSize){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		List<Picture> list = purchaseDao.selectPicSell(userNo);
+		List<Picture> list = purchaseDao.selectPicSell(userNo, start, rowSize);
 		
 		return list;
 	}
@@ -279,9 +295,9 @@ public class PurchaseService {
 	* @param userNo
 	* @return List<User>
 	*/
-	public List<User> selectPicPurUser(int userNo){
+	public List<User> selectPicPurUser(int userNo, int start, int rowSize){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		List<User> list = purchaseDao.selectPicPurUser(userNo);
+		List<User> list = purchaseDao.selectPicPurUser(userNo, start, rowSize);
 		
 		return list;
 	}
@@ -295,9 +311,9 @@ public class PurchaseService {
 	* @param userNo
 	* @return List<Purchase>
 	*/
-	public List<Purchase> selectSell(int userNo){
+	public List<Purchase> selectSell(int userNo, int start, int rowSize){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		List<Purchase> list = purchaseDao.selectSell(userNo);
+		List<Purchase> list = purchaseDao.selectSell(userNo, start, rowSize);
 		
 		return list;
 	}
@@ -317,6 +333,23 @@ public class PurchaseService {
 		
 		return result;
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 5.
+	* 메소드명 : getSaleCount
+	* 작성자명 : 박주원
+	* 기      능 : 판매 사진의 총 개수
+	*
+	* @param userNo
+	* @return Integer
+	*/
+	public int getSaleCount(int userNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.getSaleCount(userNo);
+		
+		return result;
+	}
+	
 	
 	/**
 	* 날      짜 : 2018. 7. 3.
@@ -363,6 +396,21 @@ public class PurchaseService {
 	public int updatePoint(int point, int userNo){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
 		int result = purchaseDao.updatePoint(point, userNo);
+		return result;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 7.
+	* 메소드명 : updateSalePoint
+	* 작성자명 : 정도혁
+	* 기      능 : 판매 후 판매자 금액 업데이트
+	*
+	* @param purcahseList
+	* @return Integer
+	*/
+	public int updateSalePoint(List<Purchase> purcahseList) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.updateSalePoint(purcahseList);
 		return result;
 	}
 }
