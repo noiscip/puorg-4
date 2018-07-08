@@ -434,7 +434,7 @@ public class UserController {
 	* @return String
 	*/
 	@RequestMapping(value="updateinfo.ps", method=RequestMethod.POST)
-	@Transactional(propagation = Propagation.REQUIRED)  
+	@Transactional(propagation = Propagation.REQUIRED)    //정보 수정 트랜잭션
 	public String updateInfo(HttpSession session, User user, MultipartFile file) {
 		User userSession = (User)session.getAttribute("user");
 		try {
@@ -515,7 +515,7 @@ public class UserController {
 	* @return View
 	*/
 	@RequestMapping("charge.ps")
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED)  //포인트 충전 트랜잭션
 	public View pointCharge(HttpSession session, int point, Model model) {
 		User user = (User)session.getAttribute("user");
 		try {
@@ -527,6 +527,7 @@ public class UserController {
 			model.addAttribute("result", result);
 			
 		} catch (Exception e) {
+			System.out.println("포인트 충전 트랜잭션");
 		}
 		return jsonview;
 	}
