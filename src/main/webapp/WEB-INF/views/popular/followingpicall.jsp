@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <script type="text/javascript">
@@ -76,24 +77,52 @@ $(function() {
                     success : function(data){
                         
                         $.each(data.followingScrollPic, function(index, obj){
-                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
-                        			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-                                	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-		                    		   "</a><div><div class='counts hide-xs hide-sm'>";
-			                           if(obj.respectCheck=="T"){
-					                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-					                   }else{
-					                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-					                   }
-					                   
-					                   if(obj.bookmarkCheck=="T"){
-					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-					                   }else{
-					                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-					                   }
-		                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.followingScrollPicOwner[index].userNo+"'>"+data.followingScrollPicOwner[index].userName+"</a></div></div>";
-		            		
-			                $('#followpic').append(scrollPage);
+                        	
+                        	if((obj.resolutionW/obj.resolutionH) >= 1.9){
+                        		
+                        		scrollPage="<div class='item col-sm-12 col-md-8'>"+
+                 			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+                         	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+	                    		   "</a><div><div class='counts hide-xs hide-sm'>";
+		                           if(obj.respectCheck=="T"){
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+				                   }
+				                   
+				                   if(obj.bookmarkCheck=="T"){
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+				                   }
+			                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.followingScrollPicOwner[index].userNo+"'>"+data.followingScrollPicOwner[index].userName+"</a></div></div>";
+			            		
+				                $('#followpic').append(scrollPage);
+                        		
+                        	}else{
+                        		
+                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
+                 			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+                         	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+	                    		   "</a><div><div class='counts hide-xs hide-sm'>";
+		                           if(obj.respectCheck=="T"){
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+				                   }
+				                   
+				                   if(obj.bookmarkCheck=="T"){
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+				                   }
+			                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.followingScrollPicOwner[index].userNo+"'>"+data.followingScrollPicOwner[index].userName+"</a></div></div>";
+			            		
+				                $('#followpic').append(scrollPage);
+                        		
+                        	}
+                        	
+                        	
                         })
 					    page+=data.endpage;
                     }
@@ -120,12 +149,15 @@ $(function() {
 <div class="main">
 	<div class="profile-content">
 
-		<div class="container-fluid">
+		<div class="container">
 			<div class="flex_grid credits">
 			<div class="tz-gallery">
 				<div class="row" id="followpic">
-				<c:forEach items="${followingPicList}" var="followingListAll" varStatus="status">					
-						  <div class="item col-sm-6 col-md-4"> 
+				<c:forEach items="${followingPicList}" var="followingListAll" varStatus="status">
+				 <fmt:parseNumber var="var3" value="${followingListAll.resolutionW/followingListAll.resolutionH}" pattern="#.#" />
+						  <c:choose>
+						  <c:when test="${var3 >= 1.9}">
+						   <div class="item col-sm-12 col-md-8"> 
 			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followingListAll.picNo}"> 
                                     <img class="rounded img-size" src="${followingListAll.picWater}"alt="No Image">
 			                    </a>
@@ -151,6 +183,39 @@ $(function() {
 			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${followingPicListOwner[status.index].userNo}">${followingPicListOwner[status.index].userName}</a>
                				</div>
 			            </div>
+						  
+						  </c:when>
+						  <c:otherwise>
+						  
+						   <div class="item col-sm-12 col-md-4"> 
+			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followingListAll.picNo}"> 
+                                    <img class="rounded img-size" src="${followingListAll.picWater}"alt="No Image">
+			                    </a>
+			                    <div>
+			                    <div class="counts hide-xs hide-sm ">
+			                    <c:choose>
+									<c:when test="${followingListAll.respectCheck eq 'T'}">
+										<em><i id="like" value="${followingListAll.picNo}" class="material-icons">favorite</i>${followingListAll.respectCount}</em>
+									</c:when>
+									<c:otherwise>
+										<em><i id="like" value="${followingListAll.picNo}" class="material-icons">favorite_border</i>${followingListAll.respectCount}</em>
+									</c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${followingListAll.bookmarkCheck eq 'T'}">
+										<em><i id="down" value="${followingListAll.picNo}" class="material-icons">bookmark</i>${followingListAll.bookmarkCount}</em>
+									</c:when>
+									<c:otherwise>
+										<em><i id="down" value="${followingListAll.picNo}" class="material-icons">bookmark_border</i>${followingListAll.bookmarkCount}</em>
+									</c:otherwise>
+								</c:choose>
+			                    </div>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${followingPicListOwner[status.index].userNo}">${followingPicListOwner[status.index].userName}</a>
+               				</div>
+			            </div>
+						  </c:otherwise>
+						  </c:choose>
+						 
 						
 					</c:forEach>
 				</div>

@@ -934,7 +934,7 @@ $(document).ready(function() {
                             $.each(data.latestPicList, function(index, obj){
                             	if((obj.resolutionW/obj.resolutionH) >= 1.9){
                             		
-                            		scrollPage="<div class='item col-sm-6 col-md-8'>"+
+                            		scrollPage="<div class='item col-sm-12 col-md-8'>"+
 									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 									"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
 									"</a>"+
@@ -958,7 +958,7 @@ $(document).ready(function() {
                             		
                             	}else{
                             		
-                            		scrollPage="<div class='item col-sm-6 col-md-4'>"+
+                            		scrollPage="<div class='item col-sm-12 col-md-4'>"+
 									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 									"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
 									"</a>"+
