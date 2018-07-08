@@ -228,13 +228,45 @@
 <div class="main">
 	<div class="profile-content">	
 		<div class="container">
-			<div class="row" style="border-width: 1px; text-align: center;">
+			<div class="row" align="center">
 				<div class="col-md-12 ml-auto mr-auto">
-					<h2 class="title board-card-pad">${boardInfo.brdTitle}</h2>
-					<%-- <p>
-						<font>${boardInfo.brdContent}</font>
-					</p> --%>
-					<div class="card card-collapse board-card-pad">
+					<h2 class="title">${boardInfo.brdTitle}</h2>
+					<div class="row board-content-pad">
+						<c:if test="${boardInfo.operStateNo eq 1}">
+							<div class="col-md-4 info-horizontal mr-auto ml-auto">
+		                         <div class="description">
+		                             <h4 class="info-title "><i class="material-icons" style="color: #00bcd4">date_range</i> 희망 완료 날짜</h4>
+		                             <p class="description">
+		                                 <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${boardInfo.brdExpectEndDate}" />
+		                             </p>
+		                         </div>
+		                    </div>
+		                    <div class="col-md-4 info-horizontal mr-auto ml-auto">
+		                        <div class="description">
+		                            <h4 class="info-title"><i class="material-icons" style="color: #9c27b0">attach_money</i> 희망 가격</h4>
+		                            <p class="description">
+		                                ${boardInfo.brdExpectPrice}원
+		                            </p>
+		                        </div>
+		                    </div>
+		                    <div class="col-md-4 info-horizontal mr-auto ml-auto">
+		                        <div class="description">
+		                            <h4 class="info-title"><i class="material-icons" style="color: #f44336">copyright</i> 저작권</h4>
+		                            <p class="description">
+		                            	<c:choose>
+		                            		<c:when test="${boardInfo.copyright eq 'T'}">
+		                            			저작권 양도 허용
+		                            		</c:when>
+		                            		<c:otherwise>
+		                            			저작권 양도 거부
+		                            		</c:otherwise>
+		                            	</c:choose>
+		                            </p>
+		                        </div>
+		                    </div>
+						</c:if>
+					</div>
+					<div class="card card-collapse">
 							<div class="card-header" id="headingOne">
 								<h5 class="mb-0">
 									
@@ -244,65 +276,19 @@
 								<div class="card-body">
 									<p>${boardInfo.brdContent}</p>
 								</div>
-							</div><hr>
+							</div>
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									
+								</h5>
+							</div>
 						</div>
-					
-					<%-- <c:choose>
-						<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
-						<button type="button" class="btn btn-default btn-sm" stylesdc="float:right"
-							data-toggle="modal" data-target="#exampleModal">신청하기</button>
-						</c:when>
-					</c:choose> --%>
 					
 					
 					<c:if test="${boardInfo.operStateNo eq 1}">
 					<div class="projects-4 board-content-pad" id="projects-4">
 						<div class="row">
-							<div class="col-md-5 ml-auto mr-auto board-info-pad">
-								<div class="info info-horizontal">
-			                         <div class="icon icon-info">
-			                             <i class="material-icons">date_range</i>
-			                         </div>
-			                         <div class="description" align="left">
-			                             <h4 class="info-title">희망 완료 날짜</h4>
-			                             <p class="description">
-			                                 <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
-																				value="${boardInfo.brdExpectEndDate}" />
-			                             </p>
-			                         </div>
-			                    </div>
-			                    <div class="info info-horizontal">
-			                        <div class="icon icon-primary">
-			                            <i class="material-icons">attach_money</i>
-			                        </div>
-			                        <div class="description" align="left">
-			                            <h4 class="info-title">희망 가격</h4>
-			                            <p class="description">
-			                                ${boardInfo.brdExpectPrice}원
-			                            </p>
-			                        </div>
-			                    </div>
-			                    <div class="info info-horizontal">
-			                        <div class="icon icon-danger">
-			                            <i class="material-icons">copyright</i>
-			                        </div>
-			                        <div class="description" align="left">
-			                            <h4 class="info-title">저작권</h4>
-			                            <p class="description">
-			                            	<c:choose>
-			                            		<c:when test="${boardInfo.copyright eq 'T'}">
-			                            			저작권 양도 허용
-			                            		</c:when>
-			                            		<c:otherwise>
-			                            			저작권 양도 거부
-			                            		</c:otherwise>
-			                            	</c:choose>
-			                            </p>
-			                        </div>
-			                    </div>
-							</div>
-							
-							<div class="col-md-5 ml-auto mr-auto" align="left">
+							<div class="col-md-12 ml-auto mr-auto" align="left">
 								<h3 class="title">Comment</h3>
 										<!-- <h3 class="main-price">$335</h3> -->
 										<div id="accordion" role="tablist">
@@ -376,12 +362,16 @@
 																
 																<c:choose>
 																	<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
-																	<button type="button" class="btn btn-default btn-md float-left" style="float:right"
-																		data-toggle="modal" data-target="#exampleModal">작업 신청</button>
+																		<button type="button" class="btn btn-primary btn-md float-left" style="float:right" data-toggle="modal" data-target="#exampleModal">
+																			<i class="material-icons">linked_camera</i> &nbsp;작업 신청
+																		</button>
 																	</c:when>
+																	<c:otherwise>
+																		<button type="button" class="btn btn-primary btn-md float-left" style="float:right" data-toggle="modal" data-target="#exampleModal">
+																			<i class="material-icons">linked_camera</i> &nbsp;신청 현황
+																		</button>
+																	</c:otherwise>
 																</c:choose>
-																<button class="btn btn-primary btn-md float-left"
-																	data-toggle="modal" data-target="#reportModal">신고</button>
 															</div>
 															
 														</div>
