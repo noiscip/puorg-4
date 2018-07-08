@@ -332,7 +332,7 @@ public class PictureController {
 		model.addAttribute("result",result);
 		return jsonview;
 	}
-	
+	 
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : pictureBookmark
