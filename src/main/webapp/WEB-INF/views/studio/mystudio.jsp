@@ -409,7 +409,9 @@ function followerPaging(userNo, pg){
 				  			</c:otherwise>
 				  		</c:choose>
 					</button>
-				  	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModal">메시지</button>
+				  	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModal">
+				  		<i class="material-icons">mail</i> 메시지
+				  	</button>
 	              	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
 				  </div>
 			  </c:if>

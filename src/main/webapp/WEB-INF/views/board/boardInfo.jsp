@@ -40,7 +40,7 @@
 									    "<a class='float-left' href='#pablo'>"+
 										"<div class='avatar'>";
 										
-										media += "<img class='media-object' alt='64x64' src='"+element.prPicture+"'>";
+										media += "<img class='media-object avatar-prPic-height' alt='64x64' src='"+element.prPicture+"'>";
 										
 										media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 											element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
@@ -190,6 +190,36 @@
 	});
 </script>
 
+<style>
+	/* 댓글 보여지는 창 프로필 사진 */
+	.avatar-prPic-height{
+		height: 64px;
+	}
+	
+	/* 댓글 쓸때 작게 보여지는 프로필 */
+	.avatar-sprPic-height{
+		height: 30px;
+	}
+	
+	/* 정보 보여주는곳 여백 */
+	.board-info-pad{
+		 padding-left: 100px;
+   		 padding-top: 40px;
+	}
+	
+	/* 게시판 내용 뿌려주는 곳 여백 */
+	.board-card-pad{
+	    padding-left: 130px;
+	    padding-right: 30px;
+	}
+	
+	/* 게시판 상세 페이지 위에 여백 조정 */
+	.board-content-pad{
+		padding-top: 40px;
+	}
+	
+</style>
+
 <input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
 
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
@@ -198,22 +228,35 @@
 		<div class="container">
 			<div class="row" style="border-width: 1px; text-align: center;">
 				<div class="col-md-12 ml-auto mr-auto">
-					<h2 class="title">${boardInfo.brdTitle}</h2>
-					<p>
+					<h2 class="title board-card-pad">${boardInfo.brdTitle}</h2>
+					<%-- <p>
 						<font>${boardInfo.brdContent}</font>
-					</p>
-					<c:choose>
+					</p> --%>
+					<div class="card card-collapse board-card-pad">
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									
+								</h5>
+							</div>
+							<div id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+								<div class="card-body">
+									<p>${boardInfo.brdContent}</p>
+								</div>
+							</div><hr>
+						</div>
+					
+					<%-- <c:choose>
 						<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
-						<button type="button" class="btn btn-default btn-sm" style="float:right"
+						<button type="button" class="btn btn-default btn-sm" stylesdc="float:right"
 							data-toggle="modal" data-target="#exampleModal">신청하기</button>
 						</c:when>
-					</c:choose>
+					</c:choose> --%>
 					
 					
 					<c:if test="${boardInfo.operStateNo eq 1}">
-					<div class="projects-4" id="projects-4">
+					<div class="projects-4 board-content-pad" id="projects-4">
 						<div class="row">
-							<div class="col-md-5 ml-auto mr-auto">
+							<div class="col-md-5 ml-auto mr-auto board-info-pad">
 								<div class="info info-horizontal">
 			                         <div class="icon icon-info">
 			                             <i class="material-icons">date_range</i>
@@ -257,8 +300,8 @@
 			                    </div>
 							</div>
 							
-							<div class="col-md-5 ml-auto mr-auto">
-								<h3 class="title">댓 	글</h3>
+							<div class="col-md-5 ml-auto mr-auto" align="left">
+								<h3 class="title">Comment</h3>
 										<!-- <h3 class="main-price">$335</h3> -->
 										<div id="accordion" role="tablist">
 											<div class="card card-collapse">
@@ -276,7 +319,7 @@
 																<a class="float-left"
 																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
 																	<div class="avatar">
-																		<img class="media-object" alt="Tim Picture"
+																		<img class="media-object avatar-prPic-height" alt="Tim Picture"
 																			src="${commentuser[status.index].prPicture}">
 																	</div>
 																</a>
@@ -313,7 +356,7 @@
 													<div class="media media-post">
 														<a class="author float-left" href="#pablo">
 															<div class="avatar">
-																<img class="media-object" alt="64x64"
+																<img class="media-object avatar-sprPic-height" alt="64x64"
 																	src="${sessionScope.user.prPicture}">
 															</div>
 														</a>
@@ -327,10 +370,18 @@
 															<div class="media-footer">
 																<a href="#pablo"
 																	class="btn btn-primary btn-round btn-wd float-right"
-																	id="addreviewbutton">Post Comment</a>
-																<button class="btn btn-primary btn-sm"
+																	id="addreviewbutton">댓글 작성</a>
+																
+																<c:choose>
+																	<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
+																	<button type="button" class="btn btn-default btn-md float-left" style="float:right"
+																		data-toggle="modal" data-target="#exampleModal">작업 신청</button>
+																	</c:when>
+																</c:choose>
+																<button class="btn btn-primary btn-md float-left"
 																	data-toggle="modal" data-target="#reportModal">신고</button>
 															</div>
+															
 														</div>
 													</div>
 												</div>
@@ -434,7 +485,7 @@
 																<a class="float-left"
 																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
 																	<div class="avatar">
-																		<img class="media-object" alt="Tim Picture"
+																		<img class="media-object avatar-prPic-height" alt="Tim Picture"
 																			src="${commentuser[status.index].prPicture}">
 																	</div>
 																</a>
@@ -471,7 +522,7 @@
 													<div class="media media-post">
 														<a class="author float-left" href="#pablo">
 															<div class="avatar">
-																<img class="media-object" alt="64x64"
+																<img class="media-object avatar-sprPic-height" alt="64x64"
 																	src="${sessionScope.user.prPicture}">
 															</div>
 														</a>
