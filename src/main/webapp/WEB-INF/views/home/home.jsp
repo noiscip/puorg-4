@@ -1014,32 +1014,8 @@ $(document).ready(function() {
 			}
 		})
 		
-		$("#searchAll").autocomplete({
-	          
-			matchContains: true,
-			source : function(request, response) {
-				if($('#searchAll').val()!=''){
-				$.ajax({
-					type : 'post',
-					url : "/picsion/picture/searchpicture.ps",
-					dataType : "json",
-					//request.term = $("#autocomplete").val() 
-					data : {tagParam : request.term},
-					success : function(data) {
-						console.log(data.searchTagList);
-						response(data.searchTagList);
-					}
-				});
-				}
-			},
-			//조회를 위한 최소글자수 
-			minLength : 1,
-			select : function(event, ui) {
-				console.log(ui.item.value);
-				$('#searchAll').val(ui.item.value);
-				$('form[class="form-inline"]').submit();
-			},
-		});
+		
+	
 })
 </script>
 
@@ -1058,6 +1034,7 @@ $(document).ready(function() {
 					<div class="col-md-10 ml-auto mr-auto">
 						<div class="card card-raised card-form-horizontal">
 							<div class="card-body ">
+							
 								<form action="/picsion/picture/tagpicList.ps">
 									<div class="row">
 										<div class="col-md-9">
