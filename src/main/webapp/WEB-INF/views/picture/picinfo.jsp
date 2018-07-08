@@ -267,7 +267,7 @@ $(document).ready(function() {
                 	</c:when>
                 	<c:otherwise>
                 	<c:choose>
-                	<c:when test="${buycheck eq 1}">
+                	<c:when test="${buycheck eq 1 || sessionScope.user.userNo eq userInfo.userNo}">
                     	<a id="download" href="${picture.picPath}" class="btn btn-primary float-right"><i class="material-icons">vertical_align_bottom</i> Down Load</a>
                 	</c:when>
                 	<c:otherwise>
