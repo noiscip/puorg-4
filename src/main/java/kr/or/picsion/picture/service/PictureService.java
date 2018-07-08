@@ -210,6 +210,7 @@ public class PictureService {
 	public Picture picInfo(int userNo, int picNo) {
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
 		Picture picture = picDao.selectPicture(userNo, picNo);
+		System.out.println("이게 사진상세?"+picture);
 		return picture;
 	}
 	
