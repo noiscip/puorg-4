@@ -176,6 +176,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     values (#{param1},#{[param2]})
     </insert>
     
+    <!-- 사진 메타데이터 저장 -->
+    <insert id="insertPicInfo" parameterType="kr.or.picsion.picture.dto.Picture">
+    insert into PICTUREINFO
+    (picNo,camera,resolutionH,resolutionW,photoDate,lens)
+    values 
+    (#{picNo},#{camera},#{resolutionH},#{resolutionW},#{photoDate},#{lens})
+    </insert>
     <!-- 태그 정보 -->
     <select id="selectTag" resultType="String">
     	SELECT tagContent FROM TAG WHERE picNo=#{picNo}
