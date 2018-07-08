@@ -1,11 +1,13 @@
-package kr.or.picsion.utils;
+﻿package kr.or.picsion.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +68,9 @@ public class VisionApi {
 		String logocheck=detectLogos(filePath);				//vision : 로고감지
 		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
 		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
-//		List<Face> faceList = detectFaces(uploadedPath);	//vision : 얼굴감지
+
+ 		List<Face> faceList = detectFaces(filePath);	//vision : 얼굴감지
+
 		for(String label : detectWebDetections(filePath)) {
 			labelList.add(label);
 		}
@@ -78,7 +82,17 @@ public class VisionApi {
 		model.addAttribute("label", labelList);
 		model.addAttribute("label2", labelListKo);
 		model.addAttribute("picPath",picturePath);
-//		model.addAttribute("face",faceList);
+
+		model.addAttribute("face",faceList);
+		
+//		String picDate = fileUpload();
+//		int picRes;
+//		String cameraName;
+//		String lensName;
+//		model.addAttribute("photoDate",picDate);
+//		model.addAttribute("resolution",picRes);
+//		model.addAttribute("camera",cameraName);
+//		model.addAttribute("lens",lensName);
 		
 	}	
 	
@@ -91,10 +105,15 @@ public class VisionApi {
 	 * @param mRequest
 	 * @return String
 	 */
-	public String fileUpload(MultipartHttpServletRequest mRequest) {
+	public String fileUpload(MultipartHttpServletRequest mRequest, Model model) {
 		String filePath = "";
+
 		String uploadPath = "/resources/upload/"; 
 
+
+//		String uploadPath = "D:\\imagePicsion\\";
+		Map<String, String> metaMap = new HashMap<>();
+		
 		// 파일 저장하는 폴더
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -120,7 +139,7 @@ public class VisionApi {
 			picturePath = uploadPath + saveFileName;
 
 			System.out.println("이것이!!! " + uploadPath + saveFileName);
-
+			
 			
 			if (saveFileName != null && !saveFileName.equals("")) {
 				//이거 고쳐야함
@@ -141,6 +160,33 @@ public class VisionApi {
 							for (Tag tag : directory.getTags()) {
 								System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(), tag.getDescription());
 								
+								//메타 데이터 정보 저장
+								if(tag.getTagName().equals("Model")) {
+									System.out.println("카메라 정보 "+tag.getDescription());
+									String cameraName = tag.getDescription();
+									metaMap.put("cameraName", cameraName);
+									
+								}
+								if(tag.getTagName().equals("Date/Time Original")) {
+									System.out.println("찍은 날짜 "+tag.getDescription());
+									String pictureDate = tag.getDescription();
+									metaMap.put("pictureDate", pictureDate);
+								}
+								if(tag.getTagName().equals("Lens Model")) {
+									System.out.println("렌즈 정보  "+tag.getDescription());
+									String lensName = tag.getDescription();
+									metaMap.put("lensName", lensName);
+								}
+								if(tag.getTagName().split(" ")[0].equals("Image")) {
+									if(tag.getTagName().split(" ")[1].equals("Height")) {
+										String resolH = tag.getDescription();
+										metaMap.put("resolH", resolH);
+									}
+									if(tag.getTagName().split(" ")[1].equals("Width")) {
+										String resolW = tag.getDescription();
+										metaMap.put("resolW", resolW);
+									}
+								}
 								if(tag.getTagName().equals("File Size")) {
 									System.out.println("우잉"+tag.getDescription().split(" ")[0]);
 									if(Integer.parseInt(tag.getDescription().split(" ")[0])>10485760) {
@@ -162,6 +208,7 @@ public class VisionApi {
 								}
 							}
 						}
+						System.out.println("해상도");
 						System.out.println(picInfo);
 
 					} catch (Exception e1) {
@@ -340,12 +387,12 @@ public class VisionApi {
 
 				// For full list of available annotations, see http://g.co/cloud/vision/docs
 				for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-					System.out.println("position: %s" + annotation.getBoundingPoly() + "\n");
+					System.out.println("position: %s" + annotation.getFdBoundingPoly() + "\n");
 					// faceXY+=annotation.getBoundingPoly();
-					facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
-							annotation.getBoundingPoly().getVertices(1).getX(),
-							annotation.getBoundingPoly().getVertices(1).getY(),
-							annotation.getBoundingPoly().getVertices(2).getY()));
+					facePoly.add(new Face(annotation.getFdBoundingPoly().getVertices(0).getX(),
+							annotation.getFdBoundingPoly().getVertices(1).getX(),
+							annotation.getFdBoundingPoly().getVertices(1).getY(),
+							annotation.getFdBoundingPoly().getVertices(2).getY()));
 				}
 			}
 

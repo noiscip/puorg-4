@@ -62,7 +62,6 @@ public class MessageController {
 		User userinfo = userService.userInfo(message.getReceiveUserNo());
 		
 		if(result != 0) {
-			System.out.println("메시지 보내기 성공!");
 			
 			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 			
@@ -77,7 +76,7 @@ public class MessageController {
 			
 			noticeService.insertNotice(noticeMap);
 		}else {
-			System.out.println("메시지 보내기 실패");
+			
 		}
 		
 		
@@ -171,11 +170,9 @@ public class MessageController {
 	*/
 	@RequestMapping("readmsg.ps")
 	public View messageRead(HttpSession session, Message message, Model model) {
-		System.out.println("리드메시지 컨트롤러~");
-		System.out.println(message);
 		User userinfo = userService.userInfo(message.getSendUserNo());
 		Message msginfo = messageService.messageInfo(message.getMsgNo());
-		System.out.println("********"+msginfo);
+		
 		model.addAttribute("userinfo", userinfo);
 		model.addAttribute("msginfo", msginfo);
 		
@@ -199,10 +196,6 @@ public class MessageController {
 		
 		int reResult=messageService.receiveDel(user.getUserNo(), userNo);
 		int seResult=messageService.sendDel(user.getUserNo(), userNo);
-		
-		if(reResult!=0&&seResult!=0) {
-			System.out.println("둘다 삭제 완료");
-		}
 		
 		model.addAttribute("reResult", reResult);
 		model.addAttribute("seResult", seResult);
@@ -258,7 +251,6 @@ public class MessageController {
 			}
 		});
 		
-		System.out.println("검색된 유저 검색 목록을 보여주세요~");
 		model.addAttribute("recentSelMsg", recentSelMsg);
 		
 		return jsonview;

@@ -114,14 +114,6 @@ $(function(){
 					},
 				});
 	
-	/* $(document).on('click','#submitbtn',function(){
-		if($('#searchAll').val()==''){
-			alert("검색 내용이 없습니다");
-		}else{
-			$('form[class="form-inline"]').submit();
-		}
-		
-	}) */
 	
 	function newNoticeCount() {
 		var alon = "<i id='newNotice' class='material-icons'>notifications_active</i>";
@@ -136,14 +128,14 @@ $(function(){
 			}
 		})
 	}
-	var nocart ='<li class="divider"><a>장바구니가 비었습니다</a></li>';
+	var nocart ='<li class="divider" id="nonecart"><a>장바구니가 비었습니다</a></li>';
 	function myCart(){
-		var mycartlist="";
 		$.ajax({
-			url : "/picsion/purchase/myCart.ps?userNo="+$('#loginUserNo').val(),
+			data : {userNo : $('#loginUserNo').val()},
+			url : "/picsion/purchase/myCart.ps", 
 			success: function (data) {
 				$('#cartnav').append(data.myCartCount);
-				mycartlist+='<li class="divider"><a href="<%=request.getContextPath()%>/purchase/myCartPage.ps?userNo='+$('#loginUserNo').val()+'">장바구니</a></li>'; 
+				var mycartlist ='<li class="divider"><a href="/picsion/purchase/myCartPage.ps?userNo='+$('#loginUserNo').val()+'">장바구니</a></li>'; 
 				mycartlist+='<div class="dropdown-divider"></div>';
 				if(data.myCartCount==0){
 					$('#addcartnav').append(nocart);
@@ -206,12 +198,12 @@ $(function(){
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
-							<a class="nav-link" href="<%=request.getContextPath()%>/user/register.ps" onclick="scrollToDownload()"> 
+							<a class="nav-link" href="<%=request.getContextPath()%>/user/register.ps"> 
 								<i class="material-icons">accessibility_new</i> 회원가입
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<%=request.getContextPath()%>/user/login.ps" onclick="scrollToDownload()"> 
+							<a class="nav-link" href="<%=request.getContextPath()%>/user/login.ps"> 
 								<i class="material-icons">camera_front</i>로그인
 							</a>
 						</li>

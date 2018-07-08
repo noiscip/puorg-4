@@ -16,8 +16,8 @@
 	}
 </style>
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url('<%=request.getContextPath()%>/assets/img/city-profile.jpg');"></div>
-<div class="main main-raised">
+<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
@@ -59,7 +59,7 @@
 									</div>
 								</td>
 								<td class="td-name"><a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${picture.picNo}">${picture.picTitle}</a>
-									<br> <small>by ${userInfo[status.index].userName}</small></td>
+									<br> <small>to ${userInfo[status.index].userName}</small></td>
 								<td class="text-center"></td>
 								<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${purchaseInfo[status.index].purchaseReg}" /></td>
 								<td class="td-number text-center">${picture.picPrice}<small>원</small></td>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-		 <div class="section section-signup page-header" style="background-image: url('<%=request.getContextPath()%>/assets/img/bg3.jpg');">
+		 <div id="changemain" class="section section-signup page-header">
 	      <div class="container">
 	        <div class="row">
 	          <div class="col-md-4 ml-auto mr-auto">

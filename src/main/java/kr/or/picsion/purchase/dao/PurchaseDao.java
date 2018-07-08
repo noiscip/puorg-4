@@ -45,6 +45,7 @@ public interface PurchaseDao {
 	public List<Purchase> selectSell(int userNo, int start, int rowSize);		//판매한 정보 리스트
 	public int sumSell(int userNo);						//판매한 사진의 총 합계
 	public int getSaleCount(int userNo);				//판매한 사진의 총 개수
-	public int updatePoint(int point, int userNo);
+	public int updatePoint(int point, int userNo);      //구매 후 구매자 포인트 정보 수정
+	public int updateSalePoint(List<Purchase> purcahseList); //판매 후 판매자 포인트 정보 수정
 
 }

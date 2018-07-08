@@ -7,21 +7,6 @@
 <input type="hidden" value="${sessionScope.result}" id="result">
 
 <style>
-/* a {
-	color: white;
-	background-color: transparent;
-}
-
-a:hover {
-	color: #555;
-	cursor: pointer;
-}
-
-a:focus {
-	-webkit-box-shadow: none;
-	box-shadow: none;
-}
- */
 .hashTag {
 	color: hotpink;
 }
@@ -69,7 +54,7 @@ a:focus {
 /*id는 스타일 최우선으로 적용됨 그 다음에 class */
 #carousel {
 	position: relative;
-	height: 600px;
+	height: 640px;
 	top: 50%;
 	/* transform: translateY(-50%); */
 	overflow: hidden;
@@ -723,10 +708,19 @@ label.btn.btn-default.btn-circle.focus {
 	height: 300px;
 	width: 100%;
 }
+
+.container ul li a.active{
+	border-bottom: 2px solid #9c27b0; 
+} 
+
+.pr-img{
+	height: 110px;
+}
 </style>
 <script>
 //postid 가져와서 댓글달기
 $(document).ready(function() {
+	var loginUserNo = $('#loginUserNo').val();
 						console.log($('#result').val())
 						if ($('#result').val() == "F") {
 							alert('이미 연동된 계정 입니다. 다른 아이디를 등록 하세요.')
@@ -809,7 +803,7 @@ $(document).ready(function() {
 										name : '태그'
 									} ],
 									title : {
-										text : '인기 태그'
+										text : false
 									}
 								});
 								  },
@@ -915,93 +909,256 @@ $(document).ready(function() {
 	);
 	
 	
+	var lastScrollTop = 0;
+    var page = ${page};
+
+	$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
+         
+        var currentScrollTop = $(window).scrollTop();
+        var scrollPage="";
+        
+        if( currentScrollTop - lastScrollTop > 0 ){
+            
+            // 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
+            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
+            	
+            	if($('#photo-tab').hasClass('active')){ 
+            		$.ajax({
+                        type : 'post',  
+                        url : '<%=request.getContextPath()%>/home.ps',
+                        data : { 
+                            page: page
+                        },
+                        success : function(data){
+                            
+                            $.each(data.latestPicList, function(index, obj){
+                            	
+                            	scrollPage="<div class='item col-sm-6 col-md-4'>"+
+    											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+    											"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+    											"</a>"+
+    										   "<div>"+
+    						                   "<div class='counts hide-xs hide-sm'>";
+    						                   if(obj.respectCheck=="T"){
+    						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+    						                   }else{
+    						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+    						                   }
+    						                   
+    						                   if(obj.bookmarkCheck=="T"){
+    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+    						                   }else{
+    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+    						                   }
+    						                   
+    						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
+    						                 
+    			                $('#picall').append(scrollPage);
+                            })
+    					    page+=data.endpage;
+             				
+                        }
+                    });
+            	}
+                
+                 
+            }
+            
+        }
+
+    })
+    
+    $(document).on('click','#like',function(){
+			if(loginUserNo == 0){
+			}else{
+				var data = {userNo : loginUserNo,
+					    picNo : $(this).attr("value")};
+				var respect =  $(this);
+				var rpa = $(this).parent();
+				 $.ajax({
+					url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
+					data : data,
+					success : function(data){
+						if(data.result==1){
+							  $(respect)[0].innerHTML = 'favorite_border';
+							  $(rpa)[0].childNodes[1].nodeValue--;
+						  }else{
+							  $(respect)[0].innerHTML = 'favorite';
+							  $(rpa)[0].childNodes[1].nodeValue++;
+						  } 
+					}
+				 }) 
+			}
+		})
+	
+		$(document).on('click','#down',function(){
+			if(loginUserNo == 0){
+			}else{
+				var data = {userNo : loginUserNo,
+					    picNo : $(this).attr("value")};
+				var bookmark = $(this);
+				var bpa = $(this).parent();
+				 $.ajax({
+					url : "<%=request.getContextPath()%>/picture/increasebookmark.ps",
+					data : data,
+					success : function(data){
+						if(data.result==1){
+							  $(bookmark)[0].innerHTML = 'bookmark_border';
+							  $(bpa)[0].childNodes[1].nodeValue--;
+						  }else{
+							  $(bookmark)[0].innerHTML = 'bookmark';
+							  $(bpa)[0].childNodes[1].nodeValue++;
+						  }
+					}
+				 }) 
+			}
+		})
+		
+		$("#searchAll").autocomplete({
+	          
+			matchContains: true,
+			source : function(request, response) {
+				if($('#searchAll').val()!=''){
+				$.ajax({
+					type : 'post',
+					url : "/picsion/picture/searchpicture.ps",
+					dataType : "json",
+					//request.term = $("#autocomplete").val() 
+					data : {tagParam : request.term},
+					success : function(data) {
+						console.log(data.searchTagList);
+						response(data.searchTagList);
+					}
+				});
+				}
+			},
+			//조회를 위한 최소글자수 
+			minLength : 1,
+			select : function(event, ui) {
+				console.log(ui.item.value);
+				$('#searchAll').val(ui.item.value);
+				$('form[class="form-inline"]').submit();
+			},
+		});
 })
 </script>
-<c:choose>
-<c:when test="${sessionScope.user eq null}">
 
-		<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                
-              <c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
-				<c:choose>
-					<c:when test="${status.index eq 0}">
-						<div class="carousel-item active">
-                        <div class="page-header header-filter"data-parallax="true" style="background-image: url('${randPic.picWater}');">
-                            
-                            <div class="container">
-							<div class="row">
-								<div class="col-md-8 ml-auto mr-auto text-center">
-									<div class="brand">
-										<h1 class="title">Sell Your Picture!</h1>
-										<h4><b>PICSION</b>을 통해 당신의 꿈을 보여주세요</h4>
+		<div id="changemain" class="page-header header-filter" data-parallax="true">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 ml-auto mr-auto text-center">
+						<div class="brand">
+							<h1 class="title">Sell Your Picture!</h1>
+							<h4>
+								<b>PICSION</b>을 통해 당신의 꿈을 보여주세요
+							</h4>
+
+						</div>
+					</div>
+					<div class="col-md-10 ml-auto mr-auto">
+						<div class="card card-raised card-form-horizontal">
+							<div class="card-body ">
+								<form action="/picsion/picture/tagpicList.ps">
+									<div class="row">
+										<div class="col-md-9">
+											<div class="form-group has-default bmd-form-group">
+							                       <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
+							                 </div>
+										</div>
+
+										<div class="col-md-3">
+											<button id="submitbtn"class="btn btn-primary btn-block">PICSION</button>
+										</div>
 									</div>
-								</div>
+								</form>
 							</div>
-							</div>
-                            
-                        </div>
-                    </div>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+			
+		
+		
+<div class="main">
+	<div class="section section-basic">
+		<div class="container">
+		 
+		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" id="photo-tab" data-toggle="tab" href="#photos" role="tab" aria-controls="photos" aria-selected="false">사진</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="wordchart-tab" data-toggle="tab" href="#wordtab" role="tab" aria-controls="wordtab" aria-selected="false" >태그</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="user-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="false">사진 작가</a>
+		  </li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+	
+		<!-- 최신 사진 탭 -->
+		  <div class="tab-pane active" id="photos" role="tabpanel" aria-labelledby="photo-tab">
+			<c:choose>
+		<c:when test="${sessionScope.user eq null || empty imagelist}">
+		
+			<div class="row">
+					<div class="col-md-12 mr-auto ml-auto">
+						<div class="card card-raised card-carousel">
+							<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+								<ol class="carousel-indicators">
+								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+								<c:forEach items="${ranPicture}" var="randNum" varStatus='status' begin="1" end="9">
+								<li data-target="#carouselExampleIndicators" data-slide-to="${status.count}"></li>
+								</c:forEach>
+								</ol>
+								<div class="carousel-inner">
 								
-					</c:when>
-					<c:otherwise>
-						
-						  <div class="carousel-item">
-                        <div class="page-header header-filter"data-parallax="true" style="background-image: url('${randPic.picWater}');">
-                           
-                        </div>
-                    </div>
-						
-						
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
-                  
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <i class="material-icons">keyboard_arrow_left</i>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <i class="material-icons">keyboard_arrow_right</i>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+								<c:forEach items="${ranPicture}" var="randPic" varStatus='status'>
+								<c:choose>
+								<c:when test="${status.index eq 0}">
+								<div class="carousel-item active">
+										<img class="d-block w-100" style="max-height: 500px;"
+											src="${randPic.picWater}"
+											alt="No Image">
+								</div>
+								</c:when>
+								<c:otherwise>
+								<div class="carousel-item">
+										<img class="d-block w-100" style="max-height: 500px;"
+											src="${randPic.picWater}"
+											alt="No Image">
+									</div>
+								</c:otherwise>
+								</c:choose>
+								</c:forEach>
+								</div>
+								<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+									data-slide="prev"> <span class="carousel-control-prev-icon"
+									aria-hidden="true"></span> <span class="sr-only">Previous</span>
+								</a> 
+								<a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+									data-slide="next"> <span class="carousel-control-next-icon"
+									aria-hidden="true"></span> <span class="sr-only">Next</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+		
 		</c:when>
 		<c:otherwise>
-		   <div id="changemain" class="page-header header-filter clear-filter purple-filter" data-parallax="true">
-		   	<div class="container">
-                 <c:choose>
-				<c:when test="${empty imagelist}">
-				<h1 class="text-center">팔로잉을 시작 하세요</h1>
-				<div class="row">
-					<c:forEach items="${randomuser}" var="rand" varStatus='status'>
-					
-					<div class="col-md-3 mr-auto ml-auto">
-                        <div class="card card-profile card-plain">
-                            <div class="card-avatar">
-                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${rand.userNo}">
-                                    <img class="img" src="${rand.prPicture}">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">${rand.userName}</h4>
-                                <h6 class="category text-muted">photographer</h6>
-                                <p class="card-description">
-                                    ${rand.prContent}
-                                </p>
-                            </div>
-                         
-                        </div>
-                    </div>
-					
-					</c:forEach>
-					</div>
-				</c:when> 
-                 <c:otherwise>
-				
-
-				<div class="row">
+		<div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h2 class="title">Following Latest</h2>
+              </div>
+          </div>
+          <hr>
+		
+			<div class="row">
 					<div class="col-md-12">
 						<div class="col-md-2" style="float: right;">
 							<a class="nav-link"
@@ -1051,40 +1208,21 @@ $(document).ready(function() {
 						</article>
 					</c:forEach>
 				</div>
-				</c:otherwise>
-				</c:choose>
-				</div>
-				</div>
-			</c:otherwise>
-		</c:choose>
 		
-<div class="main main-raised">
-	<div class="section section-basic">
-		<div class="container-fluid">
-		 
-		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
-		  <li class="nav-item">
-		    <a class="nav-link active" id="photo-tab" data-toggle="tab" href="#photos" role="tab" aria-controls="photos" aria-selected="true">사진</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" id="wordchart-tab" data-toggle="tab" href="#wordtab" role="tab" aria-controls="wordtab" aria-selected="false" >태그</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false">사진 작가</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link disabled" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Disabled</a>
-		  </li>
-		</ul>
-
-		<!-- Tab panes -->
-		<div class="tab-content">
-		<!-- 최신 사진 탭 -->
-		  <div class="tab-pane active" id="photos" role="tabpanel" aria-labelledby="photo-tab">
+		
+		</c:otherwise>
+		</c:choose>
 			
+			  
+		  <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h2 class="title">Latest photos</h2>
+              </div>
+          </div>
+          <hr>
 				<div class="flex_grid credits">
 					<div class="tz-gallery">
-					<div class="row" id="searchpic">
+					<div class="row" id="picall">
 						<c:forEach items="${latestPicList}" var="lapic"
 							varStatus="status">
 							<div class="item col-sm-6 col-md-4">
@@ -1122,10 +1260,69 @@ $(document).ready(function() {
 			
 			</div>
 		  <div class="tab-pane" id="wordtab" role="tabpanel" aria-labelledby="wordchart-tab">
+		  <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h2 class="title">PICSION의 인기 태그들</h2>
+              </div>
+          </div>
+          <hr>
 			<div id="wordchart"></div>
 		  </div>
-		  <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">...</div>
-		  <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">...</div>
+		  <div class="tab-pane" id="users" role="tabpanel" aria-labelledby="user-tab">
+		  <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h2 class="title">Best uploader</h2>
+                     <h5 class="description">최근 7일간 가장 많은 사진을 올린 사진 작가들</h5>
+              </div>
+          </div>
+		    <div class="col-md-10 col-lg-10 mr-auto ml-auto">
+		 		 <div class="row">
+		 		 <c:forEach items="${bestUploader}" var="uploader" varStatus='status'>
+		 		 <div class="col-md-1 col-lg-2 mr-auto ml-auto">
+                        <div class="card card-profile card-plain">
+                            <div class="card-header card-header-image">
+                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${uploader.userNo}">
+                                    <img class="img pr-img" src="${uploader.prPicture}">
+                                </a>
+                            <div class="colored-shadow" style="background-image: url(&quot;${uploader.prPicture}&quot;); opacity: 1;"></div></div>
+                            <div class="card-body ">
+                                <h4 class="card-title">${uploader.userName}</h4>
+                                <h6 class="card-category text-muted">${uploader.prContent}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    </c:forEach>
+		  		</div>
+		  </div>
+		  
+		   <hr>
+		    <div class="row">
+              <div class="col-md-8 ml-auto mr-auto text-center">
+                     <h5 class="description">많은 팔로워를 보유한 사진 작가들</h5>
+              </div>
+          </div>
+           <div class="col-md-10 col-lg-10 mr-auto ml-auto">
+		 		 <div class="row">
+		 		 <c:forEach items="${mostFollowingUser}" var="mostfollow" varStatus='status'>
+		 		 <div class="col-md-1 col-lg-2">
+                        <div class="card card-profile card-plain">
+                            <div class="card-header card-header-image">
+                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${mostfollow.userNo}">
+                                    <img class="img pr-img" src="${mostfollow.prPicture}">
+                                </a>
+                            <div class="colored-shadow" style="background-image: url(&quot;${mostfollow.prPicture}&quot;); opacity: 1;"></div></div>
+                            <div class="card-body ">
+                                <h4 class="card-title">${mostfollow.userName}</h4>
+                                <h6 class="card-category text-muted"><i class="material-icons">supervisor_account</i>팔로워 : ${mostfollow.follower}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    </c:forEach>
+		  		</div>
+		  </div>
+          
+          
+		  </div>
 		</div>
 		
 			

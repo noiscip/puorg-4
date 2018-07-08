@@ -2,6 +2,28 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<style type="text/css">
+.bootstrap-tagsinput .tag {
+	background-color: #9c27b0;
+}
+
+/* 마이페이지 상단 메뉴 위,아래 여백 */
+.my-ul {
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+/*얼굴 영역 잡기 */
+.face-rectangle {
+  id:faceIt;
+  position:absolute;
+  height: 100px;
+  width: 100px; 
+  border:3px solid #555;
+  background-color: transparent;
+  
+}
+</style>
+
 <script type="text/javascript">
 $(document).on("click", "#tagAdd", function() {
     if($('#tagAddName').val()==0){
@@ -14,27 +36,39 @@ $(document).on("click", "#tagAdd", function() {
     
 });
 
+function drawFace(imgId,rectX,rectY,rectWid,rectHei){
+	var img,sagac;
+	var wid,hei,scalWid,scalHei;
+	img = document.getElementById(imgId);
+	sagac = document.createElement("DIV");
+	sagac.setAttribute("class","face-rectangle");
+	
+	img.parentElement.insertBefore(sagac,img);
+/* 	sagac.style.backgroundImage = "url('"+img.src+"')"; */
+	sagac.style.backgroundRepeat = "no-repeat";
+	sagac.style.width=rectWid + "px";
+	sagac.style.height=rectHei + "px";
+	
+	sagac.style.backgroundSize = img.width + "px " + img.height + "px";
+	showRect();
+	function showRect(){
+		var x,y;
+		
+		x = rectX; 
+		y = rectY;
+		
+		sagac.style.left = x+"px";
+		sagac.style.top = y+"px";
+	}
+}
+
 </script>
 
-<style type="text/css">
-.bootstrap-tagsinput .tag {
-	background-color: #9c27b0;
-}
-
-/* 마이페이지 상단 메뉴 위,아래 여백 */
-.my-ul {
-	padding-top: 30px;
-	padding-bottom: 30px;
-}
-</style>
-
-
-<div class="page-header header-filter clear-filter purple-filter"
-	data-parallax="true"
-	style="background-image: url(&quot;./assets/img/bg2.jpg&quot;); transform: translate3d(0px, 0px, 0px);">
+<div id="changemain" class="page-header header-filter clear-filter purple-filter"
+	data-parallax="true">
 	<div class="container"></div>
 </div>
-<div class="main main-raised">
+<div class="main">
 	<div class="profile-content">
 		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
@@ -60,7 +94,7 @@ $(document).on("click", "#tagAdd", function() {
 									alt="...">
 							</div>
 							<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
-							<%-- <canvas id="canvasdiv"></canvas> --%>
+							<%-- <canvas id="canvasdiv"></canvas> --%> 
 								
 							</div> 
 							<div>
@@ -122,6 +156,11 @@ $(document).on("click", "#tagAdd", function() {
 			var formData = new FormData($('#fileForm')[0])
 			console.log("클릭가능????")
 			console.log(formData)
+			console.log($("img").attr("src"))
+			$("fileinput-preview fileinput-exists thumbnail img-raised:first").attr({
+				id:"preview"
+			})
+			console.log($("#preview").attr("src"))
 			$.ajax({
 				url : "/picsion/vision.ps",
 				data : formData,
@@ -148,13 +187,49 @@ $(document).on("click", "#tagAdd", function() {
 						$('h1').after(logo)
 					}
  					/*얼굴감지*/
+ 					console.log($(".fileinput-preview").children());
+ 					$(".fileinput-preview").children().attr({
+						id:"preview"
+						});
+ 					console.log($(".fileinput-preview").children());
+					console.log($("#preview")["0"].naturalHeight);
+					console.log($("#preview")["0"].height);
+					console.log($("#preview")["0"].naturalWidth);
+					console.log($("#preview")["0"].width);
+					var chaHei = $("#preview")["0"].height;
+					var natHei = $("#preview")["0"].naturalHeight;
+					var chaWid = $("#preview")["0"].width;
+					var natWid = $("#preview")["0"].naturalWidth;
+					chaHei *= 1;
+					natHei *= 1;
+					chaWid *= 1;
+					natWid *= 1;					
+					var scalH = (chaHei/natHei).toFixed(3);
+					var scalW = (chaWid/natWid).toFixed(3);
+					console.log(scalH);
+					console.log(scalW);
  					 if(data.face != null){
  						console.log("얼굴그리기")
- 						/* $('canvas').drawImage({
+ 						$("fileinput-preview fileinput-exists thumbnail img-raised").attr({
+ 							position:"relative"
+ 						})
+ 						
+ 						/* drawFace("preview",scalW*data.face["0"].x_0,scalH*data.face["0"].y_1,scalW*data.face["0"].width,
+ 								scalH*data.face["0"].height); */
+ 						$.each(data.face,function(i,val){
+ 							console.log(val.x_0,val.y_1,val.width,
+ 									val.height);
+ 							drawFace("preview",Math.ceil(scalW*val.x_0),scalH*val.y_1,scalW*val.width,
+ 	 								scalH*val.height);
+ 							console.log(Math.ceil(scalW*val.x_0),scalH*val.y_1,scalW*val.width,
+ 	 								scalH*val.height);
+ 						})
+ 						 /* $('canvas').drawImage({
  							source: $('.fileinput-preview')["0"].children["0"].src,
  							x: 10, y: 10,
  							load:rec
  						});
+ 						
  						function rec(){
  							console.log("이게 되낭?");
  							$('canvas').drawRect({
@@ -165,11 +240,11 @@ $(document).on("click", "#tagAdd", function() {
 								height:data.face["0"].height
  							});
  						}
- 						 */
  						 
- 						  /* $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */ 
+ 						 
+ 						   $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */  
  						//이 밑에 잠시 주석걸겠습니다
- 						/* $('canvas').drawImage({
+ 						/*  $('canvas').drawImage({
  							source: $('.fileinput-preview')['0'].children['0'].src,
  							x: 100, y: 100,
  							load:rec
@@ -183,8 +258,8 @@ $(document).on("click", "#tagAdd", function() {
  							width:20,
  							height:20
  							});
- 						}
- */ 						
+ 						} */
+  						
  					} 
 					var safe = ''
 					if(data.safe != null){
@@ -228,4 +303,7 @@ $(document).on("click", "#tagAdd", function() {
 			})
 		})
 	})
+	function arim(){
+		document.getElementById("demo").innerHTML
+	}
 </script>

@@ -1,4 +1,4 @@
-package kr.or.picsion.utils;
+﻿package kr.or.picsion.utils;
 
 import java.io.File;
 
@@ -54,7 +54,11 @@ public class AmazonUpload {
         if(!fileObjKeyName.startsWith("w")) {
         	
         }
+
         String fileName = imagePicsion + fileObjKeyName;
+
+ //       String fileName = "D:/imagePicsion/" + fileObjKeyName;
+
         /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
         System.out.println("너야?");

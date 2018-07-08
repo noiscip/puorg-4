@@ -169,9 +169,9 @@ public class PurchaseService {
 	* @param saleUserNo
 	* @return Integer
 	*/
-	public int buyPicture(List<Purchase> purlist) {
+	public int buyPicture(List<Purchase> purcahseList) {
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
-		int result = purchaseDao.buyPicture(purlist);
+		int result = purchaseDao.buyPicture(purcahseList);
 		return result;
 	}
 	
@@ -396,6 +396,21 @@ public class PurchaseService {
 	public int updatePoint(int point, int userNo){
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
 		int result = purchaseDao.updatePoint(point, userNo);
+		return result;
+	}
+	
+	/**
+	* 날      짜 : 2018. 7. 7.
+	* 메소드명 : updateSalePoint
+	* 작성자명 : 정도혁
+	* 기      능 : 판매 후 판매자 금액 업데이트
+	*
+	* @param purcahseList
+	* @return Integer
+	*/
+	public int updateSalePoint(List<Purchase> purcahseList) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		int result = purchaseDao.updateSalePoint(purcahseList);
 		return result;
 	}
 }
