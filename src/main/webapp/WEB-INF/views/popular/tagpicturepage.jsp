@@ -128,6 +128,7 @@ $(function() {
 					</select>
 				</div>
 			</div> 
+		
 			
 				<div class="flex_grid credits">
 				<div class="tz-gallery">
