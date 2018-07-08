@@ -291,12 +291,14 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					})
 					
 					$('#picTags').append(tags)
-
-					var cameraName = data.metaMap.cameraName='undefined'? 'null' : data.metaMap.cameraName;
-					var resolH = data.metaMap.resolH='undefined'? 'null' : data.metaMap.resolH;
-					var resolW = data.metaMap.resolW='undefined'? 'null' : data.metaMap.resolW;
-					var pictureDate = data.metaMap.pictureDate='undefined'? 'null' : data.metaMap.pictureDate;
-					var lensName = data.metaMap.lensName='undefined'? 'null' : data.metaMap.lensName;
+					
+					
+					
+					var cameraName = data.metaMap.cameraName=='undefined'? 'null' : data.metaMap.cameraName;
+					var resolH = data.metaMap.resolH=='undefined'? 'null' : data.metaMap.resolH;
+					var resolW = data.metaMap.resolW=='undefined'? 'null' : data.metaMap.resolW;
+					var pictureDate = data.metaMap.pictureDate=='undefined'? 'null' : data.metaMap.pictureDate;
+					var lensName = data.metaMap.lensName=='undefined'? 'null' : data.metaMap.lensName;
 					
 					 
 					
