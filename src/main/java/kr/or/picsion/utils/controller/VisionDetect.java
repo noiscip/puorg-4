@@ -66,6 +66,7 @@ public class VisionDetect {
 		String uploadedPath= vision.fileUpload(filePath,model);//실경로 파일 업로드
 		vision.visionPocket(uploadedPath, model);
 		
+		model.addAttribute("uploadPath",uploadedPath);
 		return jsonview;
 	}
 	
