@@ -70,12 +70,11 @@ public class PictureService {
         System.out.println(picture.toString());  //////////////////////////////////뀨?
         PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
         pictureDao.insertPicture(picture);
+        pictureDao.insertPicInfo(picture);
         for(String p : picture.getTagContent()) {
             pictureDao.insertTag(picture.getPicNo(), p);
         }
-        
         System.out.println(picture.toString());
-
     }
 
 	/**

@@ -40,5 +40,6 @@ public interface PictureDao {
 	public List<Picture> selectRandom();			//메인 화면 랜덤 사진 리스트
 	public List<Picture> latestPicList(int userNo, int page, int endpage); //메인 화면 최신 사진 리스트
 	public List<User> latestPicOwnList(int page, int endpage); //메인 화면 최신 사진 주인 리스트
+	public int insertPicInfo(Picture picture);		//사진 메타데이터 저장
 }
 
