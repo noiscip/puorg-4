@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 장바구니 사진 리스트 -->
 	<select id="selectCart" resultType="kr.or.picsion.picture.dto.Picture">
-	 	SELECT p.*, i.camera as camera, i.resolution as resolution, i.photoDate as photoDate FROM PICTURE p 
+	 	SELECT p.*, i.camera as camera, i.resolutionH as resolutionH, i.resolutionW as resolutionW, i.photoDate as photoDate FROM PICTURE p 
 	 	left JOIN CART c ON p.picNo = c.picNo 
 		left JOIN PICTUREINFO i on p.picNo = i.picNo
 		 WHERE c.userNo = #{userNo} order by p.picReg;

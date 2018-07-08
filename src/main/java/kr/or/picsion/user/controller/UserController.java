@@ -437,6 +437,7 @@ public class UserController {
 	@Transactional(propagation = Propagation.REQUIRED)    //정보 수정 트랜잭션
 	public String updateInfo(HttpSession session, User user, MultipartFile file) {
 		User userSession = (User)session.getAttribute("user");
+
 		try {
 			user.setUserNo(userSession.getUserNo());
 			
@@ -449,6 +450,7 @@ public class UserController {
 			}
 
 			String originalFileName = file.getOriginalFilename();
+
 			
 			//프로필 사진 변경 했을때
 			if(originalFileName.equals("")) {

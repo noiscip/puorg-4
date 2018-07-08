@@ -64,6 +64,7 @@ public class VisionApi {
 	 * @param model
 	*/
 	public void visionPocket(String filePath,Model model) {
+		model.addAttribute("가나다라마바사", "아자차캍파ㅏ하");
 		String logocheck=detectLogos(filePath);				//vision : 로고감지
 		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
 		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
@@ -107,9 +108,10 @@ public class VisionApi {
 	public String fileUpload(MultipartHttpServletRequest mRequest, Model model) {
 		String filePath = "";
 
-		String uploadPath = "D:\\imagePicsion\\";
-//		String uploadPath = "C:\\imagePicsion\\"; 
-//		String uploadPath = "/home/ubuntu/image"; 
+		String uploadPath = "/resources/upload/"; 
+
+
+//		String uploadPath = "D:\\imagePicsion\\";
 		Map<String, String> metaMap = new HashMap<>();
 		
 		// 파일 저장하는 폴더
@@ -134,7 +136,7 @@ public class VisionApi {
 
 			System.out.println("filePath: " + filePath);
 			
-			picturePath = "/imagePicsion/" + saveFileName;
+			picturePath = uploadPath + saveFileName;
 
 			System.out.println("이것이!!! " + uploadPath + saveFileName);
 			
@@ -142,7 +144,7 @@ public class VisionApi {
 			if (saveFileName != null && !saveFileName.equals("")) {
 				//이거 고쳐야함
 				if (new File(filePath).exists()) {
-					saveFileName = saveFileName + "_" + System.currentTimeMillis();
+					saveFileName = System.currentTimeMillis() + "_" + saveFileName;
 				}
 				try {
 					File newFile = new File(uploadPath + saveFileName);
@@ -222,6 +224,7 @@ public class VisionApi {
 			} // if end
 
 		}
+		model.addAttribute("picInfo",metaMap);
 		System.out.println("완성 ?" + filePath);
 		return filePath;
 	} // fileUpload end
