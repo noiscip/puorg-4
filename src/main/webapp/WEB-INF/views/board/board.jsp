@@ -62,18 +62,20 @@ $(document).ready( function () {
 							</c:forEach>
 						</tbody>
 						<tfoot>
-							<tr>
-								<td class="text-right" colspan="5" style="border-top-width: 0px">
+							
+						</tfoot>
+					</table>
+					
+								<div class="text-right" colspan="5" style="border-top-width: 0px">
 									<a href="<%=request.getContextPath()%>/board/writeboard.ps"
 									style="cursor: pointer;">
 										<button class="btn btn-primary btn-round">
 											<i class="material-icons">edit</i> 글 쓰기
 										</button>
 								</a>
-								</td>
-							</tr>
-						</tfoot>
-					</table>
+								</div>
+								
+							
 				</div>
 			</div>
 		</div>
