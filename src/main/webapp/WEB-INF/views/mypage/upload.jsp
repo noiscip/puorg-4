@@ -212,7 +212,10 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					console.log(scalW);
  					 if(data.face != null){
  						console.log("얼굴그리기")
- 						$("fileinput-preview fileinput-exists thumbnail img-raised").attr({
+ 						/* $("fileinput-preview fileinput-exists thumbnail img-raised").attr({
+ 							position:"relative"
+ 						}) */
+ 						$(".fileinput-preview").attr({
  							position:"relative"
  						})
  						
@@ -320,7 +323,4 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 			})
 		})
 	})
-	function arim(){
-		document.getElementById("demo").innerHTML
-	}
 </script>
