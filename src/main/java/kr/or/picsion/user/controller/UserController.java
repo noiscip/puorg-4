@@ -434,14 +434,16 @@ public class UserController {
 	* @return String
 	*/
 	@RequestMapping(value="updateinfo.ps", method=RequestMethod.POST)
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED)    //정보 수정 트랜잭션
 	public String updateInfo(HttpSession session, User user, MultipartFile file) {
 		User userSession = (User)session.getAttribute("user");
+
 		try {
 			user.setUserNo(userSession.getUserNo());
 			
 			System.out.println(file.getOriginalFilename());
-			String uploadPath = "D:\\imagePicsion\\";
+//			String uploadPath = "D:\\imagePicsion\\";
+			String uploadPath = "/resources/upload/";
 			
 			File dir = new File(uploadPath);
 			if (!dir.isDirectory()) {
@@ -449,6 +451,7 @@ public class UserController {
 			}
 
 			String originalFileName = file.getOriginalFilename();
+
 			
 			//프로필 사진 변경 했을때
 			if(originalFileName.equals("")) {
@@ -463,7 +466,7 @@ public class UserController {
 					try {
 						File newFile = new File(uploadPath + saveFileName);
 						file.transferTo(newFile);
-						dbPath=amazonService.uploadObject(saveFileName, "picsion/profile");
+						dbPath=amazonService.uploadObject(uploadPath, saveFileName, "picsion/profile");
 						
 					} catch (IllegalStateException e) {
 						e.printStackTrace();
@@ -498,63 +501,8 @@ public class UserController {
 			session.setAttribute("user", userService.userInfo(user.getUserNo()));
 			
 		} catch (Exception e) {
-			// TODO: handle exception
-		user.setUserNo(userSession.getUserNo());
-		
-		String filePathh="";
-		String uploadPath = "D:\\imagePicsion\\";
-		
-		File dir = new File(uploadPath);
-		if (!dir.isDirectory()) {
-			dir.mkdirs();
+			System.out.println("정보수정  트랜잭션 실행");
 		}
-
-		String originalFileName = file.getOriginalFilename();
-		
-		//프로필 사진 변경 했을때
-		if(originalFileName.equals("")) {
-			
-		}else {
-			String saveFileName = "prPic"+user.getUserNo()+ System.currentTimeMillis()+"."+originalFileName.split("\\.")[1];
-			String dbPath="";
-			if(saveFileName != null && !saveFileName.equals("")) {
-				if(new File(uploadPath + saveFileName).exists()) {
-					saveFileName = saveFileName + "_" + System.currentTimeMillis();
-				}
-				try {
-					File newFile = new File(uploadPath + saveFileName);
-					file.transferTo(newFile);
-					dbPath=amazonService.uploadObject(saveFileName, "picsion/profile");
-					
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
-			} 
-			
-			user.setPrPicture(dbPath);
-			userService.updateUserPic(user);
-		}
-		
-		//자기소개 변경했을때 (변경하지 않으면 업데이트 X)
-		if(userSession.getPrContent() != null && userSession.getPrContent().equals(user.getPrContent())) {
-			
-		}else if(userSession.getPrContent() == null && user.getPrContent().equals("")){
-			
-		}else {
-			userService.updateUserPr(user);
-		}
-				
-		//비밀번호, 유저네임 변경했을때
-		if(user.getPwd()=="") {
-			
-		}else if(userSession.getPwd().equals(user.getPwd())) {
-			
-		}else {
-			userService.updateUserInfo(user);
-		}
-		
 		return "redirect:updateinfo.ps";
 	}
 	
@@ -570,7 +518,7 @@ public class UserController {
 	* @return View
 	*/
 	@RequestMapping("charge.ps")
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED)  //포인트 충전 트랜잭션
 	public View pointCharge(HttpSession session, int point, Model model) {
 		User user = (User)session.getAttribute("user");
 		try {
@@ -582,6 +530,7 @@ public class UserController {
 			model.addAttribute("result", result);
 			
 		} catch (Exception e) {
+			System.out.println("포인트 충전 트랜잭션");
 		}
 		return jsonview;
 	}

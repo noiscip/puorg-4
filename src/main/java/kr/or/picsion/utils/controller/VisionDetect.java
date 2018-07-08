@@ -63,9 +63,10 @@ public class VisionDetect {
 	*/
 	@RequestMapping(value = "vision.ps", method=RequestMethod.POST)
 	public View visionCheck(MultipartHttpServletRequest filePath,Model model) {
-		String uploadedPath= vision.fileUpload(filePath);//실경로 파일 업로드
+		String uploadedPath= vision.fileUpload(filePath,model);//실경로 파일 업로드
 		vision.visionPocket(uploadedPath, model);
 		
+		model.addAttribute("uploadPath",uploadedPath);
 		return jsonview;
 	}
 	

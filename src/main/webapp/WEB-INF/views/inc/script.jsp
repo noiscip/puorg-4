@@ -19,6 +19,7 @@
     <link href="<%=request.getContextPath()%>/assets/css/payment.css" rel="stylesheet">
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.css" rel="stylesheet" />
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.theme.css" rel="stylesheet" />
+   <link href="<%=request.getContextPath()%>/DataTables/DataTables-1.10.18/css/dataTables.bootstrap.css" rel="stylesheet" />
    
    <!-- Js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -48,7 +49,9 @@
      <!-- 네이버 로그인 -->
     <script src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" type="text/javascript" charset="utf-8"></script>
     <!-- dataTable -->
-     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript" charset="utf8"></script>
+     
+     <script src="<%=request.getContextPath()%>/DataTables/datatables.js" type="text/javascript" charset="utf8"></script>
+     
      <!-- 차트 -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/wordcloud.js"></script>

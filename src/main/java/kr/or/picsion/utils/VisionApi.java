@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +64,7 @@ public class VisionApi {
 	 * @param model
 	*/
 	public void visionPocket(String filePath,Model model) {
+		model.addAttribute("가나다라마바사", "아자차캍파ㅏ하");
 		String logocheck=detectLogos(filePath);				//vision : 로고감지
 		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
 		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
@@ -82,6 +85,15 @@ public class VisionApi {
 
 		model.addAttribute("face",faceList);
 		
+//		String picDate = fileUpload();
+//		int picRes;
+//		String cameraName;
+//		String lensName;
+//		model.addAttribute("photoDate",picDate);
+//		model.addAttribute("resolution",picRes);
+//		model.addAttribute("camera",cameraName);
+//		model.addAttribute("lens",lensName);
+		
 	}	
 	
 	/**
@@ -93,13 +105,15 @@ public class VisionApi {
 	 * @param mRequest
 	 * @return String
 	 */
-	public String fileUpload(MultipartHttpServletRequest mRequest) {
+	public String fileUpload(MultipartHttpServletRequest mRequest, Model model) {
 		String filePath = "";
 
-		String uploadPath = "D:\\imagePicsion\\";
-//		String uploadPath = "C:\\imagePicsion\\"; 
-//		String uploadPath = "/home/ubuntu/image"; 
+		String uploadPath = "/resources/upload/"; 
 
+
+//		String uploadPath = "D:\\imagePicsion\\";
+		Map<String, String> metaMap = new HashMap<>();
+		
 		// 파일 저장하는 폴더
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -122,15 +136,15 @@ public class VisionApi {
 
 			System.out.println("filePath: " + filePath);
 			
-			picturePath = "/imagePicsion/" + saveFileName;
+			picturePath = uploadPath + saveFileName;
 
 			System.out.println("이것이!!! " + uploadPath + saveFileName);
-
+			
 			
 			if (saveFileName != null && !saveFileName.equals("")) {
 				//이거 고쳐야함
 				if (new File(filePath).exists()) {
-					saveFileName = saveFileName + "_" + System.currentTimeMillis();
+					saveFileName = System.currentTimeMillis() + "_" + saveFileName;
 				}
 				try {
 					File newFile = new File(uploadPath + saveFileName);
@@ -146,6 +160,33 @@ public class VisionApi {
 							for (Tag tag : directory.getTags()) {
 								System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(), tag.getDescription());
 								
+								//메타 데이터 정보 저장
+								if(tag.getTagName().equals("Model")) {
+									System.out.println("카메라 정보 "+tag.getDescription());
+									String cameraName = tag.getDescription();
+									metaMap.put("cameraName", cameraName);
+									
+								}
+								if(tag.getTagName().equals("Date/Time Original")) {
+									System.out.println("찍은 날짜 "+tag.getDescription());
+									String pictureDate = tag.getDescription();
+									metaMap.put("pictureDate", pictureDate);
+								}
+								if(tag.getTagName().equals("Lens Model")) {
+									System.out.println("렌즈 정보  "+tag.getDescription());
+									String lensName = tag.getDescription();
+									metaMap.put("lensName", lensName);
+								}
+								if(tag.getTagName().split(" ")[0].equals("Image")) {
+									if(tag.getTagName().split(" ")[1].equals("Height")) {
+										String resolH = tag.getDescription();
+										metaMap.put("resolH", resolH);
+									}
+									if(tag.getTagName().split(" ")[1].equals("Width")) {
+										String resolW = tag.getDescription();
+										metaMap.put("resolW", resolW);
+									}
+								}
 								if(tag.getTagName().equals("File Size")) {
 									System.out.println("우잉"+tag.getDescription().split(" ")[0]);
 									if(Integer.parseInt(tag.getDescription().split(" ")[0])>10485760) {
@@ -167,6 +208,7 @@ public class VisionApi {
 								}
 							}
 						}
+						System.out.println("해상도");
 						System.out.println(picInfo);
 
 					} catch (Exception e1) {
@@ -182,6 +224,7 @@ public class VisionApi {
 			} // if end
 
 		}
+		model.addAttribute("picInfo",metaMap);
 		System.out.println("완성 ?" + filePath);
 		return filePath;
 	} // fileUpload end

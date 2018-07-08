@@ -45,7 +45,11 @@ import kr.or.picsion.utils.AmazonUpload;
 @RequestMapping("/picture/")
 public class PictureController {
 	
-	public static String imagePicsion ="D:\\imagePicsion\\";
+
+	public static String imagePicsion ="/resources/upload/";
+
+//	public static String imagePicsion ="D:\\imagePicsion\\";
+
 	
    	@Autowired
     private View jsonview;
@@ -316,13 +320,15 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("operpicupload.ps")
-	public View insertOperPicture(MultipartFile file, HttpSession session, String operNo) {
+	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo) {
 		User user = (User) session.getAttribute("user");	
+		Operation operation = new Operation();
+		operation.setOperNo(operNo);
 		OperPicture operPicture = new OperPicture();
-		Operation operation = operationService.operNoselectOper(Integer.parseInt(operNo));
 		System.out.println(file.getOriginalFilename());
 		String uploadPath = imagePicsion;
 		String dbPath="";
+		
 		
 		File dir = new File(uploadPath);
 		if (!dir.isDirectory()) {
@@ -331,7 +337,7 @@ public class PictureController {
 
 		String originalFileName = file.getOriginalFilename();
 		System.out.println(originalFileName.split("\\.")[1]);
-		String saveFileName = "operNo"+operNo+"."+originalFileName.split("\\.")[1];		
+		String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
 		
 			if(saveFileName != null && !saveFileName.equals("")) {
 				if(new File(uploadPath + saveFileName).exists()) {
@@ -340,8 +346,8 @@ public class PictureController {
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					file.transferTo(newFile);
-					dbPath=amazonService.uploadObject(saveFileName,"picsion/operpic");
-					operPicture.setOperNo(Integer.parseInt(operNo));
+					dbPath=amazonService.uploadObject(imagePicsion,saveFileName,"picsion/operpic");
+					operPicture.setOperNo(operation.getOperNo());
 					operPicture.setPicPath(dbPath);
 					operPicture.setUserNo(user.getUserNo());
 					operation.setOperatorEnd("T");
@@ -375,10 +381,11 @@ public class PictureController {
 	@RequestMapping("uploadAfter.ps")
 	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		
+		System.out.println("업로드 애프터");
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
 		pictureService.insertPicture(picture);
+		
 		wpS3(picture);
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
@@ -401,8 +408,12 @@ public class PictureController {
 		picture.setTagContent(tag);
 		User requestorUser = userService.userInfo(picture.getUserNo());
 		picture.setUserNo(user.getUserNo());		
-		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+
+		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[1]);
+
+//		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
 		pictureService.insertPicture(picture);
+
         System.out.println(picture.getPicPath());
         int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
         	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
@@ -452,11 +463,13 @@ public class PictureController {
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
-		
-		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(14));
+		System.out.println(input.getPath());
+		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(18));
 		//워터마크 사진 이름 수정하여 저장
 		
 		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", picture.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
+		System.out.println("renameWater : " + renameWater + " : 276번째 줄");
+		System.out.println("imagePicsion : " + imagePicsion + " : 277번째 줄");
 		File output = new File(imagePicsion+renameWater);
 
 		// adding text as overlay to an image
@@ -467,7 +480,7 @@ public class PictureController {
 		}
 		
 		//워터마크사진 s3에 저장
-		String waterPath = amazonService.uploadObject(output.getPath().substring(16),"picsion/water");
+		String waterPath = amazonService.uploadObject(imagePicsion,output.getPath().substring(18),"picsion/water");
 		
 		int waterResult = pictureService.updateWater(waterPath, picture.getPicNo());
 		
@@ -486,13 +499,14 @@ public class PictureController {
 		}else {		
 			saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
 		}
+		System.out.println("요기는 세이브 파일 네임 !!!!!!!!!!!!" + saveFileName);
 		//원본사진 변경
 //		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
 		File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 		new File(picture.getPicPath()).renameTo(reFile);
 		
 		System.out.println("너는 파일 이름만 나와야 해 : "+reFile.getName());
-		String webFilePath = amazonService.uploadObject(reFile.getName(),"picsion/img");
+		String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/img");
 		
 		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
 		if(s3Result!=0) {
@@ -526,7 +540,7 @@ public class PictureController {
 		model.addAttribute("result",result);
 		return jsonview;
 	}
-	
+	 
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : pictureBookmark

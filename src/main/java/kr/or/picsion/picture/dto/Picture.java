@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @project Final_Picsion
- * @package kr.or.picsion.picture.dto 
+ * @package kr.or.picsion.picture.dto
  * @className Picture
  * @date 2018. 6. 4.
  */
@@ -23,7 +23,8 @@ public class Picture {
 	private int userNo;
 	private int tableNo;
 	private String camera;
-	private String resolution;
+	private String resolutionH;
+	private String resolutionW;
 	private Date photoDate;
 	private List<String> tagContent;
 	private String cartCheck;
@@ -32,16 +33,15 @@ public class Picture {
 	private int respectCount;
 	private int bookmarkCount;
 	private String transferState;
+	private String lens;
 
-	public Picture() {}
-	
+	public Picture() {
+	}
+
 	public Picture(int picNo, String picTitle, String picContent, Date picReg, String picPath, String picWater,
-			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolution, Date photoDate,
-
-			List<String> tagContent,  String cartCheck, String respectCheck, String bookmarkCheck, int respectCount, int bookmarkCount,
-			String transferState) {
-
-		super();
+			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolutionH, String resolutionW,
+			Date photoDate, List<String> tagContent, String cartCheck, String respectCheck, String bookmarkCheck,
+			int respectCount, int bookmarkCount, String transferState, String lens) {
 		this.picNo = picNo;
 		this.picTitle = picTitle;
 		this.picContent = picContent;
@@ -53,7 +53,8 @@ public class Picture {
 		this.userNo = userNo;
 		this.tableNo = tableNo;
 		this.camera = camera;
-		this.resolution = resolution;
+		this.resolutionH = resolutionH;
+		this.resolutionW = resolutionW;
 		this.photoDate = photoDate;
 		this.tagContent = tagContent;
 		this.cartCheck = cartCheck;
@@ -62,8 +63,8 @@ public class Picture {
 		this.respectCount = respectCount;
 		this.bookmarkCount = bookmarkCount;
 		this.transferState = transferState;
+		this.lens = lens;
 	}
-
 
 	public int getPicNo() {
 		return picNo;
@@ -153,12 +154,20 @@ public class Picture {
 		this.camera = camera;
 	}
 
-	public String getResolution() {
-		return resolution;
+	public String getResolutionH() {
+		return resolutionH;
 	}
 
-	public void setResolution(String resolution) {
-		this.resolution = resolution;
+	public void setResolutionH(String resolutionH) {
+		this.resolutionH = resolutionH;
+	}
+
+	public String getResolutionW() {
+		return resolutionW;
+	}
+
+	public void setResolutionW(String resolutionW) {
+		this.resolutionW = resolutionW;
 	}
 
 	public Date getPhotoDate() {
@@ -225,19 +234,23 @@ public class Picture {
 		this.transferState = transferState;
 	}
 
+	public String getLens() {
+		return lens;
+	}
+
+	public void setLens(String lens) {
+		this.lens = lens;
+	}
+
 	@Override
 	public String toString() {
 		return "Picture [picNo=" + picNo + ", picTitle=" + picTitle + ", picContent=" + picContent + ", picReg="
 				+ picReg + ", picPath=" + picPath + ", picWater=" + picWater + ", picHit=" + picHit + ", picPrice="
-				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolution="
-				+ resolution + ", photoDate=" + photoDate + ", tagContent=" + tagContent + ", cartCheck=" + cartCheck
-				+ ", respectCheck=" + respectCheck + ", bookmarkCheck=" + bookmarkCheck + ", respectCount="
-				+ respectCount + ", bookmarkCount=" + bookmarkCount + ", transferState=" + transferState + "]";
+				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolutionH="
+				+ resolutionH + ", resolutionW=" + resolutionW + ", photoDate=" + photoDate + ", tagContent="
+				+ tagContent + ", cartCheck=" + cartCheck + ", respectCheck=" + respectCheck + ", bookmarkCheck="
+				+ bookmarkCheck + ", respectCount=" + respectCount + ", bookmarkCount=" + bookmarkCount
+				+ ", transferState=" + transferState + ", lens=" + lens + "]";
 	}
 
-
-
-	
-	
-	
 }

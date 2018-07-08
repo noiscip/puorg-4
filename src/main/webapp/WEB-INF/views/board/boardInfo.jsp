@@ -124,15 +124,17 @@
 				});
 		
 		$('#operpic').on("click",function() {
+			console.log($(this))
 			var formData = new FormData($('#fileForm')[0]);
 			console.log(formData);
 					$.ajax({
-						url : "/picsion//picture/operpicupload.ps",
+						url : "/picsion/picture/operpicupload.ps",
 						data : formData,
 						processData: false,
 						contentType: false,
 						type :'POST',						
 						success : function(data) {
+							console.log(data)
 							console.log("성공");
 						}
 					});	

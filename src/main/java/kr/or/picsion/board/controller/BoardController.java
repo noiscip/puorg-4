@@ -79,7 +79,7 @@ public class BoardController {
 		List<OperationApply> list = operationApplyService.operationApplyList(brdNo, user.getUserNo());
 		List<String> applyid = operationApplyService.operationApplyNameList(brdNo);
 		OperPicture operPicture = new OperPicture();
-		if (boardInfo.getOperStateNo() == 2) {
+		if (boardInfo.getOperStateNo() != 1) {
 			operation = operationService.selectOper(brdNo);
 			operPicture = operPictureService.selectOperpicture(operation.getOperNo());
 		}

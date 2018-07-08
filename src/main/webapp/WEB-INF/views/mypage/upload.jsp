@@ -83,8 +83,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 			<h1>upload</h1>
 			<div class="row">
 				<div class="col-md-6">
-					<form id="fileForm" action="vision.ps"
-						enctype="multipart/form-data" method="post">
+					<form id="fileForm" enctype="multipart/form-data" method="post">
 
 						<div class="fileinput fileinput-new text-center"
 							data-provides="fileinput">
@@ -109,6 +108,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 								</a>
 							</div>
 						</div>
+					
 					</form>
 				</div>
 
@@ -140,6 +140,11 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						
 						</div>
 						<button type="submit" class="btn btn-primary">저장하기</button>
+						<input type="hidden" name="camera" id="camera" value=""/>
+						<input type="hidden" name="resolutionH" id="resolutionH" value=""/>
+						<input type="hidden" name="resolutionW" id="resolutionW" value=""/>
+						<input type="hidden" name="photoDate" id="photoDate" value=""/>
+						<input type="hidden" name="lens" id="lens" value=""/>
 					</form>
 				</div>
 			</div>
@@ -185,6 +190,14 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						logo += '</div>'
 						
 						$('h1').after(logo)
+						
+						
+						$('#camera').attr('value',data.metaMap.cameraName);
+						$('#resolutionH').attr('value',data.metaMap.pictureDate);
+						$('#resolutionW').attr('value',data.metaMap.lensName);
+						$('#photoDate').attr('value',data.metaMap.resolH);
+						$('#lens').attr('value',data.metaMap.resolW);
+						
 					}
  					/*얼굴감지*/
  					console.log($(".fileinput-preview").children());
