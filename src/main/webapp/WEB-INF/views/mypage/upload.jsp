@@ -140,11 +140,11 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						
 						</div>
 						<button type="submit" class="btn btn-primary">저장하기</button>
-						<input type="hidden" name="camera" id="camera" value=""/>
-						<input type="hidden" name="resolutionH" id="resolutionH" value=""/>
-						<input type="hidden" name="resolutionW" id="resolutionW" value=""/>
-						<input type="hidden" name="photoDate" id="photoDate" value=""/>
-						<input type="hidden" name="lens" id="lens" value=""/>
+						<input type="hidden" name="camera" id="camera" />
+						<input type="hidden" name="resolutionH" id="resolutionH"/>
+						<input type="hidden" name="resolutionW" id="resolutionW" />
+						<input type="hidden" name="photoDate" id="photoDate" />
+						<input type="hidden" name="lens" id="lens"/>
 					</form>
 				</div>
 			</div>

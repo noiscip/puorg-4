@@ -224,7 +224,7 @@ public class VisionApi {
 			} // if end
 
 		}
-		model.addAttribute("picInfo",metaMap);
+		model.addAttribute("metaMap",metaMap);
 		System.out.println("완성 ?" + filePath);
 		return filePath;
 	} // fileUpload end
