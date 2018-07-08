@@ -1013,6 +1013,33 @@ $(document).ready(function() {
 				 }) 
 			}
 		})
+		
+		$("#searchAll").autocomplete({
+	          
+			matchContains: true,
+			source : function(request, response) {
+				if($('#searchAll').val()!=''){
+				$.ajax({
+					type : 'post',
+					url : "/picsion/picture/searchpicture.ps",
+					dataType : "json",
+					//request.term = $("#autocomplete").val() 
+					data : {tagParam : request.term},
+					success : function(data) {
+						console.log(data.searchTagList);
+						response(data.searchTagList);
+					}
+				});
+				}
+			},
+			//조회를 위한 최소글자수 
+			minLength : 1,
+			select : function(event, ui) {
+				console.log(ui.item.value);
+				$('#searchAll').val(ui.item.value);
+				$('form[class="form-inline"]').submit();
+			},
+		});
 })
 </script>
 
@@ -1034,14 +1061,13 @@ $(document).ready(function() {
 								<form action="/picsion/picture/tagpicList.ps">
 									<div class="row">
 										<div class="col-md-9">
-											<div class="form-group bmd-form-group">
-												<input id="searchAll" name="tag" type="text" value="" placeholder="Search"
-													class="form-control">
-											</div>
+											<div class="form-group has-default bmd-form-group">
+							                       <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
+							                 </div>
 										</div>
 
 										<div class="col-md-3">
-											<button id="submitbtn" type="button" class="btn btn-primary btn-block">PICSION</button>
+											<button id="submitbtn"class="btn btn-primary btn-block">PICSION</button>
 										</div>
 									</div>
 								</form>
