@@ -140,11 +140,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						
 						</div>
 						<button type="submit" class="btn btn-primary">저장하기</button>
-						<input type="hidden" name="camera" id="camera" value=""/>
-						<input type="hidden" name="resolutionH" id="resolutionH" value=""/>
-						<input type="hidden" name="resolutionW" id="resolutionW" value=""/>
-						<input type="hidden" name="photoDate" id="photoDate" value=""/>
-						<input type="hidden" name="lens" id="lens" value=""/>
+					
 					</form>
 				</div>
 			</div>
@@ -190,13 +186,6 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						logo += '</div>'
 						
 						$('h1').after(logo)
-						
-						
-						$('#camera').attr('value',data.metaMap.cameraName);
-						$('#resolutionH').attr('value',data.metaMap.pictureDate);
-						$('#resolutionW').attr('value',data.metaMap.lensName);
-						$('#photoDate').attr('value',data.metaMap.resolH);
-						$('#lens').attr('value',data.metaMap.resolW);
 						
 					}
  					/*얼굴감지*/
@@ -299,15 +288,30 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					})
 					
 					$('#picTags').append(tags)
+
+					var cameraName = data.metaMap.cameraName='undefined'? 'null' : data.metaMap.cameraName;
+					var resolH = data.metaMap.resolH='undefined'? 'null' : data.metaMap.resolH;
+					var resolW = data.metaMap.resolW='undefined'? 'null' : data.metaMap.resolW;
+					var pictureDate = data.metaMap.pictureDate='undefined'? 'null' : data.metaMap.pictureDate;
+					var lensName = data.metaMap.lensName='undefined'? 'null' : data.metaMap.lensName;
+					
+					 
 					
 					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
 					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
 					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
+					tags += '<input type="hidden" name="camera" id="camera" value="'+cameraName+'"/>';
+					tags += '<input type="hidden" name="resolutionH" id="resolutionH" value="'+resolH+'"/>';
+					tags += '<input type="hidden" name="resolutionW" id="resolutionW" value="'+resolW+'"/>';
+					tags += '<input type="hidden" name="photoDate" id="photoDate" value="'+Date(pictureDate)+'"/>';
+					tags += '<input type="hidden" name="lens" id="lens" value="'+lensName+'"/>';
+					
 					$('#tagA').append(tags)
 					/* $('#taginputtest').attr("data-role","tagsinput"); */
 					console.log('와요?')
 					$("input[data-role=tagsinput]").tagsinput();
 					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
+					
 				}
 			,beforeSend:function(){
 				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
