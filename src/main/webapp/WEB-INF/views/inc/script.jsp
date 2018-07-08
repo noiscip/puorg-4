@@ -49,7 +49,7 @@
      <!-- 네이버 로그인 -->
     <script src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" type="text/javascript" charset="utf-8"></script>
     <!-- dataTable -->
-     <script src="<%=request.getContextPath()%>/DataTables/DataTables-1.10.18/js/dataTables.bootstrap.js" type="text/javascript" charset="utf8"></script>
+     
      <script src="<%=request.getContextPath()%>/DataTables/datatables.js" type="text/javascript" charset="utf8"></script>
      
      <!-- 차트 -->

@@ -381,10 +381,11 @@ public class PictureController {
 	@RequestMapping("uploadAfter.ps")
 	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		
+		System.out.println("업로드 애프터");
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
 		pictureService.insertPicture(picture);
+		
 		wpS3(picture);
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
@@ -539,7 +540,7 @@ public class PictureController {
 		model.addAttribute("result",result);
 		return jsonview;
 	}
-	
+	 
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : pictureBookmark
