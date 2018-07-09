@@ -204,12 +204,23 @@
 		
 		$('.apply-register').hide();
 		$('.apply-pic-register').click(function(){
-			if($('.apply-pic-register').hasClass('open-confirm')){
+			if($('.apply-pic-register').hasClass('open-register')){
 				$('.apply-register').hide();
-				$('.apply-pic-register').removeClass('open-confirm');
+				$('.apply-pic-register').removeClass('open-register');
 			}else{
 				$('.apply-register').show();
-				$('.apply-pic-register').addClass('open-confirm');
+				$('.apply-pic-register').addClass('open-register');
+			}
+		});
+		
+		$('.apply-complete').hide();
+		$('.apply-pic-complete').click(function(){
+			if($('.apply-pic-complete').hasClass('open-complete')){
+				$('.apply-complete').hide();
+				$('.apply-pic-complete').removeClass('open-complete');
+			}else{
+				$('.apply-complete').show();
+				$('.apply-pic-complete').addClass('open-complete');
 			}
 		});
 		
@@ -253,7 +264,7 @@
 	
 	/* 게시판 상세 페이지 위에 여백 조정 */
 	.board-content-pad{
-		padding-top: 40px;
+		padding-top: 50px;
 	}
 	
 	/* container 아래 여백 */
@@ -269,12 +280,24 @@
 	
 	/* 진행중일때 아래 여백 없애기 */
 	.board-processing-pad{
+		padding-top: 40px;
 		padding-bottom: 0px;
 	}
 	
 	/* 게시판 내용 위 여백 삭제  */
 	.board-content-toppad{
 		padding-top: 0px !important;
+	}
+	
+	/* 게시판 내용 패딩 삭제 */
+	.board-content-paddel{
+		padding-top: 0px !important;
+		padding-bottom: 0px !important; 
+	}
+	
+	/* 작업 내용 margin top */
+	.board-description-mar{
+		margin-top: 30px !important;
 	}
 	
 </style>
@@ -285,66 +308,72 @@
 <div class="section section-gray">
 		<div class="container board-container-pad">
 		<div class="main main-raised main-product">
-			<div class="row" align="center" >
+			<div class="row">
 				<div class="col-md-12 ml-auto mr-auto">
-					<h2 class="title">${boardInfo.brdTitle}</h2>
+					<h2 class="title text-center">${boardInfo.brdTitle}</h2>
 					
 					<c:if test="${boardInfo.operStateNo eq 1}">
 						<div class="board-border-pad">
-						<div class="row board-content-pad">
-							<div class="col-md-4 info-horizontal mr-auto ml-auto">
-		                         <div class="description">
-		                             <h4 class="info-title "><i class="material-icons" style="color: #00bcd4">date_range</i> 희망 완료 날짜</h4>
-		                             <p class="description">
-		                                 <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${boardInfo.brdExpectEndDate}" />
-		                             </p>
-		                         </div>
-		                    </div>
-		                    <div class="col-md-4 info-horizontal mr-auto ml-auto">
-		                        <div class="description">
-		                            <h4 class="info-title"><i class="material-icons" style="color: #9c27b0">attach_money</i> 희망 가격</h4>
-		                            <p class="description">
-		                                <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
-		                            </p>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-4 info-horizontal mr-auto ml-auto">
-		                        <div class="description">
-		                            <h4 class="info-title"><i class="material-icons" style="color: #f44336">copyright</i> 저작권</h4>
-		                            <p class="description">
-		                            	<c:choose>
-		                            		<c:when test="${boardInfo.copyright eq 'T'}">
-		                            			저작권 양도 허용
-		                            		</c:when>
-		                            		<c:otherwise>
-		                            			저작권 양도 거부
-		                            		</c:otherwise>
-		                            	</c:choose>
-		                            </p>
-		                        </div>
-		                    </div>
-						
-					</div>
-					
-					<div class="card card-collapse">
-							<div class="card-header" id="headingOne">
-								<h5 class="mb-0">
-									
-								</h5>
-							</div>
-							<div id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-								<div class="card-body">
-									<p>${boardInfo.brdContent}</p>
-								</div>
-							</div>
-							<div class="card-header board-content-toppad" id="headingOne">
-								<h5 class="mb-0">
-									
-								</h5>
-							</div>
-						</div>
-					
-					
+						<div class="projects-4 board-processing-pad">
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-3 ml-auto">
+			                        <div class="info info-horizontal">
+			                            <div class="icon icon-info">
+			                                <i class="material-icons">date_range</i>
+			                            </div>
+			                            <div class="description">
+			                                <h4 class="info-title">희망 완료 날짜</h4>
+			                                <p class="description">
+			                                   <fmt:formatDate pattern="yyyy-MM-dd"  value="${boardInfo.brdExpectEndDate}" />
+			                                </p>
+			                            </div>
+			                        </div>
+			                        <div class="info info-horizontal">
+			                            <div class="icon icon-success">
+			                                <i class="material-icons">attach_money</i>
+			                            </div>
+			                            <div class="description">
+			                                <h4 class="info-title">희망 금액</h4>
+			                                <p class="description">
+			                                   <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
+			                                </p>
+			                            </div>
+			                        </div>
+			                        <div class="info info-horizontal">
+			                            <div class="icon icon-rose">
+			                                <i class="material-icons">copyright</i>
+			                            </div>
+			                            <div class="description">
+			                                <h4 class="info-title">저작권</h4>
+			                                <p class="description">
+			                                   <c:choose>
+				                            		<c:when test="${boardInfo.copyright eq 'T'}">
+				                            			저작권 양도 허용
+				                            		</c:when>
+				                            		<c:otherwise>
+				                            			저작권 양도 거부
+				                            		</c:otherwise>
+				                              </c:choose>
+			                                </p>
+			                            </div>
+			                        </div>
+			                    </div>
+		                    
+			                    <div class="col-md-7 mr-auto">
+			                        <div class="card card-background" style="background-image:url('<%=request.getContextPath()%>/assets/img/examples/camera-581126_1920.jpg')">
+			                            <a href="#pablo"></a>
+			                            <div class="card-body board-content-paddel card-title">
+			                                <h3 class="card-title">Content</h3>
+			                                <p class="card-title card-description board-description-mar">
+			                                    ${boardInfo.brdContent}
+			                                </p>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="col-md-1"></div>
+			                </div>
+			                </div>
 					
 					<div class="projects-4 board-content-pad" id="projects-4">
 						<div class="row">
@@ -442,7 +471,11 @@
 								</div>
 							</div>
 						</div>
-						</div>					
+						</div>		
+						
+						
+						
+									
 					</c:if>
 				</div>
 			</div>
@@ -455,9 +488,10 @@
 				<c:when test="${boardInfo.operStateNo ne 1}">
 						<div class="row board-content-pad">
 							<div class="col-md-12 ml-auto mr-auto">
-
+							
 								<div class="row">
-									<div class="col-md-2 info-horizontal mr-auto ml-auto">
+									<div class="col-md-3"></div>
+									<div class="col-md-3 info-horizontal mr-auto ml-auto">
 				                         <div class="description">
 				                             <h4 class="info-title "><i class="material-icons">person</i> 요청자</h4>
 				                             <p class="description">
@@ -465,7 +499,7 @@
 				                             </p>
 				                         </div>
 				                    </div>
-				                    <div class="col-md-2 info-horizontal mr-auto ml-auto">
+				                    <div class="col-md-3 info-horizontal mr-auto ml-auto">
 				                         <div class="description">
 				                             <h4 class="info-title "><i class="material-icons">person</i> 작업자</h4>
 				                             <p class="description">
@@ -473,55 +507,70 @@
 				                             </p>
 				                         </div>
 				                    </div>
-									<div class="col-md-3 info-horizontal mr-auto ml-auto">
-				                         <div class="description">
-				                             <h4 class="info-title "><i class="material-icons" style="color: #00bcd4">date_range</i> 작업 완료 날짜</h4>
-				                             <p class="description">
-				                                 <fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss" value="${boardInfo.brdExpectEndDate}" />
-				                             </p>
-				                         </div>
-				                    </div>
-				                    <div class="col-md-2 info-horizontal mr-auto ml-auto">
-				                        <div class="description">
-				                            <h4 class="info-title"><i class="material-icons" style="color: #9c27b0">attach_money</i> 거래 금액</h4>
-				                            <p class="description">
-				                                <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
-				                            </p>
-				                        </div>
-				                    </div>
-				                    <div class="col-md-2 info-horizontal mr-auto ml-auto">
-				                        <div class="description">
-				                            <h4 class="info-title"><i class="material-icons" style="color: #f44336">copyright</i> 저작권</h4>
-				                            <p class="description">
-				                            	<c:choose>
-				                            		<c:when test="${boardInfo.copyright eq 'T'}">
-				                            			저작권 양도 허용
-				                            		</c:when>
-				                            		<c:otherwise>
-				                            			저작권 양도 거부
-				                            		</c:otherwise>
-				                            	</c:choose>
-				                            </p>
-				                        </div>
-				                    </div>
-			                    </div>
-			                    <div class="card card-collapse">
-									<div class="card-header" id="headingOne">
-										<h5 class="mb-0">
-											
-										</h5>
-									</div>
-									<div id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-										<div class="card-body">
-											<p>${boardInfo.brdContent}</p>
-										</div>
-									</div>
-									<div class="card-header board-content-toppad" id="headingOne">
-										<h5 class="mb-0">
-											
-										</h5>
-									</div>
-								</div>
+				                    <div class="col-md-3"></div>
+				                    
+				                    
+					              </div>
+					              <div class="projects-4 board-processing-pad">
+										<div class="row">
+											<div class="col-md-1"></div>
+											<div class="col-md-3 ml-auto">
+						                        <div class="info info-horizontal">
+						                            <div class="icon icon-info">
+						                                <i class="material-icons">date_range</i>
+						                            </div>
+						                            <div class="description">
+						                                <h4 class="info-title">작업 완료 날짜</h4>
+						                                <p class="description">
+						                                   <fmt:formatDate pattern="yyyy-MM-dd"  value="${boardInfo.brdExpectEndDate}" />
+						                                </p>
+						                            </div>
+						                        </div>
+						                        <div class="info info-horizontal">
+						                            <div class="icon icon-success">
+						                                <i class="material-icons">attach_money</i>
+						                            </div>
+						                            <div class="description">
+						                                <h4 class="info-title">거래 금액</h4>
+						                                <p class="description">
+						                                   <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
+						                                </p>
+						                            </div>
+						                        </div>
+						                        <div class="info info-horizontal">
+						                            <div class="icon icon-rose">
+						                                <i class="material-icons">copyright</i>
+						                            </div>
+						                            <div class="description">
+						                                <h4 class="info-title">저작권</h4>
+						                                <p class="description">
+						                                   <c:choose>
+							                            		<c:when test="${boardInfo.copyright eq 'T'}">
+							                            			저작권 양도 허용
+							                            		</c:when>
+							                            		<c:otherwise>
+							                            			저작권 양도 거부
+							                            		</c:otherwise>
+							                              </c:choose>
+						                                </p>
+						                            </div>
+						                        </div>
+						                    </div>
+					                    
+						                    <div class="col-md-7 mr-auto">
+						                        <div class="card card-background" style="background-image:url('<%=request.getContextPath()%>/assets/img/examples/camera-581126_1920.jpg')">
+						                            <div class="card-body board-content-paddel card-title">
+						                                <h3 class="card-title">Content</h3>
+						                                <p class="card-title card-description board-description-mar">
+						                                    ${boardInfo.brdContent}
+						                                </p>
+						                            </div>
+						                        </div>
+						                    </div>
+						                    <div class="col-md-1"></div>
+						                </div>
+					                </div>
+								
 								<div class="projects-4 board-content-pad board-processing-pad" id="projects-4">
 									<div class="row">
 										<div class="col-md-12 ml-auto mr-auto" align="left">
@@ -603,9 +652,18 @@
 																						</button>
 																					</c:when>
 																					<c:otherwise>
-																						<button type="button" class="btn btn-primary btn-md float-left apply-pic-register">
-																							<i class="material-icons">linked_camera</i> &nbsp;작업 사진 등록
-																						</button>
+																						<c:choose>
+																							<c:when test="${boardInfo.operStateNo eq 3}">
+																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-complete">
+																									<i class="material-icons">linked_camera</i> &nbsp;거래된 사진 보기
+																								</button>
+																							</c:when>
+																							<c:otherwise>
+																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-register">
+																									<i class="material-icons">linked_camera</i> &nbsp;작업 사진 등록
+																								</button>
+																							</c:otherwise>
+																						</c:choose>
 																					</c:otherwise>
 																				</c:choose>
 																		</div>
@@ -887,6 +945,19 @@
 					
 				</div>
 			</c:if>
+			
+			<c:if test="${boardInfo.operStateNo eq 3}">
+				<div class="apply-complete" align="center">
+				<h5>거래 완료된 사진</h5>
+					<div>
+						<div style="height: 350px; width : 350px;">
+							<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
+						</div>
+					</div>
+					
+				</div>
+			</c:if>
+			
 		</div>
 	<!-- </div> -->
 	
