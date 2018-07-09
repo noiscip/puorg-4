@@ -452,7 +452,7 @@
 			<div class="col-md-12 ml-auto mr-auto">
 				<div class="board-border-pad">
 			<c:choose>
-				<c:when test="${boardInfo.operStateNo eq 2}">
+				<c:when test="${boardInfo.operStateNo ne 1}">
 						<div class="row board-content-pad">
 							<div class="col-md-12 ml-auto mr-auto">
 
@@ -703,26 +703,26 @@
 								<!-- </div> -->
 							</div>
 						</div>
-						
-						<div align="center">
-							<c:choose>
-								<c:when test="${operation.operatorEnd ne 'T'}">
-									<button type="button" class="btn btn-danger">작업자 확인</button>
-								</c:when>
-								<c:otherwise>
-									<button type="button" class="btn btn-success">작업자 확인</button>
-								</c:otherwise>
-							</c:choose>
-							<c:choose>
-								<c:when test="${operation.requesterEnd ne 'T'}">
-									<button type="button" class="btn btn-danger">요청자 확인</button>
-								</c:when>
-								<c:otherwise>
-									<button type="button" class="btn btn-success">요청자 확인</button>
-								</c:otherwise>
-							</c:choose>
-						</div>
-						
+						<c:if test="${boardInfo.operStateNo eq 2}">
+							<div align="center">
+								<c:choose>
+									<c:when test="${operation.operatorEnd ne 'T'}">
+										<button type="button" class="btn btn-danger">작업자 확인</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" class="btn btn-success">작업자 확인</button>
+									</c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${operation.requesterEnd ne 'T'}">
+										<button type="button" class="btn btn-danger">요청자 확인</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" class="btn btn-success">요청자 확인</button>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</c:if>
 				</c:when>
 			</c:choose>
 			
