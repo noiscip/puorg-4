@@ -245,10 +245,10 @@ public class VisionApi {
 		image = getImage(filePath);
 		List<String> labelList = new ArrayList<String>();
 
+		
 		Feature feature = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).build();
 		AnnotateImageRequest request = AnnotateImageRequest.newBuilder().addFeatures(feature).setImage(image).build();
 		requests.add(request);
-
 		try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
 			BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
 			List<AnnotateImageResponse> responses = response.getResponsesList();
