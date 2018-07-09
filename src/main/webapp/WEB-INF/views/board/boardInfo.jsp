@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style type="text/css">
+	.bootstrap-tagsinput .tag {
+		background-color: #9c27b0;
+	}
+</style>
+
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
@@ -143,7 +149,7 @@
 							console.log(data)
 							$('#upload').remove();
 							html+='<div style="height: 350px; width : 350px; text-align: center;">';
-							html+='<img alt="No Image"  height="100%" width="100%" src="${operPicture.picPath}">';
+							html+='<img alt="No Image"  height="100%" width="100%" src="'+data.operPicture.picPath+'">';
 							html+='</div>';
 							$('.apply-register').append(html);
 							console.log("성공");
@@ -1187,6 +1193,20 @@
 					$('#tagA').append(tags)
 					/* $('#taginputtest').attr("data-role","tagsinput"); */
 					console.log('와요?')
+					
+					/*색깔*/
+					var color =''
+					$.each(data.color,function(i,elt){
+						
+						/* color += '<input type="hidden" name="colorList['+i+']" id="colorList['+i+']" value="'+elt.red +','+ elt.green +','+ elt.blue+'"/>'; */
+					 	color += '<input type="hidden" name="colorList['+i+'].colorR" id="colorList['+i+'].colorR" value="'+elt.red+'"/>';
+						color += '<input type="hidden" name="colorList['+i+'].colorG" id="colorList['+i+'].colorG" value="'+elt.green+'"/>';
+						color += '<input type="hidden" name="colorList['+i+'].colorB" id="colorList['+i+'].colorB" value="'+elt.blue+'"/>';
+						
+					}) 
+					$('#tagA').append(color);
+					
+					
 					$("input[data-role=tagsinput]").tagsinput();
 					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
 					$('#savePicture').show();

@@ -385,6 +385,7 @@ public class PictureController {
 	public String insertPicture(Picture picture, @RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		System.out.println("업로드 애프터");
+		System.out.println(picture);
 		for(Colors c : picture.getColorList()) {
 			System.out.println("색 : "+ c);
 			System.out.println("RED   : " + c.getColorR());
@@ -507,7 +508,7 @@ public class PictureController {
 			System.out.println(picture.getPicPath().split("\\\\")[2]);
 			saveFileName=picture.getPicPath().split("\\\\")[2];
 		}else {		
-			saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+			saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
 		}
 		System.out.println("요기는 세이브 파일 네임 !!!!!!!!!!!!" + saveFileName);
 		//원본사진 변경
