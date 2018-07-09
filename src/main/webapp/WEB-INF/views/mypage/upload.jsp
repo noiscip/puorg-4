@@ -121,6 +121,13 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 									Remove
 								</a>
 							</div>
+							<div id="peopleRadio" style="display: none; float: left;">
+								<input type="radio" name="people" id="zero" value="0"> 0명<br>
+  								<input type="radio" name="people" id="one" value="1"> 1명<br>
+  								<input type="radio" name="people" id="two" value="2"> 2명<br> 
+  								<input type="radio" name="people" id="thr" value="3"> 3~5명<br> 
+  								<input type="radio" name="people" id="six" value="6"> 6명 이상<br> 
+							</div>
 						</div>
 					
 					</form>
@@ -201,6 +208,22 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						$('h1').append(logo)
 						
 					}
+					/*사람수 측정*/
+					$('#peopleRadio').show();
+					var peopleNum = data.face.length;
+					console.log(peopleNum);
+					if(peopleNum==0){
+						$('#zero').checked=true;
+					}else if(peopleNum==1){
+						$('#one').checked=true;
+					}else if(peopleNum==2){
+						console.log("두명이다!");
+						$('#two').attr('checked',true);
+					}else if(peopleNum>=3&&peopleNum<=5){
+						$('#thr').checked=true;
+					}else{
+						$('#six').checked=true;
+					}
  					/*얼굴감지*/
  					console.log($(".fileinput-preview").children());
  					$(".fileinput-preview").children().attr({
@@ -226,6 +249,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					console.log(scalW);
 					
  					 if(data.face != null){
+						
  						var modelUse =''
  						modelUse += '<div class="alert alert-info">'
  						modelUse += 	'<div class="container-fluid">'
