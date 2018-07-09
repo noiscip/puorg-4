@@ -47,7 +47,6 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 		System.out.println("현재 접속되어 있는 유저");
 		System.out.println(users);
 		String[] info = message.getPayload().split(":");
-		
 		int receiveUserNo = Integer.valueOf(info[1]);
 		
 		if(users.get(receiveUserNo) != null) {

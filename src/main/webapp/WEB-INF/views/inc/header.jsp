@@ -214,7 +214,7 @@ $(function(){
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item">
-							<a href="" class="nav-link" data-toggle="dropdown" id="alram">
+							<a href="" data-toggle="dropdown" id="alram">
 						
 							</a>
 								<ul class="dropdown-menu" id="noticeList">
@@ -247,9 +247,6 @@ $(function(){
 		                    </a>
 		                    <a href="<%=request.getContextPath()%>/user/bookmarklist.ps" class="dropdown-item">
 		                        <i class="material-icons">bookmark</i>즐겨찾기
-		                    </a>
-		                    <a href="<%=request.getContextPath()%>/user/followinglist.ps" class="dropdown-item">
-		                        <i class="material-icons">favorite</i>팔로잉
 		                    </a>
 		                    <a href="<%=request.getContextPath()%>/message/receivemessage.ps" class="dropdown-item">
 		                        <i class="material-icons">mail</i>메시지함

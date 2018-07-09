@@ -155,8 +155,9 @@
 		  
 		  	function send(receiveUser,tableNo) {
 			  	var loginUser = $('#loginUserNo').val()
-			  
-		        wsocket.send(loginUser+":"+receiveUser+":"+tableNo);
+			  	if(loginUser != receiverUser){
+			        wsocket.send(loginUser+":"+receiveUser+":"+tableNo);
+			  	}
 		    }
 			//////WEB SOCKET/////
 		  	//top으로

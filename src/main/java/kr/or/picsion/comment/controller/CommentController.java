@@ -72,16 +72,19 @@ public class CommentController {
 		if (result == 1) {
 			System.out.println("댓글쓰기 성공");
 			int receiveUser = boardService.selectBoard(comment.getBrdNo()).getUserNo();
-			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
-
-			noticeMap.put("no", comment.getBrdNo());
-			noticeMap.put("addNo", comment.getCmtNo());
-			noticeMap.put("sendUserNo", comment.getUserNo());
-			noticeMap.put("receiveUserNo", receiveUser);
-			noticeMap.put("table", "brdNo, cmtNo");
-			noticeMap.put("tableNo", 4);
-
-			noticeService.insertNotice(noticeMap);
+			if(receiveUser != user.getUserNo()) {
+					
+				HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+	
+				noticeMap.put("no", comment.getBrdNo());
+				noticeMap.put("addNo", comment.getCmtNo());
+				noticeMap.put("sendUserNo", comment.getUserNo());
+				noticeMap.put("receiveUserNo", receiveUser);
+				noticeMap.put("table", "brdNo, cmtNo");
+				noticeMap.put("tableNo", 4);
+	
+				noticeService.insertNotice(noticeMap);
+			}
 		} else {
 			System.out.println("댓글쓰기 실패");
 		}
@@ -135,16 +138,18 @@ public class CommentController {
 		List<User> newcommentUserList = commentService.picCommentUserList(picNo); // 댓글 유저 목록
 
 		int receiveUser = pictureService.picInfo(user.getUserNo(), comment.getPicNo()).getUserNo();
-		HashMap<String, Object> noticeMap = new HashMap<String, Object>();
-
-		noticeMap.put("no", comment.getPicNo());
-		noticeMap.put("addNo", comment.getCmtNo());
-		noticeMap.put("sendUserNo", comment.getUserNo());
-		noticeMap.put("receiveUserNo", receiveUser);
-		noticeMap.put("table", "picNo, cmtNo");
-		noticeMap.put("tableNo", 4);
-
-		noticeService.insertNotice(noticeMap);
+		if(receiveUser != user.getUserNo()) {
+			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+			
+			noticeMap.put("no", comment.getPicNo());
+			noticeMap.put("addNo", comment.getCmtNo());
+			noticeMap.put("sendUserNo", comment.getUserNo());
+			noticeMap.put("receiveUserNo", receiveUser);
+			noticeMap.put("table", "picNo, cmtNo");
+			noticeMap.put("tableNo", 4);
+			
+			noticeService.insertNotice(noticeMap);
+		}
 		model.addAttribute("newcommentUserList", newcommentUserList);
 		model.addAttribute("newcommentlist", newcommentlist);
 		return jsonview;

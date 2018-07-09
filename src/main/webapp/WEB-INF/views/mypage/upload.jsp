@@ -88,7 +88,6 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 		<ul class="nav nav-pills justify-content-center my-ul">
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
@@ -122,11 +121,11 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 								</a>
 							</div>
 							<div id="peopleRadio" style="display: none; float: left;">
-								<input type="radio" id="zero"> 0명<br>
-  								<input type="radio" id="one"> 1명<br>
-  								<input type="radio" id="two"> 2명<br> 
-  								<input type="radio" id="thr"> 3~5명<br> 
-  								<input type="radio" id="six"> 6명 이상<br> 
+								<input type="radio" name="people" id="zero"> 0명<br>
+  								<input type="radio" name="people" id="one"> 1명<br>
+  								<input type="radio" name="people" id="two"> 2명<br> 
+  								<input type="radio" name="people" id="thr"> 3~5명<br> 
+  								<input type="radio" name="people" id="six"> 6명 이상<br> 
 							</div>
 						</div>
 					
@@ -172,16 +171,20 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 <script>
 	$(function() {
 		
-
 		$('input[type=file]').change(function() {
-			console.log($(this))
+			console.log($('#picTags')[0].children.length)
+			console.log($('#picTags'))
+			$('#tagA').empty()
+			if($('#picTags')[0].children.length >3){
+				for(var i = 3; i < $('#picTags')[0].children.length; i++){
+					$('#picTags')[0].children[i].remove()
+				}
+			}
+			
 			var formData = new FormData($('#fileForm')[0])
-			console.log("클릭가능????")
-			console.log(formData)
 			$("fileinput-preview fileinput-exists thumbnail img-raised:first").attr({
 				id:"preview"
 			})
-			console.log($("#preview").attr("src"))
 			$.ajax({
 				url : "/picsion/vision.ps",
 				data : formData,
@@ -201,11 +204,11 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						logo += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
 						logo += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
 						logo += 		'</button>'
-						logo += 		'<b>Warning Alert</b>' + data.logo
+						logo += 		'<b>Warning Alert</b> ' + data.logo
 						logo += 	'</div>'
 						logo += '</div>'
 						
-						$('h1').append(logo)
+						$('h1').after(logo)
 						
 					}
 					/*사람수 측정*/
@@ -291,7 +294,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						safe += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
 						safe += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
 						safe += 		'</button>'
-						safe += 		'<b>Warning Alert</b>' + data.safe
+						safe += 		'<b>Warning Alert</b> ' + data.safe
 						safe += 	'</div>'
 						safe += '</div>'
 						$('h1').after(safe)
