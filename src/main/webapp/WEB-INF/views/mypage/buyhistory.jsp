@@ -61,7 +61,7 @@
 								</td>
 								<td class="td-name"><a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${picture.picNo}">${picture.picTitle}</a>
 									<br> <small>by ${userInfo[status.index].userName}</small></td>
-								<td class="text-center"></td>
+								<td class="text-center">${picture.resolutionH} X ${picture.resolutionW}</td>
 								<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${purchaseInfo[status.index].purchaseReg}" /></td>
 								<td class="td-number text-center"><fmt:formatNumber value="${picture.picPrice}" pattern="#,###"/><small>원</small></td>
 								<td class="text-center"><a id="download" href="${picture.picPath}"><i class="material-icons">vertical_align_bottom</i></a></td>
