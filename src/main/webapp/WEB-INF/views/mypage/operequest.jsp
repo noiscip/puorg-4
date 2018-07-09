@@ -18,8 +18,17 @@
 </style>
 <script type="text/javascript">
 $(document).ready( function () {
-    $('#datatable').DataTable();
-    $('#datatable2').DataTable();
+	 
+    $('#datatable').DataTable({
+        "order": [[ 0, "desc" ]],
+    	"bInfo": false,
+    	"bLengthChange": false
+    });
+    $('#datatable2').DataTable({
+        "order": [[ 0, "desc" ]],
+    	"bInfo": false,
+    	"bLengthChange": false
+    });
 } );
 
 </script>
@@ -43,7 +52,6 @@ $(document).ready( function () {
 				<li class="nav-item"><a class="nav-link"
 					href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 			</ul>
-			<div class="gallery ">
 				<form class="form-inline">
 					<a href="#" class="btn btn-default dropdown-toggle"
 						data-toggle="dropdown"> 요청/작업 리스트 </a>
@@ -134,7 +142,6 @@ $(document).ready( function () {
 					</div>
 
 				</div>
-			</div>
 		</div>
 	</div>
 </div>
