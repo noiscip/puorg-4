@@ -304,7 +304,7 @@
 		                        <div class="description">
 		                            <h4 class="info-title"><i class="material-icons" style="color: #9c27b0">attach_money</i> 희망 가격</h4>
 		                            <p class="description">
-		                                ${boardInfo.brdExpectPrice}원
+		                                <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
 		                            </p>
 		                        </div>
 		                    </div>
@@ -485,7 +485,7 @@
 				                        <div class="description">
 				                            <h4 class="info-title"><i class="material-icons" style="color: #9c27b0">attach_money</i> 거래 금액</h4>
 				                            <p class="description">
-				                                ${boardInfo.brdExpectPrice}원
+				                                <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
 				                            </p>
 				                        </div>
 				                    </div>
@@ -757,7 +757,7 @@
 												operUserNo="${apply.operUserNo}"
 												operApplyAppeal="${apply.operApplyAppeal}">
 												<td class="text-center">${applyid[status.index]}</td>
-												<td class="text-center">${apply.operApplyPrice}</td>
+												<td class="text-center"><fmt:formatNumber value="${apply.operApplyPrice}" pattern="#,###"/>원</td>
 												<td class="text-center">${apply.operApplyReg}</td>
 											</tr>
 										</c:forEach>
