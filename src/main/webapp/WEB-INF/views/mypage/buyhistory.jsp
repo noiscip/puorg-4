@@ -35,7 +35,7 @@
 				<ul>
 					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
 					<li><a href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
-					<li style="float:right;"><b>총 구매 금액 : </b><small>${sumPurchase}원</small></li>
+					<li style="float:right;"><b>총 구매 금액 : </b><small><fmt:formatNumber value="${sumPurchase}" pattern="#,###"/>원</small></li>
 				</ul>
 				<div class="table-responsive">
 				
@@ -63,7 +63,7 @@
 									<br> <small>by ${userInfo[status.index].userName}</small></td>
 								<td class="text-center"></td>
 								<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${purchaseInfo[status.index].purchaseReg}" /></td>
-								<td class="td-number text-center">${picture.picPrice}<small>원</small></td>
+								<td class="td-number text-center"><fmt:formatNumber value="${picture.picPrice}" pattern="#,###"/><small>원</small></td>
 								<td class="text-center"><a id="download" href="${picture.picPath}"><i class="material-icons">vertical_align_bottom</i></a></td>
 							</tr>
 						</c:forEach>

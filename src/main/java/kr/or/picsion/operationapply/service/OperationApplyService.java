@@ -22,6 +22,30 @@ public class OperationApplyService {
 	@Autowired
 	private SqlSession sqlSession;
 
+	
+	
+	
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 9.
+	* 메소드명 : countOperationApply
+	* 작성자명 : 김준수 
+	* 기      능 : 중복 신청 확인
+	*
+	* @param operationApply
+	* @return
+	*/
+	public int countOperationApply(OperationApply operationApply) {
+		int result=0;
+		System.out.println("countOperationApply");
+		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
+		result=operationApplyDao.countOperationApply(operationApply);		
+		return result;
+	}
+	
+	
+	
 	/**
 	 * 날 짜 : 2018. 6. 29. 
 	 * 메소드명 : insertOperationApply 

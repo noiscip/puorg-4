@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <script type="text/javascript">
@@ -119,26 +120,28 @@
 		                    success : function(data){
 		                        
 		                        $.each(data.scrollPicList, function(index, obj){
+		                        		
+		                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
+										"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+										"<img class='rounded img-size' src='"+obj.picWater+"' alt=''>"+
+										"</a><div>"+
+			                    		"<div class='counts hide-xs hide-sm'>";
+			                    		if(obj.respectCheck=="T"){
+											scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+			                    		}else{
+			                    			scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+			                    		}
+			                    		
+			                    		if(obj.bookmarkCheck=="T"){
+			                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+			                    		}else{
+			                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+			                    		}
+										scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"'>"+data.scrollOwnerList[index].userName+"</a></div></div>";
+										
+			                        	$('#studioview').append(scrollPage);
+                        	
 		                        	
-		                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
-												"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-												"<img class='rounded img-size' src='"+obj.picWater+"' alt=''>"+
-												"</a><div>"+
-					                    		"<div class='counts hide-xs hide-sm'>";
-					                    		if(obj.respectCheck=="T"){
-													scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-					                    		}else{
-					                    			scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-					                    		}
-					                    		
-					                    		if(obj.bookmarkCheck=="T"){
-					                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-					                    		}else{
-					                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-					                    		}
-									scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"'>"+data.scrollOwnerList[index].userName+"</a></div></div>";
-									
-		                        	$('#studioview').append(scrollPage);
 		                        })
 		                        
 							    page+=data.endpage;
@@ -462,7 +465,8 @@ function followerPaging(userNo, pg){
 				<div class="tz-gallery">
 				<div class="row" id="studioview">
 					<c:forEach items="${piclist}" var="studioPic" varStatus="status">
-						<div class="item col-sm-6 col-md-4">
+					 <fmt:parseNumber var="var3" value="${studioPic.resolutionW/studioPic.resolutionH}" pattern="#.#" />
+						  <div class="item col-sm-12 col-md-4">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}">
 							<img class="rounded img-size" src="${studioPic.picWater}" alt="">
 							</a>
@@ -488,6 +492,7 @@ function followerPaging(userNo, pg){
 			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${studioPic.userNo}">${ownerList[status.index].userName}</a>
                				</div>
 						</div>
+						
 					</c:forEach>
 					</div>
 					</div>
