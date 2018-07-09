@@ -704,7 +704,7 @@ label.btn.btn-default.btn-circle.focus {
 	margin: 20px
 }
 
-.img-size {
+ .img-size {
 	height: 300px;
 	width: 100%;
 }
@@ -932,31 +932,6 @@ $(document).ready(function() {
                         success : function(data){
                             
                             $.each(data.latestPicList, function(index, obj){
-                            	if((obj.resolutionW/obj.resolutionH) >= 1.9){
-                            		
-                            		scrollPage="<div class='item col-sm-12 col-md-8'>"+
-									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-									"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-									"</a>"+
-								   "<div>"+
-				                   "<div class='counts hide-xs hide-sm'>";
-				                   if(obj.respectCheck=="T"){
-				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-				                   }else{
-				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-				                   }
-				                   
-				                   if(obj.bookmarkCheck=="T"){
-				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-				                   }else{
-				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-				                   }
-				                   
-				                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
-				                 
-	              				  $('#picall').append(scrollPage);
-                            		
-                            	}else{
                             		
                             		scrollPage="<div class='item col-sm-12 col-md-4'>"+
 									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
@@ -979,7 +954,7 @@ $(document).ready(function() {
 				                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
 				                 
 	                				$('#picall').append(scrollPage);
-                            	}
+                            	
                        
                             	
                             })
@@ -1042,7 +1017,33 @@ $(document).ready(function() {
 			}
 		})
 		
-		
+		//검색 태그 autocomplete
+		$("#searchAll2").autocomplete({
+			          
+						matchContains: true,
+						source : function(request, response) {
+							if($('#searchAll2').val()!=''){
+							$.ajax({
+								type : 'post',
+								url : "/picsion/picture/searchpicture.ps",
+								dataType : "json",
+								//request.term = $("#autocomplete").val() 
+								data : {tagParam : request.term},
+								success : function(data) {
+									console.log(data.searchTagList);
+									response(data.searchTagList);
+								}
+							});
+							}
+						},
+						//조회를 위한 최소글자수 
+						minLength : 1,
+						select : function(event, ui) {
+							console.log(ui.item.value);
+							$('#searchAll2').val(ui.item.value);
+							$('.autosend').submit();
+						},
+					});
 	
 })
 </script>
@@ -1063,19 +1064,20 @@ $(document).ready(function() {
 						<div class="card card-raised card-form-horizontal">
 							<div class="card-body ">
 							
-								<form action="/picsion/picture/tagpicList.ps">
+								<form action="/picsion/picture/tagpicList.ps" class="autosend">
 									<div class="row">
 										<div class="col-md-9">
 											<div class="form-group has-default bmd-form-group">
-							                       <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
+							                       <input id="searchAll2" type="text" name="tag" class="form-control" placeholder="Search">
 							                 </div>
 										</div>
 
 										<div class="col-md-3">
-											<button id="submitbtn"class="btn btn-primary btn-block">PICSION</button>
+											<button id="submitbtn" type="submit" class="btn btn-primary btn-block">PICSION</button>
 										</div>
 									</div>
 								</form>
+								
 							</div>
 						</div>
 					</div>
@@ -1232,9 +1234,7 @@ $(document).ready(function() {
 						 <fmt:parseNumber var="var3" value="${lapic.resolutionW/lapic.resolutionH}" pattern="#.#" />
 						 
 						  
-						  <c:choose>
-						  <c:when test="${var3 >= 1.9}">
-						   <div class="item col-sm-12 col-md-8">
+						   <div class="item col-sm-12 col-md-4">
 								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
 								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
 								</a>
@@ -1261,8 +1261,9 @@ $(document).ready(function() {
 	               				</div>
 							</div>
 						   <input type="hidden" value="${var3}"/>
-						  </c:when> 
-						  <c:otherwise>
+						  
+						   
+						<%--   <c:if test="${var3 < 1.9}">
 						   <div class="item col-sm-12 col-md-4">
 								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
 								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
@@ -1292,9 +1293,8 @@ $(document).ready(function() {
 							</div>
 							 <input type="hidden" value="${var3}"/>
 						  
-						  </c:otherwise>
+						  </c:if> --%>
 						 
-						  </c:choose>
 						  
 							
 						</c:forEach>

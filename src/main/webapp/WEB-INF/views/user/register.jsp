@@ -54,7 +54,7 @@
                             <i class="material-icons">face</i>
                           </span>
                         </div>
-                        <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디...">
+                        <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디..." autocomplete="off">
                         <input type="button" class="btn btn-primary btn-sm" id="userIdCheck" value="중복체크">
                       </div>
                     </div>
@@ -65,7 +65,7 @@
                             <i class="material-icons">text_format</i>
                           </span>
                         </div>
-                        <input type="text" class="form-control" name="userName" placeholder="이름...">
+                        <input type="text" class="form-control" name="userName" placeholder="이름..." autocomplete="off">
                       </div>
                     </div>
                     <div class="form-group">

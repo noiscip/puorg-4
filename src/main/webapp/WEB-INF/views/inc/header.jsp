@@ -3,6 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 $(function(){
 	console.log($('#loginUserNo').val())
 	if($('#loginUserNo').val() != 0){
@@ -110,7 +115,7 @@ $(function(){
 					select : function(event, ui) {
 						console.log(ui.item.value);
 						$('#searchAll').val(ui.item.value);
-						$('form[class="form-inline"]').submit();
+						$('.autosend').submit();
 					},
 				});
 	
@@ -186,11 +191,11 @@ $(function(){
         </button>
       </div>
       <div class="collapse navbar-collapse">
-      	<form action="/picsion/picture/tagpicList.ps" class="form-inline">
+      	<form action="/picsion/picture/tagpicList.ps" class="form-inline autosend">
                  <div class="form-group has-default bmd-form-group">
                        <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
-                 <button id="submitbtn" class="btn btn-white btn-raised btn-fab btn-fab-mini btn-round">
+                 <button id="submitbtn" type="submit" class="btn btn-white btn-raised btn-fab btn-fab-mini btn-round">
                     <i class="material-icons">search</i>
                 </button>
            </form>

@@ -14,13 +14,22 @@
 }
 /*얼굴 영역 잡기 */
 .face-rectangle {
-  id:faceIt;
+  /* id:faceIt; */
   position:absolute;
   height: 100px;
   width: 100px; 
-  border:3px solid #555;
+  border:3px solid;
+  border-color:#555;
   background-color: transparent;
-  
+ /*  background-position: inherit; */
+}
+@-webkit-keyframes rainbow {
+  0% {color: hsl(0, 100%, 50%);}
+  100% {color: hsl(255, 100%, 50%);}
+}
+
+.rainbow-color {
+  -webkit-animation: rainbow 5s infinite alternate;
 }
 </style>
 
@@ -46,7 +55,8 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 	img.parentElement.insertBefore(sagac,img);
 /* 	sagac.style.backgroundImage = "url('"+img.src+"')"; */
 	sagac.style.backgroundRepeat = "no-repeat";
-	sagac.style.width=rectWid + "px";
+	/* sagc.style.background-origin = "padding-box"; */
+	sagac.style.width= rectWid + "px";
 	sagac.style.height=rectHei + "px";
 	
 	sagac.style.backgroundSize = img.width + "px " + img.height + "px";
@@ -56,12 +66,16 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 		
 		x = rectX; 
 		y = rectY;
-		
+		x*=1;
 		sagac.style.left = x+"px";
 		sagac.style.top = y+"px";
 	}
+	
 }
-
+/* $("#preview").mouseover(function(){
+	$("#preview").style("color","red");
+	
+	 $("#preview").css("class", "rainbow-color"); }) */
 </script>
 
 <div id="changemain" class="page-header header-filter clear-filter purple-filter"
@@ -106,6 +120,13 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 									data-dismiss="fileinput"> <i class="fa fa-times"></i>
 									Remove
 								</a>
+							</div>
+							<div id="peopleRadio" style="display: none; float: left;">
+								<input type="radio" id="zero"> 0명<br>
+  								<input type="radio" id="one"> 1명<br>
+  								<input type="radio" id="two"> 2명<br> 
+  								<input type="radio" id="thr"> 3~5명<br> 
+  								<input type="radio" id="six"> 6명 이상<br> 
 							</div>
 						</div>
 					
@@ -157,7 +178,6 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 			var formData = new FormData($('#fileForm')[0])
 			console.log("클릭가능????")
 			console.log(formData)
-			console.log($("img").attr("src"))
 			$("fileinput-preview fileinput-exists thumbnail img-raised:first").attr({
 				id:"preview"
 			})
@@ -185,8 +205,23 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						logo += 	'</div>'
 						logo += '</div>'
 						
-						$('h1').after(logo)
+						$('h1').append(logo)
 						
+					}
+					/*사람수 측정*/
+					$('#peopleRadio').show();
+					var peopleNum = data.face.length;
+					console.log(peopleNum);
+					if(peopleNum==0){
+						$('#zero').attr('checked',true);
+					}else if(peopleNum==1){
+						$('#one').attr('checked',true);
+					}else if(peopleNum==2){
+						$('#two').attr('checked',true);
+					}else if(peopleNum>=3&&peopleNum<=5){
+						$('#thr').attr('checked',true);
+					}else{
+						$('#six').attr('checked',true);
 					}
  					/*얼굴감지*/
  					console.log($(".fileinput-preview").children());
@@ -202,6 +237,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					var natHei = $("#preview")["0"].naturalHeight;
 					var chaWid = $("#preview")["0"].width;
 					var natWid = $("#preview")["0"].naturalWidth;
+					var moveLeft = $("#preview")["0"].offsetLeft;
 					chaHei *= 1;
 					natHei *= 1;
 					chaWid *= 1;
@@ -210,11 +246,23 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					var scalW = (chaWid/natWid).toFixed(3);
 					console.log(scalH);
 					console.log(scalW);
- 					 if(data.face != null){
+					
+ 					 if(data.face != 0){
+						
+ 						var modelUse =''
+ 						modelUse += '<div class="alert alert-info">'
+ 						modelUse += 	'<div class="container-fluid">'
+ 						modelUse += 		'<div class="alert-icon">'
+ 						modelUse += 			'<i class="material-icons">warning</i>'
+ 						modelUse += 		'</div>'
+ 						modelUse += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+ 						modelUse += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+ 						modelUse += 		'</button>'
+ 						modelUse += 		'<b>Warning Alert</b>' + ' 사진 속에 사람이 감지되었습니다. 모델 사용권을 확인해주세요.'
+ 						modelUse += 	'</div>'
+ 						modelUse += '</div>'
+ 						$('h1').after(modelUse)
  						console.log("얼굴그리기")
- 						/* $("fileinput-preview fileinput-exists thumbnail img-raised").attr({
- 							position:"relative"
- 						}) */
  						$(".fileinput-preview").attr({
  							position:"relative"
  						})
@@ -224,50 +272,17 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
  						$.each(data.face,function(i,val){
  							console.log(val.x_0,val.y_1,val.width,
  									val.height);
- 							drawFace("preview",Math.ceil(scalW*val.x_0),scalH*val.y_1,scalW*val.width,
+ 							drawFace("preview",Math.ceil(scalW*val.x_0)+moveLeft,scalH*val.y_1,scalW*val.width,
  	 								scalH*val.height);
- 							console.log(Math.ceil(scalW*val.x_0),scalH*val.y_1,scalW*val.width,
+ 							console.log(Math.ceil(scalW*val.x_0)+moveLeft,scalH*val.y_1,scalW*val.width,
  	 								scalH*val.height);
  						})
- 						 /* $('canvas').drawImage({
- 							source: $('.fileinput-preview')["0"].children["0"].src,
- 							x: 10, y: 10,
- 							load:rec
- 						});
  						
- 						function rec(){
- 							console.log("이게 되낭?");
- 							$('canvas').drawRect({
-								strokeStyle:"#FF0000",
-								strokeWidth:4,
-								x:data.face["0"].x_0, y:data.face["0"].y_1,
-								width:data.face["0"].width,
-								height:data.face["0"].height
- 							});
- 						}
- 						 
- 						 
- 						   $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */  
- 						//이 밑에 잠시 주석걸겠습니다
- 						/*  $('canvas').drawImage({
- 							source: $('.fileinput-preview')['0'].children['0'].src,
- 							x: 100, y: 100,
- 							load:rec
- 						});
- 						function rec(){
- 							console.log("이게 되낭?");
- 							$('canvas').drawRect({
- 							strokeStyle:"#FF0000",
- 							strokeWidth:2,
- 							x:100, y:100,
- 							width:20,
- 							height:20
- 							});
- 						} */
   						
  					} 
-					var safe = ''
+					
 					if(data.safe != null){
+						var safe = ''
 						safe += '<div class="alert alert-danger">'
 						safe += 	'<div class="container-fluid">'
 						safe += 		'<div class="alert-icon">'
@@ -310,6 +325,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					tags += '<input type="hidden" name="resolutionW" id="resolutionW" value="'+resolW+'"/>';
 					tags += '<input type="hidden" name="photoDate" id="photoDate" value="'+Date(pictureDate)+'"/>';
 					tags += '<input type="hidden" name="lens" id="lens" value="'+lensName+'"/>';
+					tags += '<input type="hidden" name="picPeople" id="picPeople" value="'+peopleNum+'"/>';
 					
 					$('#tagA').append(tags)
 					/* $('#taginputtest').attr("data-role","tagsinput"); */
@@ -325,4 +341,21 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 			})
 		})
 	})
+$(document).ready(function(){
+	
+	$(document).on('mouseover','.face-rectangle',function(){
+		 $(this).css("border-color","#000");
+	});
+	$(document).on('mouseout','.face-rectangle',function(){
+		 $(this).css("border-color","#555");
+	});
+	
+	
+	/* $(".face-rectangle").mouseover(function(){
+		consol.log("띠띠");
+		$(".face-rectangle").style("border-color","red");
+	
+	/* $("#preview").css("class", "rainbow-color"); 
+	}); */
+});
 </script>
