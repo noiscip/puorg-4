@@ -96,7 +96,9 @@
 							requestUserNo : ${boardInfo.userNo},
 							brdNo : ${boardInfo.brdNo}
 						},
-						success : function(data) {}
+						success : function(data) {
+							console.log(data);
+						}
 					});	
 				});
 		
@@ -1071,9 +1073,25 @@
 					
 					$('#picTags').append(tags)
 					
+					
+					
+					var cameraName = data.metaMap.cameraName=='undefined'? 'null' : data.metaMap.cameraName;
+					var resolH = data.metaMap.resolH=='undefined'? 'null' : data.metaMap.resolH;
+					var resolW = data.metaMap.resolW=='undefined'? 'null' : data.metaMap.resolW;
+					var pictureDate = data.metaMap.pictureDate=='undefined'? 'null' : data.metaMap.pictureDate;
+					var lensName = data.metaMap.lensName=='undefined'? 'null' : data.metaMap.lensName;
+					
+					
 					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
 					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
 					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
+					tags += '<input type="hidden" name="camera" id="camera" value="'+cameraName+'"/>';
+					tags += '<input type="hidden" name="resolutionH" id="resolutionH" value="'+resolH+'"/>';
+					tags += '<input type="hidden" name="resolutionW" id="resolutionW" value="'+resolW+'"/>';
+					tags += '<input type="hidden" name="photoDate" id="photoDate" value="'+Date(pictureDate)+'"/>';
+					tags += '<input type="hidden" name="lens" id="lens" value="'+lensName+'"/>';
+					
+					
 					$('#tagA').append(tags)
 					/* $('#taginputtest').attr("data-role","tagsinput"); */
 					console.log('와요?')
