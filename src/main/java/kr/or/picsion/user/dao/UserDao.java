@@ -31,7 +31,6 @@ public interface UserDao {
 	public List<User> followerUserList(int userNo);		//나를 따르는 유저 리스트 (팔로워 회원들)		>>
 	public List<User> followerUserPaging(int userNo, int start, int rowSize);	//내가 따르는 유저 리스트 (팔로잉 회원들/페이징)
 	public int getFollowerCount(int userNo);			//나를 따르는 유저의 총 명수
-	
 	public int followingConfirm(int userNo, int followingUserNo);	//팔로잉하고 있는지 확인
 	public List<Picture> followingUserPictureList(int userNo, int page, int endpage);		//내가 팔로잉한 유저 최신 사진 리스트
 	public List<User> followingUserPictureOwnerList(int userNo, int page, int endpage);  	//내가 팔로잉한  유저 최신 사진의 주인 리스트
@@ -42,7 +41,6 @@ public interface UserDao {
 	public User selectAccountNo(String accountNo, String portalSite);      		//계정 연동 확인
 	public int updateRole(int userNo); 				//계정 연동 되었을 경우 권한 업데이트
 	public int pointCharge(int point, int userNo);	//캐시 충전
-	public List<User> randomUsers(int userNo);      //랜덤 유저 추천
 	public List<User> bestUploader();				//최근 7일간 최다 업로더 4명
 	public List<User> mostFollowingUser(); 		    //팔로워가 많은 순서 유저 리스트
 	 

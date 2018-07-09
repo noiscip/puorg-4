@@ -28,7 +28,7 @@
 		                        <i class="material-icons">face</i>
 		                      </span>
 		                    </div>
-		                    <input type="text" class="form-control" name="userId" placeholder="아이디...">
+		                    <input type="text" class="form-control" name="userId" placeholder="아이디..." autocomplete="off">
 	                  		</div>
 	                  	</span>
 						<span class="bmd-form-group">

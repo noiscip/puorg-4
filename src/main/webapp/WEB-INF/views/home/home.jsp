@@ -704,7 +704,7 @@ label.btn.btn-default.btn-circle.focus {
 	margin: 20px
 }
 
-.img-size {
+ .img-size {
 	height: 300px;
 	width: 100%;
 }
@@ -932,28 +932,31 @@ $(document).ready(function() {
                         success : function(data){
                             
                             $.each(data.latestPicList, function(index, obj){
+                            		
+                            		scrollPage="<div class='item col-sm-12 col-md-4'>"+
+									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+									"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+									"</a>"+
+								   "<div>"+
+				                   "<div class='counts hide-xs hide-sm'>";
+				                   if(obj.respectCheck=="T"){
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+				                   }
+				                   
+				                   if(obj.bookmarkCheck=="T"){
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+				                   }
+				                   
+				                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
+				                 
+	                				$('#picall').append(scrollPage);
                             	
-                            	scrollPage="<div class='item col-sm-6 col-md-4'>"+
-    											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-    											"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-    											"</a>"+
-    										   "<div>"+
-    						                   "<div class='counts hide-xs hide-sm'>";
-    						                   if(obj.respectCheck=="T"){
-    						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-    						                   }else{
-    						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-    						                   }
-    						                   
-    						                   if(obj.bookmarkCheck=="T"){
-    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-    						                   }else{
-    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-    						                   }
-    						                   
-    						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
-    						                 
-    			                $('#picall').append(scrollPage);
+                       
+                            	
                             })
     					    page+=data.endpage;
              				
@@ -1014,7 +1017,33 @@ $(document).ready(function() {
 			}
 		})
 		
-		
+		//검색 태그 autocomplete
+		$("#searchAll2").autocomplete({
+			          
+						matchContains: true,
+						source : function(request, response) {
+							if($('#searchAll2').val()!=''){
+							$.ajax({
+								type : 'post',
+								url : "/picsion/picture/searchpicture.ps",
+								dataType : "json",
+								//request.term = $("#autocomplete").val() 
+								data : {tagParam : request.term},
+								success : function(data) {
+									console.log(data.searchTagList);
+									response(data.searchTagList);
+								}
+							});
+							}
+						},
+						//조회를 위한 최소글자수 
+						minLength : 1,
+						select : function(event, ui) {
+							console.log(ui.item.value);
+							$('#searchAll2').val(ui.item.value);
+							$('.autosend').submit();
+						},
+					});
 	
 })
 </script>
@@ -1035,19 +1064,20 @@ $(document).ready(function() {
 						<div class="card card-raised card-form-horizontal">
 							<div class="card-body ">
 							
-								<form action="/picsion/picture/tagpicList.ps">
+								<form action="/picsion/picture/tagpicList.ps" class="autosend">
 									<div class="row">
 										<div class="col-md-9">
 											<div class="form-group has-default bmd-form-group">
-							                       <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
+							                       <input id="searchAll2" type="text" name="tag" class="form-control" placeholder="Search">
 							                 </div>
 										</div>
 
 										<div class="col-md-3">
-											<button id="submitbtn"class="btn btn-primary btn-block">PICSION</button>
+											<button id="submitbtn" type="submit" class="btn btn-primary btn-block">PICSION</button>
 										</div>
 									</div>
 								</form>
+								
 							</div>
 						</div>
 					</div>
@@ -1200,9 +1230,11 @@ $(document).ready(function() {
 				<div class="flex_grid credits">
 					<div class="tz-gallery">
 					<div class="row" id="picall">
-						<c:forEach items="${latestPicList}" var="lapic"
-							varStatus="status">
-							<div class="item col-sm-6 col-md-4">
+						<c:forEach items="${latestPicList}" var="lapic"	varStatus="status">
+						 <fmt:parseNumber var="var3" value="${lapic.resolutionW/lapic.resolutionH}" pattern="#.#" />
+						 
+						  
+						   <div class="item col-sm-12 col-md-4">
 								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
 								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
 								</a>
@@ -1228,10 +1260,47 @@ $(document).ready(function() {
 				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
 	               				</div>
 							</div>
+						   <input type="hidden" value="${var3}"/>
+						  
+						   
+						<%--   <c:if test="${var3 < 1.9}">
+						   <div class="item col-sm-12 col-md-4">
+								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
+								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
+								</a>
+								<div>
+				                    <div class="counts hide-xs hide-sm ">
+				                    <c:choose>
+										<c:when test="${lapic.respectCheck eq 'T'}">
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite</i>${lapic.respectCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite_border</i>${lapic.respectCount}</em>
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${lapic.bookmarkCheck eq 'T'}">
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark</i>${lapic.bookmarkCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark_border</i>${lapic.bookmarkCount}</em>
+										</c:otherwise>
+									</c:choose>
+				                    </div>
+				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
+	               				</div>
+							
+							</div>
+							 <input type="hidden" value="${var3}"/>
+						  
+						  </c:if> --%>
+						 
+						  
+							
 						</c:forEach>
 					</div>	
 				</div>
-			</div> 
+			</div>  
 			
 			
 			

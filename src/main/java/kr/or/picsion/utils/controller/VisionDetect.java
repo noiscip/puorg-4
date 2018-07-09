@@ -45,6 +45,8 @@ public class VisionDetect {
 	*/
 	@RequestMapping(value = "opervision.ps", method=RequestMethod.POST)
 	public View opervision(String filePath,Model model) {
+		vision.operpicinfo(filePath, model);
+		System.out.println(filePath);
 		vision.visionPocket(filePath,model);
 		return jsonview;
 	}

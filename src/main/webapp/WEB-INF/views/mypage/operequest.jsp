@@ -78,7 +78,7 @@ $(document).ready( function () {
 										<td>${item.userName}</td>
 										<td><a
 											href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${item.brdNo}">${item.brdTitle}</a></td>
-										<td>${item.brdExpectPrice}</td>
+										<td><fmt:formatNumber value="${item.brdExpectPrice}" pattern="#,###"/>원</td>
 										<td><small> ·<fmt:formatDate
 													pattern="yyyy-MM-dd, HH:mm:ss" value="${item.brdReg}" />
 										</small></td>
@@ -100,7 +100,7 @@ $(document).ready( function () {
 							<thead>
 								<tr class="info">
 									<th>#</th>
-									<th>작업자</th>
+									<th>요청자</th>
 									<th>제목</th>
 									<th>금액</th>
 									<th>날짜</th>
@@ -117,7 +117,7 @@ $(document).ready( function () {
 										<td>${item.userName}</td>
 										<td><a
 											href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${item.brdNo}">${item.brdTitle}</a></td>
-										<td>${item.brdExpectPrice}</td>
+										<td><fmt:formatNumber value="${item.brdExpectPrice}" pattern="#,###"/>원</td>
 										<td><small> ·<fmt:formatDate
 													pattern="yyyy-MM-dd, HH:mm:ss" value="${item.brdReg}" />
 										</small></td>

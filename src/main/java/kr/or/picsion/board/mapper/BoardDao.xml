@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- requestListv(내 요청 게시판 리스트) -->
  <select id="requestBoardList" parameterType="Integer" 
                            resultType="kr.or.picsion.board.dto.Board">
-     select b2.brdNo as brdNo, b2.brdTitle as brdTitle, b2.brdContent as brdContent, b2.brdExpectPrice as brdExpectPrice, b2.brdExpectEndDate as brdExpectEndDate, b2.copyright as copyright, b2.brdReg as brdReg,b2.operNo as userNo, b2.tableNo as tableNo, u.userName as userName, u.userId as userId, os.operState as operState from (select b.*, o.operNo as operNo from (select * from BOARD where userNo=#{userNo}) b left join OPERATION o on b.brdNo=o.brdNo) b2 left join USERS u on b2.operNo=u.userNo join OPERATIONSTATE os on b2.operStateNo=os.operStateNo;
+     select b2.brdNo as brdNo, b2.brdTitle as brdTitle, b2.brdContent as brdContent, b2.brdExpectPrice as brdExpectPrice, b2.brdExpectEndDate as brdExpectEndDate, b2.copyright as copyright, b2.brdReg as brdReg,b2.operNo as userNo, b2.tableNo as tableNo, u.userName as userName, u.userId as userId, os.operState as operState from (select b.*, o.operatorNo as operNo from (select * from BOARD where userNo=#{userNo}) b left join OPERATION o on b.brdNo=o.brdNo) b2 left join USERS u on b2.operNo=u.userNo join OPERATIONSTATE os on b2.operStateNo=os.operStateNo;
  </select>
 
 <!-- getBoardCount(글 전체 건수) -->

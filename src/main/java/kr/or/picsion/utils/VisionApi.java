@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
@@ -150,67 +151,11 @@ public class VisionApi {
 					File newFile = new File(uploadPath + saveFileName);
 					mFile.transferTo(newFile);
 
-					Metadata metadata;
+					
 					System.out.println("업로드에서 메타 출력전--------------------------------------------------------");
-					String picInfo = "";
+					
 					try {
-						metadata = ImageMetadataReader.readMetadata(newFile);
-						for (Directory directory : metadata.getDirectories()) {
-							System.out.println(directory);
-							for (Tag tag : directory.getTags()) {
-								System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(), tag.getDescription());
-								
-								//메타 데이터 정보 저장
-								if(tag.getTagName().equals("Model")) {
-									System.out.println("카메라 정보 "+tag.getDescription());
-									String cameraName = tag.getDescription();
-									metaMap.put("cameraName", cameraName);
-									
-								}
-								if(tag.getTagName().equals("Date/Time Original")) {
-									System.out.println("찍은 날짜 "+tag.getDescription());
-									String pictureDate = tag.getDescription();
-									metaMap.put("pictureDate", pictureDate);
-								}
-								if(tag.getTagName().equals("Lens Model")) {
-									System.out.println("렌즈 정보  "+tag.getDescription());
-									String lensName = tag.getDescription();
-									metaMap.put("lensName", lensName);
-								}
-								if(tag.getTagName().split(" ")[0].equals("Image")) {
-									if(tag.getTagName().split(" ")[1].equals("Height")) {
-										String resolH = tag.getDescription();
-										metaMap.put("resolH", resolH);
-									}
-									if(tag.getTagName().split(" ")[1].equals("Width")) {
-										String resolW = tag.getDescription();
-										metaMap.put("resolW", resolW);
-									}
-								}
-								if(tag.getTagName().equals("File Size")) {
-									System.out.println("우잉"+tag.getDescription().split(" ")[0]);
-									if(Integer.parseInt(tag.getDescription().split(" ")[0])>10485760) {
-										System.out.println("10MB 넘는 사진입니다");
-										//사진 크기 압축
-										String ss = saveFileName.split("\\.")[0];
-										filePath=pictureService.imageCompr(newFile,uploadPath + ss+"com.jpg");
-									}
-								}
-								
-								if (!directory.getName().equals("Exif Thumbnail") && tag.getTagName().split(" ")[0].equals("Image")) {
-									picInfo += tag.getDescription().split(" ")[0];
-																		
-								}
-							}
-							if (directory.hasErrors()) {
-								for (String error : directory.getErrors()) {
-									System.err.format("ERROR: %s", error);
-								}
-							}
-						}
-						System.out.println("해상도");
-						System.out.println(picInfo);
-
+						metaMap=metadata(uploadPath, saveFileName, newFile);				
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -224,11 +169,121 @@ public class VisionApi {
 			} // if end
 
 		}
+		System.out.println(metaMap);
+		System.out.println(metaMap.get("filePath"));
+		filePath=metaMap.get("filePath");
 		model.addAttribute("metaMap",metaMap);
 		System.out.println("완성 ?" + filePath);
 		return filePath;
 	} // fileUpload end
 
+	public String operpicinfo(String  filePath, Model model) {
+
+		String uploadPath = "/resources/upload/";
+		System.out.println("호호호");
+		String saveFileName =filePath.split("/")[5].split("\\.")[0]+"."+filePath.split("\\.")[4];
+		File file = new File(uploadPath+saveFileName);
+		Map<String, String> metaMap = new HashMap<>();
+		metaMap=metadata(uploadPath, saveFileName, file);	
+		filePath = metaMap.get("filePath");
+		model.addAttribute("metaMap",metaMap);
+		return filePath;
+	}
+	
+	//metaMap 뽑기
+	/**
+	* 날      짜 : 2018. 7. 8.
+	* 메소드명 : metadata
+	* 작성자명 : 김준수 , 이아림
+	* 기      능 : 
+	*
+	* @param uploadPath
+	* @param saveFileName
+	* @param newFile
+	* @return
+	*/
+	public Map<String, String> metadata(String uploadPath, String saveFileName, File newFile){
+		Map<String, String> metaMap = new HashMap<>();
+		metaMap.put("filePath", uploadPath + saveFileName);
+		Metadata metadata = null;
+		try {
+			metadata = ImageMetadataReader.readMetadata(newFile);
+		} catch (ImageProcessingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (Directory directory : metadata.getDirectories()) {
+			System.out.println(directory);
+			for (Tag tag : directory.getTags()) {
+				System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(), tag.getDescription());
+				
+				//메타 데이터 정보 저장
+				if(tag.getTagName().equals("Model")) {
+					System.out.println("카메라 정보 "+tag.getDescription());
+					String cameraName = tag.getDescription();
+					metaMap.put("cameraName", cameraName);
+					
+				}
+				if(tag.getTagName().equals("Date/Time Original")) {
+					System.out.println("찍은 날짜 "+tag.getDescription());
+					String pictureDate = tag.getDescription();
+					metaMap.put("pictureDate", pictureDate);
+				}
+				if(tag.getTagName().equals("Lens Model")) {
+					System.out.println("렌즈 정보  "+tag.getDescription());
+					String lensName = tag.getDescription();
+					metaMap.put("lensName", lensName);
+				}
+				if(tag.getTagName().split(" ")[0].equals("Image")) {
+					if(tag.getTagName().split(" ")[1].equals("Height")) {
+						String resolH = tag.getDescription();
+						metaMap.put("resolH", resolH);
+					}
+					if(tag.getTagName().split(" ")[1].equals("Width")) {
+						String resolW = tag.getDescription();
+						metaMap.put("resolW", resolW);
+					}
+				}
+				if(tag.getTagName().equals("File Size")) {
+					System.out.println("우잉"+tag.getDescription().split(" ")[0]);
+					if(Integer.parseInt(tag.getDescription().split(" ")[0])>10485760) {
+						System.out.println("10MB 넘는 사진입니다");
+						//사진 크기 압축
+						String ss = saveFileName.split("\\.")[0];
+						try {
+							metaMap.put("filePath",pictureService.imageCompr(newFile,uploadPath + ss+"com.jpg"));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					
+				}
+				
+				if (!directory.getName().equals("Exif Thumbnail") && tag.getTagName().split(" ")[0].equals("Image")) {
+					
+														
+				}
+			}
+			if (directory.hasErrors()) {
+				for (String error : directory.getErrors()) {
+					System.err.format("ERROR: %s", error);
+				}
+			}
+		}
+		System.out.println("해상도");
+
+		
+		
+		
+		return metaMap;
+	}
+	
+	
+	
 	/**
 	 * 날      짜 : 2018. 7. 2. 
 	 * 메소드명 : detectLabels 
@@ -388,12 +443,12 @@ public class VisionApi {
 
 				// For full list of available annotations, see http://g.co/cloud/vision/docs
 				for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-					System.out.println("position: %s" + annotation.getFdBoundingPoly() + "\n");
+					System.out.println("position: %s" + annotation.getBoundingPoly() + "\n");
 					// faceXY+=annotation.getBoundingPoly();
-					facePoly.add(new Face(annotation.getFdBoundingPoly().getVertices(0).getX(),
-							annotation.getFdBoundingPoly().getVertices(1).getX(),
-							annotation.getFdBoundingPoly().getVertices(1).getY(),
-							annotation.getFdBoundingPoly().getVertices(2).getY()));
+					facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
+							annotation.getBoundingPoly().getVertices(1).getX(),
+							annotation.getBoundingPoly().getVertices(1).getY(),
+							annotation.getBoundingPoly().getVertices(2).getY()));
 				}
 			}
 
