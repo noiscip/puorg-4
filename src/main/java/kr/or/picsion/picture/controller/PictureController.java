@@ -320,7 +320,7 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("operpicupload.ps")
-	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo) {
+	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo, Model model) {
 		User user = (User) session.getAttribute("user");	
 		Operation operation = new Operation();
 		operation.setOperNo(operNo);
@@ -353,6 +353,7 @@ public class PictureController {
 					operation.setOperatorEnd("T");
 					operationService.updateOperation(operation);
 					operPictureService.insertOperPicture(operPicture);
+					operPicture=operPictureService.selectOperpicture(operNo);
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
@@ -362,6 +363,7 @@ public class PictureController {
 			} 	
 			System.out.println("디비 패쓰"+dbPath);			
 			System.out.println(operPicture);
+			model.addAttribute("operPicture", operPicture);
 			
 			
 		return jsonview;
