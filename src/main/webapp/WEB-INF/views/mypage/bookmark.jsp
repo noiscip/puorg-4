@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript">
 $(function() {
@@ -79,7 +80,9 @@ $(function() {
                         
                         $.each(data.scrollPicList, function(index, obj){
                         	
-                        	scrollPage="<div class='item col-sm-6 col-md-4'>"+
+                        	if((obj.resolutionW/obj.resolutionH) >= 1.9){
+                        	
+                        	scrollPage="<div class='item col-sm-12 col-md-8'>"+
 											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 											"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
 											"</a>"+
@@ -100,6 +103,30 @@ $(function() {
 						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
 						                 
 			                $('#bookpic').append(scrollPage);
+			                
+                        	}else{
+                        		scrollPage="<div class='item col-sm-12 col-md-8'>"+
+								"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+								"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+								"</a>"+
+							   "<div>"+
+			                   "<div class='counts hide-xs hide-sm'>";
+			                   if(obj.respectCheck=="T"){
+			                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+			                   }else{
+			                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+			                   }
+			                   
+			                   if(obj.bookmarkCheck=="T"){
+			                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+			                   }else{
+			                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+			                   }
+			                   
+			                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
+			                 
+                			   $('#bookpic').append(scrollPage);
+                        	}
                         })
 					    page+=data.endpage;
          				
@@ -137,7 +164,7 @@ $(function() {
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
 <div class="main">
 	<div class="profile-content">
-		<div class="container-fluid">
+		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
@@ -159,7 +186,10 @@ $(function() {
 						<c:otherwise>
 							<div class="row" id="bookpic">
 								<c:forEach items="${bookmarkPicList}" var="bookmarkpic" varStatus="status">
-									<div class="item col-sm-6 col-md-4">
+								 <fmt:parseNumber var="var3" value="${bookmarkpic.resolutionW/bookmarkpic.resolutionH}" pattern="#.#" />
+								  <c:choose>
+						  			<c:when test="${var3 >= 1.9}">
+						  			<div class="item col-sm-12 col-md-8">
 										<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
 										<img class="rounded img-size" src="${bookmarkpic.picWater}"	alt="No Image">
 										</a>
@@ -185,6 +215,39 @@ $(function() {
 						                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${bookmarkPicUserList[status.index].userNo}">${bookmarkPicUserList[status.index].userName}</a>
 			               				</div>
 									</div>
+						  			</c:when>
+						  			<c:otherwise>
+						  			<div class="item col-sm-12 col-md-4">
+										<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
+										<img class="rounded img-size" src="${bookmarkpic.picWater}"	alt="No Image">
+										</a>
+										<div>
+						                    <div class="counts hide-xs hide-sm ">
+						                    <c:choose>
+												<c:when test="${bookmarkpic.respectCheck eq 'T'}">
+													<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite</i>${bookmarkpic.respectCount}</em>
+												</c:when>
+												<c:otherwise>
+													<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite_border</i>${bookmarkpic.respectCount}</em>
+												</c:otherwise>
+											</c:choose>
+											<c:choose>
+												<c:when test="${bookmarkpic.bookmarkCheck eq 'T'}">
+													<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark</i>${bookmarkpic.bookmarkCount}</em>
+												</c:when>
+												<c:otherwise>
+													<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark_border</i>${bookmarkpic.bookmarkCount}</em>
+												</c:otherwise>
+											</c:choose>
+						                    </div>
+						                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${bookmarkPicUserList[status.index].userNo}">${bookmarkPicUserList[status.index].userName}</a>
+			               				</div>
+									</div>
+						  			
+						  			</c:otherwise>
+						  		  </c:choose>
+								
+									
 								</c:forEach>
 							</div>
 						</c:otherwise>

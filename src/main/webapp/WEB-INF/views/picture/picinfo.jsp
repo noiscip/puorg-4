@@ -327,6 +327,36 @@ $(document).ready(function() {
 								style="background-image: url(&quot;${picture.picPath}?auto=format&amp;fit=crop&amp;w=750&amp;q=80&amp;ixid=dW5zcGxhc2guY29tOzs7Ozs%3D&quot;); opacity: 1;"></div>
 						</div>
 						<div class="card-body">
+						<div class="row">
+						<div class="col-md-12">
+						<div class="row">
+						<div class="col-md-2">
+						<h6 class="card-category text-info">해상도 :</h6>
+						</div>
+						<div class="col-md-10">
+						<p class="card-description" style="margin-top: 10px">
+					           ${picture.resolutionW} x  ${picture.resolutionH}
+					        </p>
+						</div>
+						</div>
+					        
+						</div>
+						</div>
+							<div class="row">
+						<div class="col-md-12">
+						<div class="row">
+						<div class="col-md-2">
+						<h6 class="card-category text-info">카메라 :</h6>
+						</div>
+						<div class="col-md-10">
+						<p class="card-description" style="margin-top: 10px">
+					           ${picture.camera}
+					        </p>
+						</div>
+						</div>
+					        
+						</div>
+						</div> 
 						<c:choose>
 						<c:when test="${sessionScope.user eq null}">
 						</c:when>
