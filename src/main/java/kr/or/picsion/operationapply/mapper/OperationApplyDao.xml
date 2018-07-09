@@ -14,6 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from OPERATIONAPPLY where brdNo = #{brdNo} and operUserNo = #{operUserNo}
 </select>
 
+
+
 <insert id="insertOperationApply" parameterType="kr.or.picsion.operationapply.dto.OperationApply" useGeneratedKeys="true" keyProperty="operApplyNo">
 insert into OPERATIONAPPLY (operApplyAppeal,operApplyPrice,operApplyReg,requestUserNo,brdNo,operUserNo)VALUES (#{operApplyAppeal},#{operApplyPrice},#{operApplyReg},#{requestUserNo},#{brdNo},#{operUserNo})
 </insert>

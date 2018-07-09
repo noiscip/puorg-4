@@ -25,6 +25,8 @@ public class OperationApplyService {
 	
 	
 	
+	
+	
 	/**
 	* 날      짜 : 2018. 7. 9.
 	* 메소드명 : countOperationApply
