@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 
 <script>
@@ -138,7 +139,7 @@
 											<th class="text-center"></th>
 											<th>사진</th>
 											<th class="text-center">해상도</th>
-											<th class="text-center">날짜</th>
+											<th class="text-center">촬영 날짜</th>
 											<th class="text-center">가격</th>
 											<th></th>
 										</tr>
@@ -154,8 +155,8 @@
 										</td>
 										<td class="td-name"><a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${cart.picNo}">${cart.picTitle}</a>
 											<br> <small>by ${photographerName[status.index].userName}</small></td>
-										<td class="text-center">${cart.resolution}</td>
-										<td class="td-number text-center">${cart.photoDate}</td>
+										<td class="text-center">${cart.resolutionW} x ${cart.resolutionH}</td>
+										<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${cart.photoDate}" /></td>
 										<td class="td-number text-center">${cart.picPrice}<small>원</small></td>
 										<td class="td-actions">
 											<a id="deleteItem" class="btn btn-link" value="${cart.picNo}" price="${cart.picPrice}" style="padding: 15px 5px 5px"><i class="material-icons">close</i></a>
