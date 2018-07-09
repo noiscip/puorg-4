@@ -19,7 +19,7 @@
     <link href="<%=request.getContextPath()%>/assets/css/payment.css" rel="stylesheet">
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.css" rel="stylesheet" />
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.theme.css" rel="stylesheet" />
-   <link href="<%=request.getContextPath()%>/DataTables/DataTables-1.10.18/css/dataTables.bootstrap.css" rel="stylesheet" />
+   <link href="<%=request.getContextPath()%>/DataTables/DataTables-1.10.18/css/dataTables.bootstrap.css?k=49" rel="stylesheet" />
    
    <!-- Js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

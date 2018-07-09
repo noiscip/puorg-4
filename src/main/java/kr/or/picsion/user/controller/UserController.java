@@ -3,8 +3,11 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
-
-import com.amazonaws.AmazonServiceException;
 
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
@@ -46,6 +47,9 @@ public class UserController {
 	@Autowired
 	private VisionApi vision;
 	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	/**
 	* 날      짜 : 2018. 6. 8.
 	* 메소드명 : register
@@ -70,6 +74,8 @@ public class UserController {
 	*/
 	@RequestMapping(value="register.ps", method=RequestMethod.POST)
 	public String userRegister(User user) {
+//		user.setPwd(bCryptPasswordEncoder.encode(user.getPwd()));
+//		System.out.println("회원가입 비밀번호 : " + user.getPwd());
 		userService.register(user);
 		return "redirect:/home.ps";
 	}
@@ -99,7 +105,16 @@ public class UserController {
 	*/
 	@RequestMapping(value="login.ps", method=RequestMethod.POST)
 	public String userLogin(User user, HttpSession session) {
+//		String password = user.getPwd();
+		
 		User loginUser = userService.login(user);
+//		User loginUser = userService.searchUserId(user.getUserId());
+		System.out.println(loginUser.getPwd());
+		
+//		boolean re = bCryptPasswordEncoder.matches(password,loginUser.getPwd());
+//		System.out.println(re);
+		
+		
 		String result="";
 		if(loginUser != null) {
 			session.setAttribute("user", loginUser);

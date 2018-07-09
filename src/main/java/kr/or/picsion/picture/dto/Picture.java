@@ -34,6 +34,7 @@ public class Picture {
 	private int bookmarkCount;
 	private String transferState;
 	private String lens;
+	private int picPeople;
 
 	public Picture() {
 	}
@@ -41,7 +42,7 @@ public class Picture {
 	public Picture(int picNo, String picTitle, String picContent, Date picReg, String picPath, String picWater,
 			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolutionH, String resolutionW,
 			Date photoDate, List<String> tagContent, String cartCheck, String respectCheck, String bookmarkCheck,
-			int respectCount, int bookmarkCount, String transferState, String lens) {
+			int respectCount, int bookmarkCount, String transferState, String lens, int picPeople) {
 		this.picNo = picNo;
 		this.picTitle = picTitle;
 		this.picContent = picContent;
@@ -64,7 +65,9 @@ public class Picture {
 		this.bookmarkCount = bookmarkCount;
 		this.transferState = transferState;
 		this.lens = lens;
+		this.picPeople = picPeople;
 	}
+
 
 	public int getPicNo() {
 		return picNo;
@@ -242,6 +245,14 @@ public class Picture {
 		this.lens = lens;
 	}
 
+	public int getPicPeople() {
+		return picPeople;
+	}
+
+	public void setPicPeople(int picPeople) {
+		this.picPeople = picPeople;
+	}
+
 	@Override
 	public String toString() {
 		return "Picture [picNo=" + picNo + ", picTitle=" + picTitle + ", picContent=" + picContent + ", picReg="
@@ -250,8 +261,7 @@ public class Picture {
 				+ resolutionH + ", resolutionW=" + resolutionW + ", photoDate=" + photoDate + ", tagContent="
 				+ tagContent + ", cartCheck=" + cartCheck + ", respectCheck=" + respectCheck + ", bookmarkCheck="
 				+ bookmarkCheck + ", respectCount=" + respectCount + ", bookmarkCount=" + bookmarkCount
-				+ ", transferState=" + transferState + ", lens=" + lens + "]";
+				+ ", transferState=" + transferState + ", lens=" + lens + ", picPeople=" + picPeople + "]";
 	}
-
 
 }
