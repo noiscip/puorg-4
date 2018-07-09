@@ -80,31 +80,6 @@ $(function() {
                         
                         $.each(data.scrollPicList, function(index, obj){
                         	
-                        	if((obj.resolutionW/obj.resolutionH) >= 1.9){
-                        	
-                        	scrollPage="<div class='item col-sm-12 col-md-8'>"+
-											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-											"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-											"</a>"+
-										   "<div>"+
-						                   "<div class='counts hide-xs hide-sm'>";
-						                   if(obj.respectCheck=="T"){
-						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-						                   }else{
-						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-						                   }
-						                   
-						                   if(obj.bookmarkCheck=="T"){
-						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-						                   }else{
-						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-						                   }
-						                   
-						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
-						                 
-			                $('#bookpic').append(scrollPage);
-			                
-                        	}else{
                         		scrollPage="<div class='item col-sm-12 col-md-8'>"+
 								"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 								"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
@@ -126,7 +101,6 @@ $(function() {
 			                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.scrollPicUserList[index].userNo+"'>"+data.scrollPicUserList[index].userName+"</a></div></div>";
 			                 
                 			   $('#bookpic').append(scrollPage);
-                        	}
                         })
 					    page+=data.endpage;
          				
@@ -187,36 +161,6 @@ $(function() {
 							<div class="row" id="bookpic">
 								<c:forEach items="${bookmarkPicList}" var="bookmarkpic" varStatus="status">
 								 <fmt:parseNumber var="var3" value="${bookmarkpic.resolutionW/bookmarkpic.resolutionH}" pattern="#.#" />
-								  <c:choose>
-						  			<c:when test="${var3 >= 1.9}">
-						  			<div class="item col-sm-12 col-md-8">
-										<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
-										<img class="rounded img-size" src="${bookmarkpic.picWater}"	alt="No Image">
-										</a>
-										<div>
-						                    <div class="counts hide-xs hide-sm ">
-						                    <c:choose>
-												<c:when test="${bookmarkpic.respectCheck eq 'T'}">
-													<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite</i>${bookmarkpic.respectCount}</em>
-												</c:when>
-												<c:otherwise>
-													<em><i id="like" value="${bookmarkpic.picNo}" class="material-icons">favorite_border</i>${bookmarkpic.respectCount}</em>
-												</c:otherwise>
-											</c:choose>
-											<c:choose>
-												<c:when test="${bookmarkpic.bookmarkCheck eq 'T'}">
-													<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark</i>${bookmarkpic.bookmarkCount}</em>
-												</c:when>
-												<c:otherwise>
-													<em><i id="down" value="${bookmarkpic.picNo}" class="material-icons">bookmark_border</i>${bookmarkpic.bookmarkCount}</em>
-												</c:otherwise>
-											</c:choose>
-						                    </div>
-						                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${bookmarkPicUserList[status.index].userNo}">${bookmarkPicUserList[status.index].userName}</a>
-			               				</div>
-									</div>
-						  			</c:when>
-						  			<c:otherwise>
 						  			<div class="item col-sm-12 col-md-4">
 										<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${bookmarkpic.picNo}">
 										<img class="rounded img-size" src="${bookmarkpic.picWater}"	alt="No Image">
@@ -244,8 +188,6 @@ $(function() {
 			               				</div>
 									</div>
 						  			
-						  			</c:otherwise>
-						  		  </c:choose>
 								
 									
 								</c:forEach>

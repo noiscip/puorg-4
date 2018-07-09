@@ -120,29 +120,6 @@
 		                    success : function(data){
 		                        
 		                        $.each(data.scrollPicList, function(index, obj){
-		                        	if((obj.resolutionW/obj.resolutionH) >= 1.9){
-		                        		
-		                        		scrollPage="<div class='item col-sm-12 col-md-8'>"+
-										"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-										"<img class='rounded img-size' src='"+obj.picWater+"' alt=''>"+
-										"</a><div>"+
-			                    		"<div class='counts hide-xs hide-sm'>";
-			                    		if(obj.respectCheck=="T"){
-											scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-			                    		}else{
-			                    			scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-			                    		}
-			                    		
-			                    		if(obj.bookmarkCheck=="T"){
-			                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-			                    		}else{
-			                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-			                    		}
-										scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"'>"+data.scrollOwnerList[index].userName+"</a></div></div>";
-										
-			                        	$('#studioview').append(scrollPage);
-                        	
-		                        	}else{
 		                        		
 		                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
 										"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
@@ -164,8 +141,6 @@
 										
 			                        	$('#studioview').append(scrollPage);
                         	
-		                        		
-		                        	}
 		                        	
 		                        })
 		                        
@@ -491,36 +466,6 @@ function followerPaging(userNo, pg){
 				<div class="row" id="studioview">
 					<c:forEach items="${piclist}" var="studioPic" varStatus="status">
 					 <fmt:parseNumber var="var3" value="${studioPic.resolutionW/studioPic.resolutionH}" pattern="#.#" />
-						  <c:choose>
-						  <c:when test="${var3 >= 1.9}">
-						  <div class="item col-sm-12 col-md-8">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}">
-							<img class="rounded img-size" src="${studioPic.picWater}" alt="">
-							</a>
-							<div>
-			                    <div class="counts hide-xs hide-sm ">
-			                    <c:choose>
-									<c:when test="${studioPic.respectCheck eq 'T'}">
-										<em><i id="like" value="${studioPic.picNo}" class="material-icons">favorite</i>${studioPic.respectCount}</em>
-									</c:when>
-									<c:otherwise>
-										<em><i id="like" value="${studioPic.picNo}" class="material-icons">favorite_border</i>${studioPic.respectCount}</em>
-									</c:otherwise>
-								</c:choose>
-								<c:choose>
-									<c:when test="${studioPic.bookmarkCheck eq 'T'}">
-										<em><i id="down" value="${studioPic.picNo}" class="material-icons">bookmark</i>${studioPic.bookmarkCount}</em>
-									</c:when>
-									<c:otherwise>
-										<em><i id="down" value="${studioPic.picNo}" class="material-icons">bookmark_border</i>${studioPic.bookmarkCount}</em>
-									</c:otherwise>
-								</c:choose>
-			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${studioPic.userNo}">${ownerList[status.index].userName}</a>
-               				</div>
-						</div>
-						  </c:when>
-						  <c:otherwise>
 						  <div class="item col-sm-12 col-md-4">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}">
 							<img class="rounded img-size" src="${studioPic.picWater}" alt="">
@@ -547,8 +492,6 @@ function followerPaging(userNo, pg){
 			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${studioPic.userNo}">${ownerList[status.index].userName}</a>
                				</div>
 						</div>
-						  </c:otherwise>
-						  </c:choose>
 						
 					</c:forEach>
 					</div>

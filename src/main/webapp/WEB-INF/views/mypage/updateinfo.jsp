@@ -239,7 +239,7 @@
 	                  <div class="form-group update-margin">
 	                  	<label for="exampleInput1" class="bmd-label-floating">자기 소개</label>
 	                    <div class="input-group form-default">
-	                        <input type="text" class="form-control" id="prContent" name="prContent" value="${userinfo.prContent}">
+	                        <input type="text" class="form-control" id="prContent" name="prContent" value="${userinfo.prContent}" autocomplete="off">
 	                     </div>
 	                  </div>
 	                    
@@ -255,7 +255,7 @@
 	                    <div class="form-group">
 	                      <label for="exampleInput1" class="bmd-label-floating">이름</label>
 	                      <div class="input-group">
-	                        <input type="text" class="form-control" id="userName" name="userName" value="${userinfo.userName}">
+	                        <input type="text" class="form-control" id="userName" name="userName" value="${userinfo.userName}" autocomplete="off">
 	                      </div>
 		                    </div>
 		                    <div class="form-group">

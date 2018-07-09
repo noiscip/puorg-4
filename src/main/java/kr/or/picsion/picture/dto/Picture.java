@@ -253,4 +253,5 @@ public class Picture {
 				+ ", transferState=" + transferState + ", lens=" + lens + "]";
 	}
 
+
 }
