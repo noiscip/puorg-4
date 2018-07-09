@@ -124,12 +124,10 @@ public class VisionApi {
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
-
 		Iterator<String> iter = mRequest.getFileNames();
 
 		while (iter.hasNext()) {
 			String uploadFileName = iter.next();
-
 			MultipartFile mFile = mRequest.getFile(uploadFileName);
 
 			String saveFileName = mFile.getOriginalFilename();
