@@ -25,6 +25,7 @@ import kr.or.picsion.operation.dto.OperPicture;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
+import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.purchase.dto.Purchase;
@@ -320,7 +321,7 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("operpicupload.ps")
-	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo) {
+	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo, Model model) {
 		User user = (User) session.getAttribute("user");	
 		Operation operation = new Operation();
 		operation.setOperNo(operNo);
@@ -353,6 +354,7 @@ public class PictureController {
 					operation.setOperatorEnd("T");
 					operationService.updateOperation(operation);
 					operPictureService.insertOperPicture(operPicture);
+					operPicture=operPictureService.selectOperpicture(operNo);
 					
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
@@ -362,6 +364,7 @@ public class PictureController {
 			} 	
 			System.out.println("디비 패쓰"+dbPath);			
 			System.out.println(operPicture);
+			model.addAttribute("operPicture", operPicture);
 			
 			
 		return jsonview;
@@ -379,9 +382,16 @@ public class PictureController {
 	* @return String
 	*/
 	@RequestMapping("uploadAfter.ps")
-	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
+	public String insertPicture(Picture picture, @RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		System.out.println("업로드 애프터");
+		System.out.println(picture);
+		for(Colors c : picture.getColorList()) {
+			System.out.println("색 : "+ c);
+			System.out.println("RED   : " + c.getColorR());
+			System.out.println("GREEN : " + c.getColorG());
+			System.out.println("BLUE  : " + c.getColorB());
+		}
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
 		pictureService.insertPicture(picture);
@@ -498,7 +508,7 @@ public class PictureController {
 			System.out.println(picture.getPicPath().split("\\\\")[2]);
 			saveFileName=picture.getPicPath().split("\\\\")[2];
 		}else {		
-			saveFileName =picture.getPicPath().split("/")[2];//경로빼고 사진 이름이랑 형식만 가져오기
+			saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
 		}
 		System.out.println("요기는 세이브 파일 네임 !!!!!!!!!!!!" + saveFileName);
 		//원본사진 변경
@@ -516,6 +526,8 @@ public class PictureController {
 			System.out.println("s3 경로 생성 실패");
 		}	
 	}
+	
+	
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : pictureRespect

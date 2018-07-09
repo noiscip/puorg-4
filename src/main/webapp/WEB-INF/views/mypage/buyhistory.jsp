@@ -19,11 +19,10 @@
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
 <div class="main">
 	<div class="profile-content">
-		<div class="container" style="padding-bottom: 180px">
+		<div class="container">
 		<ul class="nav nav-pills justify-content-center my-ul">
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>

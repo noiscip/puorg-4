@@ -2,12 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
 
 <script type="text/javascript">
 	$(function() {
 		 $('#datatable').DataTable( {
-		        "order": [[ 0, "desc" ]]
+		        "order": [[ 0, "desc" ]],
+	  			"bInfo": false,    	
+				"bLengthChange": false
 		    } );
 		$(document).on('click', 'button[title=userDelete]', function() {
 
@@ -121,7 +123,7 @@
 						<th class="text-center">삭제</th>
 					</tr>
 				</thead>
-				<tbody id="tableBody">
+				<tbody id="tableBody" style="text-align: center">
 					<c:forEach var="admin" items="${userList}" varStatus="i">
 						<tr>
 							<td class="text-center">${i.count}</td>

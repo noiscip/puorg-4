@@ -16,11 +16,15 @@ $(document).ready( function () {
     
 } );
 </script>
-
+<style>
+	.board-top-pad{
+		margin-top: -11em;
+	}
+</style>
 
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
 <div class="main">
-	<div class="profile-content">
+	<div class="profile-content board-top-pad">
 		<div class="container" id="boardcontainer">
 			<div class="row">
 				<div class="col-md-12 ml-auto mr-auto">
@@ -60,7 +64,7 @@ $(document).ready( function () {
 										</c:choose></td>
 									<td class="text-center">${n.userName}</td>
 									<td class="text-center"><small> ·<fmt:formatDate
-												pattern="yyyy-MM-dd, HH:mm:ss" value="${n.brdReg}" />
+												pattern="yyyy-MM-dd, HH:mm" value="${n.brdReg}" />
 									</small></td>
 									<td class="text-center">${n.operState}</td>
 								</tr>

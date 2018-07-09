@@ -10,11 +10,17 @@
 
 <style type="text/css">
 
-/* 마이페이지 상단 메뉴 위,아래 여백 */
-.my-ul {
-	padding-top: 30px;
-	padding-bottom: 30px;
-}
+	/* 마이페이지 상단 메뉴 위,아래 여백 */
+	.my-ul {
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	
+	.oper-category{
+		margin-bottom: 0px;
+		margin-top: 15px;
+		float:left;
+	}
 </style>
 <script type="text/javascript">
 $(document).ready( function () {
@@ -29,6 +35,8 @@ $(document).ready( function () {
     	"bInfo": false,
     	"bLengthChange": false
     });
+    
+    
 } );
 
 </script>
@@ -43,8 +51,6 @@ $(document).ready( function () {
 				<li class="nav-item"><a class="nav-link"
 					href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
 				<li class="nav-item"><a class="nav-link"
-					href="<%=request.getContextPath()%>/user/followinglist.ps">팔로잉</a></li>
-				<li class="nav-item"><a class="nav-link"
 					href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
 				<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
 				<li class="nav-item"><a class="nav-link active"
@@ -52,7 +58,7 @@ $(document).ready( function () {
 				<li class="nav-item"><a class="nav-link"
 					href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 			</ul>
-				<form class="form-inline">
+				<form class="form-inline oper-category">
 					<a href="#" class="btn btn-default dropdown-toggle"
 						data-toggle="dropdown"> 요청/작업 리스트 </a>
 					<ul class="nav dropdown-menu" role="tablist">

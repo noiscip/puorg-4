@@ -2,13 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
 
 
 <script>
   $( function() {
 	  $('#datatable').DataTable( {
-	        "order": [[ 0, "desc" ]]
+	        "order": [[ 0, "desc" ]],
+  			"bInfo": false,    	
+			"bLengthChange": false
 	    } );
 	  $('.datetimepicker').datetimepicker({
 		    icons: {

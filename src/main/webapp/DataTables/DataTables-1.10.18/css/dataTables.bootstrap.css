@@ -54,9 +54,49 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   margin: 2px 0;
   white-space: nowrap;
 }
+/* .paginate_button{
+	margin: 5px;
+} */
 .paginate_button{
 	margin: 5px;
+    font-size: 17px;
+    border: 2px solid #fff;
+    border-radius: 30px;
+    padding: 5px;
+    color: #9c27b0;
+    font-weight: 500;
+    cursor:pointer;
 }
+.paginate_button:hover,
+.paginate_button:active,
+.paginate_button:focus{
+	background-color: #eee;
+	color: #000;
+	border-color: #eee;
+}
+table.dataTable thead > tr > th.sorting_asc, 
+table.dataTable thead > tr > th.sorting_desc{
+	border-bottom : 1px solid #9c27b0;
+}
+button#searchbtn{
+    background-color: #fff;
+    color: #222d32;
+    border: 2px solid #9c27b0;
+    border-radius: 5px;
+    font-size: 20px;
+    margin: 1px 3px;
+    cursor: pointer;
+}
+button#allUser{
+	background-color: #fff;
+    color: #222d32;
+    border: 2px solid #9c27b0;
+    border-radius: 5px;
+    font-size: 20px;
+    margin: 1px 3px;
+    cursor: pointer;
+}
+
 #boardcontainer{
     padding-top: 30px;
     padding-bottom: 30px;
@@ -77,7 +117,7 @@ table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sor
 table.dataTable thead > tr > td.sorting_asc,
 table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
-  padding-right: 30px;
+  padding-right: 0px;
 }
 table.dataTable thead > tr > th:active,
 table.dataTable thead > tr > td:active {
