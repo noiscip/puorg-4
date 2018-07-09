@@ -177,6 +177,17 @@
 			$('#oApplyAppeal').val(operApplyAppeal);
 			$('#operApplyNo').val(operApplyNo);
 		}); 
+		
+		$('.apply-table').hide();
+		$('.apply-status').click(function(){
+			if($('.apply-status').hasClass('open-table')){
+				$('.apply-table').hide();
+				$('.apply-status').removeClass('open-table');
+			}else{
+				$('.apply-table').show();
+				$('.apply-status').addClass('open-table');
+			}
+		});
 	});
 	
 	
@@ -220,19 +231,32 @@
 		padding-top: 40px;
 	}
 	
+	/* container 아래 여백 */
+	.board-container-pad{
+		padding-bottom: 15px;
+	}
+	
+	/* border 안 여백 */
+	.board-border-pad{
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+	
 </style>
 
 <input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
 
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
-<div class="main">
-	<div class="profile-content">	
-		<div class="container">
-			<div class="row" align="center">
+<div class="section section-gray">
+		<div class="container board-container-pad">
+<div class="main main-raised main-product">
+			<div class="row" align="center" >
 				<div class="col-md-12 ml-auto mr-auto">
 					<h2 class="title">${boardInfo.brdTitle}</h2>
-					<div class="row board-content-pad">
-						<c:if test="${boardInfo.operStateNo eq 1}">
+					
+					<c:if test="${boardInfo.operStateNo eq 1}">
+						<div class="board-border-pad">
+						<div class="row board-content-pad">
 							<div class="col-md-4 info-horizontal mr-auto ml-auto">
 		                         <div class="description">
 		                             <h4 class="info-title "><i class="material-icons" style="color: #00bcd4">date_range</i> 희망 완료 날짜</h4>
@@ -264,15 +288,16 @@
 		                            </p>
 		                        </div>
 		                    </div>
-						</c:if>
+						
 					</div>
+					
 					<div class="card card-collapse">
 							<div class="card-header" id="headingOne">
 								<h5 class="mb-0">
 									
 								</h5>
 							</div>
-							<div id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+							<div id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="card-body">
 									<p>${boardInfo.brdContent}</p>
 								</div>
@@ -285,7 +310,7 @@
 						</div>
 					
 					
-					<c:if test="${boardInfo.operStateNo eq 1}">
+					
 					<div class="projects-4 board-content-pad" id="projects-4">
 						<div class="row">
 							<div class="col-md-12 ml-auto mr-auto" align="left">
@@ -367,7 +392,7 @@
 																		</button>
 																	</c:when>
 																	<c:otherwise>
-																		<button type="button" class="btn btn-primary btn-md float-left" style="float:right" data-toggle="modal" data-target="#exampleModal">
+																		<button type="button" class="btn btn-primary btn-md float-left apply-status" style="float:right">
 																			<i class="material-icons">linked_camera</i> &nbsp;신청 현황
 																		</button>
 																	</c:otherwise>
@@ -379,11 +404,11 @@
 												</div>
 											</div>
 										</div>
+								</div>
 							</div>
 						</div>
-					</div>
-										
-						</c:if>
+						</div>					
+					</c:if>
 				</div>
 			</div>
 			<c:choose>
@@ -570,7 +595,7 @@
 			<c:choose>
 				<c:when
 					test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo ne 2}">
-					<table class="table">
+					<table class="table apply-table">
 						<thead>
 							<tr>
 								<th class="text-center">작업신청자</th>
@@ -609,7 +634,7 @@
 				</c:when>				
 			</c:choose>
 		</div>
-	</div>
+	<!-- </div> -->
 	<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
 		<c:choose>
 			<c:when test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
@@ -729,6 +754,8 @@
 	</div>
 	</c:if>
 </div>
+</div>
+
 <!-- 신청Modal -->
 <div class="modal fade" id="exampleModal" tabindex="1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
