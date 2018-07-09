@@ -38,7 +38,7 @@ $(document).ready( function () {
 								
 									<td class="text-center">${n.brdNo}</td>
 									<td class="text-center"><c:choose>
-											<c:when test="${n.operStateNo eq 2}">
+											<c:when test="${n.operStateNo ne 1}">
 												<c:choose>
 													<c:when
 														test="${operlist[status.index].requesterNo eq sessionScope.user.userNo || operlist[status.index].operatorNo eq sessionScope.user.userNo}">
@@ -46,7 +46,7 @@ $(document).ready( function () {
 															href="<%=request.getContextPath()%>/board/boardInfo.ps?brdNo=${n.brdNo}">${n.brdTitle}</a>
 													</c:when>
 													<c:otherwise>
-													<a data-toggle="popover" data-placement="right" data-trigger="hover" data-content="작업중인 게시판은 작업 관계자만 읽기가 가능합니다.">${n.brdTitle}</a>													
+													<a data-toggle="popover" data-placement="right" data-trigger="hover" data-content="작업 관계자만 읽기가 가능합니다.">${n.brdTitle}</a>													
 													</c:otherwise>
 												</c:choose>
 											</c:when>
