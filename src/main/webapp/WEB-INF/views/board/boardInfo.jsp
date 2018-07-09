@@ -948,7 +948,10 @@
 			
 			<c:if test="${boardInfo.operStateNo eq 3}">
 				<div class="apply-complete" align="center">
-				<h5>거래 완료된 사진</h5>
+				<h5>거래 완료된 사진 <a id="download" href="${operPicture.picPath}">
+						<i class="material-icons">vertical_align_bottom</i>
+					</a></h5>
+					
 					<div>
 						<div style="height: 350px; width : 350px;">
 							<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">

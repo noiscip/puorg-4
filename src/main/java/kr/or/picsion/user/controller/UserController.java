@@ -224,7 +224,16 @@ public class UserController {
 	
 	
 	
-	//삭제 여부?? 테스트용인가요??
+	
+	/**
+	* 날      짜 : 2018. 6. 9.
+	* 메소드명 : userList
+	* 작성자명 : 김보경
+	* 기      능 : 유저목록 가져오기
+	*
+	* @param model
+	* @return String
+	*/
 	@RequestMapping(value="userlist.ps")
 	public String userList(Model model) {
 		
@@ -321,7 +330,7 @@ public class UserController {
 	* @param model
 	* @return String
 	*/
-	@RequestMapping("followinglist.ps")
+	/*@RequestMapping("followinglist.ps")
 	public String myFollowing(HttpSession session, Model model, String pg) {
 		User user = (User)session.getAttribute("user");
 		
@@ -363,7 +372,7 @@ public class UserController {
         model.addAttribute("toPage", toPage);
         
 		return "mypage.following";
-	}
+	}*/
 
 	/**
 	* 날      짜 : 2018. 6. 18.
