@@ -1,5 +1,6 @@
 ﻿package kr.or.picsion.utils;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +24,8 @@ import com.drew.metadata.Tag;
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
+import com.google.cloud.vision.v1.ColorInfo;
+import com.google.cloud.vision.v1.DominantColorsAnnotation;
 import com.google.cloud.vision.v1.EntityAnnotation;
 import com.google.cloud.vision.v1.FaceAnnotation;
 import com.google.cloud.vision.v1.Feature;
@@ -69,9 +72,9 @@ public class VisionApi {
 		String logocheck=detectLogos(filePath);				//vision : 로고감지
 		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
 		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
-
  		List<Face> faceList = detectFaces(filePath);	//vision : 얼굴감지
-
+ 		List<Color> colList = detectProperties(filePath); //vision : 색감지
+ 		
 		for(String label : detectWebDetections(filePath)) {
 			labelList.add(label);
 		}
@@ -85,6 +88,7 @@ public class VisionApi {
 		model.addAttribute("picPath",picturePath);
 
 		model.addAttribute("face",faceList);
+		model.addAttribute("color",colList);
 		
 //		String picDate = fileUpload();
 //		int picRes;
@@ -495,7 +499,40 @@ public class VisionApi {
 		}
 		return labelList;
 	}
+	
+	public static List<Color> detectProperties(String filePath) {
+		List<AnnotateImageRequest> requests = new ArrayList<>();
+		List<Color> colorList = new ArrayList<>();
+		Image img = null;
+		img = getImage(filePath);
+		Feature feat = Feature.newBuilder().setType(Feature.Type.IMAGE_PROPERTIES).build();
+		AnnotateImageRequest request = AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+		requests.add(request);
 
+		try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
+			BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
+			List<AnnotateImageResponse> responses = response.getResponsesList();
+
+			for (AnnotateImageResponse res : responses) {
+				
+				// For full list of available annotations, see http://g.co/cloud/vision/docs
+				DominantColorsAnnotation colors = res.getImagePropertiesAnnotation().getDominantColors();
+				for (ColorInfo color : colors.getColorsList()) {
+					colorList.add(new Color((int)color.getColor().getRed(),(int)color.getColor().getGreen(),(int)color.getColor().getBlue()));
+					
+					
+					
+					System.out.println("fraction: "+color.getPixelFraction()+
+							"R: "+color.getColor().getRed()+
+							"G: "+color.getColor().getGreen()+
+							"B: "+color.getColor().getBlue());
+				}
+			}
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return colorList;
+	}
 	/**
 	 * 날      짜 : 2018. 6. 8.
 	 * 메소드명 : getImage

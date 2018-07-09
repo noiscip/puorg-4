@@ -42,7 +42,10 @@
       <!-- Plugin for Small Gallery in Product Page -->
    <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
    <script src="<%=request.getContextPath()%>/assets/js/plugins/jasny-bootstrap.min.js"></script>
-
+   <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+   <script src="<%=request.getContextPath()%>/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+   
+ 
 
     <!-- ckEditor -->
     <script src="<%=request.getContextPath()%>/ckeditor/ckeditor.js" type="text/javascript" ></script>

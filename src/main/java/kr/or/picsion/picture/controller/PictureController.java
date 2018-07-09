@@ -25,6 +25,7 @@ import kr.or.picsion.operation.dto.OperPicture;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
+import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.purchase.dto.Purchase;
@@ -381,9 +382,15 @@ public class PictureController {
 	* @return String
 	*/
 	@RequestMapping("uploadAfter.ps")
-	public String insertPicture(Picture picture,@RequestParam List<String> tag, HttpSession session) {
+	public String insertPicture(Picture picture, @RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		System.out.println("업로드 애프터");
+		for(Colors c : picture.getColorList()) {
+			System.out.println("색 : "+ c);
+			System.out.println("RED   : " + c.getColorR());
+			System.out.println("GREEN : " + c.getColorG());
+			System.out.println("BLUE  : " + c.getColorB());
+		}
 		picture.setTagContent(tag);
 		picture.setUserNo(user.getUserNo());
 		pictureService.insertPicture(picture);
@@ -518,6 +525,8 @@ public class PictureController {
 			System.out.println("s3 경로 생성 실패");
 		}	
 	}
+	
+	
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : pictureRespect

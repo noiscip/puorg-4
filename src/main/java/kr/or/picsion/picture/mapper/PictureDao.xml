@@ -186,6 +186,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     values 
     (#{picNo},#{camera},#{resolutionH},#{resolutionW},#{photoDate},#{lens})
     </insert>
+    
+    <!-- 사진 색깔 정보 저장 -->
+    <insert id="insertColor" parameterType="hashmap">
+    insert into COLOR
+    (picNo,colorR,colorG,colorB)
+    values 
+    (#{picNo},#{color.colorR},#{color.colorG},#{color.colorB})
+    </insert>
+    
     <!-- 태그 정보 -->
     <select id="selectTag" resultType="String">
     	SELECT tagContent FROM TAG WHERE picNo=#{picNo}

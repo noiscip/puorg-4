@@ -35,14 +35,18 @@ public class Picture {
 	private String transferState;
 	private String lens;
 	private int picPeople;
-
+	private List<Colors> colorList;
+	
 	public Picture() {
 	}
-
+	
+	
 	public Picture(int picNo, String picTitle, String picContent, Date picReg, String picPath, String picWater,
 			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolutionH, String resolutionW,
 			Date photoDate, List<String> tagContent, String cartCheck, String respectCheck, String bookmarkCheck,
-			int respectCount, int bookmarkCount, String transferState, String lens, int picPeople) {
+			int respectCount, int bookmarkCount, String transferState, String lens, int picPeople,
+			List<Colors> colorList) {
+		super();
 		this.picNo = picNo;
 		this.picTitle = picTitle;
 		this.picContent = picContent;
@@ -66,8 +70,8 @@ public class Picture {
 		this.transferState = transferState;
 		this.lens = lens;
 		this.picPeople = picPeople;
+		this.colorList = colorList;
 	}
-
 
 	public int getPicNo() {
 		return picNo;
@@ -252,6 +256,18 @@ public class Picture {
 	public void setPicPeople(int picPeople) {
 		this.picPeople = picPeople;
 	}
+	
+	
+
+	public List<Colors> getColorList() {
+		return colorList;
+	}
+
+
+	public void setColorList(List<Colors> colorList) {
+		this.colorList = colorList;
+	}
+
 
 	@Override
 	public String toString() {
@@ -260,8 +276,9 @@ public class Picture {
 				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolutionH="
 				+ resolutionH + ", resolutionW=" + resolutionW + ", photoDate=" + photoDate + ", tagContent="
 				+ tagContent + ", cartCheck=" + cartCheck + ", respectCheck=" + respectCheck + ", bookmarkCheck="
-				+ bookmarkCheck + ", respectCount=" + respectCount + ", bookmarkCount=" + bookmarkCount
-				+ ", transferState=" + transferState + ", lens=" + lens + ", picPeople=" + picPeople + "]";
+				+ bookmarkCheck + ", respectCount=" + respectCount + ", bookmarkCount=" + bookmarkCount 
+				+ ", transferState=" + transferState + ", lens=" + lens + ", picPeople=" + picPeople + ", colorList="
+				+ colorList + "]";
 	}
 
 }
