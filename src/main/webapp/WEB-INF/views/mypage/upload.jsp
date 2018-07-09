@@ -121,6 +121,13 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 									Remove
 								</a>
 							</div>
+							<div id="peopleRadio" style="display: none; float: left;">
+								<input type="radio" id="zero"> 0명<br>
+  								<input type="radio" id="one"> 1명<br>
+  								<input type="radio" id="two"> 2명<br> 
+  								<input type="radio" id="thr"> 3~5명<br> 
+  								<input type="radio" id="six"> 6명 이상<br> 
+							</div>
 						</div>
 					
 					</form>
@@ -201,6 +208,21 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						$('h1').append(logo)
 						
 					}
+					/*사람수 측정*/
+					$('#peopleRadio').show();
+					var peopleNum = data.face.length;
+					console.log(peopleNum);
+					if(peopleNum==0){
+						$('#zero').attr('checked',true);
+					}else if(peopleNum==1){
+						$('#one').attr('checked',true);
+					}else if(peopleNum==2){
+						$('#two').attr('checked',true);
+					}else if(peopleNum>=3&&peopleNum<=5){
+						$('#thr').attr('checked',true);
+					}else{
+						$('#six').attr('checked',true);
+					}
  					/*얼굴감지*/
  					console.log($(".fileinput-preview").children());
  					$(".fileinput-preview").children().attr({
@@ -225,7 +247,8 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					console.log(scalH);
 					console.log(scalW);
 					
- 					 if(data.face != null){
+ 					 if(data.face != 0){
+						
  						var modelUse =''
  						modelUse += '<div class="alert alert-info">'
  						modelUse += 	'<div class="container-fluid">'
@@ -302,6 +325,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					tags += '<input type="hidden" name="resolutionW" id="resolutionW" value="'+resolW+'"/>';
 					tags += '<input type="hidden" name="photoDate" id="photoDate" value="'+Date(pictureDate)+'"/>';
 					tags += '<input type="hidden" name="lens" id="lens" value="'+lensName+'"/>';
+					tags += '<input type="hidden" name="picPeople" id="picPeople" value="'+peopleNum+'"/>';
 					
 					$('#tagA').append(tags)
 					/* $('#taginputtest').attr("data-role","tagsinput"); */

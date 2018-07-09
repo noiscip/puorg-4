@@ -274,7 +274,7 @@
 	                  <div class="form-group text-center update-lab-padding">
 	                  	<label for="exampleInput1" class="bmd-label-floating">현재 캐시</label>
 	                    <div class="input-group">
-	                        <input type="text" class="form-control" id="point" name="point" value="${userinfo.point}" readonly="readonly">
+	                        <input type="text" class="form-control" id="point" name="point"  value="${userinfo.point}" readonly="readonly">
 	                     </div>
 	                     <button type="button" class="btn btn-default update-margin" data-toggle="modal" data-target="#exampleModal">충전하기</button>
 	                  </div>
