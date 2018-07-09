@@ -19,7 +19,7 @@
     <link href="<%=request.getContextPath()%>/assets/css/payment.css" rel="stylesheet">
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.css" rel="stylesheet" />
    <link href="<%=request.getContextPath()%>/jqeury-ui/jquery-ui.theme.css" rel="stylesheet" />
-   <link href="<%=request.getContextPath()%>/DataTables/DataTables-1.10.18/css/dataTables.bootstrap.css" rel="stylesheet" />
+   <link href="<%=request.getContextPath()%>/DataTables/DataTables-1.10.18/css/dataTables.bootstrap.css?k=49" rel="stylesheet" />
    
    <!-- Js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -42,7 +42,10 @@
       <!-- Plugin for Small Gallery in Product Page -->
    <script src="<%=request.getContextPath()%>/assets/js/plugins/jquery.flexisel.js"></script>
    <script src="<%=request.getContextPath()%>/assets/js/plugins/jasny-bootstrap.min.js"></script>
-
+   <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+   <script src="<%=request.getContextPath()%>/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+   
+ 
 
     <!-- ckEditor -->
     <script src="<%=request.getContextPath()%>/ckeditor/ckeditor.js" type="text/javascript" ></script>

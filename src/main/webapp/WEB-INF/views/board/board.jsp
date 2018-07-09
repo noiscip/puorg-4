@@ -8,9 +8,12 @@
 $(document).ready( function () {
     $('#datatable').DataTable( {
         "order": [[ 0, "desc" ]],
-    	"bInfo": false,
+    	"bInfo": false,    	
     	"bLengthChange": false
     } );
+    
+    
+    
 } );
 </script>
 
@@ -18,11 +21,11 @@ $(document).ready( function () {
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
 <div class="main">
 	<div class="profile-content">
-		<div class="container">
+		<div class="container" id="boardcontainer">
 			<div class="row">
 				<div class="col-md-12 ml-auto mr-auto">
 
-					<table class="table" id="datatable">
+					<table class="table table-hover" id="datatable">
 						<thead>
 							<tr>
 								<th class="text-center">#</th>

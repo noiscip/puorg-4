@@ -48,12 +48,20 @@ div.dataTables_wrapper div.dataTables_info {
 div.dataTables_wrapper div.dataTables_paginate {
   margin: 0;
   white-space: nowrap;
-  text-align: right;
+  text-align: center;
 }
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   margin: 2px 0;
   white-space: nowrap;
 }
+.paginate_button{
+	margin: 5px;
+}
+#boardcontainer{
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.dataTable > thead > tr > th[class*="sort"]::after{display: none}
 div.dataTables_wrapper div.dataTables_processing {
   position: absolute;
   top: 50%;

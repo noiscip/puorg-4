@@ -88,8 +88,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where p.purchaseUserNo=#{userNo}
 		order by p.purchaseReg DESC -->
 		select *
-		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg
-			from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg, pin.camera, pin.resolutionH, pin.resolutionW, pin.photoDate, pin.lens
+			from PURCHASE p 
+			join PICTUREINFO pin on p.picNo=pin.picNo
+			join PICTURE ph on p.picNo=ph.picNo
 			where p.purchaseUserNo=#{param1}) pp order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
 		where SC.ROWNUM>0
 		order by SC.ROWNUM
@@ -147,8 +149,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where p.saleUserNo=#{userNo}
 		order by p.purchaseReg DESC -->
 		select *
-		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg
-			from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg, pin.camera, pin.resolutionH, pin.resolutionW, pin.photoDate, pin.lens
+			from PURCHASE p			
+			join PICTUREINFO pin on p.picNo=pin.picNo 
+			join PICTURE ph on p.picNo=ph.picNo
 			where p.saleUserNo=#{param1}) pp
 			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
 		where SC.ROWNUM>0
