@@ -67,10 +67,8 @@ public class HomeController {
 		List<User> mostFollowingUser = userService.mostFollowingUser();
 		if(user != null) {
 			List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo(), 0, 10);
-			List<User> randomuser = userService.randomUsers(user.getUserNo());
 			latestPicList = pictureService.latestPicList(user.getUserNo(), page, endpage);
 		    model.addAttribute("imagelist", followingPicList);
-		    model.addAttribute("randomuser",randomuser);
 		    model.addAttribute("latestPicList",latestPicList);
 		}else{
 			 latestPicList = pictureService.latestPicList(0, page, endpage);

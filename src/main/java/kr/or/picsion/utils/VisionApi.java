@@ -443,12 +443,12 @@ public class VisionApi {
 
 				// For full list of available annotations, see http://g.co/cloud/vision/docs
 				for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-					System.out.println("position: %s" + annotation.getFdBoundingPoly() + "\n");
+					System.out.println("position: %s" + annotation.getBoundingPoly() + "\n");
 					// faceXY+=annotation.getBoundingPoly();
-					facePoly.add(new Face(annotation.getFdBoundingPoly().getVertices(0).getX(),
-							annotation.getFdBoundingPoly().getVertices(1).getX(),
-							annotation.getFdBoundingPoly().getVertices(1).getY(),
-							annotation.getFdBoundingPoly().getVertices(2).getY()));
+					facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
+							annotation.getBoundingPoly().getVertices(1).getX(),
+							annotation.getBoundingPoly().getVertices(1).getY(),
+							annotation.getBoundingPoly().getVertices(2).getY()));
 				}
 			}
 

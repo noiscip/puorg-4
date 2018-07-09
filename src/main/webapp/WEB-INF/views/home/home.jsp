@@ -932,28 +932,56 @@ $(document).ready(function() {
                         success : function(data){
                             
                             $.each(data.latestPicList, function(index, obj){
+                            	if((obj.resolutionW/obj.resolutionH) >= 1.9){
+                            		
+                            		scrollPage="<div class='item col-sm-12 col-md-8'>"+
+									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+									"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+									"</a>"+
+								   "<div>"+
+				                   "<div class='counts hide-xs hide-sm'>";
+				                   if(obj.respectCheck=="T"){
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+				                   }
+				                   
+				                   if(obj.bookmarkCheck=="T"){
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+				                   }
+				                   
+				                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
+				                 
+	              				  $('#picall').append(scrollPage);
+                            		
+                            	}else{
+                            		
+                            		scrollPage="<div class='item col-sm-12 col-md-4'>"+
+									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+									"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+									"</a>"+
+								   "<div>"+
+				                   "<div class='counts hide-xs hide-sm'>";
+				                   if(obj.respectCheck=="T"){
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+				                   }
+				                   
+				                   if(obj.bookmarkCheck=="T"){
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+				                   }else{
+				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+				                   }
+				                   
+				                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
+				                 
+	                				$('#picall').append(scrollPage);
+                            	}
+                       
                             	
-                            	scrollPage="<div class='item col-sm-6 col-md-4'>"+
-    											"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-    											"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-    											"</a>"+
-    										   "<div>"+
-    						                   "<div class='counts hide-xs hide-sm'>";
-    						                   if(obj.respectCheck=="T"){
-    						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-    						                   }else{
-    						                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-    						                   }
-    						                   
-    						                   if(obj.bookmarkCheck=="T"){
-    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-    						                   }else{
-    						                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-    						                   }
-    						                   
-    						                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
-    						                 
-    			                $('#picall').append(scrollPage);
                             })
     					    page+=data.endpage;
              				
@@ -1200,9 +1228,13 @@ $(document).ready(function() {
 				<div class="flex_grid credits">
 					<div class="tz-gallery">
 					<div class="row" id="picall">
-						<c:forEach items="${latestPicList}" var="lapic"
-							varStatus="status">
-							<div class="item col-sm-6 col-md-4">
+						<c:forEach items="${latestPicList}" var="lapic"	varStatus="status">
+						 <fmt:parseNumber var="var3" value="${lapic.resolutionW/lapic.resolutionH}" pattern="#.#" />
+						 
+						  
+						  <c:choose>
+						  <c:when test="${var3 >= 1.9}">
+						   <div class="item col-sm-12 col-md-8">
 								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
 								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
 								</a>
@@ -1228,10 +1260,47 @@ $(document).ready(function() {
 				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
 	               				</div>
 							</div>
+						   <input type="hidden" value="${var3}"/>
+						  </c:when> 
+						  <c:otherwise>
+						   <div class="item col-sm-12 col-md-4">
+								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
+								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
+								</a>
+								<div>
+				                    <div class="counts hide-xs hide-sm ">
+				                    <c:choose>
+										<c:when test="${lapic.respectCheck eq 'T'}">
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite</i>${lapic.respectCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite_border</i>${lapic.respectCount}</em>
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${lapic.bookmarkCheck eq 'T'}">
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark</i>${lapic.bookmarkCount}</em>
+										</c:when>
+										<c:otherwise>
+											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark_border</i>${lapic.bookmarkCount}</em>
+										</c:otherwise>
+									</c:choose>
+				                    </div>
+				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
+	               				</div>
+							
+							</div>
+							 <input type="hidden" value="${var3}"/>
+						  
+						  </c:otherwise>
+						 
+						  </c:choose>
+						  
+							
 						</c:forEach>
 					</div>	
 				</div>
-			</div> 
+			</div>  
 			
 			
 			
