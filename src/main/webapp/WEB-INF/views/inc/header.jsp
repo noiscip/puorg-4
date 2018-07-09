@@ -248,9 +248,6 @@ $(function(){
 		                    <a href="<%=request.getContextPath()%>/user/bookmarklist.ps" class="dropdown-item">
 		                        <i class="material-icons">bookmark</i>즐겨찾기
 		                    </a>
-		                    <a href="<%=request.getContextPath()%>/user/followinglist.ps" class="dropdown-item">
-		                        <i class="material-icons">favorite</i>팔로잉
-		                    </a>
 		                    <a href="<%=request.getContextPath()%>/message/receivemessage.ps" class="dropdown-item">
 		                        <i class="material-icons">mail</i>메시지함
 		                    </a>

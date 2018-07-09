@@ -6,6 +6,7 @@
 <script type="text/javascript">
 	//리뷰 쓰기
 	$(function() {
+		$('#savePicture').hide();
 		if(${boardInfo.operStateNo}==2){ 
 		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 		}
@@ -106,12 +107,14 @@
 		$('#applysummit').on("click",function() {
 			var brdNo=${boardInfo.brdNo};
 			var requesterNo=${boardInfo.userNo};
+			var operPrice=$('#oApplyPrice').attr("operApplyPrice");
+			console.log(operPrice);
 					$.ajax({
 						url : "/picsion/operation/operok.ps",
 						type : "post",
 						data : {	
 							requesterNo : requesterNo,
-							operPrice : $("#oApplyPrice").val(),
+							operPrice : operPrice,
 							operEndReg : Date($("#oApplyReg").val()),
 							brdNo : brdNo,
 							operatorNo : $("#oUserNo").val(),
@@ -128,6 +131,7 @@
 		$('#operpic').on("click",function() {
 			console.log($(this))
 			var formData = new FormData($('#fileForm')[0]);
+			var html="";
 			console.log(formData);
 					$.ajax({
 						url : "/picsion/picture/operpicupload.ps",
@@ -137,6 +141,11 @@
 						type :'POST',						
 						success : function(data) {
 							console.log(data)
+							$('#upload').remove();
+							html+='<div style="height: 350px; width : 350px; text-align: center;">';
+							html+='<img alt="No Image"  height="100%" width="100%" src="${operPicture.picPath}">';
+							html+='</div>';
+							$('.apply-register').append(html);
 							console.log("성공");
 						}
 					});	
@@ -164,7 +173,7 @@
 			var applyid=$(this).children()[0].innerText;
 			console.log("applyid : "+applyid);
 			var operApplyPrice=$(this).children()[1].innerText;
-			console.log("operApplyPrice : "+operApplyPrice);
+			console.log("operApplyPrice : "+$(this).attr("operApplyPrice"));
 			var operApplyReg=$(this).children()[2].innerText;
 			console.log("operApplyReg : "+operApplyReg);
 			var operUserNo=$(this).attr("operUserNo");
@@ -175,6 +184,7 @@
 			$('#oUserNo').val(operUserNo);
 			$('#applyid').val(applyid);
 			$('#oApplyPrice').val(operApplyPrice);
+			$('#oApplyPrice').attr("operApplyPrice",$(this).attr("operApplyPrice"));
 			$('#oApplyReg').val(operApplyReg);
 			$('#oApplyAppeal').val(operApplyAppeal);
 			$('#operApplyNo').val(operApplyNo);
@@ -298,6 +308,11 @@
 	/* 작업 내용 margin top */
 	.board-description-mar{
 		margin-top: 30px !important;
+	}
+	
+	/* 작업자가 작업 사진 등록 버튼 눌렀을때 상단 여백 */
+	.apply-register{
+		padding-top: 40px;
 	}
 	
 </style>
@@ -813,7 +828,8 @@
 												data-toggle="modal" data-target="#operModal"
 												operApplyNo="${apply.operApplyNo}"
 												operUserNo="${apply.operUserNo}"
-												operApplyAppeal="${apply.operApplyAppeal}">
+												operApplyAppeal="${apply.operApplyAppeal}"
+												 operApplyPrice="${apply.operApplyPrice}">
 												<td class="text-center">${applyid[status.index]}</td>
 												<td class="text-center"><fmt:formatNumber value="${apply.operApplyPrice}" pattern="#,###"/>원</td>
 												<td class="text-center">${apply.operApplyReg}</td>
@@ -828,14 +844,18 @@
 			</c:choose>
 			
 			<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
-			<div class="apply-register">
+			<div class="apply-register" align="center">
 				<c:choose>
 					<c:when test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
-					<div style="height: 350px; width : 350px;">
-						<img alt="No Image" height="100%" id="filePath" width="100%" src="${operPicture.picPath}">
-						</div>
-						<input type="button" id ="operPicture" class="btn btn-primary btn-round" value="사진 업로드">
-						
+					<div class="row">
+							<div class="col-md-6">
+								<div style="height: 350px; width : 350px;">
+									<img alt="No Image" height="100%" id="filePath" width="100%" src="${operPicture.picPath}">
+								</div>
+								<div>
+								
+								</div>
+							</div>
 							<div class="col-md-6">
 								<form action="<%=request.getContextPath()%>/picture/operationComplete.ps">
 										<input type="hidden" name="picPrice" value="${operation.operPrice}">
@@ -867,40 +887,39 @@
 									<div id="tagA">
 									
 									</div>
-									<button type="submit" class="btn btn-primary">저장하기</button>
+									<input type="button" id ="operPicture" class="btn btn-primary" value="사진 검증">
+									<button type="submit" id="savePicture" class="btn btn-primary" >저장하기</button>
 								</form>
 							</div>
-									
+						</div>		
 					</c:when>
 					
 					<c:otherwise>
-						<div id="upload">
-							<div class="card card-collapse">
-								<div class="card-header" role="tab" id="picupload1">
-									<h5 class="mb-0 title">
-										<a class="collapsed" data-toggle="collapse" href="#picupload" style="text-align: center;"
-											aria-expanded="false" aria-controls="picupload">사진 업로드</a>
-									</h5>
+						<c:choose>
+						<c:when test="${operation.operatorEnd eq 'T'}">							
+								<div style="height: 350px; width : 350px; text-align: center;">
+									<img alt="No Image"  height="100%" width="100%" src="${operPicture.picPath}">
 								</div>
-								<div id="picupload" class="collapse" role="tabpanel"
-									aria-labelledby="picupload1" data-parent="#upload">
-									<div class="card-body">
+						</c:when>
+							<c:otherwise>
+								<div id="upload">								
+										<div id="picupload" align="center">
 											<form id="fileForm" action=""
 											enctype="multipart/form-data" method="post">
 												<input type="hidden" name="operNo" value="${operation.operNo}">
 												<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
-											<div class="fileinput fileinput-new text-center"
+												<div class="fileinput fileinput-new text-center"
 												data-provides="fileinput">
-												<div class="fileinput-new thumbnail img-raised" >
-													<img
+													<div class="fileinput-new thumbnail img-raised" >
+														<img
 														src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
 														alt="...">
-												</div>
-												<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
-												<%-- <canvas id="canvasdiv"></canvas> --%>
+													</div>
+													<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
+													<%-- <canvas id="canvasdiv"></canvas> --%>
 													
-												</div> 
-												<div>
+													</div> 
+													<div>
 													<span class="btn btn-raised btn-round btn-default btn-file"> 
 														<span class="fileinput-new">Select image</span> <span
 														class="fileinput-exists">Change</span> <input type="file"
@@ -910,14 +929,15 @@
 														data-dismiss="fileinput"> <i class="fa fa-times"></i>
 														Remove
 													</a>
+													<input type="button" id ="operpic" class="btn btn-primary btn-round" value="요청자 보여주기">
+													</div>
 												</div>
-											</div>
-											<input type="button" id ="operpic" class="btn btn-primary btn-round" value="요청자 보여주기">
-										</form>
+											
+											</form>
+										</div>
 									</div>
-								</div>
-							</div>
-						</div>
+								</c:otherwise>
+						</c:choose>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -948,7 +968,10 @@
 			
 			<c:if test="${boardInfo.operStateNo eq 3}">
 				<div class="apply-complete" align="center">
-				<h5>거래 완료된 사진</h5>
+				<h5>거래 완료된 사진 <a id="download" href="${operPicture.picPath}">
+						<i class="material-icons">vertical_align_bottom</i>
+					</a></h5>
+					
 					<div>
 						<div style="height: 350px; width : 350px;">
 							<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
@@ -1054,6 +1077,7 @@
 	$(function() {		
 		$('#operPicture').on("click",function() {
 			console.log("클릭");
+			$('#operPicture').remove();
 			var filePath = $("#filePath").attr("src");
 			console.log(filePath);
 			$.ajax({
@@ -1168,6 +1192,7 @@
 					console.log('와요?')
 					$("input[data-role=tagsinput]").tagsinput();
 					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
+					$('#savePicture').show();
 				}
 			,beforeSend:function(){
 				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");

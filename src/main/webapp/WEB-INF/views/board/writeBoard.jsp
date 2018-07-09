@@ -2,22 +2,23 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript">
-					 $(function(){
-						$('.datetimepicker').datetimepicker({
-						    icons: {
-						        time: "fa fa-clock-o",
-						        date: "fa fa-calendar",
-						        up: "fa fa-chevron-up",
-						        down: "fa fa-chevron-down",
-						        previous: 'fa fa-chevron-left',
-						        next: 'fa fa-chevron-right',
-						        today: 'fa fa-screenshot',
-						        clear: 'fa fa-trash',
-						        close: 'fa fa-remove'
-						    }
-						});
-					 });
-					</script>
+	 $(function(){
+		$('.datetimepicker').datetimepicker({
+		    icons: {
+		        time: "fa fa-clock-o",
+		        date: "fa fa-calendar",
+		        up: "fa fa-chevron-up",
+		        down: "fa fa-chevron-down",
+		        previous: 'fa fa-chevron-left',
+		        next: 'fa fa-chevron-right',
+		        today: 'fa fa-screenshot',
+		        clear: 'fa fa-trash',
+		        close: 'fa fa-remove'
+		    }
+		});
+	 });
+</script>
+
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
 <div class="main main-raised">
 	<div class="profile-content">
@@ -31,14 +32,14 @@
 						<div class="form-group">
 	                      <label class="label-control">제목</label>
 	                      <div class="input-group">
-	                        <input type="text" class="form-control" name="brdTitle">
+	                        <input type="text" class="form-control" name="brdTitle" autocomplete="off">
 	                      </div>
 	                    </div>
 	                </div>
 	                <div class="col-md-6 ml-auto mr-auto">
 						<div class="form-group">
 	                      <label class="label-control">희망 완료 날짜</label> <input type="text"
-								class="	form-control datetimepicker" name="brdExpectEndDate" />
+								class="	form-control datetimepicker" name="brdExpectEndDate"/>
 	                    </div>
 	                </div>
 	                <div class="col-md-6 ml-auto mr-auto">
@@ -55,7 +56,7 @@
 						<div class="form-group">
 	                      <label class="label-control">희망 구매 가격</label>
 	                      <div class="input-group">
-	                        <input type="text" class="form-control" name="brdExpectPrice">
+	                        <input type="text" class="form-control" name="brdExpectPrice" autocomplete="off">
 	                      </div>
 	                    </div>
 	                </div>
