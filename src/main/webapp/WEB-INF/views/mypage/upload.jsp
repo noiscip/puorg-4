@@ -325,13 +325,24 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					tags += '<input type="hidden" name="photoDate" id="photoDate" value="'+Date(pictureDate)+'"/>';
 					tags += '<input type="hidden" name="lens" id="lens" value="'+lensName+'"/>';
 					tags += '<input type="hidden" name="picPeople" id="picPeople" value="'+peopleNum+'"/>';
-					
+
 					$('#tagA').append(tags)
 					/* $('#taginputtest').attr("data-role","tagsinput"); */
 					console.log('와요?')
 					$("input[data-role=tagsinput]").tagsinput();
 					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
 					
+					/*색깔*/
+					var color =''
+					$.each(data.color,function(i,elt){
+						
+						/* color += '<input type="hidden" name="colorList['+i+']" id="colorList['+i+']" value="'+elt.red +','+ elt.green +','+ elt.blue+'"/>'; */
+					 	color += '<input type="hidden" name="colorList['+i+'].colorR" id="colorList['+i+'].colorR" value="'+elt.red+'"/>';
+						color += '<input type="hidden" name="colorList['+i+'].colorG" id="colorList['+i+'].colorG" value="'+elt.green+'"/>';
+						color += '<input type="hidden" name="colorList['+i+'].colorB" id="colorList['+i+'].colorB" value="'+elt.blue+'"/>';
+						
+					}) 
+					$('#tagA').append(color);
 				}
 			,beforeSend:function(){
 				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");

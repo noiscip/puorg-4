@@ -10,8 +10,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
-import java.util.List;
-
 
 import javax.imageio.ImageIO;
 import javax.imageio.*;
@@ -23,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.picsion.picture.dao.PictureDao;
+import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
@@ -73,6 +72,12 @@ public class PictureService {
         pictureDao.insertPicInfo(picture);
         for(String p : picture.getTagContent()) {
             pictureDao.insertTag(picture.getPicNo(), p);
+        }
+        for(Colors c : picture.getColorList()) {
+        	Map<String, Object> map = new HashMap<>();
+        	map.put("picNo", picture.getPicNo());
+        	map.put("color", c);
+        	pictureDao.insertColor(map);
         }
         System.out.println(picture.toString());
     }

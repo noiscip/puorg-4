@@ -143,9 +143,9 @@
                         	
                         }
                     })
-                } else{
-                	newNoticeCount()
-                }
+                } 
+               	newNoticeCount()
+                
 		 	}
 		  	
 		  	
