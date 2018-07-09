@@ -17,6 +17,7 @@ import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperationService;
+import kr.or.picsion.operationapply.service.OperationApplyService;
 import kr.or.picsion.user.dto.User;
 
 /**
@@ -40,6 +41,9 @@ public class OperationController {
 	private CommentService commentService;
 
 	@Autowired
+	private OperationApplyService operationApplyService;
+	
+	@Autowired
 	private BoardService boardService;
 
 	@Autowired
@@ -59,32 +63,37 @@ public class OperationController {
 	public View OperationApplyok(Operation operation, Model model) {
 		System.out.println("OperationApplyok컨트롤러");
 		System.out.println(operation);
+		int result=0;
+		if(operationService.selectOper(operation.getBrdNo())==null) 
+		{
+			System.out.println("null이라 들어왔슈");
+			Board board = boardService.selectBoard(operation.getBrdNo());
+			board.setBrdExpectPrice(operation.getOperPrice());
+			board.setBrdExpectEndDate(operation.getOperEndReg());
+			board.setOperStateNo(2);
+			commentService.deleteAllComment(board.getBrdNo());
+			boardService.updateBoard(board);
+			
+			System.out.println(operation);
+			result = operationService.insertOperation(operation);
+			System.out.println("두번째");
+			System.out.println(operation);
+	
+			if (result != 0) {
+				HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+	
+				noticeMap.put("no", operation.getBrdNo());
+				noticeMap.put("addNo", operation.getOperNo());
+				noticeMap.put("receiveUserNo", operation.getOperatorNo());
+				noticeMap.put("sendUserNo", operation.getRequesterNo());
+				noticeMap.put("table", "brdNo, operNo");
+				noticeMap.put("tableNo", 3);
+	
+				noticeService.insertNotice(noticeMap);
+			}
 
-		Board board = boardService.selectBoard(operation.getBrdNo());
-		board.setBrdExpectPrice(operation.getOperPrice());
-		board.setBrdExpectEndDate(operation.getOperEndReg());
-		board.setOperStateNo(2);
-		commentService.deleteAllComment(board.getBrdNo());
-		boardService.updateBoard(board);
-
-		System.out.println(operation);
-		int result = operationService.insertOperation(operation);
-		System.out.println("두번째");
-		System.out.println(operation);
-
-		if (result != 0) {
-			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
-
-			noticeMap.put("no", operation.getBrdNo());
-			noticeMap.put("addNo", operation.getOperNo());
-			noticeMap.put("receiveUserNo", operation.getOperatorNo());
-			noticeMap.put("sendUserNo", operation.getRequesterNo());
-			noticeMap.put("table", "brdNo, operNo");
-			noticeMap.put("tableNo", 3);
-
-			noticeService.insertNotice(noticeMap);
 		}
-
+		
 		model.addAttribute("check", result);
 		return jsonview;
 	}

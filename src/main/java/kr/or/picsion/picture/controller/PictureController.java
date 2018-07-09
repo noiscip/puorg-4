@@ -404,14 +404,15 @@ public class PictureController {
 	@RequestMapping("operationComplete.ps")
 	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session, int brdNo) {
 		User user = (User) session.getAttribute("user");
-		
+		System.out.println("operationComplete");
+		System.out.println(picture);
+		System.out.println(picture.getPicPath().split("\\/")[5].split("\\,")[0]);
 		picture.setTagContent(tag);
 		User requestorUser = userService.userInfo(picture.getUserNo());
 		picture.setUserNo(user.getUserNo());		
 
-		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[1]);
+		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
 
-//		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
 		pictureService.insertPicture(picture);
 
         System.out.println(picture.getPicPath());
