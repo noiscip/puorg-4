@@ -2,7 +2,9 @@
 
 
 import java.util.List;
+import java.util.Map;
 
+import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 
@@ -16,6 +18,7 @@ import kr.or.picsion.user.dto.User;
 public interface PictureDao {
 	public int insertPicture(Picture picture); //사진업로드 저장
 	public int insertTag(int picNo,String tag);//태그 저장
+	public int insertColor(Map<String, Object> map); //색깔 저장
 	public int updateWater(String picWater,int picNo); // 워터마크 사진 저장
 	public List<String> selectTag(int picNo);  			//태그 리스트
 	public int searchPath(int picNo);//
