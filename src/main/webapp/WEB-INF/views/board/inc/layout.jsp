@@ -9,7 +9,7 @@
 	<tiles:insertAttribute name="script"/>
 </head>
 
-<body class="profile-page sidebar-collapse">
+<body class="product-page sidebar-collapse">
 	<!-- header -->
 	<tiles:insertAttribute name="header" />
 
