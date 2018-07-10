@@ -934,7 +934,7 @@ $(document).ready(function() {
                             $.each(data.latestPicList, function(index, obj){
                             		
                             		scrollPage="<div class='item col-sm-12 col-md-4'>"+
-									"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+									"<a href='/picsion/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 									"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
 									"</a>"+
 								   "<div>"+
@@ -951,7 +951,7 @@ $(document).ready(function() {
 				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 				                   }
 				                   
-				                   scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.latestPicOwnList[index].userNo+"'>"+data.latestPicOwnList[index].userName+"</a></div></div>";
+				                   scrollPage+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj.userName+"</a></div></div>";
 				                 
 	                				$('#picall').append(scrollPage);
                             	
@@ -1231,11 +1231,8 @@ $(document).ready(function() {
 					<div class="tz-gallery">
 					<div class="row" id="picall">
 						<c:forEach items="${latestPicList}" var="lapic"	varStatus="status">
-						 <fmt:parseNumber var="var3" value="${lapic.resolutionW/lapic.resolutionH}" pattern="#.#" />
-						 
-						  
 						   <div class="item col-sm-12 col-md-4">
-								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
+								<a href="/picsion/picture/picinfo.ps?picNo=${lapic.picNo}">
 								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
 								</a>
 								<div>
@@ -1257,45 +1254,9 @@ $(document).ready(function() {
 										</c:otherwise>
 									</c:choose>
 				                    </div>
-				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
+				                    <a href="/picsion/picture/mystudio.ps?userNo=${lapic.userNo}">${lapic.userName}</a>
 	               				</div>
 							</div>
-						   <input type="hidden" value="${var3}"/>
-						  
-						   
-						<%--   <c:if test="${var3 < 1.9}">
-						   <div class="item col-sm-12 col-md-4">
-								<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${lapic.picNo}">
-								<img class="rounded img-size" src="${lapic.picWater}"	alt="No Image">
-								</a>
-								<div>
-				                    <div class="counts hide-xs hide-sm ">
-				                    <c:choose>
-										<c:when test="${lapic.respectCheck eq 'T'}">
-											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite</i>${lapic.respectCount}</em>
-										</c:when>
-										<c:otherwise>
-											<em><i id="like" value="${lapic.picNo}" class="material-icons">favorite_border</i>${lapic.respectCount}</em>
-										</c:otherwise>
-									</c:choose>
-									<c:choose>
-										<c:when test="${lapic.bookmarkCheck eq 'T'}">
-											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark</i>${lapic.bookmarkCount}</em>
-										</c:when>
-										<c:otherwise>
-											<em><i id="down" value="${lapic.picNo}" class="material-icons">bookmark_border</i>${lapic.bookmarkCount}</em>
-										</c:otherwise>
-									</c:choose>
-				                    </div>
-				                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${latestPicOwnList[status.index].userNo}">${latestPicOwnList[status.index].userName}</a>
-	               				</div>
-							
-							</div>
-							 <input type="hidden" value="${var3}"/>
-						  
-						  </c:if> --%>
-						 
-						  
 							
 						</c:forEach>
 					</div>	

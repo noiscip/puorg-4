@@ -143,7 +143,6 @@ public class PictureController {
 		}
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
 		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), scpage, endpage); //스튜디오 사진리스트
-		List<User> ownerList = pictureService.studioOwnerList(userNo, scpage, endpage);
 		
 		List<User> followingList = userService.followingUserPaging(userNo, start, rowSize);
 		List<User> followerList = userService.followerUserPaging(userNo, start, rowSize);
@@ -155,7 +154,6 @@ public class PictureController {
 		
 		model.addAttribute("userinfo", userInfo);
 		model.addAttribute("piclist", picList);
-		model.addAttribute("ownerList",ownerList);
 		model.addAttribute("followerList", followerList);
 		model.addAttribute("followingList", followingList);
 		model.addAttribute("followResult", followResult);
@@ -300,10 +298,8 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		List<Picture> scrollPicList = pictureService.studioPicList(userNo, user.getUserNo(), page, endpage); //스튜디오 사진리스트
-		List<User> scrollOwnerList = pictureService.studioOwnerList(userNo, page, endpage);
 		
 		model.addAttribute("scrollPicList", scrollPicList);
-		model.addAttribute("scrollOwnerList",scrollOwnerList);
 		model.addAttribute("endpage", scrollPicList.size());
 		
 		return jsonview;
@@ -681,9 +677,7 @@ public class PictureController {
 			user.setUserNo(0);
 		}
 		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
-		List<User> tagUserList = pictureService.searchTagUserList(tag);
 		model.addAttribute("tagpicList",tagpicList);
-		model.addAttribute("tagUserList",tagUserList);
 		model.addAttribute("tag",tag);
 		return "popular.tagpicturepage";
 	}

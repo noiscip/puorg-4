@@ -96,7 +96,7 @@ $(function() {
 	               }else{
 	            	   detailHtml+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 	               }
-	               detailHtml+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'></a></div></div>";
+	               detailHtml+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj.userName+"</a></div></div>";
 	             	
 	              $('#searchpic').append(detailHtml);
 	             })
@@ -505,7 +505,7 @@ $(function() {
 									</c:otherwise>
 								</c:choose>
 			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${tagUserList[status.index].userNo}">${tagUserList[status.index].userName}</a>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${tagpic.userNo}">${tagpic.userName}</a>
                				</div>
 						</div>
 					

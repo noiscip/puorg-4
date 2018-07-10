@@ -187,10 +187,8 @@ public class UserController {
 		int endpage=9;
 		
 		List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo(), page, endpage); //팔로잉 최신 사진 리스트
-		List<User> followingPicListOwner = userService.followingUserPicOwnerList(user.getUserNo(), page, endpage); //사진 주인 리스트
 		System.out.println(followingPicList);
 		model.addAttribute("followingPicList", followingPicList);
-		model.addAttribute("followingPicListOwner",followingPicListOwner);
 		model.addAttribute("page", followingPicList.size());
 		
 		return "popular.followingpicall";
@@ -213,10 +211,8 @@ public class UserController {
 		int endpage=9;
 		
 		List<Picture> followingScrollPic = userService.followingUserPicList(user.getUserNo(), page, endpage); //팔로잉 최신 사진 리스트
-		List<User> followingScrollPicOwner = userService.followingUserPicOwnerList(user.getUserNo(), page, endpage); //사진 주인 리스트
 		
 		model.addAttribute("followingScrollPic", followingScrollPic);
-		model.addAttribute("followingScrollPicOwner",followingScrollPicOwner);
 		model.addAttribute("endpage", followingScrollPic.size());
 		
 		return jsonview;
@@ -466,7 +462,6 @@ public class UserController {
 			user.setUserNo(userSession.getUserNo());
 			
 			System.out.println(file.getOriginalFilename());
-//			String uploadPath = "D:\\imagePicsion\\";
 			String uploadPath = "/resources/upload/";
 			
 			File dir = new File(uploadPath);

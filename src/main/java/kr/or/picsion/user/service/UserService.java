@@ -106,20 +106,6 @@ public class UserService {
 		return followingUserPicList;
 	}
 
-	/**
-	* 날      짜 : 2018. 6. 11.
-	* 메소드명 : followingUserPicOwnList
-	* 작성자명 : 정도혁
-	* 기      능 : 내가 팔로잉한 사람의 최신 사진의 주인 리스트
-	*
-	* @param userNo
-	* @return List<User>
-	*/
-	public List<User> followingUserPicOwnerList(int userNo, int page, int endpage) {
-		UserDao userDao = sqlSession.getMapper(UserDao.class);
-		List<User> followingUserPicOwnerList = userDao.followingUserPictureOwnerList(userNo, page, endpage);
-		return followingUserPicOwnerList;
-	}
 		
 	/**
 	* 날      짜 : 2018. 6. 13.
