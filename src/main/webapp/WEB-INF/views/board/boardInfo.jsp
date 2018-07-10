@@ -105,6 +105,23 @@
 						},
 						success : function(data) {
 							console.log(data);
+							if(data.check == true){
+								alert('성공')
+							}else{
+								var check =''
+									check += '<div class="alert alert-warning">'
+									check += 	'<div class="container-fluid">'
+									check += 		'<div class="alert-icon">'
+									check += 			'<i class="material-icons">warning</i>'
+									check += 		'</div>'
+									check += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+									check += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+									check += 		'</button>'
+									check += 		'<b>Warning Alert</b> 이미 신청 되었습니다'
+									check += 	'</div>'
+									check += '</div>'
+								$('.media-footer').after(check)
+							}
 						}
 					});	
 				});
@@ -1106,7 +1123,7 @@
 						logo += 		'<b>Warning Alert</b>' + data.logo
 						logo += 	'</div>'
 						logo += '</div>'
-						
+						 
 						$('h1').after(logo)
 					}
  					/*얼굴감지*/

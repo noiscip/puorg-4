@@ -109,7 +109,6 @@ public class UserController {
 		
 		User loginUser = userService.login(user);
 //		User loginUser = userService.searchUserId(user.getUserId());
-		System.out.println(loginUser.getPwd());
 		
 //		boolean re = bCryptPasswordEncoder.matches(password,loginUser.getPwd());
 //		System.out.println(re);

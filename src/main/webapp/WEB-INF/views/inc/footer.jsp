@@ -166,8 +166,6 @@
 			    document.documentElement.scrollTop = 0;
 			}
 			
-		  	
-		  	
 		</script>
 		
 		<footer class="footer footer-black footer-big">
