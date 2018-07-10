@@ -5,6 +5,9 @@
 
 
 <script type="text/javascript">
+
+
+
 $(function() {
 	var loginUserNo = $('#loginUserNo').val();
 
@@ -56,61 +59,54 @@ $(function() {
 		}
 	})
 	
-	var lastScrollTop = 0;
-    var page = ${page};
-
-	$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
-         
-        var currentScrollTop = $(window).scrollTop();
-        var scrollPage="";
-        
-        if( currentScrollTop - lastScrollTop > 0 ){
-            
-            // 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
-            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
-                
-                $.ajax({
-                    type : 'post',  
-                    url : '<%=request.getContextPath()%>/picture/tagpicList.ps',
-                    data : { 
-                        page: page
-                    },
-                    success : function(data){
-                        
-                        $.each(data.tagpicList, function(index, obj){
-                        	
-                        		
-                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
-                 			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-                         	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-	                    		   "</a><div><div class='counts hide-xs hide-sm'>";
-		                           if(obj.respectCheck=="T"){
-				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-				                   }else{
-				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-				                   }
-				                   
-				                   if(obj.bookmarkCheck=="T"){
-				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-				                   }else{
-				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-				                   }
-			                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.tagUserList[index].userNo+"'>"+data.tagUserList[index].userName+"</a></div></div>";
-			            		
-				                $('#searchpic').append(scrollPage);
-                        		
-                        	
-                        	
-                        })
-					    page+=data.endpage;
-                    }
-                });
-                 
-            }
-            
-        }
-
-    })
+	
+	function detailSearch(){
+		var detailHtml="";
+		 $.ajax({ 
+			  url : "/picsion/picture/detailSearch.ps", 
+			  data : {
+				    userNo : loginUserNo,
+				    tag : '${tag}',
+				    order : $('input[name="viewSelect"]:checked').val(),
+				    picPeople :  $('input[name="peopleSelect"]:checked').val() *1,
+				    resolutionSize :  $('input[name="sizeSelect"]:checked').val() ,
+				    lowPrice : $('#minp').val() *1,
+				    highPrice : $('#maxp').val() *1,
+				    colorR : $('#rcol').val() *1,
+				    colorG : $('#gcol').val() *1,
+				    colorB : $('#bcol').val() *1
+				},
+			  success : function(data){
+				  console.log(data);
+				  $('#searchpic').empty();  
+				     $.each(data.detailSearch, function(index, obj){
+	             	
+	        	detailHtml="<div class='item col-sm-12 col-md-4'>"+
+	  			   "<a href='/picsion/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+	          	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+	      		   "</a><div><div class='counts hide-xs hide-sm'>";
+	                if(obj.respectCheck=="T"){
+	                	detailHtml+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+	               }else{
+	            	   detailHtml+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+	               }
+	               
+	               if(obj.bookmarkCheck=="T"){
+	            	   detailHtml+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+	               }else{
+	            	   detailHtml+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+	               }
+	               detailHtml+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'></a></div></div>";
+	             	
+	              $('#searchpic').append(detailHtml);
+	             })
+			  },
+			  error: function(){
+			   	  alert("상세 검색 도중 오류가 발생했습니다.");
+			  }
+		}) 
+		
+	}
     
     var slider2 = document.getElementById('sliderRefine');
 
@@ -125,17 +121,35 @@ $(function() {
 
     var limitFieldMin = document.getElementById('price-left');
     var limitFieldMax = document.getElementById('price-right');
-
+	var max="";
+	var min="";
     slider2.noUiSlider.on('update', function(values, handle) {
         if (handle) {
             limitFieldMax.innerHTML = $('#price-right').data('currency') + Math.round(values[handle]);
+            $('#maxp').val(Math.round(values[handle]));
+            max=Math.round(values[handle]);
+            console.log("이전최대"+max);
         } else {
             limitFieldMin.innerHTML = $('#price-left').data('currency') + Math.round(values[handle]);
+            $('#minp').val(Math.round(values[handle]));
+            min=Math.round(values[handle]);
+            console.log("이전최저"+min);
         }  
+        console.log(max);
+        console.log(min);
+        console.log("이후최대"+max);
+        console.log("이후최저"+min);
+        if((max >= 1000 && max <= 100000) && (min >= 1000 && min <= 100000)){
+        detailSearch(); 
+        console.log("1");
+        }else{
+        console.log("11");
+        	
+        }
     });
     
     
-    var example = new iro.ColorPicker(".wrapper", {
+    var example = new iro.ColorPicker(".wrapper", {  
     	  // color picker options
     	  // Option guide: https://rakujira.jp/projects/iro/docs/guide.html#Color-Picker-Options
     	  width: 200,
@@ -164,20 +178,19 @@ $(function() {
     	    "rgb: " + color.rgbString,  
     	  ].join("<br>");
     	  
+    	  $('#rcol').val(color.rgb.r);
+    	  $('#gcol').val(color.rgb.g);
+    	  $('#bcol').val(color.rgb.b);
+    	  console.log("2");
+    	  detailSearch();
     	  // Get the dynamic stylesheet content and pretty-print it by replacing newlines and tabs with suitable html
     	});
     	
-    	function radio(){
-    		$('input[name="radioTxt"]:checked').val()
-    		
-    	}
-    	
-    	$(document).on('click','#radioSearch',function(){
-    		var orderRadio = $('input[name="viewSelect"]:checked').val()
-    		
+    	$(document).on('change','.detailinput',function(){
+    		console.log("3");
+    		detailSearch();
     		
     	})
-    	
     	
 })  
 </script>
@@ -189,7 +202,7 @@ $(function() {
 }
 
 .wrapper svg {
-  margin: 0 auto;
+  margin: 0 auto; 
 }
 
 .wrap {
@@ -251,7 +264,7 @@ $(function() {
 								  <div class="card-body">
 									   <div class="form-check">
 			  								<label class="form-check-label">
-			  									<input class="form-check-input" name="viewSelect" type="radio" value="" checked="checked">
+			  									<input class="form-check-input detailinput" name="viewSelect" type="radio" value="Latest" checked="checked">
 			  									Latest 
 			  									<span class="form-check-sign">
 			  										<span class="check"></span>
@@ -261,7 +274,7 @@ $(function() {
 									  
 										  <div class="form-check">
 			  								<label class="form-check-label">
-			  									<input class="form-check-input" name="viewSelect" type="radio" value="">
+			  									<input class="form-check-input detailinput" name="viewSelect" type="radio" value="Popular">
 			  									Popular
 			  									<span class="form-check-sign">
 			  										<span class="check"></span>  
@@ -272,29 +285,63 @@ $(function() {
 								</div>
 							  </div>
 							  
-							  <!-- 가격 -->
+							   <!-- 크기 -->
 							  <div class="card card-collapse col-md-2">
 								<div class="card-header" role="tab" id="headingTwo">
 								  <h5 class="mb-0">
-									<a data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-									  	Price Range
-		  							  <i class="material-icons">keyboard_arrow_down</i>
+									<a class="" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										Size
+										<i class="material-icons">keyboard_arrow_down</i>
 									</a>
 								  </h5>
 								</div>
-
 								<div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" style="">
-								  <div class="card-body card-refine">
-									<span id="price-left" class="price-left pull-left" data-currency="최저"></span>
-		  							<span id="price-right" class="price-right pull-right" data-currency="최고"></span>
-		  							<div class="clearfix"></div>
-		  							<div id="sliderRefine" class="slider slider-rose noUi-target noUi-ltr noUi-horizontal">
-		  							
-		  							
+								  <div class="card-body">
+								  
+								  <div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="-1" checked="checked">
+		  									All 
+		  									<span class="form-check-sign">
+		  										<span class="check"></span>
+		  									</span>
+		  								</label>
 		  							</div>
+								  
+									<div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="Horizontal">
+		  									Horizontal 
+		  									<span class="form-check-sign">
+		  										<span class="check"></span>
+		  									</span>
+		  								</label>
+		  							</div>
+								  
+									  <div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="Vertical">
+		  									Vertical
+		  									<span class="form-check-sign">
+		  										<span class="check"></span>
+		  									</span>
+		  								</label>
+		  							</div>
+		  							
+		  							<div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="Square">
+		  									Square
+		  									<span class="form-check-sign">
+		  										<span class="check"></span>
+		  									</span>
+		  								</label>
+		  							</div>
+									  
 								  </div>
 								</div>
 							  </div>
+							  
 							  
 							  <!-- 사람 수 -->
 							  <div class="card card-collapse col-md-2">
@@ -310,7 +357,7 @@ $(function() {
 								  <div class="card-body">
 								    <div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="peopleSelect" type="radio" value="" checked="checked">
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="-1" checked="checked">
 		  									All 
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
@@ -320,7 +367,7 @@ $(function() {
 								  
 									  <div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="peopleSelect" type="radio" value="">
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="0">
 		  									0
 		  									<span class="form-check-sign">
 		  										<span class="check"></span> 
@@ -330,7 +377,7 @@ $(function() {
 
 		  							<div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="peopleSelect" type="radio" value="">
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="1">
 		  									1
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
@@ -340,7 +387,7 @@ $(function() {
 
 		  							<div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="peopleSelect" type="radio" value="">
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="2">
 		  									 2
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
@@ -350,18 +397,8 @@ $(function() {
 
 		  							<div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="peopleSelect" type="radio" value="">
-		  									3 ~ 5
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="peopleSelect" type="radio" value="">
-		  									6+
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="3">
+		  									3+
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
 		  									</span>
@@ -372,64 +409,30 @@ $(function() {
 								</div>  
 							  </div>
 							  
-							  
-							  <!-- 크기 -->
-							  <div class="card card-collapse col-md-2">
+							   <!-- 가격 -->
+							  <div class="card card-collapse col-md-3">
 								<div class="card-header" role="tab" id="headingFour">
 								  <h5 class="mb-0">
-									<a class="" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										Size
-										<i class="material-icons">keyboard_arrow_down</i>
+									<a data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+									  	Price Range
+		  							  <i class="material-icons">keyboard_arrow_down</i>
 									</a>
 								  </h5>
 								</div>
+
 								<div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" style="">
-								  <div class="card-body">
-								  
-								  <div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="sizeSelect" type="radio" value="" checked="checked">
-		  									All 
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
+								  <div class="card-body card-refine">
+									<span id="price-left" class="price-left pull-left detailinput" data-currency="최저"></span>
+		  							<span id="price-right" class="price-right pull-right detailinput" data-currency="최고"></span>
+		  							<div class="clearfix"></div>
+		  							<div id="sliderRefine" class="slider slider-success noUi-target noUi-ltr noUi-horizontal">
 		  							</div>
-								  
-									<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="sizeSelect" type="radio" value="">
-		  									Horizontal 
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-								  
-									  <div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="sizeSelect" type="radio" value="">
-		  									Vertical
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-		  							
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" name="sizeSelect" type="radio" value="">
-		  									Square
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-									  
+		  							<input type="hidden" id="maxp" class="detailinput"value="100000"/>
+		  							<input type="hidden" id="minp" class="detailinput"value="1000"/>
 								  </div>
 								</div>
 							  </div>
-							  
+							 
 							  
 							  <!-- 색상 -->
 							   <div class="card card-collapse col-md-3"> 
@@ -451,28 +454,20 @@ $(function() {
 								      </div>
 								      <div class="half readout">
 								        <div id="swatch"></div>
-								        <div id="values"></div> 
+								        <div id="values"></div>
+								        <input id ='rcol' class="detailinput" type='hidden' value='256'/>
+								        <input id ='gcol' class="detailinput" type='hidden' value='0'/>
+								        <input id ='bcol' class="detailinput" type='hidden' value='0'/> 
 								        <div id="css"></div>
 								      </div> 
 								      </div>
 								    </div>
-								  
 								  
 									  
 								  </div>
 								</div>
 							  </div>
 							  
-							  <!-- 검색 -->
-							  <div class="card card-collapse col-md-1">
-							
-							<div class="card-header" style="border-bottom-color: white;">  
-									<a id="radioSearch" class="btn btn-default btn-fab btn-round">
-		  							    <i class="material-icons">search</i>
-									</a>
-								</div>
-							
-							  </div>
 							  
 							</div>
 						</div>

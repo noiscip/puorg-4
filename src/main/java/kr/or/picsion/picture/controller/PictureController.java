@@ -27,6 +27,7 @@ import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.dto.SearchPicture;
 import kr.or.picsion.picture.service.PictureService;
 import kr.or.picsion.purchase.dto.Purchase;
 import kr.or.picsion.purchase.service.PurchaseService;
@@ -673,61 +674,41 @@ public class PictureController {
 	@RequestMapping(value="tagpicList.ps", method=RequestMethod.GET)
 	public String searchTagPicList(HttpSession session, Model model, String tag) {
 		User user = new User(); 
-		int page=0;
-		int endpage=9;
-		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
 		else {
 			user.setUserNo(0);
 		}
-		System.out.println("이건 값이 없나?"+tag);
-		
-		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag, page, endpage);
-		List<User> tagUserList = pictureService.searchTagUserList(tag, page, endpage);
+		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag);
+		List<User> tagUserList = pictureService.searchTagUserList(tag);
 		model.addAttribute("tagpicList",tagpicList);
 		model.addAttribute("tagUserList",tagUserList);
 		model.addAttribute("tag",tag);
-		model.addAttribute("page", tagpicList.size());
-		
-		System.out.println("검색으로 넘어간 태그리스트"+tagpicList);
 		return "popular.tagpicturepage";
 	}
 	
+	
 	/**
-	* 날      짜 : 2018. 7. 4.
+	* 날      짜 : 2018. 7. 10.
 	* 메소드명 : searchTagPicList
-	* 작성자명 : 박주원
-	* 기      능 : 검색한 사진 보기 페이지 스크롤 페이징
+	* 작성자명 : 정도혁
+	* 기      능 : 사진 상세 검색
 	*
 	* @param session
 	* @param model
-	* @param tag
+	* @param searchPicture
 	* @return View
 	*/
-	@RequestMapping(value="tagpicList.ps", method=RequestMethod.POST)
-	public View searchTagPicList(HttpSession session, Model model, String tag, int page) {
-		User user = new User(); 
-		int endpage=9;
-		
-		if(session.getAttribute("user") != null) {
-			user = (User) session.getAttribute("user");					  //로그인 사용자
-		}
-		else {
-			user.setUserNo(0);
-		}
-		
-		List<Picture> tagpicList = pictureService.searchTagPicList(user.getUserNo(), tag, page, endpage);
-		List<User> tagUserList = pictureService.searchTagUserList(tag, page, endpage);
-		
-		model.addAttribute("tagpicList",tagpicList);
-		model.addAttribute("tagUserList",tagUserList);
-		model.addAttribute("tag",tag);
-		model.addAttribute("endpage", tagpicList.size());
-		
+	@RequestMapping("detailSearch.ps")
+	public View detailSearch(HttpSession session, Model model, SearchPicture searchPicture) {
+		System.out.println("들어가"+searchPicture);
+		List<Picture> detailSearch = pictureService.detailSearch(searchPicture);
+		model.addAttribute("detailSearch",detailSearch);
+		System.out.println("나와?"+detailSearch);
 		return jsonview;
 	}
+	
 	
 }
 

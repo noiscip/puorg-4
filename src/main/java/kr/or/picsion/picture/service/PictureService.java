@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import kr.or.picsion.picture.dao.PictureDao;
 import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.dto.SearchPicture;
 import kr.or.picsion.user.dto.User;
 
 /**
@@ -291,9 +292,9 @@ public class PictureService {
 	* @param tag
 	* @return List<Picture>
 	*/
-	public List<Picture> searchTagPicList(int userNo, String tag, int page, int endpage){
+	public List<Picture> searchTagPicList(int userNo, String tag){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<Picture> list = picDao.searchTagPicList(userNo, tag, page, endpage);
+		List<Picture> list = picDao.searchTagPicList(userNo, tag);
 		return list;
 	}
 	
@@ -306,9 +307,9 @@ public class PictureService {
 	* @param tag
 	* @return List<User>
 	*/
-	public List<User> searchTagUserList(String tag, int page, int endpage){
+	public List<User> searchTagUserList(String tag){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<User> list = picDao.searchTagUserList(tag, page, endpage);
+		List<User> list = picDao.searchTagUserList(tag);
 		return list;
 	} 
 	
@@ -516,4 +517,19 @@ public class PictureService {
     	List<User> list = pictureDao.latestPicOwnList(page, endpage);
     	return list;
     }
+	
+	/**
+	* 날      짜 : 2018. 7. 10.
+	* 메소드명 : detailSearch
+	* 작성자명 : 정도혁
+	* 기      능 : 사진 상세 검색 리스트
+	*
+	* @param searchPicture
+	* @return List<Picture>
+	*/
+	public List<Picture> detailSearch(SearchPicture searchPicture){
+		PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	List<Picture> list = pictureDao.detailSearch(searchPicture);
+    	return list;
+	}
 }

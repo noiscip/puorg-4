@@ -73,30 +73,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 사진 태그 검색 페이지 -->
 	<select id="searchTagPicList" resultType="kr.or.picsion.picture.dto.Picture">
-		select *
-			from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select  DISTINCT p.*, pi.camera, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.photoDate, pi.lens,if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p 
+		select *from (select  DISTINCT p.*, pi.camera, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.photoDate, pi.lens,if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p 
 			left join PICTUREINFO pi on p.picNo = pi.picNo
 			left join (select * from RESPECT where userNo=#{param1}) r on p.picNo=r.picNo 
 			left join (select * from BOOKMARK where userNo=#{param1}) b on p.picNo=b.picNo 
 			left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
 			left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo
 			left join (select * from TAG where tagContent like '${param2}%') t on p.picNo=t.picNo
-			where p.picNo = t.picNo)pp order by pp.picReg desc LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
-		where SC.ROWNUM>0
-		order by SC.ROWNUM
-		limit #{param3}, #{param4}
+			where p.picNo = t.picNo)pp order by pp.picReg desc
 	</select>
 	
 	<!-- 사진 태그 검색 페이지 주인 리스트 -->
 	<select id="searchTagUserList" parameterType="String" resultType="kr.or.picsion.user.dto.User">
-		select *
-			from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select DISTINCT p.picNo as picNo,  p.picReg, u.userNo as userNo, u.userName as userName from PICTURE p
+		select *from (select DISTINCT p.picNo as picNo,  p.picReg, u.userNo as userNo, u.userName as userName from PICTURE p
 			left join USERS u on p.userNo=u.userNo
-			left join (select * from TAG where tagContent like '${param1}%') t on p.picNo=t.picNo
-			where p.picNo = t.picNo)pp order by pp.picReg desc LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
-		where SC.ROWNUM>0
-		order by SC.ROWNUM
-		limit #{param2}, #{param3}
+			left join (select * from TAG where tagContent like '${value}%') t on p.picNo=t.picNo
+			where p.picNo = t.picNo)pp order by pp.picReg desc
 	</select>
 	
 	
@@ -186,15 +178,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     values 
     (#{picNo},#{camera},#{resolutionH},#{resolutionW},#{photoDate},#{lens})
     </insert>
-    
-    <!-- 사진 색깔 정보 저장 -->
-    <insert id="insertColor" parameterType="hashmap">
-    insert into COLOR
-    (picNo,colorR,colorG,colorB)
-    values 
-    (#{picNo},#{color.colorR},#{color.colorG},#{color.colorB})
-    </insert>
-    
     <!-- 태그 정보 -->
     <select id="selectTag" resultType="String">
     	SELECT tagContent FROM TAG WHERE picNo=#{picNo}
@@ -205,6 +188,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select p.*,ifnull(r.c,0) as respectCount from PICTURE p 
 	left join (select picNo, count(*) as c from RESPECT GROUP by picNo) r on p.picNo=r.picNo 
 	where p.userNo=#{userNo} order by r.c desc, p.picReg asc;
+	</select>
+	
+	<!-- 사진 태그 상세 검색 페이지 -->
+	<select id="detailSearch" resultType="kr.or.picsion.picture.dto.Picture">
+		select * from (select  DISTINCT p.*, pi.camera, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.photoDate, pi.lens,if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p 
+		left join PICTUREINFO pi on p.picNo = pi.picNo
+		left join (select * from RESPECT where userNo=#{userNo}) r on p.picNo=r.picNo 
+		left join (select * from BOOKMARK where userNo=#{userNo}) b on p.picNo=b.picNo 
+		left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
+		left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo
+		left join (select * from TAG where tagContent like '${tag}%') t on p.picNo=t.picNo
+		<choose>
+		<when test="colorR == 256"></when>
+		<otherwise>
+		join (select picNo, count(*) as colorCheck from COLOR 
+		where colorR  BETWEEN #{colorR}-50 AND #{colorR}+50 and colorG  BETWEEN #{colorG}-50 AND #{colorG}+50 and colorB  BETWEEN #{colorB}-50 AND #{colorB}+50 group by picNo) cl on cl.picNo = p.picNo
+		</otherwise>
+		</choose>
+		where p.picNo = t.picNo) pp where pp.picPrice BETWEEN #{lowPrice} AND #{highPrice} 
+	 	<choose>
+		<when test="picPeople == 0">and pp.picPeople = #{picPeople}</when>
+		<when test="picPeople == 1">and pp.picPeople = #{picPeople}</when>
+		<when test="picPeople == 2">and pp.picPeople = #{picPeople}</when>
+		<when test="picPeople == 3">and pp.picPeople &gt;= #{picPeople}</when>
+		<otherwise></otherwise>
+		</choose> 
+		<choose>
+		<when test="resolutionSize == 'Square'">and resolutionW = resolutionH</when>
+		<when test="resolutionSize == 'Horizontal'">and resolutionW &gt; resolutionH</when>
+		<when test="resolutionSize == 'Vertical'">and resolutionW &lt; resolutionH</when>
+		<otherwise></otherwise>
+		</choose>
+		order by 
+		<if test="order == 'Latest'">picReg</if>
+		<if test="order == 'Popular'">respectCount</if>
+		desc 
+			
 	</select>
 	
 </mapper>
