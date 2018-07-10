@@ -888,12 +888,12 @@
 										<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
 									<div class="form-group">
 										<label for="title">제목</label> <input type="text"
-											class="form-control" id="pictureTitle" name="picTitle">
+											class="form-control" id="pictureTitle" name="picTitle" autocomplete="off">
 									</div>
 			
 									<div class="form-group">
 										<label for="description">설명</label> <input type="text"
-											class="form-control" id="pictureDesc" name="picContent">
+											class="form-control" id="pictureDesc" name="picContent" autocomplete="off">
 									</div>
 			
 									<!-- <form action=""> -->
