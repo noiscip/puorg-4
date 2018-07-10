@@ -105,6 +105,23 @@
 						},
 						success : function(data) {
 							console.log(data);
+							if(data.check == true){
+								alert('성공')
+							}else{
+								var check =''
+									check += '<div class="alert alert-warning">'
+									check += 	'<div class="container-fluid">'
+									check += 		'<div class="alert-icon">'
+									check += 			'<i class="material-icons">warning</i>'
+									check += 		'</div>'
+									check += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+									check += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+									check += 		'</button>'
+									check += 		'<b>Warning Alert</b> 이미 신청 되었습니다'
+									check += 	'</div>'
+									check += '</div>'
+								$('.media-footer').after(check)
+							}
 						}
 					});	
 				});
@@ -871,12 +888,12 @@
 										<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
 									<div class="form-group">
 										<label for="title">제목</label> <input type="text"
-											class="form-control" id="pictureTitle" name="picTitle">
+											class="form-control" id="pictureTitle" name="picTitle" autocomplete="off">
 									</div>
 			
 									<div class="form-group">
 										<label for="description">설명</label> <input type="text"
-											class="form-control" id="pictureDesc" name="picContent">
+											class="form-control" id="pictureDesc" name="picContent" autocomplete="off">
 									</div>
 			
 									<!-- <form action=""> -->
@@ -1106,7 +1123,7 @@
 						logo += 		'<b>Warning Alert</b>' + data.logo
 						logo += 	'</div>'
 						logo += '</div>'
-						
+						 
 						$('h1').after(logo)
 					}
  					/*얼굴감지*/
