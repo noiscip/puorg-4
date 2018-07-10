@@ -111,21 +111,20 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 							</div> 
 							<div>
 								<span class="btn btn-raised btn-round btn-default btn-file"> 
-									<span class="fileinput-new">Select image</span> <span
-									class="fileinput-exists">Change</span> <input type="file"
-									name="filePath" accept=".jpg, .png, .bmp" />
-								</span> <a href="#pablo"
-									class="btn btn-danger btn-round fileinput-exists"
-									data-dismiss="fileinput"> <i class="fa fa-times"></i>
-									Remove
+									<span class="fileinput-new" id="selectImage">Select image</span> 
+									<span class="fileinput-exists" id="changeImage">Change</span> 
+									<input type="file" name="filePath" accept=".jpg, .png, .bmp" />
+								</span> 
+								<a href="#Redirect" class="btn btn-danger btn-round" onclick="fileCancle()">
+									<i class="fa fa-times"></i>Remove
 								</a>
 							</div>
 							<div id="peopleRadio" style="display: none; float: left;">
-								<input type="radio" id="zero"> 0명<br>
-  								<input type="radio" id="one"> 1명<br>
-  								<input type="radio" id="two"> 2명<br> 
-  								<input type="radio" id="thr"> 3~5명<br> 
-  								<input type="radio" id="six"> 6명 이상<br> 
+								<input type="radio" name="people" id="zero"> 0명<br>
+  								<input type="radio" name="people" id="one"> 1명<br>
+  								<input type="radio" name="people" id="two"> 2명<br> 
+  								<input type="radio" name="people" id="thr"> 3~5명<br> 
+  								<input type="radio" name="people" id="six"> 6명 이상<br> 
 							</div>
 						</div>
 					
@@ -147,20 +146,13 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 
 						<!-- <form action=""> -->
 						<div id="picTags" class="form-group">
-							<label for="comment">Tags</label> <br>
+							<label for="comment">Tags</label>
 								<div id="loaderIcon">
-							
 								</div>
 						</div>
-						<!-- </form> -->
-				<%--	<div class="form-group">
-							<input type="text" name="picPath" value="${picPath}"> 
-						</div> --%>
 						<div id="tagA">
-						
 						</div>
 						<button type="submit" class="btn btn-primary">저장하기</button>
-					
 					</form>
 				</div>
 			</div>
@@ -169,18 +161,36 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 </div>
 
 <script>
+	function fileCancle(){
+		fileChange()
+		$('#selectImage').show()
+		$('#changeImage').hide()
+		$('.fileinput-preview').empty().append('<img src="assets/img/up.png">') 
+	}
+	
+	function fileChange(){
+		$('.btn-danger,#peopleRadio,#selectImage').hide()
+		$('#tagA,#picTags').empty()
+		$('#changeImage').show()
+		$('.alert').remove()
+		$('#picTags').append('<label for="comment">Tags</label><div id="loaderIcon"></div>')
+	}
+	
 	$(function() {
+		$('.btn-danger').hide()
 		
-
 		$('input[type=file]').change(function() {
-			console.log($(this))
+			if($('input[type=file]').val().trim()==""){
+				$('form').reset()
+				return false
+			}
+			fileChange()
+			$('.btn-danger').show()
+
 			var formData = new FormData($('#fileForm')[0])
-			console.log("클릭가능????")
-			console.log(formData)
 			$("fileinput-preview fileinput-exists thumbnail img-raised:first").attr({
 				id:"preview"
 			})
-			console.log($("#preview").attr("src"))
 			$.ajax({
 				url : "/picsion/vision.ps",
 				data : formData,
@@ -200,11 +210,11 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						logo += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
 						logo += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
 						logo += 		'</button>'
-						logo += 		'<b>Warning Alert</b>' + data.logo
+						logo += 		'<b>Warning Alert</b> ' + data.logo
 						logo += 	'</div>'
 						logo += '</div>'
 						
-						$('h1').append(logo)
+						$('h1').after(logo)
 						
 					}
 					/*사람수 측정*/
@@ -223,10 +233,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						$('#six').attr('checked',true);
 					}
  					/*얼굴감지*/
- 					console.log($(".fileinput-preview").children());
- 					$(".fileinput-preview").children().attr({
-						id:"preview"
-						});
+ 					$(".fileinput-preview").children().attr({id:"preview"});
  					console.log($(".fileinput-preview").children());
 					console.log($("#preview")["0"].naturalHeight);
 					console.log($("#preview")["0"].height);
@@ -290,7 +297,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						safe += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
 						safe += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
 						safe += 		'</button>'
-						safe += 		'<b>Warning Alert</b>' + data.safe
+						safe += 		'<b>Warning Alert</b> ' + data.safe
 						safe += 	'</div>'
 						safe += '</div>'
 						$('h1').after(safe)
@@ -305,8 +312,6 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					})
 					
 					$('#picTags').append(tags)
-					
-					
 					
 					var cameraName = data.metaMap.cameraName=='undefined'? 'null' : data.metaMap.cameraName;
 					var resolH = data.metaMap.resolH=='undefined'? 'null' : data.metaMap.resolH;
@@ -327,30 +332,29 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					tags += '<input type="hidden" name="picPeople" id="picPeople" value="'+peopleNum+'"/>';
 
 					$('#tagA').append(tags)
-					/* $('#taginputtest').attr("data-role","tagsinput"); */
-					console.log('와요?')
 					$("input[data-role=tagsinput]").tagsinput();
-					/* console.log($('.fileinput-preview')["0"].children["0"].src); */
 					
 					/*색깔*/
 					var color =''
 					$.each(data.color,function(i,elt){
 						
-						/* color += '<input type="hidden" name="colorList['+i+']" id="colorList['+i+']" value="'+elt.red +','+ elt.green +','+ elt.blue+'"/>'; */
 					 	color += '<input type="hidden" name="colorList['+i+'].colorR" id="colorList['+i+'].colorR" value="'+elt.red+'"/>';
 						color += '<input type="hidden" name="colorList['+i+'].colorG" id="colorList['+i+'].colorG" value="'+elt.green+'"/>';
 						color += '<input type="hidden" name="colorList['+i+'].colorB" id="colorList['+i+'].colorB" value="'+elt.blue+'"/>';
 						
 					}) 
 					$('#tagA').append(color);
+				},beforeSend:function(){
+					$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
 				}
-			,beforeSend:function(){
-				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
-			}
 				
 			})
+			
 		})
 	})
+	
+
+	
 $(document).ready(function(){
 	
 	$(document).on('mouseover','.face-rectangle',function(){
