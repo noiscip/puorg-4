@@ -11,6 +11,11 @@ $(document).ready( function () {
     	"bInfo": false,    	
     	"bLengthChange": false
     } );
+    var errorCheck = ${errorCheck};
+    if(errorCheck == 0){
+    	alert("글 작성 오류");
+    }
+    
     
     
     

@@ -39,35 +39,36 @@
 								cmtContent : cmtcon
 							},
 							success : function(data) {
-								console.log(data.addcomment);
-								console.log(data);
-								$("#reviewcontents").empty();
-								  var media="";
-							      $.each(data.commuserlist,function(index,element){
-										media += "<div class='media'>"+
-									    "<a class='float-left' href='#pablo'>"+
-										"<div class='avatar'>";
-										
-										media += "<img class='media-object avatar-prPic-height' alt='64x64' src='"+element.prPicture+"'>";
-										
-										media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
-											element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
-										    "</h4><p>"+data.comment[index].cmtContent+"</p>";
-										   
-										    media+="<a href='#pablo' class='btn btn-primary btn-link float-right'"+
-											"rel='tooltip' title='' data-original-title='보내버리기' id='" + data.comment[index].tableNo + ","+element.userNo+","+data.comment[index].brdNo+",0,"+data.comment[index].cmtNo+"' > <i "+
-											"class='material-icons'>reply</i>신고</a>";
-										   
-											media+="</div></div>";
-									})
-									$("#reviewcontents").append(media); 									
-							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
-							      	$("#reviewcontent").val("");
-							      	if(${boardInfo.operStateNo}==2){
-							      	var tableNo=4+":"+data.addcomment.cmtNo;
-									send(receiveUserNo,tableNo);
-							      	}
-							     
+								if(data.result == 0){
+									alert("댓글 작성 실패");
+								}else{
+									$("#reviewcontents").empty();
+									  var media="";
+								      $.each(data.commuserlist,function(index,element){
+											media += "<div class='media'>"+
+										    "<a class='float-left' href='#pablo'>"+
+											"<div class='avatar'>";
+											
+											media += "<img class='media-object avatar-prPic-height' alt='64x64' src='"+element.prPicture+"'>";
+											
+											media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
+												element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
+											    "</h4><p>"+data.comment[index].cmtContent+"</p>";
+											   
+											    media+="<a href='#pablo' class='btn btn-primary btn-link float-right'"+
+												"rel='tooltip' title='' data-original-title='보내버리기' id='" + data.comment[index].tableNo + ","+element.userNo+","+data.comment[index].brdNo+",0,"+data.comment[index].cmtNo+"' > <i "+
+												"class='material-icons'>reply</i>신고</a>";
+											   
+												media+="</div></div>";
+										})
+										$("#reviewcontents").append(media); 									
+								        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+								      	$("#reviewcontent").val("");
+								      	if(${boardInfo.operStateNo}==2){
+								      	var tableNo=4+":"+data.addcomment.cmtNo;
+										send(receiveUserNo,tableNo);
+								      	}
+								}
 							  }, 
 							  error: function(){
 							   	  alert("메시지 보내는 도중 오류가 발생했습니다.");

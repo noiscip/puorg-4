@@ -106,7 +106,7 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "writeboard.ps", method = RequestMethod.POST)
 	@Transactional(propagation = Propagation.REQUIRED)    //글 작성 트랜잭션
-	public String postwriteBoard(Board board, HttpSession session) {
+	public String postwriteBoard(Board board, HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
 		Board inboard = board;
 		int errorCheck = 0;
@@ -114,11 +114,11 @@ public class BoardController {
 			inboard.setUserNo(user.getUserNo());
 			inboard.setTableNo(3);
 			inboard.setOperStateNo(1);
-			boardService.insertBoard(inboard);
+			errorCheck = boardService.insertBoard(inboard);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		model.addAttribute("errorCheck",errorCheck);
 		return "redirect:/board/board.ps";
 	}
 
