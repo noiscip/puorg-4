@@ -1,5 +1,6 @@
 package kr.or.picsion.message.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -154,4 +155,9 @@ public class MessageService {
 	}
 	
 	
+	public int deleteMsg(Date date) {
+		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
+		int result = messageDao.deleteMessage(date);
+		return result;
+	}
 }

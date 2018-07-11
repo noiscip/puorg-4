@@ -5,6 +5,9 @@
 
 
 <script type="text/javascript">
+
+
+
 $(function() {
 	var loginUserNo = $('#loginUserNo').val();
 
@@ -56,84 +59,140 @@ $(function() {
 		}
 	})
 	
-	var lastScrollTop = 0;
-    var page = ${page};
-
-	$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
-         
-        var currentScrollTop = $(window).scrollTop();
-        var scrollPage="";
-        
-        if( currentScrollTop - lastScrollTop > 0 ){
-            
-            // 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
-            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
-                
-                $.ajax({
-                    type : 'post',  
-                    url : '<%=request.getContextPath()%>/picture/tagpicList.ps',
-                    data : { 
-                        page: page
-                    },
-                    success : function(data){
-                        
-                        $.each(data.tagpicList, function(index, obj){
-                        	
-                        		
-                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
-                 			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
-                         	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
-	                    		   "</a><div><div class='counts hide-xs hide-sm'>";
-		                           if(obj.respectCheck=="T"){
-				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
-				                   }else{
-				                	   scrollPage+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
-				                   }
-				                   
-				                   if(obj.bookmarkCheck=="T"){
-				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
-				                   }else{
-				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
-				                   }
-			                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.tagUserList[index].userNo+"'>"+data.tagUserList[index].userName+"</a></div></div>";
-			            		
-				                $('#searchpic').append(scrollPage);
-                        		
-                        	
-                        	
-                        })
-					    page+=data.endpage;
-                    }
-                });
-                 
-            }
-            
-        }
-
-    })
+	
+	function detailSearch(){
+		var detailHtml="";
+		 $.ajax({ 
+			  url : "/picsion/picture/detailSearch.ps", 
+			  data : {
+				    userNo : loginUserNo,
+				    tag : '${tag}',
+				    order : $('input[name="viewSelect"]:checked').val(),
+				    picPeople :  $('input[name="peopleSelect"]:checked').val() *1,
+				    resolutionSize :  $('input[name="sizeSelect"]:checked').val() ,
+				    lowPrice : $('#minp').val() *1,
+				    highPrice : $('#maxp').val() *1,
+				    colorR : $('#rcol').val() *1,
+				    colorG : $('#gcol').val() *1,
+				    colorB : $('#bcol').val() *1
+				},
+			  success : function(data){
+				  console.log(data);
+				  $('#searchpic').empty();  
+				     $.each(data.detailSearch, function(index, obj){
+	             	
+	        	detailHtml="<div class='item col-sm-12 col-md-4'>"+
+	  			   "<a href='/picsion/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+	          	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
+	      		   "</a><div><div class='counts hide-xs hide-sm'>";
+	                if(obj.respectCheck=="T"){
+	                	detailHtml+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite</i>"+obj.respectCount+"</em>";
+	               }else{
+	            	   detailHtml+="<em><i id='like' value='"+obj.picNo+"' class='material-icons'>favorite_border</i>"+obj.respectCount+"</em>";
+	               }
+	               
+	               if(obj.bookmarkCheck=="T"){
+	            	   detailHtml+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark</i>"+obj.bookmarkCount+"</em>";
+	               }else{
+	            	   detailHtml+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
+	               }
+	               detailHtml+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj.userName+"</a></div></div>";
+	             	
+	              $('#searchpic').append(detailHtml);
+	             })
+			  },
+			  error: function(){
+			   	  alert("상세 검색 도중 오류가 발생했습니다.");
+			  }
+		}) 
+		
+	}
     
     var slider2 = document.getElementById('sliderRefine');
 
     noUiSlider.create(slider2, {
-        start: [101, 790],
+        start: [1000, 100000],  
         connect: true,
         range: {
-            'min': [30],
-            'max': [900]
+            'min': [1000],
+            'max': [100000]
         }
     });
 
     var limitFieldMin = document.getElementById('price-left');
     var limitFieldMax = document.getElementById('price-right');
-
+	var max="";
+	var min="";
     slider2.noUiSlider.on('update', function(values, handle) {
         if (handle) {
             limitFieldMax.innerHTML = $('#price-right').data('currency') + Math.round(values[handle]);
+            $('#maxp').val(Math.round(values[handle]));
+            max=Math.round(values[handle]);
+            console.log("이전최대"+max);
         } else {
             limitFieldMin.innerHTML = $('#price-left').data('currency') + Math.round(values[handle]);
+            $('#minp').val(Math.round(values[handle]));
+            min=Math.round(values[handle]);
+            console.log("이전최저"+min);
+        }  
+        console.log(max);
+        console.log(min);
+        console.log("이후최대"+max);
+        console.log("이후최저"+min);
+        if((max >= 1000 && max <= 100000) && (min >= 1000 && min <= 100000)){
+        detailSearch(); 
+        console.log("1");
+        }else{
+        console.log("11");
+        	
         }
     });
-})
+    
+    
+    var example = new iro.ColorPicker(".wrapper", {  
+    	  // color picker options
+    	  // Option guide: https://rakujira.jp/projects/iro/docs/guide.html#Color-Picker-Options
+    	  width: 200,
+    	  height: 200,
+    	  color: {r: 255, g: 0, b: 0},
+    	  anticlockwise: true,
+    	  borderWidth: 1,
+    	  borderColor: "#fff",
+    	  // Dynamic CSS guide: https://rakujira.jp/projects/iro/docs/guide.html#Dynamic-CSS
+    	  css: {
+    	    "#swatch": {
+    	      "background-color": "$color" 
+    	    }
+    	  }
+    	});
+
+    	var values = document.getElementById("values");
+    	var css = document.getElementById("css");
+
+    	// https://rakujira.jp/projects/iro/docs/guide.html#color-change
+    	example.on("color:change", function(color){
+    	  // Show the current color in different formats
+    	  // Using the selected color: https://rakujira.jp/projects/iro/docs/guide.html#Using-the-Selected-Color
+    	  values.innerHTML = [
+    	    "hex: " + color.hexString,
+    	    "rgb: " + color.rgbString,  
+    	  ].join("<br>");
+    	  
+    	  $('#rcol').val(color.rgb.r);
+    	  $('#gcol').val(color.rgb.g);
+    	  $('#bcol').val(color.rgb.b);
+    	  console.log("2");
+    	  detailSearch();
+    	  // Get the dynamic stylesheet content and pretty-print it by replacing newlines and tabs with suitable html
+    	});
+    	
+    	$(document).on('change','.detailinput',function(){
+    		console.log("3");
+    		detailSearch();
+    		
+    	})
+    	
+})  
 </script>
 
 <style type="text/css">
@@ -141,6 +200,35 @@ $(function() {
 	height: 300px;
 	width: 100%;
 }
+
+.wrapper svg {
+  margin: 0 auto; 
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  
+  .half {
+    width: 50%;
+    padding: 32px 0;
+  }
+}
+
+#swatch {
+  height: 24px;
+  border-radius: 2px;
+}
+
+
+.readout {
+  font-family: monospace;
+}
+
 </style>
 
 <div id="changemain"id="changemain" class="page-header header-filter" data-parallax="true">
@@ -151,7 +239,7 @@ $(function() {
 		<div class="container"> 
 		
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12">  
 					<div class="card card-refine card-plain card-rose">
 						<div class="card-body">
 							<h4 style="text-transform: uppercase;border-bottom: 1px solid #888;"class="card-title filter-option">
@@ -162,137 +250,101 @@ $(function() {
 							</h4>
 							<div id="accordion" role="tablist" class="row">
 							
-							  <!-- 태그들 -->
-							  <div class="card card-collapse col-md-3">
+							  <!-- 최신, 인기 순 -->
+							  <div class="card card-collapse col-md-2">
+								<div class="card-header" role="tab" id="headingOne">
+								  <h5 class="mb-0">
+									<a class="" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+										Order
+		  							    <i class="material-icons">keyboard_arrow_down</i>
+									</a>
+								  </h5>
+								</div>
+								<div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+								  <div class="card-body">
+									   <div class="form-check">
+			  								<label class="form-check-label">
+			  									<input class="form-check-input detailinput" name="viewSelect" type="radio" value="Latest" checked="checked">
+			  									Latest 
+			  									<span class="form-check-sign">
+			  										<span class="check"></span>
+			  									</span>
+			  								</label>
+			  							</div>
+									  
+										  <div class="form-check">
+			  								<label class="form-check-label">
+			  									<input class="form-check-input detailinput" name="viewSelect" type="radio" value="Popular">
+			  									Popular
+			  									<span class="form-check-sign">
+			  										<span class="check"></span>  
+			  									</span>
+			  								</label>
+			  							</div>
+								  </div>
+								</div>
+							  </div>
+							  
+							   <!-- 크기 -->
+							  <div class="card card-collapse col-md-2">
 								<div class="card-header" role="tab" id="headingTwo">
 								  <h5 class="mb-0">
 									<a class="" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										Tags
-		  							    <i class="material-icons">keyboard_arrow_down</i>
+										Size
+										<i class="material-icons">keyboard_arrow_down</i>
 									</a>
 								  </h5>
 								</div>
 								<div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" style="">
 								  <div class="card-body">
+								  
+								  <div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="-1" checked="checked">
+		  									All 
+		  									<span class="form-check-sign">
+		  										<span class="check"></span>
+		  									</span>
+		  								</label>
+		  							</div>
+								  
+									<div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="Horizontal">
+		  									Horizontal 
+		  									<span class="form-check-sign">
+		  										<span class="check"></span>
+		  									</span>
+		  								</label>
+		  							</div>
+								  
 									  <div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="" checked="">
-		  									Blazers
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="Vertical">
+		  									Vertical
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
 		  									</span>
 		  								</label>
 		  							</div>
-
+		  							
 		  							<div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Casual Shirts
+		  									<input class="form-check-input detailinput" name="sizeSelect" type="radio" value="Square">
+		  									Square
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
 		  									</span>
 		  								</label>
 		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Formal Shirts
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Jeans
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Polos
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Pyjamas
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Shorts
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Trousers
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
+									  
 								  </div>
 								</div>
 							  </div>
 							  
-							  <!-- 가격 -->
-							  <div class="card card-collapse col-md-3">
-								<div class="card-header" role="tab" id="headingOne">
-								  <h5 class="mb-0">
-									<a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="">
-									  	Price Range
-		  							  <i class="material-icons">keyboard_arrow_down</i>
-									</a>
-								  </h5>
-								</div>
-
-								<div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" style="">
-								  <div class="card-body card-refine">
-									  <span id="price-left" class="price-left pull-left" data-currency="원"></span>
-		  							<span id="price-right" class="price-right pull-right" data-currency="원"></span>
-		  							<div class="clearfix"></div>
-		  							<div id="sliderRefine" class="slider slider-rose noUi-target noUi-ltr noUi-horizontal">
-		  						<!-- 	<div class="noUi-base">
-		  							<div class="noUi-origin" style="left: 7.59912%;">
-		  							<div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="100.0" aria-valuenow="7.6" aria-valuetext="96.11" style="z-index: 5;">
-		  							</div>
-		  							</div>
-		  							<div class="noUi-connect" style="left: 7.59912%; right: 0%;">
-		  							</div>
-		  							<div class="noUi-origin" style="left: 100%;">
-		  							<div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="7.6" aria-valuemax="100.0" aria-valuenow="100.0" aria-valuetext="900.00" style="z-index: 4;">
-		  							</div>
-		  							</div>
-		  							</div> -->  
-		  							</div>
-								  </div>
-								</div>
-							  </div>
 							  
 							  <!-- 사람 수 -->
-							  <div class="card card-collapse col-md-3">
+							  <div class="card card-collapse col-md-2">
 								<div class="card-header" role="tab" id="headingThree">
 								  <h5 class="mb-0">
 									<a class="" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -303,10 +355,30 @@ $(function() {
 								</div>
 								<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" style="">
 								  <div class="card-body">
+								    <div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="-1" checked="checked">
+		  									All 
+		  									<span class="form-check-sign">
+		  										<span class="check"></span>
+		  									</span>
+		  								</label>
+		  							</div>
+								  
 									  <div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="" checked="">
-		  									All
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="0">
+		  									0
+		  									<span class="form-check-sign">
+		  										<span class="check"></span> 
+		  									</span>
+		  								</label>
+		  							</div>
+
+		  							<div class="form-check">
+		  								<label class="form-check-label">
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="1">
+		  									1
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
 		  									</span>
@@ -315,8 +387,8 @@ $(function() {
 
 		  							<div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Polo Ralph Lauren
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="2">
+		  									 2
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
 		  									</span>
@@ -325,262 +397,78 @@ $(function() {
 
 		  							<div class="form-check">
 		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Wooyoungmi
+		  									<input class="form-check-input detailinput" name="peopleSelect" type="radio" value="3">
+		  									3+
 		  									<span class="form-check-sign">
 		  										<span class="check"></span>
 		  									</span>
 		  								</label>
 		  							</div>
 
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Alexander McQueen
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Tom Ford
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									AMI
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Berena
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Thom Sweeney
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Burberry Prorsum
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Calvin Klein
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Kingsman
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Club Monaco
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Dolce &amp; Gabbana
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Gucci
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Biglioli
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Lanvin
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Loro Piana
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
-
-		  							<div class="form-check">
-		  								<label class="form-check-label">
-		  									<input class="form-check-input" type="checkbox" value="">
-		  									Massimo Alba
-		  									<span class="form-check-sign">
-		  										<span class="check"></span>
-		  									</span>
-		  								</label>
-		  							</div>
 								  </div>
-								</div>
+								</div>  
 							  </div>
 							  
-							  
-							  <!-- 크기 -->
+							   <!-- 가격 -->
 							  <div class="card card-collapse col-md-3">
 								<div class="card-header" role="tab" id="headingFour">
 								  <h5 class="mb-0">
-									<a class="" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-										Size
-										<i class="material-icons">keyboard_arrow_down</i>
+									<a data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+									  	Price Range
+		  							  <i class="material-icons">keyboard_arrow_down</i>
 									</a>
 								  </h5>
 								</div>
+
 								<div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" style="">
-								  <div class="card-body">
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="" checked="">
-											  All
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
-
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="">
-											  Black
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
-
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="">
-											  Blue
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
-
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="">
-											  Brown
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
-
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="">
-											  Gray
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
-
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="">
-											  Green
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
-
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="">
-											  Neutrals
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
-
-									  <div class="form-check">
-										  <label class="form-check-label">
-											  <input class="form-check-input" type="checkbox" value="">
-											  Purple
-											  <span class="form-check-sign">
-												  <span class="check"></span>
-											  </span>
-										  </label>
-									  </div>
+								  <div class="card-body card-refine">
+									<span id="price-left" class="price-left pull-left detailinput" data-currency="최저"></span>
+		  							<span id="price-right" class="price-right pull-right detailinput" data-currency="최고"></span>
+		  							<div class="clearfix"></div>
+		  							<div id="sliderRefine" class="slider slider-success noUi-target noUi-ltr noUi-horizontal">
+		  							</div>
+		  							<input type="hidden" id="maxp" class="detailinput"value="100000"/>
+		  							<input type="hidden" id="minp" class="detailinput"value="1000"/>
 								  </div>
 								</div>
 							  </div>
+							 
+							  
+							  <!-- 색상 -->
+							   <div class="card card-collapse col-md-3"> 
+								<div class="card-header" role="tab" id="headingFive">
+								  <h5 class="mb-0">
+									<a class="" data-toggle="collapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+										Color
+		  							    <i class="material-icons">keyboard_arrow_down</i>
+									</a>
+								  </h5>
+								</div>
+								<div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive" style="">
+								  <div class="card-body">
+								  
+								   <div class="wrap">
+								   <div class="col mr-auto ml-auto">
+								      <div class="half">
+								        <div class="wrapper"></div>  
+								      </div>
+								      <div class="half readout">
+								        <div id="swatch"></div>
+								        <div id="values"></div>
+								        <input id ='rcol' class="detailinput" type='hidden' value='256'/>
+								        <input id ='gcol' class="detailinput" type='hidden' value='0'/>
+								        <input id ='bcol' class="detailinput" type='hidden' value='0'/> 
+								        <div id="css"></div>
+								      </div> 
+								      </div>
+								    </div>
+								  
+									  
+								  </div>
+								</div>
+							  </div>
+							  
+							  
 							</div>
 						</div>
 					</div>
@@ -617,7 +505,7 @@ $(function() {
 									</c:otherwise>
 								</c:choose>
 			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${tagUserList[status.index].userNo}">${tagUserList[status.index].userName}</a>
+			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${tagpic.userNo}">${tagpic.userName}</a>
                				</div>
 						</div>
 					

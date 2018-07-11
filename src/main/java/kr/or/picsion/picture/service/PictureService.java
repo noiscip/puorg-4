@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import kr.or.picsion.picture.dao.PictureDao;
 import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
+import kr.or.picsion.picture.dto.SearchPicture;
 import kr.or.picsion.user.dto.User;
 
 /**
@@ -96,20 +97,6 @@ public class PictureService {
 		return list;
 	}
 	
-	/**
-	* 날      짜 : 2018. 6. 17.
-	* 메소드명 : studioOwnerList
-	* 작성자명 : 정도혁
-	* 기      능 : 스튜디오 주인 정보
-	*
-	* @param userNo
-	* @return List<User>
-	*/
-	public List<User> studioOwnerList(int userNo, int page, int endpage){
-		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<User> list = picDao.studioOwnerList(userNo, page, endpage);
-		return list;
-	}
 	
 	/**
 	* 날      짜 : 2018. 6. 17.
@@ -291,27 +278,11 @@ public class PictureService {
 	* @param tag
 	* @return List<Picture>
 	*/
-	public List<Picture> searchTagPicList(int userNo, String tag, int page, int endpage){
+	public List<Picture> searchTagPicList(int userNo, String tag){
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<Picture> list = picDao.searchTagPicList(userNo, tag, page, endpage);
+		List<Picture> list = picDao.searchTagPicList(userNo, tag);
 		return list;
 	}
-	
-	/**
-	* 날      짜 : 2018. 6. 22.
-	* 메소드명 : searchTagUserList
-	* 작성자명 : 정도혁
-	* 기      능 : 태그 검색된 사진 주인 리스트
-	*
-	* @param tag
-	* @return List<User>
-	*/
-	public List<User> searchTagUserList(String tag, int page, int endpage){
-		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
-		List<User> list = picDao.searchTagUserList(tag, page, endpage);
-		return list;
-	} 
-	
 	
     /**
     * 날      짜 : 2018. 6. 27.
@@ -501,19 +472,18 @@ public class PictureService {
     	return list;
     }
 	
-	
 	/**
-	* 날      짜 : 2018. 7. 5.
-	* 메소드명 : latestPicOwnList
+	* 날      짜 : 2018. 7. 10.
+	* 메소드명 : detailSearch
 	* 작성자명 : 정도혁
-	* 기      능 : 메인 화면 최신 사진 주인 리스트
+	* 기      능 : 사진 상세 검색 리스트
 	*
-	* @param userNo
-	* @return List<User>
+	* @param searchPicture
+	* @return List<Picture>
 	*/
-	public List<User> latestPicOwnList(int page, int endpage){
-    	PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
-    	List<User> list = pictureDao.latestPicOwnList(page, endpage);
+	public List<Picture> detailSearch(SearchPicture searchPicture){
+		PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
+    	List<Picture> list = pictureDao.detailSearch(searchPicture);
     	return list;
-    }
+	}
 }
