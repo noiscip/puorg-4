@@ -62,7 +62,6 @@ public class HomeController {
 		User user = (User) session.getAttribute("user");
 		List<Picture> ranPicture = pictureService.selectRandom();
 		List<Picture> latestPicList = new ArrayList<>();								//사진
-		List<User> latestPicOwnList = pictureService.latestPicOwnList(page, endpage);	//주인 찾는거
 		List<User> bestUploader = userService.bestUploader();
 		List<User> mostFollowingUser = userService.mostFollowingUser();
 		if(user != null) {
@@ -80,8 +79,7 @@ public class HomeController {
 		model.addAttribute("bestUploader",bestUploader);
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("ranPicture",ranPicture);
-		model.addAttribute("latestPicOwnList",latestPicOwnList);
-		model.addAttribute("page", latestPicOwnList.size());
+		model.addAttribute("page", latestPicList.size());
 		
 		return "home.home";
 	}
@@ -103,7 +101,6 @@ public class HomeController {
 		int endpage=9;
 		
 		List<Picture> latestPicList = new ArrayList<>();					//사진
-		List<User> latestPicOwnList = pictureService.latestPicOwnList(page, endpage);	//주인 찾는거
 		
 		if(user != null) {
 			latestPicList = pictureService.latestPicList(user.getUserNo(), page, endpage);
@@ -113,8 +110,7 @@ public class HomeController {
 			model.addAttribute("latestPicList",latestPicList);
 		}
 		
-		model.addAttribute("latestPicOwnList",latestPicOwnList);
-		model.addAttribute("endpage", latestPicOwnList.size());
+		model.addAttribute("endpage", latestPicList.size());
 		
 		return jsonview;
 	}

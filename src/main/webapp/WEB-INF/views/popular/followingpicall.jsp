@@ -80,7 +80,7 @@ $(function() {
                         	
                         		
                         		scrollPage="<div class='item col-sm-12 col-md-4'>"+
-                 			   "<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+                 			   "<a href='/picsion/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
                          	   "<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
 	                    		   "</a><div><div class='counts hide-xs hide-sm'>";
 		                           if(obj.respectCheck=="T"){
@@ -94,7 +94,7 @@ $(function() {
 				                   }else{
 				                	   scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 				                   }
-			                    scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.followingScrollPicOwner[index].userNo+"'>"+data.followingScrollPicOwner[index].userName+"</a></div></div>";
+			                    scrollPage+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj.userName+"</a></div></div>";
 			            		
 				                $('#followpic').append(scrollPage);
                         		
@@ -121,6 +121,16 @@ $(function() {
 </style>
 
 <div id="changemain" class="page-header header-filter" data-parallax="true">
+<div class="container">
+				<div class="row">
+					<div class="col-md-8 ml-auto mr-auto text-center">
+						<div class="brand">
+							<h1 class="title">Following Latest Pictures</h1>
+						</div>
+					</div>
+					
+				</div>
+			</div>
 </div>
 <div class="main">
 	<div class="profile-content">
@@ -133,7 +143,7 @@ $(function() {
 				 <fmt:parseNumber var="var3" value="${followingListAll.resolutionW/followingListAll.resolutionH}" pattern="#.#" />
 						
 						   <div class="item col-sm-12 col-md-4"> 
-			                    <a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${followingListAll.picNo}"> 
+			                    <a href="/picsion/picture/picinfo.ps?picNo=${followingListAll.picNo}"> 
                                     <img class="rounded img-size" src="${followingListAll.picWater}"alt="No Image">
 			                    </a>
 			                    <div>
@@ -155,11 +165,9 @@ $(function() {
 									</c:otherwise>
 								</c:choose>
 			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${followingPicListOwner[status.index].userNo}">${followingPicListOwner[status.index].userName}</a>
+			                    <a href="/picsion/picture/mystudio.ps?userNo=${followingListAll.userNo}">${followingListAll.userName}</a>
                				</div>
 			            </div>
-						
-						 
 						
 					</c:forEach>
 				</div>
