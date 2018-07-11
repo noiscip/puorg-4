@@ -123,7 +123,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertPicture" parameterType="kr.or.picsion.picture.dto.Picture">		
 	insert into PICTURE
 	 (picNo, picTitle, picContent, picPath, picWater, picPrice, picPeople, userNo<if test="transferState eq 'F'.toString()">,transferState</if>)
-	values (#{picNo},#{picTitle},#{picContent},#{picPath},#{picWater},100,#{picPeople},#{userNo}<if test="transferState eq 'F'.toString()">,#{transferState}</if>)
+	values (#{picNo},#{picTitle},#{picContent},#{picPath},#{picWater},#{picPrice},#{picPeople},#{userNo}<if test="transferState eq 'F'.toString()">,#{transferState}</if>)
 	 <selectKey keyProperty="picNo" resultType="Integer" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey> 
