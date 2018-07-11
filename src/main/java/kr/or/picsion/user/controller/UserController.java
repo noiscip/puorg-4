@@ -167,8 +167,6 @@ public class UserController {
 		return "admin.stats";
 	}
 	
-	//팔로잉하는 사람의 최신 사진 전체 페이지
-
 	/**
 	* 날        짜 : 2018. 6. 13.
 	* 메소드명 : popularPicList
@@ -186,7 +184,6 @@ public class UserController {
 		int endpage=9;
 		
 		List<Picture> followingPicList = userService.followingUserPicList(user.getUserNo(), page, endpage); //팔로잉 최신 사진 리스트
-		System.out.println(followingPicList);
 		model.addAttribute("followingPicList", followingPicList);
 		model.addAttribute("page", followingPicList.size());
 		
@@ -249,18 +246,21 @@ public class UserController {
 	* @return View
 	*/
 	@RequestMapping("following.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View followingConfirm(int userNo, int followingUserNo, Model model) {
-		
-		int result = userService.followingConfirm(userNo, followingUserNo); 
+		try {
+			int result = userService.followingConfirm(userNo, followingUserNo); 
 
-		if(result!=0) {		//result가 1이면 팔로잉 취소 처리
-			userService.deleteFollow(userNo, followingUserNo);
-		}else {				//result가 0이면 팔로우 처리
-			userService.insertFollow(userNo, followingUserNo);
-		}		
-		
-		model.addAttribute("result", result);
-		
+			if(result!=0) {		//result가 1이면 팔로잉 취소 처리
+				userService.deleteFollow(userNo, followingUserNo);
+			}else {				//result가 0이면 팔로우 처리
+				userService.insertFollow(userNo, followingUserNo);
+			}		
+			
+			model.addAttribute("result", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return jsonview;
 	}
 	
@@ -460,7 +460,6 @@ public class UserController {
 		try {
 			user.setUserNo(userSession.getUserNo());
 			
-			System.out.println(file.getOriginalFilename());
 			String uploadPath = "/resources/upload/";
 			
 			File dir = new File(uploadPath);
@@ -473,7 +472,6 @@ public class UserController {
 			
 			//프로필 사진 변경 했을때
 			if(originalFileName.equals("")) {
-				System.out.println("프로필 사진 변경 X");
 			}else {
 				String saveFileName = "prPic"+user.getUserNo()+ System.currentTimeMillis()+"."+originalFileName.split("\\.")[1];
 				String dbPath="";
@@ -493,25 +491,20 @@ public class UserController {
 					} 
 				} 
 				
-				System.out.println(user);
 				user.setPrPicture(dbPath);
 				userService.updateUserPic(user);
 			}
 			
 			//자기소개 변경했을때 (변경하지 않으면 업데이트 X)
 			if(userSession.getPrContent() != null && userSession.getPrContent().equals(user.getPrContent())) {
-				System.out.println("같은거지?");
 			}else if(userSession.getPrContent() == null && user.getPrContent().equals("")){
-				System.out.println("자기소개가 없지?");
 			}else {
 				userService.updateUserPr(user);
 			}
 					
 			//비밀번호, 유저네임 변경했을때
 			if(user.getPwd()=="") {
-				System.out.println("안되 비었어");
 			}else if(userSession.getPwd().equals(user.getPwd())) {
-				System.out.println("안되 똑같아");
 			}else {
 				userService.updateUserInfo(user);
 			}
@@ -519,7 +512,7 @@ public class UserController {
 			session.setAttribute("user", userService.userInfo(user.getUserNo()));
 			
 		} catch (Exception e) {
-			System.out.println("정보수정  트랜잭션 실행");
+			e.printStackTrace();
 		}
 		return "redirect:updateinfo.ps";
 	}
@@ -548,7 +541,7 @@ public class UserController {
 			model.addAttribute("result", result);
 			
 		} catch (Exception e) {
-			System.out.println("포인트 충전 트랜잭션");
+			e.printStackTrace();
 		}
 		return jsonview;
 	}
