@@ -559,7 +559,7 @@
 																				test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
 																				<button type="button"
 																					class="btn btn-primary btn-md float-left"
-																					data-toggle="modal" data-target="#exampleModal">
+																					data-toggle="modal" data-target="#opersend">
 																					<i class="material-icons">linked_camera</i>
 																					&nbsp;작업 신청
 																				</button>
@@ -1052,7 +1052,7 @@
 </div>
 
 <!-- 신청Modal -->
-<div class="modal fade" id="exampleModal" tabindex="1" role="dialog"
+<div class="modal fade" id="opersend" tabindex="1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
