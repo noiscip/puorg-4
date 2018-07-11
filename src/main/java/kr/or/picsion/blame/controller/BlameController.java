@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
@@ -62,9 +64,6 @@ public class BlameController {
 	*/
 	@RequestMapping("adminComplainSearch.ps")
 	public View complainSearch(Date date, Model model) {
-		System.out.println("complainSearch");
-		System.out.println(date);
-		
 		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd");		
 		List<Blame> blameList = blameService.complainSearch(reg.format(date));	
 		model.addAttribute("blameList",blameList);
@@ -83,7 +82,6 @@ public class BlameController {
 	*/
 	@RequestMapping("adminAllComplain.ps")
 	public View allComplain(Model model) {
-		
 		List<Blame> blameList = blameService.complain();
 		model.addAttribute("blameList",blameList);
 		return jsonview;
@@ -101,13 +99,16 @@ public class BlameController {
 	 * @return View
 	*/
 	@RequestMapping("complainInsert.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View complainInsert(Blame blame, HttpSession session, Model model) {
-		
 		User user = (User)session.getAttribute("user");
-		blame.setBlaUserNo(user.getUserNo());
-		System.out.println(blame);
-		int result = blameService.complainInsert(blame);
-		
+		int result=0;
+		try {
+			blame.setBlaUserNo(user.getUserNo());
+			result = blameService.complainInsert(blame);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		model.addAttribute("result", result);
 		return jsonview;
 	}

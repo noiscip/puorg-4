@@ -101,7 +101,8 @@
 								<h3 class="title">Checkout</h3>
 								<c:forEach var="cart" items="${myCartList}" varStatus="status">
 									<div id="cartNo${cart.picNo}" class="item">
-									<span class="price">${cart.picPrice} 원</span>
+									<span class="price">
+									<fmt:formatNumber value="${cart.picPrice}" pattern="#,###"/>원</span>
 									<p class="item-name">${cart.picTitle}</p>
 									<p class="item-description">${cart.picContent}</p>
 									<input name="purchases[${status.index}].picNo" value="${cart.picNo}" type="hidden">
@@ -111,10 +112,10 @@
 									</div>
 								</c:forEach>
 								<div class="total">
-									Total<span id="total1"class="price">${total}<small>원</small></span>
+									Total<span id="total1"class="price"><fmt:formatNumber value="${total}" pattern="#,###"/><small>원</small></span>
 								</div>
 								<div class="total">
-									구매 후 잔액<span id="change" value="${user.point-total}" class="price">${user.point-total}<small>원</small></span>
+									구매 후 잔액<span id="change" value="${user.point-total}" class="price"><fmt:formatNumber value="${user.point-total}" pattern="#,###"/><small>원</small></span>
 									<input id="changehidden" name="point" value="${user.point-total}" type="hidden">
 								</div> 
 								<br>
@@ -157,7 +158,7 @@
 											<br> <small>by ${photographerName[status.index].userName}</small></td>
 										<td class="text-center">${cart.resolutionW} x ${cart.resolutionH}</td>
 										<td class="td-number text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${cart.photoDate}" /></td>
-										<td class="td-number text-center">${cart.picPrice}<small>원</small></td>
+										<td class="td-number text-center"><fmt:formatNumber value="${cart.picPrice}" pattern="#,###"/><small>원</small></td>
 										<td class="td-actions">
 											<a id="deleteItem" class="btn btn-link" value="${cart.picNo}" price="${cart.picPrice}" style="padding: 15px 5px 5px"><i class="material-icons">close</i></a>
 										</td>
@@ -169,7 +170,7 @@
 											<td colspan="2"></td>
 											<td colspan="1"></td>
 											<td class="td-total">Total</td>
-											<td id="total2" class="td-price text-center">${total}<small>원</small></td>
+											<td id="total2" class="td-price text-center"><fmt:formatNumber value="${total}" pattern="#,###"/><small>원</small></td>
 											<td colspan="1"></td>
 										</tr>
 									</tbody>

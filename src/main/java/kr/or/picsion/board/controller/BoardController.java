@@ -1,6 +1,5 @@
 package kr.or.picsion.board.controller;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +7,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.View;
 
 import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
@@ -38,9 +38,6 @@ import kr.or.picsion.user.service.UserService;
 public class BoardController {
 
 	@Autowired
-	private View jsonview;
-
-	@Autowired
 	private BoardService boardService;
 
 	@Autowired
@@ -57,6 +54,7 @@ public class BoardController {
 
 	@Autowired
 	private OperPictureService operPictureService;
+	
 	/**
 	 * 날      짜 : 2018. 6. 14. 
 	 * 메소드명 : selectBoard 
@@ -70,7 +68,6 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "boardInfo.ps")
 	public String selectBoard(int brdNo, Model model, HttpSession session) {
-		System.out.println("보드인포 컨트롤");
 		User user = (User) session.getAttribute("user");
 		Board boardInfo = boardService.selectBoard(brdNo);
 		Operation operation = new Operation();
@@ -85,8 +82,6 @@ public class BoardController {
 		}
 		User requestUser = userService.userInfo(operation.getRequesterNo());
 		User operatorUser = userService.userInfo(operation.getOperatorNo());
-		System.out.println(operation);
-		System.out.println(operPicture);
 		model.addAttribute("operPicture", operPicture);
 		model.addAttribute("operatorUser", operatorUser);
 		model.addAttribute("requestUser", requestUser);
@@ -110,15 +105,20 @@ public class BoardController {
 	 * @return String
 	 */
 	@RequestMapping(value = "writeboard.ps", method = RequestMethod.POST)
-	public String postwriteBoard(Board board, HttpSession session) {
+	@Transactional(propagation = Propagation.REQUIRED)    //글 작성 트랜잭션
+	public String postwriteBoard(Board board, HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
 		Board inboard = board;
-		System.out.println(board);
-		inboard.setUserNo(user.getUserNo());
-		inboard.setTableNo(3);
-		inboard.setOperStateNo(1);
-		System.out.println(inboard);
-		boardService.insertBoard(inboard);
+		int errorCheck = 0;
+		try {
+			inboard.setUserNo(user.getUserNo());
+			inboard.setTableNo(3);
+			inboard.setOperStateNo(1);
+			errorCheck = boardService.insertBoard(inboard);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("errorCheck",errorCheck);
 		return "redirect:/board/board.ps";
 	}
 
@@ -132,7 +132,6 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "writeboard.ps", method = RequestMethod.GET)
 	public String getwriteBoard() {
-		System.out.println("겟 보드");
 		return "board.writeBoard";
 	}
 
@@ -151,7 +150,6 @@ public class BoardController {
 		List<Operation> operlist = new ArrayList<Operation>();
 		list = boardService.boardList();
 		operlist = operationService.operBoardList();
-
 		model.addAttribute("list", list);
 		model.addAttribute("operlist", operlist);
 		return "board.board";

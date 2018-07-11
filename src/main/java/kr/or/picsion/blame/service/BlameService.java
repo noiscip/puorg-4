@@ -59,7 +59,7 @@ public class BlameService {
 	 * 기      능 : 신고 추가
 	 *
 	 * @param blame
-	 * @return int
+	 * @return Integer
 	*/
 	public int complainInsert(Blame blame) {
 		BlameDao blameDao = sqlSession.getMapper(BlameDao.class);

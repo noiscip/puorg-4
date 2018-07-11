@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script type="text/javascript">
 /* 
@@ -273,7 +273,10 @@
 	                  <div class="form-group text-center update-lab-padding">
 	                  	<label for="exampleInput1" class="bmd-label-floating">현재 캐시</label>
 	                    <div class="input-group">
-	                        <input type="text" class="form-control" id="point" name="point"  value="${userinfo.point}" readonly="readonly">
+	                    	<fmt:formatNumber var="fmtmoney" value="${userinfo.point}" pattern="#,###"/>
+	                        <input type="text" class="form-control" id="point" value="${fmtmoney}" readonly="readonly">
+	                        
+	                        
 	                     </div>
 	                     <button type="button" class="btn btn-default update-margin" data-toggle="modal" data-target="#exampleModal">충전하기</button>
 	                  </div>

@@ -24,7 +24,6 @@ import kr.or.picsion.picture.dao.PictureDao;
 import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.dto.SearchPicture;
-import kr.or.picsion.user.dto.User;
 
 /**
  * @project Final_Picsion
@@ -67,7 +66,6 @@ public class PictureService {
     * @param userNo
     */
     public void insertPicture(Picture picture) {
-        System.out.println(picture.toString());  //////////////////////////////////뀨?
         PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
         pictureDao.insertPicture(picture);
         pictureDao.insertPicInfo(picture);
@@ -80,7 +78,6 @@ public class PictureService {
         	map.put("color", c);
         	pictureDao.insertColor(map);
         }
-        System.out.println(picture.toString());
     }
 
 	/**
@@ -107,12 +104,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void increaseRespect(int picNo, int userNo){
+	public int increaseRespect(int picNo, int userNo){
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.respectIncrease(picNo, userNo);
-		System.out.println(picNo);
-		System.out.println(userNo);
-		
+		int result = picturedao.respectIncrease(picNo, userNo);
+		return result;
 	}
 	
 	/**
@@ -124,10 +119,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void increaseBookmark(int picNo, int userNo){
+	public int increaseBookmark(int picNo, int userNo){
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.bookmarkIncrease(picNo, userNo);
-			
+		int result = picturedao.bookmarkIncrease(picNo, userNo);
+		return result;
 	}
 	
 	/**
@@ -139,9 +134,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void deleteRespect(int picNo, int userNo) {
+	public int deleteRespect(int picNo, int userNo) {
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.respectDelete(picNo, userNo);
+		int result =  picturedao.respectDelete(picNo, userNo);
+		return result;
 	}
 	
 	/**
@@ -153,9 +149,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void deleteBookmark(int picNo, int userNo) {
+	public int deleteBookmark(int picNo, int userNo) {
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.bookmarkDelete(picNo, userNo);
+		int result = picturedao.bookmarkDelete(picNo, userNo);
+		return result;
 	}
 	
 	/**
@@ -202,7 +199,6 @@ public class PictureService {
 	public Picture picInfo(int userNo, int picNo) {
 		PictureDao picDao = sqlSession.getMapper(PictureDao.class);
 		Picture picture = picDao.selectPicture(userNo, picNo);
-		System.out.println("이게 사진상세?"+picture);
 		return picture;
 	}
 	
@@ -343,8 +339,7 @@ public class PictureService {
 			newFileName = fileName;
 		}
 
-		// 변경된 파일명
-		System.out.println("이미지파일이름변경완료"+newFileName);
+		
 
 		// 끝난거 알려주는 리턴값
 		return newFileName;

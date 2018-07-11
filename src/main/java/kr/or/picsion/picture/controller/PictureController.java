@@ -464,17 +464,20 @@ public class PictureController {
 	@RequestMapping("increaserespect.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View pictureRespect(int picNo, int userNo, Model model) {
+		int result = 0;
+		int errorcheck = 0;
 		try {
-			int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
+			result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
 			if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
-				pictureService.deleteRespect(picNo, userNo);
+				errorcheck = pictureService.deleteRespect(picNo, userNo);
 			}else {	//좋아요 하지 않을때 -> 좋아요 증가
-				pictureService.increaseRespect(picNo, userNo);
+				errorcheck = pictureService.increaseRespect(picNo, userNo);
 			}
 			model.addAttribute("result",result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("errorcheck",errorcheck);
 		return jsonview;
 	}
 	 
@@ -492,17 +495,20 @@ public class PictureController {
 	@RequestMapping("increasebookmark.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View pictureBookmark(int picNo, int userNo, Model model) {
+		int result = 0;
+		int errorcheck = 0;
 		try {
-			int result = pictureService.bookmarkConfirm(picNo, userNo);
+			result = pictureService.bookmarkConfirm(picNo, userNo);
 			if(result!=0) {	 //북마크 하고 있을때 -> 북마크 삭제
-				pictureService.deleteBookmark(picNo, userNo);
+				errorcheck = pictureService.deleteBookmark(picNo, userNo);
 			}else {	//북마크 하지 않을때 -> 북마크 증가
-				pictureService.increaseBookmark(picNo, userNo);
+				errorcheck = pictureService.increaseBookmark(picNo, userNo);
 			}
 			model.addAttribute("result",result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("errorcheck",errorcheck);
 		return jsonview;
 	}
 	

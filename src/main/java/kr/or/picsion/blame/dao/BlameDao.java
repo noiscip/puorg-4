@@ -13,7 +13,7 @@ import kr.or.picsion.blame.dto.Blame;
 
 public interface BlameDao {
 
-	public int complainInsert(Blame blame);
+	public int complainInsert(Blame blame); //신고 생성
 	public List<Blame> blameList();
 	public Blame selectBlame(int blameNo);
 	public List<Blame> complainSearch(String date);
