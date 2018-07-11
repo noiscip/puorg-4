@@ -279,13 +279,13 @@ $(function(){
 		                  </div>
 		                </li>
 						<li class="nav-item">
-							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}">
+							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="My studio">
 									  <img class="rounded-circle header-prPic" src="${sessionScope.user.prPicture}">
 							  	${sessionScope.user.userName}
 							</a>
 						</li>
 						
-						<li class="nav-item">
+						<li class="nav-item"> 
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/logout.ps" onclick="scrollToDownload()"> 
 								<i class="material-icons">highlight_off</i> 로그아웃
 							</a>

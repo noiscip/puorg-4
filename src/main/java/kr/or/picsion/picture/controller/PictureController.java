@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -318,51 +320,49 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("operpicupload.ps")
+	@Transactional(propagation = Propagation.REQUIRED)    //사진 업로드 트랜잭션
 	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo, Model model) {
-		User user = (User) session.getAttribute("user");	
-		Operation operation = new Operation();
-		operation.setOperNo(operNo);
-		OperPicture operPicture = new OperPicture();
-		System.out.println(file.getOriginalFilename());
-		String uploadPath = imagePicsion;
-		String dbPath="";
-		
-		
-		File dir = new File(uploadPath);
-		if (!dir.isDirectory()) {
-			dir.mkdirs();
-		}
-
-		String originalFileName = file.getOriginalFilename();
-		System.out.println(originalFileName.split("\\.")[1]);
-		String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
-		
-			if(saveFileName != null && !saveFileName.equals("")) {
-				if(new File(uploadPath + saveFileName).exists()) {
-					saveFileName = saveFileName + "_" + System.currentTimeMillis();
-				}
-				try {
-					File newFile = new File(uploadPath + saveFileName);
-					file.transferTo(newFile);
-					dbPath=amazonService.uploadObject(imagePicsion,saveFileName,"picsion/operpic");
-					operPicture.setOperNo(operation.getOperNo());
-					operPicture.setPicPath(dbPath);
-					operPicture.setUserNo(user.getUserNo());
-					operation.setOperatorEnd("T");
-					operationService.updateOperation(operation);
-					operPictureService.insertOperPicture(operPicture);
-					operPicture=operPictureService.selectOperpicture(operNo);
-					
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
-			} 	
-			System.out.println("디비 패쓰"+dbPath);			
-			System.out.println(operPicture);
-			model.addAttribute("operPicture", operPicture);
+		try {
+			User user = (User) session.getAttribute("user");
+			Operation operation = new Operation();
+			operation.setOperNo(operNo);
+			OperPicture operPicture = new OperPicture();
+			System.out.println(file.getOriginalFilename());
+			String uploadPath = imagePicsion;
+			String dbPath="";
 			
+			File dir = new File(uploadPath);
+			if (!dir.isDirectory()) {
+				dir.mkdirs();
+			}
+
+			String originalFileName = file.getOriginalFilename();
+			System.out.println(originalFileName.split("\\.")[1]);
+			String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
+			
+				if(saveFileName != null && !saveFileName.equals("")) {
+					if(new File(uploadPath + saveFileName).exists()) {
+						saveFileName = saveFileName + "_" + System.currentTimeMillis();
+					}
+					
+						File newFile = new File(uploadPath + saveFileName);
+						file.transferTo(newFile);
+						dbPath=amazonService.uploadObject(imagePicsion,saveFileName,"picsion/operpic");
+						operPicture.setOperNo(operation.getOperNo());
+						operPicture.setPicPath(dbPath);
+						operPicture.setUserNo(user.getUserNo());
+						operation.setOperatorEnd("T");
+						operationService.updateOperation(operation);
+						operPictureService.insertOperPicture(operPicture);
+						operPicture=operPictureService.selectOperpicture(operNo);
+						
+				} 	
+				System.out.println("디비 패쓰"+dbPath);			
+				System.out.println(operPicture);
+				model.addAttribute("operPicture", operPicture);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 			
 		return jsonview;
 	}
@@ -379,21 +379,26 @@ public class PictureController {
 	* @return String
 	*/
 	@RequestMapping("uploadAfter.ps")
+	@Transactional(propagation = Propagation.REQUIRED) //사진 업로드 트랜잭션
 	public String insertPicture(Picture picture, @RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		System.out.println("업로드 애프터");
-		System.out.println(picture);
-		for(Colors c : picture.getColorList()) {
-			System.out.println("색 : "+ c);
-			System.out.println("RED   : " + c.getColorR());
-			System.out.println("GREEN : " + c.getColorG());
-			System.out.println("BLUE  : " + c.getColorB());
+		try {
+			System.out.println("업로드 애프터");
+			System.out.println(picture);
+			for(Colors c : picture.getColorList()) {
+				System.out.println("색 : "+ c);
+				System.out.println("RED   : " + c.getColorR());
+				System.out.println("GREEN : " + c.getColorG());
+				System.out.println("BLUE  : " + c.getColorB());
+			}
+			picture.setTagContent(tag);
+			picture.setUserNo(user.getUserNo());
+			pictureService.insertPicture(picture);
+			
+			wpS3(picture);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		picture.setTagContent(tag);
-		picture.setUserNo(user.getUserNo());
-		pictureService.insertPicture(picture);
-		
-		wpS3(picture);
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	
@@ -696,10 +701,8 @@ public class PictureController {
 	*/
 	@RequestMapping("detailSearch.ps")
 	public View detailSearch(HttpSession session, Model model, SearchPicture searchPicture) {
-		System.out.println("들어가"+searchPicture);
 		List<Picture> detailSearch = pictureService.detailSearch(searchPicture);
 		model.addAttribute("detailSearch",detailSearch);
-		System.out.println("나와?"+detailSearch);
 		return jsonview;
 	}
 	
