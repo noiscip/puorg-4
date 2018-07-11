@@ -122,7 +122,7 @@
 						selList="<div class='media'>"+
 										"<a class='float-left'>"+
 											"<div class='avatar'>"+
-										"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.user[0].userNo+"'><img class='media-object' src='"+obj.user[0].prPicture+"'></a>"+
+										"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.user[0].userNo+"'><img class='media-object prPic-height' src='"+obj.user[0].prPicture+"'></a>"+
 									"</div></a>"+
 									"<div class='media-body media-body-custom'>"+
 									"<h4 class='media-heading msgUserName' data-name='"+obj.user[0].userName+"'>"+

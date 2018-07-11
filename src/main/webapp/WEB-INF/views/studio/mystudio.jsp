@@ -122,7 +122,7 @@
 		                        $.each(data.scrollPicList, function(index, obj){
 		                        		
 		                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
-										"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
+										"<a href='/picsion/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 										"<img class='rounded img-size' src='"+obj.picWater+"' alt=''>"+
 										"</a><div>"+
 			                    		"<div class='counts hide-xs hide-sm'>";
@@ -137,7 +137,7 @@
 			                    		}else{
 			                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 			                    		}
-										scrollPage+="</div><a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+obj.userNo+"'>"+data.scrollOwnerList[index].userName+"</a></div></div>";
+										scrollPage+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj.userName+"</a></div></div>";
 										
 			                        	$('#studioview').append(scrollPage);
                         	
@@ -467,7 +467,7 @@ function followerPaging(userNo, pg){
 					<c:forEach items="${piclist}" var="studioPic" varStatus="status">
 					 <fmt:parseNumber var="var3" value="${studioPic.resolutionW/studioPic.resolutionH}" pattern="#.#" />
 						  <div class="item col-sm-12 col-md-4">
-							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${studioPic.picNo}">
+							<a href="/picsion/picture/picinfo.ps?picNo=${studioPic.picNo}">
 							<img class="rounded img-size" src="${studioPic.picWater}" alt="">
 							</a>
 							<div>
@@ -489,7 +489,7 @@ function followerPaging(userNo, pg){
 									</c:otherwise>
 								</c:choose>
 			                    </div>
-			                    <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${studioPic.userNo}">${ownerList[status.index].userName}</a>
+			                    <a href="/picsion/picture/mystudio.ps?userNo=${studioPic.userNo}">${studioPic.userName}</a>
                				</div>
 						</div>
 						
@@ -642,58 +642,7 @@ function followerPaging(userNo, pg){
 						</div>
 					</div>
 				</div>
-          	<%-- <div class="tabs-underline">
-					<ul class="text-center following-tab-tb">
-						<li><a class="tab-active" data-index="0" href="#">팔로잉</a></li>
-						<li><a data-index="1" href="#">팔로워</a></li>
-					</ul>
-					
-					<div class="tabs-content-placeholder">
-						<div class="tab-content-active" id="following">
-							<div class="col-md-10 col-lg-10 mr-auto ml-auto">
-						 		<div class="row">
-						 		<c:choose>
-									<c:when test="${empty followingList}">
-										<h3 class="text-center">팔로잉을 시작해보세요~</h3><br>
-									</c:when>
-									<c:otherwise>
-										<c:forEach items="${followingList}" var="following" >
-								 		   <div class="col-md-1 col-lg-2 mr-auto ml-auto">
-						                        <div class="card card-profile card-plain">
-						                            <div class="card-header card-header-image">
-						                                <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
-						                                    <img class="img" src="${following.prPicture}">
-						                                </a>
-						                            <div class="colored-shadow" style="background-image: url(&quot;${following.prPicture}&quot;); opacity: 1;"></div></div>
-						                            <div class="card-body ">
-						                                <h4 class="card-title">${following.userName}</h4>
-						                            </div>
-						                        </div>
-						                    </div>
-					                    </c:forEach>
-									</c:otherwise>
-								</c:choose>
-						  		</div>
-						    </div>
-						</div>
-						
-						<div id="follower">
-							<div class="row">
-								<c:forEach items="${followingList}" var="following">
-										<div class="item col-md-2">
-											<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">
-												<img title="${following.userName}" src="${following.prPicture}" class="rounded following-pr following-pr-mar">
-											</a>
-											<div class="counts hide-xs hide-sm ">
-												<a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${following.userNo}">${following.userName}</a>
-											</div>
-										</div>
-								</c:forEach>
-							</div>
-						</div>
-						
-					</div>
-			</div> --%>
+          	
           </div>
         </div>
       </div>
@@ -712,10 +661,6 @@ function followerPaging(userNo, pg){
 	      </div>
 	      
 	      <div class="modal-body">
-	        <!-- <div class="form-group">
-			     <label for="exampleInput1" class="bmd-label-floating">제목</label>
-			     <input type="text" class="form-control" id="msgNo" name="msgNo" placeholder="제목">
-		    </div> -->
 		    <div class="form-group">
 		    	<label for="exampleFormControlTextarea1">내용</label>
 		    	<textarea class="form-control" id="msgContent" name="msgContent" rows="3" placeholder="최대 300자까지 가능"></textarea>

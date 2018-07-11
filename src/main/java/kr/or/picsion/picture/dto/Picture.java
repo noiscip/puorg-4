@@ -21,6 +21,7 @@ public class Picture {
 	private int picHit;
 	private int picPrice;
 	private int userNo;
+	private String userName;
 	private int tableNo;
 	private String camera;
 	private String resolutionH;
@@ -39,12 +40,11 @@ public class Picture {
 	
 	public Picture() {
 	}
-	
-	
+
 	public Picture(int picNo, String picTitle, String picContent, Date picReg, String picPath, String picWater,
-			int picHit, int picPrice, int userNo, int tableNo, String camera, String resolutionH, String resolutionW,
-			Date photoDate, List<String> tagContent, String cartCheck, String respectCheck, String bookmarkCheck,
-			int respectCount, int bookmarkCount, String transferState, String lens, int picPeople,
+			int picHit, int picPrice, int userNo, String userName, int tableNo, String camera, String resolutionH,
+			String resolutionW, Date photoDate, List<String> tagContent, String cartCheck, String respectCheck,
+			String bookmarkCheck, int respectCount, int bookmarkCount, String transferState, String lens, int picPeople,
 			List<Colors> colorList) {
 		super();
 		this.picNo = picNo;
@@ -56,6 +56,7 @@ public class Picture {
 		this.picHit = picHit;
 		this.picPrice = picPrice;
 		this.userNo = userNo;
+		this.userName = userName;
 		this.tableNo = tableNo;
 		this.camera = camera;
 		this.resolutionH = resolutionH;
@@ -143,6 +144,14 @@ public class Picture {
 
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public int getTableNo() {
@@ -256,29 +265,25 @@ public class Picture {
 	public void setPicPeople(int picPeople) {
 		this.picPeople = picPeople;
 	}
-	
-	
 
 	public List<Colors> getColorList() {
 		return colorList;
 	}
 
-
 	public void setColorList(List<Colors> colorList) {
 		this.colorList = colorList;
 	}
-
 
 	@Override
 	public String toString() {
 		return "Picture [picNo=" + picNo + ", picTitle=" + picTitle + ", picContent=" + picContent + ", picReg="
 				+ picReg + ", picPath=" + picPath + ", picWater=" + picWater + ", picHit=" + picHit + ", picPrice="
-				+ picPrice + ", userNo=" + userNo + ", tableNo=" + tableNo + ", camera=" + camera + ", resolutionH="
-				+ resolutionH + ", resolutionW=" + resolutionW + ", photoDate=" + photoDate + ", tagContent="
-				+ tagContent + ", cartCheck=" + cartCheck + ", respectCheck=" + respectCheck + ", bookmarkCheck="
-				+ bookmarkCheck + ", respectCount=" + respectCount + ", bookmarkCount=" + bookmarkCount 
-				+ ", transferState=" + transferState + ", lens=" + lens + ", picPeople=" + picPeople + ", colorList="
-				+ colorList + "]";
+				+ picPrice + ", userNo=" + userNo + ", userName=" + userName + ", tableNo=" + tableNo + ", camera="
+				+ camera + ", resolutionH=" + resolutionH + ", resolutionW=" + resolutionW + ", photoDate=" + photoDate
+				+ ", tagContent=" + tagContent + ", cartCheck=" + cartCheck + ", respectCheck=" + respectCheck
+				+ ", bookmarkCheck=" + bookmarkCheck + ", respectCount=" + respectCount + ", bookmarkCount="
+				+ bookmarkCount + ", transferState=" + transferState + ", lens=" + lens + ", picPeople=" + picPeople
+				+ ", colorList=" + colorList + "]";
 	}
 
 }

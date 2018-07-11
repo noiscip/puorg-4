@@ -170,14 +170,13 @@ public class PurchaseController {
 		User user = (User) session.getAttribute("user");
 		if(user != null) {
 			try {
-			    System.out.println("이거"+purchases.getPurchases());
 			    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
 			    purchaseService.updatePoint(point, user.getUserNo()); //구매자 포인트 변경
 			    purchaseService.updateSalePoint(purchases.getPurchases()); //판매자 포인트 변경
 				purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
 				return "redirect:/purchase/history.ps";
 			} catch (Exception e) {
-				System.out.println("트랜잭션 실행");
+				e.printStackTrace();
 				return "redirect:/home.ps";
 			}
 		}
