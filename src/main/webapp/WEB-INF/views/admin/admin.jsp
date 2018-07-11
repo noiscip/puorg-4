@@ -12,9 +12,10 @@
 				"bLengthChange": false
 		    } );
 		$(document).on('click', 'button[title=userDelete]', function() {
-
+			var tr = $(this).closest('tr')
+			
 			/* 삭제 ajax */
-			$.ajax({
+			 $.ajax({
 				url : "/picsion/user/adminUserDel.ps",
 				data : {
 					userNo : $(this)[0].id
@@ -22,13 +23,13 @@
 				success : function(data) {
 					console.log(data.result)
 					if (data.result == 0) {
-						console.log("삭제실패")
+						alert("삭제실패")
 					} else {
-						console.log("삭제")
-						userFindAll()
+						alert("삭제")
+						tr.remove()
 					}
 				}
-			})
+			}) 
 			/* 삭제 ajax */
 		})
 
