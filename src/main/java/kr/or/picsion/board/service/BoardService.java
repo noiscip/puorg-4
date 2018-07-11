@@ -34,7 +34,6 @@ public class BoardService {
 	 */
 	public Board selectBoard(int brdNo) {
 		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-		System.out.println("보드 서비스 ");
 		Board board = boarddao.selectBoard(brdNo);
 
 		return board;
@@ -52,7 +51,6 @@ public class BoardService {
 	 */
 	public int updateBoard(Board board) {
 		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-		System.out.println("updateBoard 서비스 ");
 		int result = boarddao.updateBoard(board);
 
 		return result;
@@ -86,9 +84,7 @@ public class BoardService {
 	 */
 	public void insertBoard(Board board) {
 		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-		System.out.println("글 쓰기 전");
 		boarddao.insertBoard(board);
-		System.out.println("글쓰기 완료");
 	}
 
 	/**
@@ -102,7 +98,6 @@ public class BoardService {
 	 */
 	public List<Board> operationBoardList(int userNo) {
 		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-		System.out.println("operationBoardList 서비스 시작 ");
 		return boarddao.operationBoardList(userNo);
 	}
 
@@ -117,7 +112,6 @@ public class BoardService {
 	 */
 	public List<Board> requestBoardList(int userNo) {
 		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-		System.out.println("requestBoardList 서비스 시작 ");
 		return boarddao.requestBoardList(userNo);
 	}
 
