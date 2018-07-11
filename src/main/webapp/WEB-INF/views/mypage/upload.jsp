@@ -47,6 +47,11 @@ input[type=radio]:checked+label {
 	border-style: solid;
 	border-color: #000;
 }
+.bootstrap-tagsinput .tag {
+	border : 2px solid;
+    background-color: #fff;
+    color: #9c27b0;
+}
 </style>
 
 <script type="text/javascript">
@@ -135,18 +140,26 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 									<i class="fa fa-times"></i>Remove
 								</a>
 							</div>
-							<div id="peopleRadio" style="display: none; float: left;">
+							<div id="peopleRadio" class="form-group" style="display: none;">
 								<br>
+								<div class="row">
 								<label for="numberPeople">사람수</label>
+								</div>
+								<div class="row">
 								<input type="radio" name="people" id="zero"><label for="zero"> X <img src="assets/img/userNo.png" width="30px" height="30px"></label> 
   								<input type="radio" name="people" id="one"><label for="one"> 1 <img src="assets/img/user1.png" width="30px" height="30px"></label>
   								<input type="radio" name="people" id="two"><label for="two"> 2 <img src="assets/img/user2.png" width="30px" height="30px"></label> 
   								<input type="radio" name="people" id="thr"><label for="thr"> 3~5 <img src="assets/img/user5.png" width="30px" height="30px"></label>
   								<input type="radio" name="people" id="six"><label for="six"> 6+ <img src="assets/img/user6.png" width="30px" height="30px"></label>
+  								</div>
 							</div>
-							<div class="form-group" id="price"style="display: none;">
-								<label for="price">희망 가격</label> <input type="text"
-									class="form-control" id="pictureTitle" name="picPrice">
+							<div class="form-group" id="price" style="display: none;">
+								<div class="row">
+								<label for="price">희망 가격</label>
+								</div>
+								<div class="row"> 
+								<input type="text" class="form-control" id="pictureTitle" name="picPrice" style="width: 90%">
+								</div>
 							</div>
 						</div>
 					
@@ -341,10 +354,9 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					var pictureDate = data.metaMap.pictureDate=='undefined'? 'null' : data.metaMap.pictureDate;
 					var lensName = data.metaMap.lensName=='undefined'? 'null' : data.metaMap.lensName;
 					
-					
-					tags ='<br>태그추가: <input type="text" id="tagAddName">';
-					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
-					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
+					tags ='<br><div class="form-group"><label for="title">태그추가</label><div class="row"><div class="col-md-6"><input type="text" class="form-control" id="tagAddName"></div>';
+					tags +='<div class="col-md-6"><button type="button" class="btn btn-primary" id="tagAdd">추가</button></div></div><br>';
+					tags += '<input type="hidden" name="picPath" value="' + data.picPath + '">';
 					tags += '<input type="hidden" name="camera" id="camera" value="'+cameraName+'"/>';
 					tags += '<input type="hidden" name="resolutionH" id="resolutionH" value="'+resolH+'"/>';
 					tags += '<input type="hidden" name="resolutionW" id="resolutionW" value="'+resolW+'"/>';
