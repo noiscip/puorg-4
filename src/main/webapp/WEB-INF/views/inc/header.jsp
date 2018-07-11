@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script>
 
@@ -115,23 +116,7 @@ $(function(){
 						$('.autosend').submit();
 					},
 				});
-	
-	
-	function newNoticeCount() {
-		var alram = "<i id='newNotice' class='material-icons'>notifications_active</i>";
-		$.ajax({
-			url : "/picsion/notice/noticeMsg.ps",
-			success: function (data) {
-				console.log("새알람숫자")
-				console.log(data.count)
-				if (data.count > 0 ){
-					$('#alram').empty();
-					$('#alram').append(alram);
-					$('#newNotice').css('color','red');
-				}
-			}
-		})
-	}
+
 	var nocart ='<li class="divider" id="nonecart"><a>장바구니가 비었습니다</a></li>';
 	function myCart(){
 		$.ajax({
@@ -167,7 +152,66 @@ $(function(){
 	}
 	$('#changemain').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)');
 	
+	var nowPoint = $('#nowPoint').val();
+	
+	var IMP = window.IMP;
+	IMP.init('imp27054314');
+	
+	$('.pointCharge').click(function(){
+		IMP.request_pay({
+		    pg : 'inicis', // version 1.1.0부터 지원.
+		    pay_method : 'card',
+		    merchant_uid : 'merchant_' + new Date().getTime(),
+		    name : '주문명:포인트 충전',
+		    amount : $('#chargePrice').val(),
+		    buyer_name : $('.userName').val(),
+		    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
+	}, function(rsp) {
+		if ( rsp.success ) {
+			var msg = '결제가 완료되었습니다.'
+			msg += '결제 금액 : ' + rsp.paid_amount
+			msg += '카드 승인번호 : ' + rsp.apply_num
+			
+			$.ajax({
+				url:"/picsion/user/charge.ps",
+				data: {point:rsp.paid_amount},
+				success: function(data){
+					if(data.result == 0){
+						msg = '결제 완료 BUT 업데이트 실패'
+					}else{
+						console.log(data.point)
+						$('.point').val(data.point)
+					}
+					
+				}
+			})
+		
+			$('#chargePrice').val("")
+		} else {
+		    var msg = '결제에 실패하였습니다.'
+		    msg += '에러내용 : ' + rsp.error_msg
+		}
+		alert(msg)
+	});
+		
+	})	
+	
 })
+function newNoticeCount() {
+		var alram = "<i id='newNotice' class='material-icons'>notifications_active</i>";
+		$.ajax({
+			url : "/picsion/notice/noticeMsg.ps",
+			success: function (data) {
+				console.log("새알람숫자")
+				console.log(data.count)
+				if (data.count > 0 ){
+					$('#alram').empty();
+					$('#alram').append(alram);
+					$('#newNotice').css('color','red');
+				}
+			}
+		})
+	}
 </script>
 
 <style>
@@ -180,7 +224,7 @@ $(function(){
 
 <input type="hidden" value='<c:choose><c:when test="${sessionScope.user eq null}">0</c:when><c:otherwise>${sessionScope.user.userNo}</c:otherwise></c:choose>' id="loginUserNo">
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
-    <div class="container-fluid">
+    <div class="container">
       <div class="navbar-translate">
         <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -280,14 +324,17 @@ $(function(){
 							<a id="userProfile" class="dropdown-toggle nav-link" href=""data-toggle="dropdown">
 									  <img class="rounded-circle header-prPic" src="${sessionScope.user.prPicture}">
 							  	${sessionScope.user.userName}
+							  	<input type="hidden" class="userName" value="${sessionScope.user.userName}">
 							</a>
-							 <div class="dropdown-menu dropdown-menu-right">
-                                 <h6 class="dropdown-header">내 정보</h6>
+							 <div class="dropdown-menu dropdown-with-icons dropdown-menu-right">
+                                 <h6 class="dropdown-header">홈</h6>
                                  <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}" class="dropdown-item">
                                  <i class="material-icons">face</i> 마이 스튜디오</a>
-                                 <h6 class="dropdown-header">금액</h6>
-                                 <a href="#pablo" class="dropdown-item">
-                                 <i class="material-icons">credit_card</i> 충전 하기</a>
+                                 <fmt:formatNumber var="fmtmoney" value="${sessionScope.user.point}" pattern="#,###"/>
+                                 <h6 class="dropdown-header">포인트 : ${fmtmoney}</h6>
+                                 <input type="hidden" class="point" id="nowPoint" value="${sessionScope.user.point}">
+                                 <a href="#pablo" class="dropdown-item" data-toggle="modal" data-target="#exampleModal">
+                                 <i class="material-icons">credit_card</i> 충전하기</a>
                                  <div class="dropdown-divider"></div>
                                  <a href="<%=request.getContextPath()%>/user/logout.ps" class="dropdown-item">
                                  <i class="material-icons">highlight_off</i> 로그아웃</a>
@@ -300,3 +347,29 @@ $(function(){
       </div>
     </div>
   </nav>
+  
+  <!-- 충전하기 Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">충전하기</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      
+	      <div class="modal-body">
+		    <div class="form-group bmd-form-group">
+					<label for="exampleInput1" class="bmd-label-floating">충전금액</label>
+					<input type="text" class="form-control" id="chargePrice">
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary pointCharge" data-dismiss="modal">충전하기</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
