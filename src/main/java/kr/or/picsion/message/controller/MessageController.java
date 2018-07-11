@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
@@ -57,28 +59,29 @@ public class MessageController {
 	* @return View
 	*/
 	@RequestMapping("send.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View messageSend(Message message, Model model) {
-		int result = messageService.sendMessage(message);
-		User userinfo = userService.userInfo(message.getReceiveUserNo());
-		
-		if(result != 0) {
+		try {
+			int result = messageService.sendMessage(message);
+			User userinfo = userService.userInfo(message.getReceiveUserNo());
 			
-			HashMap<String, Object> noticeMap = new HashMap<String, Object>();
-			
-			noticeMap.put("no", message.getMsgNo());
-			noticeMap.put("receiveUserNo", message.getReceiveUserNo());
-			noticeMap.put("sendUserNo", message.getSendUserNo());
-			noticeMap.put("table", "msgNo");
-			noticeMap.put("tableNo", message.getTableNo());
-			
-			model.addAttribute("message", message);
-			model.addAttribute("userinfo", userinfo);
-			
-			noticeService.insertNotice(noticeMap);
-		}else {
-			
+			if(result != 0) {
+				HashMap<String, Object> noticeMap = new HashMap<String, Object>();
+				
+				noticeMap.put("no", message.getMsgNo());
+				noticeMap.put("receiveUserNo", message.getReceiveUserNo());
+				noticeMap.put("sendUserNo", message.getSendUserNo());
+				noticeMap.put("table", "msgNo");
+				noticeMap.put("tableNo", message.getTableNo());
+				
+				model.addAttribute("message", message);
+				model.addAttribute("userinfo", userinfo);
+				
+				noticeService.insertNotice(noticeMap);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
 		
 		return jsonview;
 	}
@@ -191,14 +194,19 @@ public class MessageController {
 	* @return View
 	*/
 	@RequestMapping("msgdel.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View messageDel(int userNo, HttpSession session, Model model) {
-		User user = (User)session.getAttribute("user");
-		
-		int reResult=messageService.receiveDel(user.getUserNo(), userNo);
-		int seResult=messageService.sendDel(user.getUserNo(), userNo);
-		
-		model.addAttribute("reResult", reResult);
-		model.addAttribute("seResult", seResult);
+		try {
+			User user = (User)session.getAttribute("user");
+			
+			int reResult=messageService.receiveDel(user.getUserNo(), userNo);
+			int seResult=messageService.sendDel(user.getUserNo(), userNo);
+			
+			model.addAttribute("reResult", reResult);
+			model.addAttribute("seResult", seResult);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return jsonview;
 	}
