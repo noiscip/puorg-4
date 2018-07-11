@@ -21,7 +21,7 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 	private Map<Integer, WebSocketSession> users = new ConcurrentHashMap<Integer, WebSocketSession>();
 
 	@Override
-	public void afterConnectionEstablished(WebSocketSession wSession) throws Exception {
+	public void afterConnectionEstablished(WebSocketSession wSession) {
 		Map<String,Object> map = wSession.getAttributes();
 
 		int userNo = (Integer)map.get("userNo");
@@ -30,7 +30,7 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 	}
 	
 	@Override
-	public void afterConnectionClosed(WebSocketSession wSession, CloseStatus status) throws Exception {
+	public void afterConnectionClosed(WebSocketSession wSession, CloseStatus status){
 		Map<String,Object> map = wSession.getAttributes();
 
 		int userNo = (Integer)map.get("userNo");
@@ -39,16 +39,20 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 	}
 
 	@Override
-	protected void handleTextMessage(WebSocketSession wSession, TextMessage message) throws Exception {
+	protected void handleTextMessage(WebSocketSession wSession, TextMessage message){
 		String[] info = message.getPayload().split(":");
 		int receiveUserNo = Integer.valueOf(info[1]);
-		if(users.get(receiveUserNo) != null) {
-			users.get(receiveUserNo).sendMessage(message);   
-		}
+		try {
+			if(users.get(receiveUserNo) != null) {
+					users.get(receiveUserNo).sendMessage(message);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}   
 	}
 
 	   @Override
-	    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+	    public void handleTransportError(WebSocketSession session, Throwable exception){
 	        System.out.println(session.getId() + " Exception 발생: " + exception.getMessage());
 	    }
 
