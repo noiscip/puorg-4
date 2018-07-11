@@ -20,10 +20,13 @@
 			$.ajax({
 				  url : "/picsion/message/send.ps",
 				  data: data,
-				  success : function(){
-
-				      $("#msgContent").val("");
-				      send(receiveUserNo,tableNo);
+				  success : function(data){
+					  if(data.result == 0){
+						  alert("메시지 보내는 도중 오류가 발생했습니다.");
+					  }else{
+						  $("#msgContent").val("");
+					      send(receiveUserNo,tableNo);
+					  }
 				  },
 				  error: function(){
 				   	  alert("메시지 보내는 도중 오류가 발생했습니다.");

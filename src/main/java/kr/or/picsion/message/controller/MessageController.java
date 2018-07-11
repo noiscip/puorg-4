@@ -61,9 +61,11 @@ public class MessageController {
 	@RequestMapping("send.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View messageSend(Message message, Model model) {
+		int result = 0;
+		User userinfo = new User();
 		try {
-			int result = messageService.sendMessage(message);
-			User userinfo = userService.userInfo(message.getReceiveUserNo());
+			result = messageService.sendMessage(message);
+			userinfo = userService.userInfo(message.getReceiveUserNo());
 			
 			if(result != 0) {
 				HashMap<String, Object> noticeMap = new HashMap<String, Object>();
@@ -82,7 +84,7 @@ public class MessageController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		model.addAttribute("result", result);
 		return jsonview;
 	}
 	

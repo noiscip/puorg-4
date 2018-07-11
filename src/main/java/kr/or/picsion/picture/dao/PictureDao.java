@@ -29,7 +29,7 @@ public interface PictureDao {
 	public Picture selectPicture(int userNo, int picNo); //사진 상세
 	public List<Picture> studioPicList(int userNo, int myuserNo, int page, int endpage);//userNo로 스튜디오에서 사진 불러오기
 	public List<Picture> searchPicture(String word);
-	public void respectDelete(int picNo, int userNo);	//사진 좋아요 삭제
+	public int respectDelete(int picNo, int userNo);	//사진 좋아요 삭제
 	public void bookmarkDelete(int picNo, int userNo);	//사진 북마크 삭제
 	public int respectConfirm(int picNo, int userNo); 	//사진 좋아요 확인
 	public int bookmarkConfirm(int picNo, int userNo);	//사진 북마크 확인

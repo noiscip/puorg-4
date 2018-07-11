@@ -464,17 +464,20 @@ public class PictureController {
 	@RequestMapping("increaserespect.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View pictureRespect(int picNo, int userNo, Model model) {
+		int result = 0;
+		int errorcheck = 0;
 		try {
-			int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
+			result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
 			if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
-				pictureService.deleteRespect(picNo, userNo);
+				errorcheck = pictureService.deleteRespect(picNo, userNo);
 			}else {	//좋아요 하지 않을때 -> 좋아요 증가
-				pictureService.increaseRespect(picNo, userNo);
+				errorcheck = pictureService.increaseRespect(picNo, userNo);
 			}
 			model.addAttribute("result",result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("errorcheck",errorcheck);
 		return jsonview;
 	}
 	 

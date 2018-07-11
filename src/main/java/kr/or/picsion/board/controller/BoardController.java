@@ -106,9 +106,9 @@ public class BoardController {
 	@RequestMapping(value = "writeboard.ps", method = RequestMethod.POST)
 	@Transactional(propagation = Propagation.REQUIRED)    //글 작성 트랜잭션
 	public String postwriteBoard(Board board, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		Board inboard = board;
 		try {
-			User user = (User) session.getAttribute("user");
-			Board inboard = board;
 			inboard.setUserNo(user.getUserNo());
 			inboard.setTableNo(3);
 			inboard.setOperStateNo(1);

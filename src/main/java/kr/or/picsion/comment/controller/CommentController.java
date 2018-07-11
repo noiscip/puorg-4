@@ -1,5 +1,6 @@
 package kr.or.picsion.comment.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,15 +65,19 @@ public class CommentController {
 	@RequestMapping(value = "insertreview.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View insertBoardComment(Comment comment, HttpSession session, Model model) {
+		User user = (User) session.getAttribute("user");
+		int result = 0;
+		int receiveUser = 0;
+		List<User> commuserlist = new ArrayList<User>();
+		List<Comment> comm = new ArrayList<Comment>();
 		try {
-			User user = (User) session.getAttribute("user");
 			comment.setUserNo(user.getUserNo());
 			comment.setTableNo(3);
-			int result = commentService.insertComment(comment);
-			List<User> commuserlist = commentService.commentuser(comment.getBrdNo());
+			result = commentService.insertComment(comment);
+			commuserlist = commentService.commentuser(comment.getBrdNo());
 
 			if (result == 1) {  //댓글 쓰기 성공
-				int receiveUser = boardService.selectBoard(comment.getBrdNo()).getUserNo();
+				receiveUser = boardService.selectBoard(comment.getBrdNo()).getUserNo();
 				if(receiveUser != user.getUserNo()) {
 						
 					HashMap<String, Object> noticeMap = new HashMap<String, Object>();
@@ -87,14 +92,15 @@ public class CommentController {
 					noticeService.insertNotice(noticeMap);
 				}
 			}
-			List<Comment> comm = commentService.commentList(comment.getBrdNo());
+			comm = commentService.commentList(comment.getBrdNo());
 
-			model.addAttribute("comment", comm);
-			model.addAttribute("addcomment", comment);
-			model.addAttribute("commuserlist", commuserlist);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("comment", comm);
+		model.addAttribute("addcomment", comment);
+		model.addAttribute("commuserlist", commuserlist);
 		return jsonview;
 	}
 
@@ -131,13 +137,16 @@ public class CommentController {
 	@RequestMapping(value = "insertpiccomment.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View insertPicComment(Comment comment,HttpSession session, Model model, int picNo) {
+		User user = (User) session.getAttribute("user");
+		List<Comment> newcommentlist = new ArrayList<Comment>();
+		List<User> newcommentUserList = new ArrayList<User>();
+		int receiveUser = 0;
 		try {
-			User user = (User) session.getAttribute("user");
 			commentService.picInsertComment(comment);
-			List<Comment> newcommentlist = commentService.picCommentList(picNo); // 댓글 목록
-			List<User> newcommentUserList = commentService.picCommentUserList(picNo); // 댓글 유저 목록
+			newcommentlist = commentService.picCommentList(picNo); // 댓글 목록
+			newcommentUserList = commentService.picCommentUserList(picNo); // 댓글 유저 목록
 
-			int receiveUser = pictureService.picInfo(user.getUserNo(), comment.getPicNo()).getUserNo();
+			receiveUser = pictureService.picInfo(user.getUserNo(), comment.getPicNo()).getUserNo();
 			if(receiveUser != user.getUserNo()) {
 				HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 				
@@ -150,11 +159,12 @@ public class CommentController {
 				
 				noticeService.insertNotice(noticeMap);
 			}
-			model.addAttribute("newcommentUserList", newcommentUserList);
-			model.addAttribute("newcommentlist", newcommentlist);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("newcommentUserList", newcommentUserList);
+		model.addAttribute("newcommentlist", newcommentlist);
 		
 		return jsonview;
 	}
@@ -172,12 +182,14 @@ public class CommentController {
 	@RequestMapping("deletecomment.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View delComment(int cmtNo, Model model) {
+		int result = 0;
 		try {
-			int result = commentService.deleteComment(cmtNo);
-			model.addAttribute("result", result);
+			result = commentService.deleteComment(cmtNo);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("result", result);
 		return jsonview;
 	}
 

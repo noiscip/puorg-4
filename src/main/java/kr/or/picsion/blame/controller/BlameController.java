@@ -103,15 +103,15 @@ public class BlameController {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View complainInsert(Blame blame, HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
+		int result=0;
 		try {
 			blame.setBlaUserNo(user.getUserNo());
-			int result = blameService.complainInsert(blame);
+			result = blameService.complainInsert(blame);
 			
-			model.addAttribute("result", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		model.addAttribute("result", result);
 		return jsonview;
 	}
 	
