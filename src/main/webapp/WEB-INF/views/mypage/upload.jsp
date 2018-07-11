@@ -14,22 +14,63 @@
 }
 /*얼굴 영역 잡기 */
 .face-rectangle {
-  /* id:faceIt; */
-  position:absolute;
-  height: 100px;
-  width: 100px; 
-  border:3px solid;
-  border-color:#555;
-  background-color: transparent;
- /*  background-position: inherit; */
-}
-@-webkit-keyframes rainbow {
-  0% {color: hsl(0, 100%, 50%);}
-  100% {color: hsl(255, 100%, 50%);}
+	/* id:faceIt; */
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	border: 3px solid;
+	border-color: #555;
+	background-color: transparent;
+	/*  background-position: inherit; */
 }
 
-.rainbow-color {
-  -webkit-animation: rainbow 5s infinite alternate;
+-webkit-animation: rainbow 18s ease infinite;
+-z-animation: rainbow 18s ease infinite;
+-o-animation: rainbow 18s ease infinite;
+  animation: rainbow 18s ease infinite;}
+
+@-webkit-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@-moz-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@-o-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@keyframes rainbow { 
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+
+input[type=radio] {
+	display: none;
+}
+
+input[type=radio]+label {
+	display: inline-block;
+	cursor: pointer;
+	line-height: 22px;
+	padding-left: 22px;
+/* 	background: url('/picsion/assets/img/favicon.png') left/22px no-repeat; */
+	border-width: 2px;
+	border-style: solid;
+	border-color: #888;
+	
+}
+
+input[type=radio]:checked+label {
+	/* background-image: url('/picsion/assets/img/loading_bar2.gif'); */
+	border-width: 2px;
+	border-style: solid;
+	border-color: #000;
 }
 </style>
 
@@ -121,11 +162,11 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 								</a>
 							</div>
 							<div id="peopleRadio" style="display: none; float: left;">
-								<input type="radio" name="people" id="zero"> 0명<br>
-  								<input type="radio" name="people" id="one"> 1명<br>
-  								<input type="radio" name="people" id="two"> 2명<br> 
-  								<input type="radio" name="people" id="thr"> 3~5명<br> 
-  								<input type="radio" name="people" id="six"> 6명 이상<br> 
+								<input type="radio" name="people" id="zero"><label for="zero"> X <img src="assets/img/userNo.png" width="30px" height="30px"></label> 
+  								<input type="radio" name="people" id="one"><label for="one"> 1 <img src="assets/img/user1.png" width="30px" height="30px"></label>
+  								<input type="radio" name="people" id="two"><label for="two"> 2 <img src="assets/img/user2.png" width="30px" height="30px"></label> 
+  								<input type="radio" name="people" id="thr"><label for="thr"> 3~5 <img src="assets/img/user5.png" width="30px" height="30px"></label>
+  								<input type="radio" name="people" id="six"><label for="six"> 6+ <img src="assets/img/user6.png" width="30px" height="30px"></label>
 							</div>
 						</div>
 					
@@ -310,15 +351,12 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					
 					$('#picTags').append(tags)
 					
-					
-					
 					var cameraName = data.metaMap.cameraName=='undefined'? 'null' : data.metaMap.cameraName;
 					var resolH = data.metaMap.resolH=='undefined'? 'null' : data.metaMap.resolH;
 					var resolW = data.metaMap.resolW=='undefined'? 'null' : data.metaMap.resolW;
 					var pictureDate = data.metaMap.pictureDate=='undefined'? 'null' : data.metaMap.pictureDate;
 					var lensName = data.metaMap.lensName=='undefined'? 'null' : data.metaMap.lensName;
 					
-					 
 					
 					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
 					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
@@ -358,10 +396,10 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 $(document).ready(function(){
 	
 	$(document).on('mouseover','.face-rectangle',function(){
-		 $(this).css("border-color","#000");
+		 $(this).css("border-color","linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);");
 	});
 	$(document).on('mouseout','.face-rectangle',function(){
-		 $(this).css("border-color","#555");
+		 $(this).css("border-color","#fff");
 	});
 	
 	
