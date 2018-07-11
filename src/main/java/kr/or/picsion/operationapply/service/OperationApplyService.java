@@ -38,7 +38,6 @@ public class OperationApplyService {
 	*/
 	public int countOperationApply(OperationApply operationApply) {
 		int result=0;
-		System.out.println("countOperationApply");
 		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
 		result=operationApplyDao.countOperationApply(operationApply);		
 		return result;
@@ -56,7 +55,6 @@ public class OperationApplyService {
 	 * @return
 	 */
 	public int insertOperationApply(OperationApply operationApply) {
-		System.out.println("insertoperation 서비스");
 		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
 
 		int check = operationApplyDao.insertOperationApply(operationApply);
@@ -74,7 +72,6 @@ public class OperationApplyService {
 	 * @return
 	 */
 	public List<String> operationApplyNameList(int brdNo) {
-		System.out.println("operationApplyNameList 서비스");
 		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
 
 		List<String> operationApplyNameList = operationApplyDao.operationApplyNameList(brdNo);
@@ -93,7 +90,6 @@ public class OperationApplyService {
 	 * @return
 	 */
 	public List<OperationApply> operationApplyList(int brdNo, int requestUserNo) {
-		System.out.println("operationApplyList 서비스");
 		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
 
 		List<OperationApply> operationapplylist = operationApplyDao.operationApplyList(brdNo, requestUserNo);
