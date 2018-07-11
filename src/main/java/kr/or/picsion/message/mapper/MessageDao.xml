@@ -196,4 +196,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER by msgReg
 	</select>
 	
+	<delete id="deleteMessage">
+		delete from MESSAGES where #{date} > msgReg
+	</delete>
 </mapper>

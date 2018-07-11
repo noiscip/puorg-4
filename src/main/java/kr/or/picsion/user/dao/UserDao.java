@@ -33,7 +33,6 @@ public interface UserDao {
 	public int getFollowerCount(int userNo);			//나를 따르는 유저의 총 명수
 	public int followingConfirm(int userNo, int followingUserNo);	//팔로잉하고 있는지 확인
 	public List<Picture> followingUserPictureList(int userNo, int page, int endpage);		//내가 팔로잉한 유저 최신 사진 리스트
-	public List<User> followingUserPictureOwnerList(int userNo, int page, int endpage);  	//내가 팔로잉한  유저 최신 사진의 주인 리스트
  	public void insertFollow(int userNo, int followingUserNo);		//팔로잉테이블에   insert
 	public void deleteFollow(int userNo, int followingUserNo);		//팔로잉테이블에서 delete
 	public int insertAccount(int userNo);    						//회원 계정 연동

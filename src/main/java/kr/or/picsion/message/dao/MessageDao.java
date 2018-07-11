@@ -1,5 +1,6 @@
 package kr.or.picsion.message.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import kr.or.picsion.message.dto.Message;
@@ -36,5 +37,5 @@ public interface MessageDao {
 	
 	
 	public int messageState(int msgNo);			//메시지 읽었을 때 상태 update
-	
+	public int deleteMessage(Date date);
 }

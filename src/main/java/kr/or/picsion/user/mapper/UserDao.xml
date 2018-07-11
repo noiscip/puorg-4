@@ -69,24 +69,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2}
 	</delete>
 	
-  
-    <!-- 팔로잉 최신 사진의 주인 --> 
-    <select id="followingUserPictureOwnerList" resultType="kr.or.picsion.user.dto.User">
-        select *
-		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (SELECT f.followingUserNo as userNo, u.userName as userName, p.picNo as picNo, p.picPath as picPath, p.picReg as picReg, p.picWater as picWater
-      			FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
-                join PICTURE p on u.userNo = p.userNo
-                where f.userNo = #{param1}) pp
-                order by pp.picReg desc LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
-		where SC.ROWNUM>0
-		order by SC.ROWNUM
-		limit #{param2}, #{param3}       
-    </select> 
-   
     <!-- 팔로잉 최신 사진 , 좋아요, 북마크 리스트  -->
 	<select id="followingUserPictureList" resultType="kr.or.picsion.picture.dto.Picture">
 		select *
-		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select po.userNo2 as userNo, po.picTitle as picTitle, po.picContent as picContent,po.picPath as picPath, po.picWater as picWater, po.picNo as picNo, po.picReg as picReg,SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.camera, pi.lens, pi.photoDate, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount from (SELECT f.userNo as userNo, f.followingUserNo as userNo2, u.userName as userName, p.picTitle as picTitle, p.picContent as picContent, p.picNo as picNo, p.picWater as picWater, p.picPath as picPath, p.picReg as picReg
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select po.userNo2 as userNo,po.userName as userName, po.picTitle as picTitle, po.picContent as picContent,po.picPath as picPath, po.picWater as picWater, po.picNo as picNo, po.picReg as picReg,SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.camera, pi.lens, pi.photoDate, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount from (SELECT f.userNo as userNo, f.followingUserNo as userNo2, u.userName as userName, p.picTitle as picTitle, p.picContent as picContent, p.picNo as picNo, p.picWater as picWater, p.picPath as picPath, p.picReg as picReg
 			    FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
                 join PICTURE p on u.userNo = p.userNo
                 where f.userNo = #{param1}) po 
