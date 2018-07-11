@@ -75,54 +75,19 @@
         			}
         		})
         	})
-        	
-        	
-        	var IMP = window.IMP
-    		IMP.init('imp27054314')
-    		
-    		$('#pointCharge').click(function(){
-    			IMP.request_pay({
-    			    pg : 'inicis', // version 1.1.0부터 지원.
-    			    pay_method : 'card',
-    			    merchant_uid : 'merchant_' + new Date().getTime(),
-    			    name : '주문명:포인트 충전',
-    			    amount : $('#chargePrice').val(),
-    			    buyer_name : $('#userName').val(),
-    			    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
-    		}, function(rsp) {
-    			if ( rsp.success ) {
-    				var msg = '결제가 완료되었습니다.'
-    				msg += '결제 금액 : ' + rsp.paid_amount
-    				msg += '카드 승인번호 : ' + rsp.apply_num
-    				
-    				$.ajax({
-    					url:"/picsion/user/charge.ps",
-    					data: {point:rsp.paid_amount},
-    					success: function(data){
-    						if(data.result == 0){
-    							msg = '결제 완료 BUT 업데이트 실패'
-    						}else{
-    							console.log(data.point)
-    							$('#point').val(data.point)
-    						}
-    						
-    					}
-    				})
-    			
-    				$('#chargePrice').val("")
-    			} else {
-    			    var msg = '결제에 실패하였습니다.'
-    			    msg += '에러내용 : ' + rsp.error_msg
-    			}
-    			alert(msg)
-    		});
-    			
-    		})	
-        	
-        	
    });
 
-    </script>
+</script>
+<style>
+	.awhite-font-color{
+		color:#fff;	
+	}
+	.awhite-font-color:hover,
+	.awhite-font-color:focus{
+		color:#fff;	
+	}
+</style>
+
 <div id="changemain" class="page-header header-filter" data-parallax="true">
 </div>
 
@@ -166,7 +131,7 @@
 												<input id="changehidden" name="point" value="${user.point-total}" type="hidden">
 											</c:when>
 											<c:otherwise>
-												<span>잔액(<fmt:formatNumber value="${user.point}" pattern="#,###"/><small>원</small>)부족으로 인한 구매 불가</span>
+												<span>잔액(${user.point}) 부족</span>
 											</c:otherwise>
 									</c:choose>
 									
@@ -179,8 +144,10 @@
 													Proceed
 												</button>
 											</c:when>
-											<c:otherwise>												
-													<button type="button" class="btn btn-default update-margin" data-toggle="modal" data-target="#exampleModal">충전하기</button>									
+											<c:otherwise>
+												<button class="btn btn-primary btn-sm float-right">
+													<a href="<%=request.getContextPath()%>/user/updatebefore.ps" class="awhite-font-color">캐시 충전</a>
+												</button>												
 											</c:otherwise>
 									</c:choose>								
 									
@@ -251,29 +218,3 @@
 	
 
 </div>
-
-<!-- 충전하기 Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">충전하기</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      
-	      <div class="modal-body">
-		    <div class="form-group bmd-form-group">
-					<label for="exampleInput1" class="bmd-label-floating">충전금액</label>
-					<input type="text" class="form-control" id="chargePrice">
-			</div>
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary" id="pointCharge" data-dismiss="modal">충전하기</button>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-	      </div>
-	      
-	    </div>
-	  </div>
-	</div>
