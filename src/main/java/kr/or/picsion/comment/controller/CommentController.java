@@ -98,6 +98,7 @@ public class CommentController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("result", result);
 		model.addAttribute("comment", comm);
 		model.addAttribute("addcomment", comment);
 		model.addAttribute("commuserlist", commuserlist);
@@ -141,8 +142,9 @@ public class CommentController {
 		List<Comment> newcommentlist = new ArrayList<Comment>();
 		List<User> newcommentUserList = new ArrayList<User>();
 		int receiveUser = 0;
+		int errorCheck = 0;
 		try {
-			commentService.picInsertComment(comment);
+			errorCheck = commentService.picInsertComment(comment);
 			newcommentlist = commentService.picCommentList(picNo); // 댓글 목록
 			newcommentUserList = commentService.picCommentUserList(picNo); // 댓글 유저 목록
 
@@ -163,6 +165,7 @@ public class CommentController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("errorCheck",errorCheck);
 		model.addAttribute("newcommentUserList", newcommentUserList);
 		model.addAttribute("newcommentlist", newcommentlist);
 		
@@ -185,7 +188,6 @@ public class CommentController {
 		int result = 0;
 		try {
 			result = commentService.deleteComment(cmtNo);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

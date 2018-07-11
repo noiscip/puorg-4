@@ -82,7 +82,6 @@ public class BlameController {
 	*/
 	@RequestMapping("adminAllComplain.ps")
 	public View allComplain(Model model) {
-		
 		List<Blame> blameList = blameService.complain();
 		model.addAttribute("blameList",blameList);
 		return jsonview;
@@ -107,7 +106,6 @@ public class BlameController {
 		try {
 			blame.setBlaUserNo(user.getUserNo());
 			result = blameService.complainInsert(blame);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

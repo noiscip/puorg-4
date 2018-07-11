@@ -82,9 +82,10 @@ public class BoardService {
 	 *
 	 * @param board
 	 */
-	public void insertBoard(Board board) {
+	public int insertBoard(Board board) {
 		BoardDao boarddao = sqlSession.getMapper(BoardDao.class);
-		boarddao.insertBoard(board);
+		int result = boarddao.insertBoard(board);
+		return result;
 	}
 
 	/**
