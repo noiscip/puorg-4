@@ -278,18 +278,24 @@ $(function(){
 	                    	</c:if>
 		                  </div>
 		                </li>
-						<li class="nav-item">
-							<a id="userProfile" class="nav-link" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}"data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="My studio">
+						<li class="dropdown nav-item">
+							<a id="userProfile" class="dropdown-toggle nav-link" href=""data-toggle="dropdown">
 									  <img class="rounded-circle header-prPic" src="${sessionScope.user.prPicture}">
 							  	${sessionScope.user.userName}
 							</a>
+							 <div class="dropdown-menu dropdown-menu-right">
+                                 <h6 class="dropdown-header">내 정보</h6>
+                                 <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}" class="dropdown-item">
+                                 <i class="material-icons">face</i> 마이 스튜디오</a>
+                                 <h6 class="dropdown-header">금액</h6>
+                                 <a href="#pablo" class="dropdown-item">
+                                 <i class="material-icons">credit_card</i> 충전 하기</a>
+                                 <div class="dropdown-divider"></div>
+                                 <a href="<%=request.getContextPath()%>/user/logout.ps" class="dropdown-item">
+                                 <i class="material-icons">highlight_off</i> 로그아웃</a>
+                             </div>
 						</li>
 						
-						<li class="nav-item"> 
-							<a class="nav-link" href="<%=request.getContextPath()%>/user/logout.ps" onclick="scrollToDownload()"> 
-								<i class="material-icons">highlight_off</i> 로그아웃
-							</a>
-						</li>
 					</c:otherwise>
 				</c:choose>
         </ul>
