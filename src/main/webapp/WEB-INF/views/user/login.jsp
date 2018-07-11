@@ -6,8 +6,8 @@
 	          <div class="col-md-4 ml-auto mr-auto">
 	            <div class="card card-signup">
 	              <form class="form" method="post" action="">
-	                <!-- <div class="card-header card-header-primary text-center"> -->
-	                  <h3 align="center">Sign Up</h3>
+	                <div class="card-header card-header-primary text-center">
+	                  <h4>Sign Up</h4>
 	                  <div class="social-line">
 	                    <button class="btn btn-just-icon  btn-google">
                                 <i class="fa fa-google"> </i>
@@ -18,7 +18,7 @@
 	                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="btn btn-link btn-just-icon">
 	                      <img alt="네이버 로그인" src="<%=request.getContextPath()%>/assets/img/portalsite/naver_icon.png" style="width: 40px">
 	                    </a>
-	                 <!--  </div>  -->
+	                  </div> 
 	                </div>
 	                <p class="text-divider">Or Be Classical</p>
 	                <div class="card-body">
