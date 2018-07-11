@@ -30,11 +30,11 @@ public interface PictureDao {
 	public List<Picture> studioPicList(int userNo, int myuserNo, int page, int endpage);//userNo로 스튜디오에서 사진 불러오기
 	public List<Picture> searchPicture(String word);
 	public int respectDelete(int picNo, int userNo);	//사진 좋아요 삭제
-	public void bookmarkDelete(int picNo, int userNo);	//사진 북마크 삭제
+	public int bookmarkDelete(int picNo, int userNo);	//사진 북마크 삭제
 	public int respectConfirm(int picNo, int userNo); 	//사진 좋아요 확인
 	public int bookmarkConfirm(int picNo, int userNo);	//사진 북마크 확인
 	public int respectIncrease(int picNo, int userNo);	//사진 좋아요 증가
-	public void bookmarkIncrease(int picNo, int userNo);//사진 북마크 증가(생성)
+	public int bookmarkIncrease(int picNo, int userNo);//사진 북마크 증가(생성)
 	public List<Picture> photograherRespectPicList(int userNo); //작가의 인기순 사진리스트
 	public List<String> searchTag(String value);	        //검색 태그 리스트
 	public List<Picture> searchTagPicList(int userNo, String value);//태그 사진 리스트
