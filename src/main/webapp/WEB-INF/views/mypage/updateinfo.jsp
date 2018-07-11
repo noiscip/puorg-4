@@ -137,6 +137,12 @@
 	color:black;
 }
 
+/* input 내용 좌측 여백 */
+.input-content-pad{
+	padding-left: 7px;
+}
+
+
 </style>
 
 <div id="changemain" class="page-header header-filter" data-parallax="true"></div>
@@ -238,7 +244,7 @@
 	                  <div class="form-group update-margin">
 	                  	<label for="exampleInput1" class="bmd-label-floating">자기 소개</label>
 	                    <div class="input-group form-default">
-	                        <input type="text" class="form-control" id="prContent" name="prContent" value="${userinfo.prContent}" autocomplete="off">
+	                        <input type="text" class="form-control input-content-pad" id="prContent" name="prContent" value="${userinfo.prContent}" autocomplete="off">
 	                     </div>
 	                  </div>
 	                    
@@ -248,25 +254,25 @@
 	                	<div class="form-group update-lab-padding">
 		                      <label for="exampleInput1" class="bmd-label-floating">아이디</label>
 		                      <div class="input-group">
-		                        <input type="text" class="form-control" id="userId" name="userId" value="${userinfo.userId}" readonly="readonly">
+		                        <input type="text" class="form-control input-content-pad" id="userId" name="userId" value="${userinfo.userId}" readonly="readonly">
 		                      </div>
 		                 </div>
 	                    <div class="form-group">
 	                      <label for="exampleInput1" class="bmd-label-floating">이름</label>
 	                      <div class="input-group">
-	                        <input type="text" class="form-control" id="userName" name="userName" value="${userinfo.userName}" autocomplete="off">
+	                        <input type="text" class="form-control input-content-pad" id="userName" name="userName" value="${userinfo.userName}" autocomplete="off">
 	                      </div>
 		                    </div>
 		                    <div class="form-group">
 		                      <label for="exampleInput1" class="bmd-label-floating">비밀번호</label>
 		                      <div class="input-group">
-		                        <input type="password" name="pwd" class="form-control" />
+		                        <input type="password" name="pwd" class="form-control input-content-pad" />
 		                      </div>
 		                    </div>
 		                    <div class="form-group">
 		                      <label for="exampleInput1" class="bmd-label-floating">비밀번호 확인</label>
 		                      <div class="input-group">
-		                        <input type="password" class="form-control" />
+		                        <input type="password" class="form-control input-content-pad" />
 		                      </div>
                    		 </div> 
 	                    
@@ -274,7 +280,7 @@
 	                  	<label for="exampleInput1" class="bmd-label-floating">현재 캐시</label>
 	                    <div class="input-group">
 	                    	<fmt:formatNumber var="fmtmoney" value="${userinfo.point}" pattern="#,###"/>
-	                        <input type="text" class="form-control" id="point" value="${fmtmoney}" readonly="readonly">
+	                        <input type="text" class="form-control input-content-pad" id="point" value="${fmtmoney} 원" readonly="readonly">
 	                        
 	                        
 	                     </div>
