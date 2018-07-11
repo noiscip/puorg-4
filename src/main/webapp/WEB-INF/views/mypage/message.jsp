@@ -44,38 +44,42 @@
 							receiveUserNo:receiveUserNo
 					},
 					success: function(data){
-						$('#msgContent').val('');
-						removeDiv.remove();
-						
-						if($('.messageSend').data("no")==receiveUserNo && $('#msgContent-show').hasClass('msg-show')){
+						if(data.result == 0){
+							alert("메시지 보내는 도중 오류가 발생했습니다.");
+						}else{
+							$('#msgContent').val('');
+							removeDiv.remove();
 							
-							/* 메시지 뿌려주고, 스크롤 고정 */
-							var msg = "<div class='popover bs-popover-left bs-popover-left-docs message-send'>"+
-				                      "<div class='arrow'></div>"+
-				                      "<div class='popover-body'>"+
-					                      "<p class='msg-content-p'>"+data.message.msgContent+"</p>"+
-					                      "<p class='msg-reg-p' align='right'><small>"+moment(data.message.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
-				                      "</div></div>";
-							$('#msg-body').append(msg);
-							$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
-							
-							/* userList div 삭제하고, 뿌려주기 */
-							var userList = "<div class='media'>"+
-										   "<a class='float-left'>"+
-										   		"<div class='avatar'>"+
-										   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object prPic-height' src='"+data.userinfo.prPicture+"'></a>"+
-										   		"</div></a>"+
-										   	"<div class='media-body media-body-custom'>"+
-										   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
-										   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
-										   		"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
-										   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
-										   	"</div></div>";
-										   	
-							$('#commentstart').prepend(userList);
-							
-							var tableNo=5+":"+data.message.msgNo;
-							send(receiveUserNo,tableNo);
+							if($('.messageSend').data("no")==receiveUserNo && $('#msgContent-show').hasClass('msg-show')){
+								
+								/* 메시지 뿌려주고, 스크롤 고정 */
+								var msg = "<div class='popover bs-popover-left bs-popover-left-docs message-send'>"+
+					                      "<div class='arrow'></div>"+
+					                      "<div class='popover-body'>"+
+						                      "<p class='msg-content-p'>"+data.message.msgContent+"</p>"+
+						                      "<p class='msg-reg-p' align='right'><small>"+moment(data.message.msgReg).format('MM-DD, HH:mm')+"</small></p>"+
+					                      "</div></div>";
+								$('#msg-body').append(msg);
+								$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+								
+								/* userList div 삭제하고, 뿌려주기 */
+								var userList = "<div class='media'>"+
+											   "<a class='float-left'>"+
+											   		"<div class='avatar'>"+
+											   			"<a href='<%=request.getContextPath()%>/picture/mystudio.ps?userNo="+data.userinfo.userNo+"'><img class='media-object prPic-height' src='"+data.userinfo.prPicture+"'></a>"+
+											   		"</div></a>"+
+											   	"<div class='media-body media-body-custom'>"+
+											   		"<h4 class='media-heading msgUserName'>"+data.userinfo.userName+"<small> · "+moment(data.message.msgReg).format('YYYY-MM-DD, HH:mm:ss')+"</small></h4>"+
+											   		"<p class='msgList' style='cursor: pointer;' data-no='"+data.userinfo.userNo+"'>"+data.message.msgContent+"</p>"+
+											   		"<a class='btn btn-rose btn-link float-right message-margin-del receiveMsgDel'><i class='material-icons'>clear</i>삭제</a>"+
+											   		"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기'><i class='material-icons'>reply</i> 신고</a>"+
+											   	"</div></div>";
+											   	
+								$('#commentstart').prepend(userList);
+								
+								var tableNo=5+":"+data.message.msgNo;
+								send(receiveUserNo,tableNo);
+							}
 						}
 					},
 					error: function(){

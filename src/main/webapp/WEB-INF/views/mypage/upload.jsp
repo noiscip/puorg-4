@@ -18,37 +18,13 @@
 	position: absolute;
 	height: 100px;
 	width: 100px;
-	border: 3px solid;
-	border-color: #555;
+	border-width: 3px;
+	border-style: solid;
+	border-color: #F2F2F2;
 	background-color: transparent;
 	/*  background-position: inherit; */
 }
 
--webkit-animation: rainbow 18s ease infinite;
--z-animation: rainbow 18s ease infinite;
--o-animation: rainbow 18s ease infinite;
-  animation: rainbow 18s ease infinite;}
-
-@-webkit-keyframes rainbow {
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
-}
-@-moz-keyframes rainbow {
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
-}
-@-o-keyframes rainbow {
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
-}
-@keyframes rainbow { 
-    0%{background-position:0% 82%}
-    50%{background-position:100% 19%}
-    100%{background-position:0% 82%}
-}
 
 input[type=radio] {
 	display: none;
@@ -62,8 +38,7 @@ input[type=radio]+label {
 /* 	background: url('/picsion/assets/img/favicon.png') left/22px no-repeat; */
 	border-width: 2px;
 	border-style: solid;
-	border-color: #888;
-	
+	border-color: #BDBDBD;
 }
 
 input[type=radio]:checked+label {
@@ -161,11 +136,16 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 								</a>
 							</div>
 							<div id="peopleRadio" style="display: none; float: left;">
+								<br>
 								<input type="radio" name="people" id="zero"><label for="zero"> X <img src="assets/img/userNo.png" width="30px" height="30px"></label> 
   								<input type="radio" name="people" id="one"><label for="one"> 1 <img src="assets/img/user1.png" width="30px" height="30px"></label>
   								<input type="radio" name="people" id="two"><label for="two"> 2 <img src="assets/img/user2.png" width="30px" height="30px"></label> 
   								<input type="radio" name="people" id="thr"><label for="thr"> 3~5 <img src="assets/img/user5.png" width="30px" height="30px"></label>
   								<input type="radio" name="people" id="six"><label for="six"> 6+ <img src="assets/img/user6.png" width="30px" height="30px"></label>
+							</div>
+							<div class="form-group" id="price"style="display: none;">
+								<label for="price">희망 가격</label> <input type="text"
+									class="form-control" id="pictureTitle" name="picPrice">
 							</div>
 						</div>
 					
@@ -361,7 +341,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					var lensName = data.metaMap.lensName=='undefined'? 'null' : data.metaMap.lensName;
 					
 					
-					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
+					tags ='<br>태그추가: <input type="text" id="tagAddName">';
 					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
 					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
 					tags += '<input type="hidden" name="camera" id="camera" value="'+cameraName+'"/>';
@@ -384,6 +364,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						
 					}) 
 					$('#tagA').append(color);
+					$('#price').show();
 				},beforeSend:function(){
 					$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
 				}
@@ -398,10 +379,10 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 $(document).ready(function(){
 	
 	$(document).on('mouseover','.face-rectangle',function(){
-		 $(this).css("border-color","linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);");
+		 $(this).css("border-color","#3ADF00");
 	});
 	$(document).on('mouseout','.face-rectangle',function(){
-		 $(this).css("border-color","#fff");
+		 $(this).css("border-color","#F2F2F2");
 	});
 	
 	

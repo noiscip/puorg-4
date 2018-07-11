@@ -41,11 +41,6 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	
-	
 	@RequestMapping(value = "home.ps", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -56,9 +51,6 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
-		System.out.println("formattedDate : " + formattedDate);
-		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");		
-		System.out.println("regDate : " + reg.format(date));
 		User user = (User) session.getAttribute("user");
 		List<Picture> ranPicture = pictureService.selectRandom();
 		List<Picture> latestPicList = new ArrayList<>();								//사진
@@ -71,7 +63,6 @@ public class HomeController {
 		    model.addAttribute("latestPicList",latestPicList);
 		}else{
 			 latestPicList = pictureService.latestPicList(0, page, endpage);
-			 System.out.println(latestPicList);
 			 model.addAttribute("latestPicList",latestPicList);
 		}
 		
@@ -99,8 +90,7 @@ public class HomeController {
 	public View homeList(Locale locale, Model model, HttpSession session, int page) {
 		User user = (User) session.getAttribute("user");
 		int endpage=9;
-		
-		List<Picture> latestPicList = new ArrayList<>();					//사진
+		List<Picture> latestPicList = new ArrayList<>();		//사진
 		
 		if(user != null) {
 			latestPicList = pictureService.latestPicList(user.getUserNo(), page, endpage);
@@ -109,7 +99,6 @@ public class HomeController {
 			latestPicList = pictureService.latestPicList(0, page, endpage);
 			model.addAttribute("latestPicList",latestPicList);
 		}
-		
 		model.addAttribute("endpage", latestPicList.size());
 		
 		return jsonview;

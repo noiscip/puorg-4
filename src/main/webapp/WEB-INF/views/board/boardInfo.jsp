@@ -40,6 +40,7 @@
 							},
 							success : function(data) {
 								console.log(data.addcomment);
+								console.log(data);
 								$("#reviewcontents").empty();
 								  var media="";
 							      $.each(data.commuserlist,function(index,element){
@@ -51,10 +52,13 @@
 										
 										media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 											element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
-										    "</h4><p>"+data.comment[index].cmtContent+"</p>"+
-										    "<a href='#pablo' class='btn btn-primary btn-link float-right'"+
+										    "</h4><p>"+data.comment[index].cmtContent+"</p>";
+										   
+										    media+="<a href='#pablo' class='btn btn-primary btn-link float-right'"+
 											"rel='tooltip' title='' data-original-title='보내버리기' id='" + data.comment[index].tableNo + ","+element.userNo+","+data.comment[index].brdNo+",0,"+data.comment[index].cmtNo+"' > <i "+
-											"class='material-icons'>reply</i>신고</a></div></div>";
+											"class='material-icons'>reply</i>신고</a>";
+										   
+											media+="</div></div>";
 									})
 									$("#reviewcontents").append(media); 									
 							        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
@@ -448,9 +452,11 @@
 
 																	</h4>
 																	<p>${review1.cmtContent}</p>
-																	<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
-																		<i class="material-icons">reply</i> 신고
-																	</a>
+																	<c:if test="${review1.userNo != user.userNo}">
+																		<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																			<i class="material-icons">reply</i> 신고
+																		</a>
+																	</c:if>
 																</div>
 															</div>
 
@@ -644,9 +650,11 @@
 			
 																				</h4>
 																				<p>${review1.cmtContent}</p>
-																				<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
-																					<i class="material-icons">reply</i> 신고
-																				</a>
+																				<c:if test="${review1.userNo != user.userNo}">
+																					<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
+																						<i class="material-icons">reply</i> 신고
+																					</a>
+																				</c:if>
 																			</div>
 																		</div>
 			

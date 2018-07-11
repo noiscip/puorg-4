@@ -107,12 +107,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void increaseRespect(int picNo, int userNo){
+	public int increaseRespect(int picNo, int userNo){
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.respectIncrease(picNo, userNo);
-		System.out.println(picNo);
-		System.out.println(userNo);
-		
+		int result = picturedao.respectIncrease(picNo, userNo);
+		return result;
 	}
 	
 	/**
@@ -124,10 +122,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void increaseBookmark(int picNo, int userNo){
+	public int increaseBookmark(int picNo, int userNo){
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.bookmarkIncrease(picNo, userNo);
-			
+		int result = picturedao.bookmarkIncrease(picNo, userNo);
+		return result;
 	}
 	
 	/**
@@ -139,9 +137,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void deleteRespect(int picNo, int userNo) {
+	public int deleteRespect(int picNo, int userNo) {
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.respectDelete(picNo, userNo);
+		int result =  picturedao.respectDelete(picNo, userNo);
+		return result;
 	}
 	
 	/**
@@ -153,9 +152,10 @@ public class PictureService {
 	* @param picNo
 	* @param userNo
 	*/
-	public void deleteBookmark(int picNo, int userNo) {
+	public int deleteBookmark(int picNo, int userNo) {
 		PictureDao picturedao = sqlSession.getMapper(PictureDao.class);
-		picturedao.bookmarkDelete(picNo, userNo);
+		int result = picturedao.bookmarkDelete(picNo, userNo);
+		return result;
 	}
 	
 	/**
