@@ -1,15 +1,12 @@
 package kr.or.picsion.operation.service;
 
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.picsion.operation.dao.OperPictureDao;
-import kr.or.picsion.operation.dao.OperationDao;
 import kr.or.picsion.operation.dto.OperPicture;
-import kr.or.picsion.operation.dto.Operation;
 
 /**
  * @project Final_Picsion
@@ -36,7 +33,6 @@ public class OperPictureService {
 	*/
 	public int insertOperPicture(OperPicture operpicture) {
 
-		System.out.println("insertOperPicture 서비스 시작 ");
 		OperPictureDao operPictureDao = sqlSession.getMapper(OperPictureDao.class);
 		int result = operPictureDao.insertOperPicture(operpicture);
 		return result;
@@ -45,7 +41,6 @@ public class OperPictureService {
 	
 	public OperPicture selectOperpicture(int operNo) {
 
-		System.out.println("selectOperpicture 서비스 시작 ");
 		OperPictureDao operPictureDao = sqlSession.getMapper(OperPictureDao.class);
 		OperPicture operPicture = operPictureDao.selectOperpicture(operNo);
 		return operPicture;

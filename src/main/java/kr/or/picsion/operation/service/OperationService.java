@@ -32,11 +32,9 @@ public class OperationService {
 	 * @return
 	 */
 	public int insertOperation(Operation operation) {
-		System.out.println("insertOperation 서비스 ");
 		System.out.println(operation);
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		int result = operationDao.insertOperation(operation);
-		System.out.println("insertOperation 서비스  끝");
 
 		return result;
 	}
@@ -52,7 +50,6 @@ public class OperationService {
 	 */
 	public Operation selectOper(int brdNo) {
 
-		System.out.println("selectOper 서비스 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		Operation operation = operationDao.selectOper(brdNo);
 
@@ -70,7 +67,6 @@ public class OperationService {
 	*/
 	public Operation operNoselectOper(int operNo) {
 
-		System.out.println("operNoselectOper 서비스 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		Operation operation = operationDao.operNoselectOper(operNo);
 
@@ -86,10 +82,8 @@ public class OperationService {
 	 */
 	public List<Operation> operBoardList() {
 
-		System.out.println("operBoardList 서비스 시작 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		List<Operation> operation = operationDao.operBoardList();
-		System.out.println("operBoardList 서비스 끝");
 		return operation;
 	}
 
@@ -104,7 +98,6 @@ public class OperationService {
 	 */
 	public List<Operation> operationList(int userNo) {
 
-		System.out.println("operationList 서비스 시작 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		return operationDao.operationList(userNo);
 	}
@@ -120,7 +113,6 @@ public class OperationService {
 	 */
 	public List<Operation> requestList(int userNo) {
 
-		System.out.println("requestList 서비스 시작 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		return operationDao.requestList(userNo);
 	}
@@ -137,7 +129,6 @@ public class OperationService {
 	* @return
 	*/
 	public int updateOperation(Operation operation) {
-		System.out.println("updateOperation 서비스 시작 ");
 		OperationDao operationDao = sqlSession.getMapper(OperationDao.class);
 		int result = operationDao.updateOperation(operation);
 		return result;
