@@ -1,78 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<script type="text/javascript">
-/* 
-	$(function(){
-		$('#pointCharge').click(function(){
-			var chargePoint = $('#chargePrice').val()
-			var nowPoint = $('#point').val()
-			var regNumber = /^[0-9]*$/;
-			
-			
-			if($('#chargePrice').val() == ""){
-				alert('충전 금액을 입력하세요!');
-				$('#chargePrice').val("");
-			}else if(!regNumber.test($('#chargePrice').val())){
-				alert('잘못 입력하셨습니다! 숫자만 입력해주세요.');
-				$('#chargePrice').val("");
-			}else{
-				
-				
-			}
-		})
-		
-		
-	}) 
-*/
-	$(function(){
-		var nowPoint = $('#point').val()
-		
-		var IMP = window.IMP
-		IMP.init('imp27054314')
-		
-		$('#pointCharge').click(function(){
-			IMP.request_pay({
-			    pg : 'inicis', // version 1.1.0부터 지원.
-			    pay_method : 'card',
-			    merchant_uid : 'merchant_' + new Date().getTime(),
-			    name : '주문명:포인트 충전',
-			    amount : $('#chargePrice').val(),
-			    buyer_name : $('#userName').val(),
-			    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
-		}, function(rsp) {
-			if ( rsp.success ) {
-				var msg = '결제가 완료되었습니다.'
-				msg += '결제 금액 : ' + rsp.paid_amount
-				msg += '카드 승인번호 : ' + rsp.apply_num
-				
-				$.ajax({
-					url:"/picsion/user/charge.ps",
-					data: {point:rsp.paid_amount},
-					success: function(data){
-						if(data.result == 0){
-							msg = '결제 완료 BUT 업데이트 실패'
-						}else{
-							console.log(data.point)
-							$('#point').val(data.point)
-						}
-						
-					}
-				})
-			
-				$('#chargePrice').val("")
-			} else {
-			    var msg = '결제에 실패하였습니다.'
-			    msg += '에러내용 : ' + rsp.error_msg
-			}
-			alert(msg)
-		});
-			
-		})	
-	})
-</script>
 <style>
 /* 뿌려주는 이미지의 크기 */
 .img-size {
@@ -260,7 +190,8 @@
 	                    <div class="form-group">
 	                      <label for="exampleInput1" class="bmd-label-floating">이름</label>
 	                      <div class="input-group">
-	                        <input type="text" class="form-control input-content-pad" id="userName" name="userName" value="${userinfo.userName}" autocomplete="off">
+	                        <input type="text" class="form-control userName input-content-pad" name="userName" value="${userinfo.userName}" autocomplete="off">
+
 	                      </div>
 		                    </div>
 		                    <div class="form-group">
@@ -280,9 +211,9 @@
 	                  	<label for="exampleInput1" class="bmd-label-floating">현재 캐시</label>
 	                    <div class="input-group">
 	                    	<fmt:formatNumber var="fmtmoney" value="${userinfo.point}" pattern="#,###"/>
-	                        <input type="text" class="form-control input-content-pad" id="point" value="${fmtmoney} 원" readonly="readonly">
-	                        
-	                        
+
+	                        <input type="text" class="form-control point input-content-pad" value="${fmtmoney}" readonly="readonly">
+  
 	                     </div>
 	                     <button type="button" class="btn btn-default update-margin" data-toggle="modal" data-target="#exampleModal">충전하기</button>
 	                  </div>
@@ -300,29 +231,5 @@
 	</div>
 </div>
 
-	<!-- 충전하기 Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">충전하기</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      
-	      <div class="modal-body">
-		    <div class="form-group bmd-form-group">
-					<label for="exampleInput1" class="bmd-label-floating">충전금액</label>
-					<input type="text" class="form-control" id="chargePrice">
-			</div>
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary" id="pointCharge" data-dismiss="modal">충전하기</button>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-	      </div>
-	      
-	    </div>
-	  </div>
-	</div>
+	
 

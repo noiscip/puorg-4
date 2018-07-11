@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 
 <style type="text/css">
 	.bootstrap-tagsinput .tag {
@@ -16,6 +17,18 @@
 		if(${boardInfo.operStateNo}==2){ 
 		$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 		}
+		
+		//댓글창 스크롤 가장 하단으로 내리기
+		$(document).on('click','#scrolldown',function(){
+			$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+		})
+		
+		//댓글 텍스트 입력 클릭시 스크롤 하단으로 내리기
+		$(document).on('click','#reviewcontent',function(){
+			if($('#scrolldown').attr("aria-expanded")=='false'){
+				$('#scrolldown').click();
+			}
+		})
 		var myNo = $('#loginUserNo').val();
 		if(${operation.operNo} != 0)
 		{
@@ -30,7 +43,8 @@
 					var cmtcon=$("#reviewcontent").val();
 					if ($('#reviewcontent').val().trim() == "") {
 						alert("리뷰 내용을 입력해주세요.");
-					} else {	
+					} else {
+						$('#scrolldown').children()[0].innerHTML++;
 						$.ajax({
 							url : "/picsion/comment/insertreview.ps",
 							type : "post",
@@ -53,12 +67,8 @@
 											
 											media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 												element.userName+"<small>· "+moment(data.comment[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
-											    "</h4><p>"+data.comment[index].cmtContent+"</p>";
-											   
-											    media+="<a href='#pablo' class='btn btn-primary btn-link float-right'"+
-												"rel='tooltip' title='' data-original-title='보내버리기' id='" + data.comment[index].tableNo + ","+element.userNo+","+data.comment[index].brdNo+",0,"+data.comment[index].cmtNo+"' > <i "+
-												"class='material-icons'>reply</i>신고</a>";
-											   
+												"</h4><p>"+data.comment[index].cmtContent+"</p>";											   
+											if($('#loginUserNo').val()==moment(data.comment[index].userNo)){ media += "<a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.comment[index].cmtNo+"'><i class='material-icons'>clear</i>삭제</a>";}
 												media+="</div></div>";
 										})
 										$("#reviewcontents").append(media); 									
@@ -76,6 +86,29 @@
 						});	
 					}
 				});
+		
+		
+		
+		//댓글 삭제
+		$(document).on('click', '#commentDel', function(){
+			var commbody = $(this).parent().parent()
+			var cmtNo = $(this).attr("value")
+			 $.ajax({
+				url:"/picsion/comment/deletecomment.ps",
+				data:{cmtNo:cmtNo},
+				success:function(data){
+					if(data.result==1){
+					$(commbody).remove();
+					$('#scrolldown').children()[0].innerHTML--;
+					alert("댓글 삭제 완료");
+					}else{
+						alert("댓글 삭제 실패");
+					}
+				}
+
+			})
+
+		})
 		
 		
 		$('.datetimepicker').datetimepicker({
@@ -622,7 +655,110 @@
 											<h3 class="title">Message</h3>
 													<!-- <h3 class="main-price">$335</h3> -->
 													<div id="accordion" role="tablist">
-														<div class="card card-collapse">
+										
+											<div class="card card-collapse">
+							<div class="card-header" role="tab" id="headingThree">
+								<h5 class="mb-0">
+								<a id="scrolldown" class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                 Comment : <span>${fn:length(comment)}</span> 
+                                 <i class="material-icons">keyboard_arrow_down</i>
+                                 </a>
+								</h5>
+							</div>
+							<div id="collapseThree" class="collapse" role="tabpanel"
+								aria-labelledby="headingThree" data-parent="#accordion"
+								style="max-height: 250px; overflow-x: hidden; overflow-y: inherit;">
+								<div id="reviewcontents" class="card-body">
+									<c:choose>
+										<c:when test="${empty comment}">
+											<h3 class="category text-muted">아직 댓글이 없습니다.</h3>
+										</c:when>
+										<c:otherwise>
+											<c:forEach var="comm" items="${comment}" varStatus="status">
+												<div class="media">
+													<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentuser[status.index].userNo}">
+														<div class="avatar">
+												         <img class="media-object" alt="64x64" src="${commentuser[status.index].prPicture}">
+														</div>
+													</a>
+													<div style="width: 70%;" class="media-body">
+														<h4 class="media-heading">${commentuser[status.index].userName}<small>·
+																<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
+																	value="${comm.cmtReg}" />
+															</small>
+														</h4>
+														<p>${comm.cmtContent}</p>
+														<c:if test="${comm.userNo==user.userNo}"><a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a></c:if>														
+														<c:if test="${comm.userNo!=user.userNo and sessionScope.user.userNo ne null}"><a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a></c:if>
+													</div>
+												</div>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</div>
+						</div>
+						<div class="card card-collapse">
+							<div class="card-header" role="tab" id="headingTwo">
+								<h5 class="mb-0">
+									<a>Input Comment</a>
+								</h5>
+							</div>
+							<div id="collapseTwo" role="tabpanel"
+								aria-labelledby="headingTwo" data-parent="#accordion" style="">
+								<div class="media media-post">
+									<c:choose>
+										<c:when test="${sessionScope.user eq null}">
+											<h3 class="category text-muted">로그인 후 이용가능합니다.</h3>
+										</c:when>
+										<c:otherwise>
+											<a class="author float-left" href="#pablo">
+												<div class="avatar">
+												  <img class="media-object" alt="64x64" src="${sessionScope.user.prPicture}">
+												</div>
+											</a>
+											<div class="media-body">
+												<div class="form-group label-floating bmd-form-group">
+													<label class="form-control-label bmd-label-floating"
+														for="exampleBlogPost"> 댓글을 달아보세요...</label>
+													<textarea id="reviewcontent" class="form-control" rows="5"></textarea>
+												</div>
+												<div class="media-footer">
+													<button type="button" id="addreviewbutton"
+														class="btn btn-primary btn-round btn-wd float-right">Post
+														Comment</button>
+														
+														<c:choose>
+																					<c:when	test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo eq 2}">
+																						<button type="button" class="btn btn-primary btn-md float-left apply-pic-confirm">
+																							<i class="material-icons">linked_camera</i> &nbsp;작업 사진 확인
+																						</button>
+																					</c:when>
+																					<c:otherwise>
+																						<c:choose>
+																							<c:when test="${boardInfo.operStateNo eq 3}">
+																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-complete">
+																									<i class="material-icons">linked_camera</i> &nbsp;거래된 사진 보기
+																								</button>
+																							</c:when>
+																							<c:otherwise>
+																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-register">
+																									<i class="material-icons">linked_camera</i> &nbsp;작업 사진 등록
+																								</button>
+																							</c:otherwise>
+																						</c:choose>
+																					</c:otherwise>
+																				</c:choose>
+												</div>
+											</div>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</div>
+						</div>
+										
+										
+														<%-- <div class="card card-collapse">
 			
 															<div id="collapseThree" class="collapse show"
 																role="tabpanel" aria-labelledby="headingThree"
@@ -692,120 +828,18 @@
 																				class="btn btn-primary btn-round btn-wd float-right"
 																				id="addreviewbutton">메시지 보내기</a>
 																			
-																				<c:choose>
-																					<c:when	test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo eq 2}">
-																						<button type="button" class="btn btn-primary btn-md float-left apply-pic-confirm">
-																							<i class="material-icons">linked_camera</i> &nbsp;작업 사진 확인
-																						</button>
-																					</c:when>
-																					<c:otherwise>
-																						<c:choose>
-																							<c:when test="${boardInfo.operStateNo eq 3}">
-																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-complete">
-																									<i class="material-icons">linked_camera</i> &nbsp;거래된 사진 보기
-																								</button>
-																							</c:when>
-																							<c:otherwise>
-																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-register">
-																									<i class="material-icons">linked_camera</i> &nbsp;작업 사진 등록
-																								</button>
-																							</c:otherwise>
-																						</c:choose>
-																					</c:otherwise>
-																				</c:choose>
+																				
 																		</div>
 																		
 																	</div>
 																</div>
 															</div>
-														</div>
+															</div>  --%>
 													</div>
 											</div>
 										</div>
 									</div>
-									<%-- <div class="col-md-6 col-sm-6">
-										<h3 class="title">작업 메시지함</h3>
-										<!-- <h3 class="main-price">$335</h3> -->
-										<div id="accordion" role="tablist">
-
-											<div class="card card-collapse">
-
-												<div id="collapseThree" class="collapse show"
-													role="tabpanel" aria-labelledby="headingThree"
-													data-parent="#accordion"
-													style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
-													<div class="card-body" id="reviewcontents">
-
-														<c:forEach var="review1" items="${comment}"
-															varStatus="status">
-
-															<div class="media">
-																<a class="float-left"
-																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
-																	<div class="avatar">
-																		<img class="media-object avatar-prPic-height" alt="Tim Picture"
-																			src="${commentuser[status.index].prPicture}">
-																	</div>
-																</a>
-																<div class="media-body">
-																	<h4 class="media-heading">
-
-																		${commentuser[status.index].userName} <small>·
-																			<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
-																				value="${review1.cmtReg}" />
-																		</small>
-
-																	</h4>
-																	<p>${review1.cmtContent}</p>
-																	<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
-																		<i class="material-icons">reply</i> 신고
-																	</a>
-																</div>
-															</div>
-
-														</c:forEach>
-
-													</div>
-												</div>
-											</div>
-											<div class="card card-collapse">
-												<div class="card-header" role="tab" id="headingTwo">
-													<h5 class="mb-0">
-														<a>Input Comment</a>
-													</h5>
-												</div>
-												<div id="collapseTwo" class="collapse show" role="tabpanel"
-													aria-labelledby="headingTwo" data-parent="#accordion"
-													style="">
-													<div class="media media-post">
-														<a class="author float-left" href="#pablo">
-															<div class="avatar">
-																<img class="media-object avatar-sprPic-height" alt="64x64"
-																	src="${sessionScope.user.prPicture}">
-															</div>
-														</a>
-														<div class="media-body">
-															<div class="form-group label-floating bmd-form-group">
-																<label class="form-control-label bmd-label-floating"
-																	for="exampleBlogPost"> 댓글을 달아보세요...</label>
-																<textarea class="form-control" rows="5"
-																	id="reviewcontent"></textarea>
-															</div>
-															<div class="media-footer">
-																<a href="#pablo"
-																	class="btn btn-primary btn-round btn-wd float-right"
-																	id="addreviewbutton">Post Comment</a>
-																<button class="btn btn-primary btn-sm"
-																	data-toggle="modal" data-target="#reportModal">신고</button>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-
-									</div> --%>
-								<!-- </div> -->
+									
 							</div>
 						</div>
 						<c:if test="${boardInfo.operStateNo eq 2}">
