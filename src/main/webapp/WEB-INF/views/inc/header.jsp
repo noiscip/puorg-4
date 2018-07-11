@@ -214,8 +214,7 @@ $(function(){
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item">
-							<a href="" data-toggle="dropdown" id="alram">
-						
+							<a href="" class="nav-link" data-toggle="dropdown" id="alram">
 							</a>
 								<ul class="dropdown-menu" id="noticeList">
 								</ul>
@@ -227,7 +226,6 @@ $(function(){
 							</a>						
 								<ul class="dropdown-menu" id="addcartnav">
 								</ul>
-															
 						</li>
 					
 					
