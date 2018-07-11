@@ -110,9 +110,8 @@
 			</ul>
 
 
-			<h1>전체 회원 목록</h1>
+			<h2 class="text-center">전체 회원 목록</h2>
 			
-			<input type="text" id="search"><button id="searchbtn">검색</button><button id="allUser">전체 조회</button>
 			<table class="table" id="datatable">
 				<thead>
 					<tr>
