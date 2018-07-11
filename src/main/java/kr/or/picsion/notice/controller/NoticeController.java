@@ -73,12 +73,6 @@ public class NoticeController {
 		
 		return jsonview;
 	}
-
-	@RequestMapping("noticeComment.ps")
-	public View noticeComment(HttpSession session, Model model) {
-		
-		return jsonview;
-	}
 	
 	/**
 	 * 날      짜 : 2018. 6. 27.
