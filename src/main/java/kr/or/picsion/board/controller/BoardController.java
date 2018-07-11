@@ -54,6 +54,7 @@ public class BoardController {
 
 	@Autowired
 	private OperPictureService operPictureService;
+	
 	/**
 	 * 날      짜 : 2018. 6. 14. 
 	 * 메소드명 : selectBoard 
@@ -108,6 +109,7 @@ public class BoardController {
 	public String postwriteBoard(Board board, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		Board inboard = board;
+		int errorCheck = 0;
 		try {
 			inboard.setUserNo(user.getUserNo());
 			inboard.setTableNo(3);
@@ -116,6 +118,7 @@ public class BoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return "redirect:/board/board.ps";
 	}
 

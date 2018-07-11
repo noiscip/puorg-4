@@ -45,7 +45,12 @@
 					url : "/picsion/blame/complainInsert.ps",
 					data : data,
 					success : function(data){
-						alert('신고 되었습니다')
+						if(data.result == 0){
+							alert('신고 오류');
+						}else{
+							alert('신고 되었습니다');
+						}
+						
 					}
 				})
 			}
