@@ -137,7 +137,7 @@
 			                    		}else{
 			                    			scrollPage+="<em><i id='down' value='"+obj.picNo+"' class='material-icons'>bookmark_border</i>"+obj.bookmarkCount+"</em>";
 			                    		}
-										scrollPage+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj..userName+"</a></div></div>";
+										scrollPage+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj.userName+"</a></div></div>";
 										
 			                        	$('#studioview').append(scrollPage);
                         	

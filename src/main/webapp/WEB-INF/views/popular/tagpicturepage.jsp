@@ -128,17 +128,11 @@ $(function() {
             limitFieldMax.innerHTML = $('#price-right').data('currency') + Math.round(values[handle]);
             $('#maxp').val(Math.round(values[handle]));
             max=Math.round(values[handle]);
-            console.log("이전최대"+max);
         } else {
             limitFieldMin.innerHTML = $('#price-left').data('currency') + Math.round(values[handle]);
             $('#minp').val(Math.round(values[handle]));
             min=Math.round(values[handle]);
-            console.log("이전최저"+min);
         }  
-        console.log(max);
-        console.log(min);
-        console.log("이후최대"+max);
-        console.log("이후최저"+min);
         if((max >= 1000 && max <= 100000) && (min >= 1000 && min <= 100000)){
         detailSearch(); 
         console.log("1");
@@ -190,6 +184,10 @@ $(function() {
     		console.log("3");
     		detailSearch();
     		
+    	})
+    	
+    	$(document).on('click','#refresh',function(){
+			   $('input[value="Latest"]').checked();
     	})
     	
 })  
@@ -244,9 +242,9 @@ $(function() {
 						<div class="card-body">
 							<h4 style="text-transform: uppercase;border-bottom: 1px solid #888;"class="card-title filter-option">
 								#${tag}
-								<button class="btn btn-default btn-fab btn-fab-mini btn-link pull-right" rel="tooltip" title="" data-original-title="Reset Filter">
+								<button id="refresh"class="btn btn-default btn-fab btn-fab-mini btn-link pull-right" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Refresh">
 									<i class="material-icons">cached</i>
-								<div class="ripple-container"></div></button>
+								<div class="ripple-container"></div></button> 
 							</h4>
 							<div id="accordion" role="tablist" class="row">
 							
@@ -480,7 +478,6 @@ $(function() {
 				<div class="tz-gallery">
 				<div class="row" id="searchpic">
 					<c:forEach items="${tagpicList}" var="tagpic" varStatus="status">
-					<fmt:parseNumber var="var3" value="${tagpic.resolutionW/tagpic.resolutionH}" pattern="#.#" />
 			  			
 			  				<div class="item col-sm-12 col-md-4">
 							<a href="<%=request.getContextPath()%>/picture/picinfo.ps?picNo=${tagpic.picNo}">

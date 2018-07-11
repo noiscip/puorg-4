@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +27,6 @@ import kr.or.picsion.operation.dto.OperPicture;
 import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
-import kr.or.picsion.picture.dto.Colors;
 import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.picture.dto.SearchPicture;
 import kr.or.picsion.picture.service.PictureService;
@@ -46,12 +47,8 @@ import kr.or.picsion.utils.AmazonUpload;
 @Controller
 @RequestMapping("/picture/")
 public class PictureController {
-	
 
 	public static String imagePicsion ="/resources/upload/";
-
-//	public static String imagePicsion ="D:\\imagePicsion\\";
-
 	
    	@Autowired
     private View jsonview;
@@ -96,24 +93,17 @@ public class PictureController {
 		User user = new User(); 
 		int scpage=0;
 		int endpage=9;
-		
 		int total=0;
         int page = 1;
-
         int rowSize = 12;
         int start = (page * rowSize) - (rowSize - 1) - 1;
 
         //팔로잉 유저 count 해서 가져오기 
         total = userService.getFollowingCount(userNo);
 
-        // ... 목록
         int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-
         int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
-        // [10] >>
         int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
-        // ((1-1)/10*10)
         int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
         if (toPage > allPage) { // 예) 20>17
             toPage = allPage;
@@ -123,13 +113,8 @@ public class PictureController {
         //팔로워 유저 count 해서 가져오기
         werTotal=userService.getFollowerCount(userNo);
         
-        // ... 목록
         int werAllPage = (int) Math.ceil(werTotal / (double) rowSize); // 페이지수
-        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-
-        // [10] >>
         int werFromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
-        // ((1-1)/10*10)
         int werToPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
         if (werToPage > werAllPage) { // 예) 20>17
             werToPage = werAllPage;
@@ -141,6 +126,7 @@ public class PictureController {
 		else {
 			user.setUserNo(0);
 		}
+		
 		User userInfo = userService.userInfo(userNo);	 //스튜디오 대상 사용자
 		List<Picture> picList = pictureService.studioPicList(userInfo.getUserNo(), user.getUserNo(), scpage, endpage); //스튜디오 사진리스트
 		
@@ -158,14 +144,12 @@ public class PictureController {
 		model.addAttribute("followingList", followingList);
 		model.addAttribute("followResult", followResult);
 		model.addAttribute("page", picList.size());
-		
 		model.addAttribute("userNo", userNo);
 		model.addAttribute("pg", page);
         model.addAttribute("allPage", allPage);
         model.addAttribute("block", block);
         model.addAttribute("fromPage", fromPage);
         model.addAttribute("toPage", toPage);
-        
         model.addAttribute("werAllPage", werAllPage);
         model.addAttribute("werFromPage", werFromPage);
         model.addAttribute("werToPage", werToPage);
@@ -192,18 +176,12 @@ public class PictureController {
 
         int rowSize = 12;
         int start = (page * rowSize) - (rowSize - 1) - 1;
-
         //팔로잉 유저 count 해서 가져오기 
         total = userService.getFollowingCount(userNo);
 
-        // ... 목록
         int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-
         int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
-        // [10] >>
         int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
-        // ((1-1)/10*10)
         int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
         if (toPage > allPage) { // 예) 20>17
             toPage = allPage;
@@ -212,7 +190,6 @@ public class PictureController {
         List<User> followingPaging = userService.followingUserPaging(userNo, start, rowSize);
         
         model.addAttribute("followingPaging", followingPaging);
-        
         model.addAttribute("userNo", userNo);
 		model.addAttribute("pg", page);
         model.addAttribute("allPage", allPage);
@@ -236,26 +213,20 @@ public class PictureController {
 		
 		int total=0;
         int page = 1;
-        
         String Strpg = pg;
         if (Strpg != null) {
             page = Integer.parseInt(Strpg);
         }
-
+        
         int rowSize = 12;
         int start = (page * rowSize) - (rowSize - 1) - 1;
 
         //팔로잉 유저 count 해서 가져오기 
         total = userService.getFollowerCount(userNo);
 
-        // ... 목록
         int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-
         int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
-        // [10] >>
         int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
-        // ((1-1)/10*10)
         int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
         if (toPage > allPage) { // 예) 20>17
             toPage = allPage;
@@ -264,7 +235,6 @@ public class PictureController {
         List<User> followerPaging = userService.followerUserPaging(userNo, start, rowSize);
         
         model.addAttribute("followerPaging", followerPaging);
-        
         model.addAttribute("userNo", userNo);
 		model.addAttribute("pg", page);
         model.addAttribute("allPage", allPage);
@@ -290,7 +260,6 @@ public class PictureController {
 	public View studioScroll(HttpSession session, Model model, int userNo, int page){
 		User user = new User(); 
 		int endpage=9;
-		
 		if(session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");					  //로그인 사용자
 		}
@@ -318,51 +287,45 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("operpicupload.ps")
+	@Transactional(propagation = Propagation.REQUIRED)    //사진 업로드 트랜잭션
 	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo, Model model) {
-		User user = (User) session.getAttribute("user");	
-		Operation operation = new Operation();
-		operation.setOperNo(operNo);
-		OperPicture operPicture = new OperPicture();
-		System.out.println(file.getOriginalFilename());
-		String uploadPath = imagePicsion;
-		String dbPath="";
-		
-		
-		File dir = new File(uploadPath);
-		if (!dir.isDirectory()) {
-			dir.mkdirs();
-		}
-
-		String originalFileName = file.getOriginalFilename();
-		System.out.println(originalFileName.split("\\.")[1]);
-		String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
-		
-			if(saveFileName != null && !saveFileName.equals("")) {
-				if(new File(uploadPath + saveFileName).exists()) {
-					saveFileName = saveFileName + "_" + System.currentTimeMillis();
-				}
-				try {
-					File newFile = new File(uploadPath + saveFileName);
-					file.transferTo(newFile);
-					dbPath=amazonService.uploadObject(imagePicsion,saveFileName,"picsion/operpic");
-					operPicture.setOperNo(operation.getOperNo());
-					operPicture.setPicPath(dbPath);
-					operPicture.setUserNo(user.getUserNo());
-					operation.setOperatorEnd("T");
-					operationService.updateOperation(operation);
-					operPictureService.insertOperPicture(operPicture);
-					operPicture=operPictureService.selectOperpicture(operNo);
-					
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
-			} 	
-			System.out.println("디비 패쓰"+dbPath);			
-			System.out.println(operPicture);
-			model.addAttribute("operPicture", operPicture);
+		try {
+			User user = (User) session.getAttribute("user");
+			Operation operation = new Operation();
+			operation.setOperNo(operNo);
+			OperPicture operPicture = new OperPicture();
+			String uploadPath = imagePicsion;
+			String dbPath="";
 			
+			File dir = new File(uploadPath);
+			if (!dir.isDirectory()) {
+				dir.mkdirs();
+			}
+
+			String originalFileName = file.getOriginalFilename();
+			String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
+			
+				if(saveFileName != null && !saveFileName.equals("")) {
+					if(new File(uploadPath + saveFileName).exists()) {
+						saveFileName = saveFileName + "_" + System.currentTimeMillis();
+					}
+					
+						File newFile = new File(uploadPath + saveFileName);
+						file.transferTo(newFile);
+						dbPath=amazonService.uploadObject(imagePicsion,saveFileName,"picsion/operpic"); //db경로
+						operPicture.setOperNo(operation.getOperNo());
+						operPicture.setPicPath(dbPath);
+						operPicture.setUserNo(user.getUserNo());
+						operation.setOperatorEnd("T");
+						operationService.updateOperation(operation);
+						operPictureService.insertOperPicture(operPicture);
+						operPicture=operPictureService.selectOperpicture(operNo);
+						
+				} 	
+				model.addAttribute("operPicture", operPicture);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 			
 		return jsonview;
 	}
@@ -379,21 +342,18 @@ public class PictureController {
 	* @return String
 	*/
 	@RequestMapping("uploadAfter.ps")
+	@Transactional(propagation = Propagation.REQUIRED) //사진 업로드 트랜잭션
 	public String insertPicture(Picture picture, @RequestParam List<String> tag, HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		System.out.println("업로드 애프터");
-		System.out.println(picture);
-		for(Colors c : picture.getColorList()) {
-			System.out.println("색 : "+ c);
-			System.out.println("RED   : " + c.getColorR());
-			System.out.println("GREEN : " + c.getColorG());
-			System.out.println("BLUE  : " + c.getColorB());
+		try {
+			picture.setTagContent(tag);
+			picture.setUserNo(user.getUserNo());
+			pictureService.insertPicture(picture);
+			wpS3(picture);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		picture.setTagContent(tag);
-		picture.setUserNo(user.getUserNo());
-		pictureService.insertPicture(picture);
 		
-		wpS3(picture);
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
 	
@@ -409,44 +369,35 @@ public class PictureController {
 	* @return
 	*/
 	@RequestMapping("operationComplete.ps")
+	@Transactional(propagation = Propagation.REQUIRED) //작업 관련 트랜잭션
 	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session, int brdNo) {
 		User user = (User) session.getAttribute("user");
-		System.out.println("operationComplete");
-		System.out.println(picture);
-		System.out.println(picture.getPicPath().split("\\/")[5].split("\\,")[0]);
-		picture.setTagContent(tag);
-		User requestorUser = userService.userInfo(picture.getUserNo());
-		picture.setUserNo(user.getUserNo());		
-
-		picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
-
-		pictureService.insertPicture(picture);
-
-        System.out.println(picture.getPicPath());
-        int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
-        	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
-        if(tradeMoney>0) {
-        	Purchase purchase = new Purchase();
-        	Board board = boardService.selectBoard(brdNo);
-        	List<Purchase> purlist = new ArrayList<>();
-        	System.out.println("돈은 충분 거래 합시다");
-        	requestorUser.setPoint(tradeMoney);
-        	user.setPoint(user.getPoint()+picture.getPicPrice());
-        	purchase.setPicNo(picture.getPicNo());
-        	purchase.setPurchaseUserNo(requestorUser.getUserNo());
-        	purchase.setSaleUserNo(user.getUserNo());
-        	purlist.add(purchase);
-        	purchaseService.buyPicture(purlist);
-        	
-    		board.setOperStateNo(3);    		
-    		boardService.updateBoard(board);
-        	
-        	wpS3(picture);
-        	
-        }else {
-        	System.out.println("돈 부족으로 거래 안됨");
-        }
-        		
+		try {
+			picture.setTagContent(tag);
+			User requestorUser = userService.userInfo(picture.getUserNo());
+			picture.setUserNo(user.getUserNo());		
+			picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
+			pictureService.insertPicture(picture);
+	        int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
+	        	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
+	        if(tradeMoney>0) {
+	        	Purchase purchase = new Purchase();
+	        	Board board = boardService.selectBoard(brdNo);
+	        	List<Purchase> purlist = new ArrayList<>();
+	        	requestorUser.setPoint(tradeMoney);
+	        	user.setPoint(user.getPoint()+picture.getPicPrice());
+	        	purchase.setPicNo(picture.getPicNo());
+	        	purchase.setPurchaseUserNo(requestorUser.getUserNo());
+	        	purchase.setSaleUserNo(user.getUserNo());
+	        	purlist.add(purchase);
+	        	purchaseService.buyPicture(purlist);
+	    		board.setOperStateNo(3);    		
+	    		boardService.updateBoard(board);
+	        	wpS3(picture);
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
@@ -458,70 +409,44 @@ public class PictureController {
 	*
 	* @param picture
 	*/
+	@Transactional(propagation = Propagation.REQUIRED) //s3 저장 트랜잭션
 	public void wpS3(Picture picture) {
-		String upath=picture.getPicPath();
-		
-		System.out.println("파일경로라서 워터마크에 쓸것이다: "+upath);
-			
-		String waterText = "PICSION";
-		File input = new File(upath);
-		
-		//워터마크 폴더 생성
-		File dir = new File(imagePicsion);
-		if (!dir.isDirectory()) {
-			dir.mkdirs();
-		}
-		System.out.println(input.getPath());
-		System.out.println("파일이름만 나와야 하는데! "+input.getPath().substring(18));
-		//워터마크 사진 이름 수정하여 저장
-		
-		String renameWater =pictureService.renameFile(picture.getPicPath(),"w", picture.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
-		System.out.println("renameWater : " + renameWater + " : 276번째 줄");
-		System.out.println("imagePicsion : " + imagePicsion + " : 277번째 줄");
-		File output = new File(imagePicsion+renameWater);
-
-		// adding text as overlay to an image
 		try {
+			String upath=picture.getPicPath();   //워터마크에 사용할 파일 경로
+			String waterText = "PICSION";
+			File input = new File(upath);
+			
+			//워터마크 폴더 생성
+			File dir = new File(imagePicsion);
+			if (!dir.isDirectory()) {
+				dir.mkdirs();
+			}
+			//워터마크 사진 이름 수정하여 저장
+			String renameWater =pictureService.renameFile(picture.getPicPath(),"w", picture.getUserNo(), picture.getPicNo());//이름변경:w+사용자번호+000+사진번호
+			File output = new File(imagePicsion+renameWater);
+
 			pictureService.addTextWatermark(waterText, "jpg", input, output);
-		} catch (IOException e) {
+			
+			//워터마크사진 s3에 저장
+			String waterPath = amazonService.uploadObject(imagePicsion,output.getPath().substring(18),"picsion/water");
+			pictureService.updateWater(waterPath, picture.getPicNo()); //워터마크 생성
+
+			//s3 저장 (원본 사진)
+			String saveFileName="";
+			if(picture.getPicPath().startsWith("C:")) {
+				saveFileName=picture.getPicPath().split("\\\\")[2];
+			}else {		
+				saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
+			}
+			//원본사진 변경
+			File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
+			new File(picture.getPicPath()).renameTo(reFile);
+			
+			String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/img");
+			pictureService.updatePicture(webFilePath,picture.getPicNo()); //s3 경로 생성
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		//워터마크사진 s3에 저장
-		String waterPath = amazonService.uploadObject(imagePicsion,output.getPath().substring(18),"picsion/water");
-		
-		int waterResult = pictureService.updateWater(waterPath, picture.getPicNo());
-		
-		if(waterResult!=0) {
-			System.out.println("워터마크 생성");
-		}else {
-			System.out.println("워터마크 생성 실패");
-		}
-		System.out.println("picture.getPicPath : "+picture.getPicPath());
-
-		//s3 저장 (원본 사진)
-		String saveFileName="";
-		if(picture.getPicPath().startsWith("C:")) {
-			System.out.println(picture.getPicPath().split("\\\\")[2]);
-			saveFileName=picture.getPicPath().split("\\\\")[2];
-		}else {		
-			saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
-		}
-		System.out.println("요기는 세이브 파일 네임 !!!!!!!!!!!!" + saveFileName);
-		//원본사진 변경
-//		saveFileName=pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo());
-		File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
-		new File(picture.getPicPath()).renameTo(reFile);
-		
-		System.out.println("너는 파일 이름만 나와야 해 : "+reFile.getName());
-		String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/img");
-		
-		int s3Result=pictureService.updatePicture(webFilePath,picture.getPicNo());
-		if(s3Result!=0) {
-			System.out.println("s3 경로 생성");
-		}else {
-			System.out.println("s3 경로 생성 실패");
-		}	
 	}
 	
 	
@@ -537,17 +462,19 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("increaserespect.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View pictureRespect(int picNo, int userNo, Model model) {
-		int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
-		System.out.println("사진 좋아요 컨트롤러");
-		if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
-			pictureService.deleteRespect(picNo, userNo);
-			System.out.println("좋아요 취소");
-		}else {	//좋아요 하지 않을때 -> 좋아요 증가
-			pictureService.increaseRespect(picNo, userNo);
-			System.out.println("좋아요 선택");
+		try {
+			int result = pictureService.respectConfirm(picNo, userNo); //좋아요 하고 있는지 확인
+			if(result!=0) {	 //좋아요 하고 있을때 -> 좋아요 삭제
+				pictureService.deleteRespect(picNo, userNo);
+			}else {	//좋아요 하지 않을때 -> 좋아요 증가
+				pictureService.increaseRespect(picNo, userNo);
+			}
+			model.addAttribute("result",result);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		model.addAttribute("result",result);
 		return jsonview;
 	}
 	 
@@ -563,17 +490,19 @@ public class PictureController {
 	* @return View
 	*/
 	@RequestMapping("increasebookmark.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View pictureBookmark(int picNo, int userNo, Model model) {
-		int result = pictureService.bookmarkConfirm(picNo, userNo);
-		System.out.println("사진 북마크 컨트롤러");
-		if(result!=0) {	 //북마크 하고 있을때 -> 북마크 삭제
-			pictureService.deleteBookmark(picNo, userNo);
-			System.out.println("북마크 취소");
-		}else {	//북마크 하지 않을때 -> 북마크 증가
-			pictureService.increaseBookmark(picNo, userNo);
-			System.out.println("북마크 선택");
+		try {
+			int result = pictureService.bookmarkConfirm(picNo, userNo);
+			if(result!=0) {	 //북마크 하고 있을때 -> 북마크 삭제
+				pictureService.deleteBookmark(picNo, userNo);
+			}else {	//북마크 하지 않을때 -> 북마크 증가
+				pictureService.increaseBookmark(picNo, userNo);
+			}
+			model.addAttribute("result",result);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		model.addAttribute("result",result);
 		return jsonview;
 	}
 	
@@ -597,7 +526,6 @@ public class PictureController {
 		else {
 			user.setUserNo(0);
 		}
-		System.out.println(user.getUserNo());
 		Picture picture = pictureService.picInfo(user.getUserNo(), picNo);	  //클릭한 사진
 		User userInfo = userService.userInfo(picture.getUserNo());    		  //사진 주인
 		List<Comment> commentList = commentService.picCommentList(picNo);     //댓글 목록
@@ -650,7 +578,6 @@ public class PictureController {
 	@RequestMapping(value="searchpicture.ps",method=RequestMethod.POST)
 	public View searchPicList(Model model, HttpServletRequest request) {
 		String tagParam = request.getParameter("tagParam");
-		System.out.println("이게?"+tagParam);
 		List<String> searchTagList = pictureService.searchTag(tagParam);
 		model.addAttribute("searchTagList", searchTagList);
 		return jsonview;
@@ -696,10 +623,8 @@ public class PictureController {
 	*/
 	@RequestMapping("detailSearch.ps")
 	public View detailSearch(HttpSession session, Model model, SearchPicture searchPicture) {
-		System.out.println("들어가"+searchPicture);
 		List<Picture> detailSearch = pictureService.detailSearch(searchPicture);
 		model.addAttribute("detailSearch",detailSearch);
-		System.out.println("나와?"+detailSearch);
 		return jsonview;
 	}
 	
