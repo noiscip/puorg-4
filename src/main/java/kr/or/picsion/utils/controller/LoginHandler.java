@@ -20,7 +20,6 @@ public class LoginHandler extends HandlerInterceptorAdapter {
 	   @Override
 	    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 	        try {
-	        	System.out.println(" 로그인ㅇ핸들러어?");
 	            //admin이라는 세션key를 가진 정보가 널일경우 로그인페이지로 이동
 	            if(request.getSession().getAttribute("user") == null ){
 	                    response.sendRedirect("/picsion/");

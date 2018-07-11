@@ -30,8 +30,6 @@ public class AmazonUpload {
 	@Value("#{config['s3.secretKey']}")
 	private String SECRET_KEY;
 	
-	@Autowired
-	private PictureService pictureService;
 	
 	/**
 	* 날      짜 : 2018. 6. 27.
@@ -46,22 +44,13 @@ public class AmazonUpload {
 	public String uploadObject(String imagePicsion,String file,String bucketName) {
 
 	  	String clientRegion = "ap-northeast-2";
-        /*bucketName = "picsion/img";*/
-//        String stringObjKeyName = file;
         String fileObjKeyName = file;
-        
-//        fileObjKeyName=renameFile(fileName, userNo, picNo);
         if(!fileObjKeyName.startsWith("w")) {
         	
         }
 
         String fileName = imagePicsion + fileObjKeyName;
-
- //       String fileName = "D:/imagePicsion/" + fileObjKeyName;
-
-        /*String fileName = "/assets/img/examples/" + fileObjKeyName;*/
         String a3path="";
-        System.out.println("너야?");
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
         try {
         	AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
@@ -69,29 +58,19 @@ public class AmazonUpload {
                     .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                     .build();
             File newFile = new File(fileName);
-//            fileObjKeyName = pictureService.renameFile(fileName, picture.getUserNo(), picture.getPicNo());
-         // Upload a text string as a new object.
             s3Client.putObject(bucketName, fileObjKeyName, "Uploaded String Object");
-            // Upload a file as a new object with ContentType and title specified.
             PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, newFile);
-            
-            
             
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType("plain/text");
             metadata.addUserMetadata("x-amz-meta-title", "someTitle");
             request.setMetadata(metadata);
             s3Client.putObject(request);
-            System.out.println("s3 주소인가? "+s3Client.getUrl(bucketName, fileObjKeyName));
             a3path=s3Client.getUrl(bucketName, fileObjKeyName).toString().replace(File.separatorChar, '/');
         }
-        catch(AmazonServiceException e) {
+        catch(Exception e) {
             e.printStackTrace();
         }
-        catch(SdkClientException e) {
-            e.printStackTrace();
-        }
-        
         
         return a3path;
 	}

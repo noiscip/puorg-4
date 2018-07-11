@@ -4,6 +4,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -49,6 +51,7 @@ public class NaverLoginController {
 	 * @return
 	*/
 	@RequestMapping("callback.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public String naverLogin(String code,String state, HttpSession session, Model model) {
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
 		OAuth2AccessToken oauthToken = naverLoginCon.getAccessToken(session, code, state);
@@ -57,24 +60,26 @@ public class NaverLoginController {
 		User user = (User)session.getAttribute("user");
 		String accountNo  = apiResult.split("\"")[13];
 		String result = "redirect:/home.ps";
-
-		if(user == null) { //유저가 null이면 로그인이 안되어 있는 상태 
-			User accountUser = userService.selectAccountNo(accountNo,NAVER);
-			if(accountUser == null) { //연동되어 있는 계정이 없음
-				session.setAttribute("result", "F");
-				result = "redirect:/user/login.ps";
-			}else { // 연동된 계정이 있으면
-				session.setAttribute("user", userService.userInfo(accountUser.getUserNo()));
+		try {
+			if(user == null) { //유저가 null이면 로그인이 안되어 있는 상태 
+				User accountUser = userService.selectAccountNo(accountNo,NAVER);
+				if(accountUser == null) { //연동되어 있는 계정이 없음
+					session.setAttribute("result", "F");
+					result = "redirect:/user/login.ps";
+				}else { // 연동된 계정이 있으면
+					session.setAttribute("user", userService.userInfo(accountUser.getUserNo()));
+				}
+			}else { //유저가 존재 한다면 계정 연동
+				if(userService.selectAccountNo(accountNo,NAVER) == null) { //네이버 등록이 안되어 있다면
+					userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
+					userService.updateRole(user.getUserNo());
+					session.setAttribute("user", userService.userInfo(user.getUserNo()));
+				}else { //네이버 등록이 되어 있다면
+					session.setAttribute("result", "F");
+				}
 			}
-		}else { //유저가 존재 한다면 계정 연동
-			if(userService.selectAccountNo(accountNo,NAVER) == null) { //네이버 등록이 안되어 있다면
-				userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
-				userService.updateRole(user.getUserNo());
-				session.setAttribute("user", userService.userInfo(user.getUserNo()));
-			}else { //네이버 등록이 되어 있다면
-				session.setAttribute("result", "F");
-				System.out.println("이미 연동되어있는 계쩡이야!");
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
     	return result;
 	}

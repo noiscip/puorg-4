@@ -22,8 +22,6 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession wSession) throws Exception {
-		System.out.println("afterConnectionEstablished!!!!!!! 커넥션 열림??");
-		
 		Map<String,Object> map = wSession.getAttributes();
 
 		int userNo = (Integer)map.get("userNo");
@@ -38,19 +36,13 @@ public class NoticeSocketHandler extends TextWebSocketHandler {
 		int userNo = (Integer)map.get("userNo");
 		
 		users.remove(userNo);
-		System.out.println("afterConnectionClosed????? 커넥션 닫힘???");
-		
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession wSession, TextMessage message) throws Exception {
-		System.out.println("현재 접속되어 있는 유저");
-		System.out.println(users);
 		String[] info = message.getPayload().split(":");
 		int receiveUserNo = Integer.valueOf(info[1]);
-		
 		if(users.get(receiveUserNo) != null) {
-			System.out.println(receiveUserNo + "번한테 보냈어?");
 			users.get(receiveUserNo).sendMessage(message);   
 		}
 	}

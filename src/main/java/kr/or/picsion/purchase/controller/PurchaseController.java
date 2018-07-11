@@ -39,9 +39,6 @@ public class PurchaseController {
 	private View jsonview;
 	
 	@Autowired
-	private UserService userService;
-
-	@Autowired
 	private PurchaseService purchaseService;
 	
 	@RequestMapping("adminPurchase.ps")
@@ -54,9 +51,6 @@ public class PurchaseController {
 	
 	@RequestMapping("adminPurchaseSearch.ps")
 	public View purchaseSearch(Date date, Model model) {
-		System.out.println("purchaseSearch");
-		System.out.println(date);
-		
 		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd");		
 		List<Purchase> purchaseList = purchaseService.purchaseSearch(reg.format(date));	
 		model.addAttribute("purchaseList",purchaseList);
@@ -89,7 +83,6 @@ public class PurchaseController {
 		User user = (User) session.getAttribute("user");
 		int check = purchaseService.cartConfirm(userNo, picNo);
 		int buycheck = purchaseService.purchaseConfirm(userNo, picNo);
-		System.out.println(check);
 		if(check==0 && buycheck==0) {
 			purchaseService.insertCart(picNo, userNo);
 		}
@@ -119,7 +112,6 @@ public class PurchaseController {
 		
 		Map<Integer, List<Object>> map = purchaseService.salesStatistics(startDate,endDate);
 		model.addAttribute("map",map);
-		System.out.println(map);
 		return jsonview; 
 	}
 		
@@ -137,18 +129,18 @@ public class PurchaseController {
 	@RequestMapping("deleteItem.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View deleteItem(Model model,int userNo, int picNo) {
+		int result = 0;
 		try {
-			int result = purchaseService.deleteCart(picNo, userNo);
-			if(result!=0) {
-				System.out.println("삭제 완료");
+			result = purchaseService.deleteCart(picNo, userNo);
+			if(result!=0) { //삭제 완료
 				int again = purchaseService.cartCount(userNo);
 				model.addAttribute("again",again);
-			}else {
-				System.out.println("삭제 실패");
+			}else {  //삭제 실패
 			}
-			model.addAttribute("result",result);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		model.addAttribute("result",result);
 		return jsonview;
 	}
 	
@@ -207,17 +199,11 @@ public class PurchaseController {
         int rowSize = 5;
         int start = (page * rowSize) - (rowSize - 1) - 1;
 
-        //구매목록 count 해서 가져오기 
         total = purchaseService.getPurCount(user.getUserNo());
 
-        // ... 목록
         int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-
         int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
-        // [10] >>
         int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
-        // ((1-1)/10*10)
         int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
         if (toPage > allPage) { // 예) 20>17
             toPage = allPage;
@@ -256,9 +242,7 @@ public class PurchaseController {
 	@RequestMapping("sellhistory.ps")
 	public String sellHistory(HttpSession session, Model model, String pg){
 		User user = (User) session.getAttribute("user");
-		
 		int total=0;
-        
         int page = 1;
         String Strpg = pg;
         if (Strpg != null) {
@@ -268,17 +252,11 @@ public class PurchaseController {
         int rowSize = 5;
         int start = (page * rowSize) - (rowSize - 1) - 1;
 
-        //구매목록 count 해서 가져오기 
         total = purchaseService.getSaleCount(user.getUserNo());
 
-        // ... 목록
         int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-        // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-
         int block = 5; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9]
-        // [10] >>
         int fromPage = ((page - 1) / block * block) + 1; // 보여줄 페이지의 시작
-        // ((1-1)/10*10)
         int toPage = ((page - 1) / block * block) + block; // 보여줄 페이지의 끝
         if (toPage > allPage) { // 예) 20>17
             toPage = allPage;
@@ -316,20 +294,23 @@ public class PurchaseController {
 	* @return View
 	*/
 	@RequestMapping("addCart.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
 	public View addCart(Model model,int userNo, int picNo) {
-		int result = purchaseService.cartConfirm(userNo, picNo);
-		if(result!=0) {	 //장바구니에 담겨 있을때 -> 장바구니에서 삭제
-			purchaseService.deleteCart(picNo, userNo);
-			System.out.println("장바구니 항목 삭제");
-			int again = purchaseService.cartCount(userNo);
-			model.addAttribute("again",again);
-		}else {	//장바구니에 없을때 -> 장바구니에 추가
-			int count = purchaseService.cartCount(userNo);
-			model.addAttribute("count",count);
-			purchaseService.insertCart(picNo, userNo);
-			System.out.println("장바구니 항목 추가");
+		try {
+			int result = purchaseService.cartConfirm(userNo, picNo);
+			if(result!=0) {	 //장바구니에 담겨 있을때 -> 장바구니에서 삭제
+				purchaseService.deleteCart(picNo, userNo);
+				int again = purchaseService.cartCount(userNo);
+				model.addAttribute("again",again);
+			}else {	//장바구니에 없을때 -> 장바구니에 추가
+				int count = purchaseService.cartCount(userNo);
+				model.addAttribute("count",count);
+				purchaseService.insertCart(picNo, userNo);
+			}
+			model.addAttribute("result",result);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		model.addAttribute("result",result);
 		return jsonview;
 	}
 	

@@ -82,18 +82,15 @@ public class GoogleLoginController {
 	  
 	  if (expireTime != null && expireTime < System.currentTimeMillis()) {
 	    accessToken = accessGrant.getRefreshToken();
-	    System.out.printf("accessToken is expired. refresh token = {}", accessToken);
 	  }
 	  Connection<Google> connection = googleConnectionFactory.createConnection(accessGrant);
 	  Google google = connection == null ? new GoogleTemplate(accessToken) : connection.getApi();
 
 	  PlusOperations plusOperations = google.plusOperations();
 	  Person profile = plusOperations.getGoogleProfile();
-	  System.out.println("id : " +profile.getId());
 	  
 	  HttpSession session = request.getSession();
 	  User user = (User)session.getAttribute("user");
-	  System.out.println("유저어 : " + user);
 	  
 	  String accountNo = profile.getId();
 	  String result = "redirect:/home.ps";
@@ -114,7 +111,6 @@ public class GoogleLoginController {
 			  session.setAttribute("user", userService.userInfo(user.getUserNo()));
 		  }else { //구글 등록이 되어있다면
 			  	session.setAttribute("result", "F");
-				System.out.println("이미 연동되어있는 계쩡이야!");
 		  }
 	  }
 	  return result;
