@@ -47,15 +47,13 @@ public class NaverLoginConnectUrl {
 		setSession(session, state);
 		String sessionState = getSession(session);
 		if(StringUtils.equals(sessionState, state)){
-		
 			OAuth20Service oauthService = new ServiceBuilder().apiKey(CLIENT_ID).apiSecret(CLIENT_SECRET).callback(REDIRECT_URI).state(state).build(NaverLoginApi.instance());
-					
 			/* Scribe에서 제공하는 AccessToken 획득 기능으로 네아로 Access Token을 획득 */
 			OAuth2AccessToken accessToken;
 			try {
 				accessToken = oauthService.getAccessToken(code);
 				return accessToken;
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -98,9 +96,7 @@ public class NaverLoginConnectUrl {
 	/* Access Token을 이용하여 네이버 사용자 프로필 API를 호출 */
 	public String getUserProfile(OAuth2AccessToken oauthToken){
 		OAuth20Service oauthService =new ServiceBuilder().apiKey(CLIENT_ID).apiSecret(CLIENT_SECRET).callback(REDIRECT_URI).build(NaverLoginApi.instance());
-    	
     	OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
-    	
 		oauthService.signRequest(oauthToken, request);
 		Response response = request.send();
 		try {

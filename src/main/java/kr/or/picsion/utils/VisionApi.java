@@ -68,7 +68,6 @@ public class VisionApi {
 	 * @param model
 	*/
 	public void visionPocket(String filePath,Model model) {
-		model.addAttribute("가나다라마바사", "아자차캍파ㅏ하");
 		String logocheck=detectLogos(filePath);				//vision : 로고감지
 		String safecheck=detectSafeSearch(filePath);		//vision : 유해감지
 		List<String> labelList=detectLabels(filePath);		//vision : 태그뽑기
@@ -86,19 +85,8 @@ public class VisionApi {
 		model.addAttribute("label", labelList);
 		model.addAttribute("label2", labelListKo);
 		model.addAttribute("picPath",picturePath);
-
 		model.addAttribute("face",faceList);
 		model.addAttribute("color",colList);
-		
-//		String picDate = fileUpload();
-//		int picRes;
-//		String cameraName;
-//		String lensName;
-//		model.addAttribute("photoDate",picDate);
-//		model.addAttribute("resolution",picRes);
-//		model.addAttribute("camera",cameraName);
-//		model.addAttribute("lens",lensName);
-		
 	}	
 	
 	/**
@@ -112,11 +100,7 @@ public class VisionApi {
 	 */
 	public String fileUpload(MultipartHttpServletRequest mRequest, Model model) {
 		String filePath = "";
-
 		String uploadPath = "/resources/upload/"; 
-
-
-//		String uploadPath = "D:\\imagePicsion\\";
 		Map<String, String> metaMap = new HashMap<>();
 		
 		// 파일 저장하는 폴더
@@ -131,58 +115,33 @@ public class VisionApi {
 			MultipartFile mFile = mRequest.getFile(uploadFileName);
 
 			String saveFileName = mFile.getOriginalFilename();
-			System.out.println("---------------------------------------------------");
-			System.out.println("mfile GetName : " + mFile.getName());
-			System.out.println("---------------------------------------------------");
-			System.out.println("오리진파일네임: " + saveFileName);
 			filePath = uploadPath + saveFileName;
 
-			System.out.println("filePath: " + filePath);
-			
 			picturePath = uploadPath + saveFileName;
 
-			System.out.println("이것이!!! " + uploadPath + saveFileName);
-			
 			
 			if (saveFileName != null && !saveFileName.equals("")) {
-				//이거 고쳐야함
 				if (new File(filePath).exists()) {
 					saveFileName = System.currentTimeMillis() + "_" + saveFileName;
 				}
 				try {
 					File newFile = new File(uploadPath + saveFileName);
 					mFile.transferTo(newFile);
-
-					
-					System.out.println("업로드에서 메타 출력전--------------------------------------------------------");
-					
-					try {
-						metaMap=metadata(uploadPath, saveFileName, newFile);				
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					System.out.println("업로드에서 메타 출력후-----------------------------------------------------------");
-
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
+					metaMap=metadata(uploadPath, saveFileName, newFile);				
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} // if end
 
 		}
-		System.out.println(metaMap);
-		System.out.println(metaMap.get("filePath"));
 		filePath=metaMap.get("filePath");
 		model.addAttribute("metaMap",metaMap);
-		System.out.println("완성 ?" + filePath);
 		return filePath;
 	} // fileUpload end
 
 	public String operpicinfo(String  filePath, Model model) {
 
 		String uploadPath = "/resources/upload/";
-		System.out.println("호호호");
 		String saveFileName =filePath.split("/")[5].split("\\.")[0]+"."+filePath.split("\\.")[4];
 		File file = new File(uploadPath+saveFileName);
 		Map<String, String> metaMap = new HashMap<>();
@@ -218,24 +177,18 @@ public class VisionApi {
 			e1.printStackTrace();
 		}
 		for (Directory directory : metadata.getDirectories()) {
-			System.out.println(directory);
 			for (Tag tag : directory.getTags()) {
-				System.out.format("[%s] - %s = %s \n", directory.getName(), tag.getTagName(), tag.getDescription());
-				
 				//메타 데이터 정보 저장
 				if(tag.getTagName().equals("Model")) {
-					System.out.println("카메라 정보 "+tag.getDescription());
 					String cameraName = tag.getDescription();
 					metaMap.put("cameraName", cameraName);
 					
 				}
 				if(tag.getTagName().equals("Date/Time Original")) {
-					System.out.println("찍은 날짜 "+tag.getDescription());
 					String pictureDate = tag.getDescription();
 					metaMap.put("pictureDate", pictureDate);
 				}
 				if(tag.getTagName().equals("Lens Model")) {
-					System.out.println("렌즈 정보  "+tag.getDescription());
 					String lensName = tag.getDescription();
 					metaMap.put("lensName", lensName);
 				}
@@ -250,9 +203,7 @@ public class VisionApi {
 					}
 				}
 				if(tag.getTagName().equals("File Size")) {
-					System.out.println("우잉"+tag.getDescription().split(" ")[0]);
 					if(Integer.parseInt(tag.getDescription().split(" ")[0])>10485760) {
-						System.out.println("10MB 넘는 사진입니다");
 						//사진 크기 압축
 						String ss = saveFileName.split("\\.")[0];
 						try {
@@ -276,11 +227,6 @@ public class VisionApi {
 				}
 			}
 		}
-		System.out.println("해상도");
-
-		
-		
-		
 		return metaMap;
 	}
 	
@@ -313,7 +259,6 @@ public class VisionApi {
 			for (AnnotateImageResponse res : responses) {
 				for (EntityAnnotation annotation : res.getLabelAnnotationsList()) {
 					labelList.add(annotation.getDescription());
-					System.out.println(annotation.getDescription());
 				}
 			}
 		} catch (IOException e) {
@@ -354,7 +299,6 @@ public class VisionApi {
 					} else {
 						logoExist = null;
 					}
-					System.out.println(annotation.getDescription());
 				}
 			}
 		} catch (IOException e) {
@@ -390,16 +334,11 @@ public class VisionApi {
 			List<AnnotateImageResponse> responses = response.getResponsesList();
 
 			for (AnnotateImageResponse res : responses) {
-
 				// For full list of available annotations, see http://g.co/cloud/vision/docs
 				SafeSearchAnnotation annotation = res.getSafeSearchAnnotation();
-				System.out.println("adult: " + annotation.getAdultValue() + "  medical: " + annotation.getMedicalValue()
-						+ "  spoofed: " + annotation.getSpoofValue() + "  Violence: " + annotation.getViolenceValue());
 				safeLevel = annotation.getAdultValue() * annotation.getMedicalValue() * annotation.getSpoofValue()
 						* annotation.getViolenceValue();
-
 			}
-			System.out.println(safeLevel);
 			if (safeLevel > 4) {
 				safeExist = "유해콘텐츠가 감지되었습니다.";
 			} else {
@@ -438,14 +377,8 @@ public class VisionApi {
 			List<AnnotateImageResponse> responses = response.getResponsesList();
 
 			for (AnnotateImageResponse res : responses) {
-				if (res.hasError()) {
-					System.out.println("Error: " + res.getError().getMessage());
-					// return;
-				}
-
 				// For full list of available annotations, see http://g.co/cloud/vision/docs
 				for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-					System.out.println("position: %s" + annotation.getBoundingPoly() + "\n");
 					// faceXY+=annotation.getBoundingPoly();
 					facePoly.add(new Face(annotation.getBoundingPoly().getVertices(0).getX(),
 							annotation.getBoundingPoly().getVertices(1).getX(),
@@ -487,7 +420,6 @@ public class VisionApi {
 				WebDetection annotation = res.getWebDetection();
 				for (WebEntity entity : annotation.getWebEntitiesList()) {
 					 if(entity.getScore()>0.7 && entity.getDescription()!=null) {
-						 System.out.println(entity.getDescription() + " : " + entity.getEntityId() + " : " + entity.getScore());
 						 labelList.add(entity.getDescription());
 					 }
 				}
@@ -517,13 +449,6 @@ public class VisionApi {
 				DominantColorsAnnotation colors = res.getImagePropertiesAnnotation().getDominantColors();
 				for (ColorInfo color : colors.getColorsList()) {
 					colorList.add(new Color((int)color.getColor().getRed(),(int)color.getColor().getGreen(),(int)color.getColor().getBlue()));
-					
-					
-					
-					System.out.println("fraction: "+color.getPixelFraction()+
-							"R: "+color.getColor().getRed()+
-							"G: "+color.getColor().getGreen()+
-							"B: "+color.getColor().getBlue());
 				}
 			}
 		}catch (IOException e) {
@@ -545,11 +470,9 @@ public class VisionApi {
 
 		if (filePath.startsWith("https://")) { // GCS에서 이미지를 가져올때 image 생성
 			/*ImageSource imgSource = ImageSource.newBuilder().setGcsImageUri(filePath).build();*/
-			System.out.println("https잘 탔고");
 			ImageSource imgSource = ImageSource.newBuilder().setImageUri(filePath).build();
 			image = Image.newBuilder().setSource(imgSource).build();
 		} else { // 로컬에서 이미지를 가져올때 image 생성
-			System.out.println("여기탔니?~~~~~~~~~~~~~~~~~~~~~");
 			ByteString imgBytes = null;
 			try {
 				imgBytes = ByteString.readFrom(new FileInputStream(filePath));
