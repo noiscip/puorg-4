@@ -34,7 +34,6 @@ public class CommentService {
 	 */
 	public List<Comment> commentList(int brdNo) {
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
-		System.out.println("commentList 서비스 ");
 
 		return commentdao.commentList(brdNo);
 	}
@@ -50,7 +49,6 @@ public class CommentService {
 	 */
 	public List<User> commentuser(int brdNo) {
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
-		System.out.println("commentuser 서비스 ");
 
 		return commentdao.commentuser(brdNo);
 	}
@@ -68,7 +66,6 @@ public class CommentService {
 
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
 		int result = commentdao.insertComment(comment);
-		System.out.println("insertComment 서비스 ");
 		return result;
 	}
 
@@ -82,7 +79,6 @@ public class CommentService {
 	 * @return int
 	 */
 	public int deleteComment(int cmtNo) {
-		System.out.println("deleteComment 서비스 ");
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
 		int result = commentdao.deleteComment(cmtNo);
 		return result;
@@ -98,7 +94,6 @@ public class CommentService {
 	 * @return int
 	 */
 	public int deleteAllComment(int brdNo) {
-		System.out.println("deleteAllComment 서비스 ");
 		CommentDao commentdao = sqlSession.getMapper(CommentDao.class);
 		int result = commentdao.deleteAllComment(brdNo);
 		return result;

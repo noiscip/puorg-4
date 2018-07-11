@@ -115,7 +115,7 @@ public class NoticeService {
 	 * 기      능 : 읽지 않은 알림 갯수 확인
 	 *
 	 * @param userNo
-	 * @return int
+	 * @return Integer
 	*/
 	public int readCheckCount(int userNo) {
 
