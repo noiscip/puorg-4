@@ -115,7 +115,7 @@
                     	data: {	sendUserNo: sendUserNo,
                     			msgNo: evt.data.split(':')[3]
                     	},
-                    	async: true,
+                    	async: false,
                         success: function(data) {
                         	/* 현재 연 메시지창이 보낸사람이 맞는지 확인해서 메시지 뿌려주기  */
                         	if($('.messageSend').data("no")==sendUserNo && $('#msgContent-show').hasClass('msg-show')){

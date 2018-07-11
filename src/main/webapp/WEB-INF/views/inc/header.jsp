@@ -116,23 +116,7 @@ $(function(){
 						$('.autosend').submit();
 					},
 				});
-	
-	
-	function newNoticeCount() {
-		var alram = "<i id='newNotice' class='material-icons'>notifications_active</i>";
-		$.ajax({
-			url : "/picsion/notice/noticeMsg.ps",
-			success: function (data) {
-				console.log("새알람숫자")
-				console.log(data.count)
-				if (data.count > 0 ){
-					$('#alram').empty();
-					$('#alram').append(alram);
-					$('#newNotice').css('color','red');
-				}
-			}
-		})
-	}
+
 	var nocart ='<li class="divider" id="nonecart"><a>장바구니가 비었습니다</a></li>';
 	function myCart(){
 		$.ajax({
@@ -213,6 +197,21 @@ $(function(){
 	})	
 	
 })
+function newNoticeCount() {
+		var alram = "<i id='newNotice' class='material-icons'>notifications_active</i>";
+		$.ajax({
+			url : "/picsion/notice/noticeMsg.ps",
+			success: function (data) {
+				console.log("새알람숫자")
+				console.log(data.count)
+				if (data.count > 0 ){
+					$('#alram').empty();
+					$('#alram').append(alram);
+					$('#newNotice').css('color','red');
+				}
+			}
+		})
+	}
 </script>
 
 <style>
