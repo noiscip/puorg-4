@@ -146,32 +146,34 @@ $(document).ready(function() {
 					tableNo : tableNo
 				   };
 		
+		
+		
 		$.ajax({
 			  url : "<%=request.getContextPath()%>/comment/insertpiccomment.ps",
 			  data: data,
 			  success : function(data){
-				  if(data.errorCheck == 0){
-					  alert("댓글 작성 실패");
-				  }else{
-					  var media="";
-				      $('#commentstart').empty();
-				      $.each(data.newcommentUserList,function(index,element){
-				    	  console.log(element)
-							media += "<div class='media'>"+
-						    "<a class='float-left' href='/picsion/picture/mystudio.ps?userNo="+element.userNo+"'>"+
-							"<div class='avatar'>";
-							media += "<img class='media-object' alt='64x64' src='"+element.prPicture+"'>";
-							media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
-								element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
-							    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
-							    "<i class='material-icons'>clear</i>삭제</a>"+
-								"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기' id='" + data.newcommentlist[index].tableNo + ","+element.userNo+",0,"+picNo+","+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>reply</i>신고</a></div></div>";
-						}) 
-						$('#commentstart').append(media);
-				       	$('a[rel=tooltip]').tooltip();
-				        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
-				      	$("#newComment").val("");
-				  }
+				  var media="";
+			      $('#commentstart').empty();
+			      console.log(data)
+			      $.each(data.newcommentUserList,function(index,element){
+			    	  console.log(element)
+						media += "<div class='media'>"+
+					    "<a class='float-left' href='/picsion/picture/mystudio.ps?userNo="+element.userNo+"'>"+
+						"<div class='avatar'>";
+						media += "<img class='media-object' alt='64x64' src='"+element.prPicture+"'>";
+						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
+							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
+						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p>";
+						    
+						if(loginUserNo==moment(data.newcommentlist[index].userNo)){ media += "<a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>clear</i>삭제</a>";}
+						media += "</div></div>";
+						
+					}) 
+					$('#commentstart').append(media);
+			       	$('a[rel=tooltip]').tooltip();
+			        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+			      	$("#newComment").val("");
+			     
 			  },
 			  error: function(){
 			   	  alert("댓글 보내는 도중 오류가 발생했습니다.");
@@ -484,8 +486,8 @@ $(document).ready(function() {
 															</small>
 														</h4>
 														<p>${comm.cmtContent}</p>
-														<a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a>
-														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a>
+														<c:if test="${comm.userNo==user.userNo}"><a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a></c:if>														
+														<c:if test="${comm.userNo!=user.userNo and sessionScope.user.userNo ne null}"><a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a></c:if>
 													</div>
 												</div>
 											</c:forEach>
