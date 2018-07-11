@@ -125,12 +125,7 @@
 		</ul>
 		
 		
-			<h1>전체 신고글 목록</h1>
-			<div class="form-group">
-			    <label class="label-control">날짜 선택</label>
-			    <input id="datePicker" type="text" class="form-control datetimepicker"/>
-			    <button id="complainSearch">검색</button><button id="allBlame">전체 조회</button>
-			</div>
+			<h2 class="text-center">전체 신고글 목록</h2>
 			<table class="table" id="datatable">
 				<thead>
 					<tr>
