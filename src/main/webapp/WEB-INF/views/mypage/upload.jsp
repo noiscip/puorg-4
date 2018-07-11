@@ -137,6 +137,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 							</div>
 							<div id="peopleRadio" style="display: none; float: left;">
 								<br>
+								<label for="numberPeople">사람수</label>
 								<input type="radio" name="people" id="zero"><label for="zero"> X <img src="assets/img/userNo.png" width="30px" height="30px"></label> 
   								<input type="radio" name="people" id="one"><label for="one"> 1 <img src="assets/img/user1.png" width="30px" height="30px"></label>
   								<input type="radio" name="people" id="two"><label for="two"> 2 <img src="assets/img/user2.png" width="30px" height="30px"></label> 
@@ -223,7 +224,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					$("#loaderIcon").empty();
 					if(data.logo != null){
 					var logo =''
-						logo += '<div class="alert alert-warning">'
+						logo += '<div class="alert alert-info">'
 						logo += 	'<div class="container-fluid">'
 						logo += 		'<div class="alert-icon">'
 						logo += 			'<i class="material-icons">warning</i>'

@@ -146,7 +146,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     insert into TAG
     values (#{param1},#{[param2]})
     </insert>
-    
+    <!-- 사진 색깔 정보 저장 -->
+    <insert id="insertColor" parameterType="hashmap">
+    insert into COLOR
+    (picNo,colorR,colorG,colorB)
+    values 
+    (#{picNo},#{color.colorR},#{color.colorG},#{color.colorB})
+    </insert>
     <!-- 사진 메타데이터 저장 -->
     <insert id="insertPicInfo" parameterType="kr.or.picsion.picture.dto.Picture">
     insert into PICTUREINFO
