@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 사진 정보 -->
 	<select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">
 		select p.*,pi.camera, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.photoDate, pi.lens, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, if(ifNULL(c.userNo,0)=0,'F','T') as cartCheck, rr.respectCount, bb.bookmarkCount
-		from PICTURE p left join CART c on p.picNo = c.picNo
+		from PICTURE p left join (select * from CART where userNo=#{param1}) c on p.picNo = c.picNo
 						left join PICTUREINFO pi on p.picNo = pi.picNo
 						left join (select * from BOOKMARK where userNo=#{param1}) b on p.picNo = b.picNo
 						left join (select * from RESPECT where userNo=#{param1}) r on p.picNo = r.picNo
