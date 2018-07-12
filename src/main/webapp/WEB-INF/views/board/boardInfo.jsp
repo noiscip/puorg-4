@@ -2,12 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <style type="text/css">
-	.bootstrap-tagsinput .tag {
-		background-color: #9c27b0;
-	}
+.bootstrap-tagsinput .tag {
+	background-color: #9c27b0;
+}
 </style>
 
 <script type="text/javascript">
@@ -311,191 +311,213 @@
 </script>
 
 <style>
-	/* 댓글 보여지는 창 프로필 사진 */
-	.avatar-prPic-height{
-		height: 64px;
-	}
-	
-	/* 댓글 쓸때 작게 보여지는 프로필 */
-	.avatar-sprPic-height{
-		height: 30px;
-	}
-	
-	/* 정보 보여주는곳 여백 */
-	.board-info-pad{
-		 padding-left: 100px;
-   		 padding-top: 40px;
-	}
-	
-	/* 게시판 내용 뿌려주는 곳 여백 */
-	.board-card-pad{
-	    padding-left: 130px;
-	    padding-right: 30px;
-	}
-	
-	/* 게시판 상세 페이지 위에 여백 조정 */
-	.board-content-pad{
-		padding-top: 50px;
-	}
-	
-	/* container 아래 여백 */
-	.board-container-pad{
-		padding-bottom: 15px;
-	}
-	
-	/* border 안 여백 */
-	.board-border-pad{
-		padding-right: 15px;
-		padding-left: 15px;
-	}
-	
-	/* 진행중일때 아래 여백 없애기 */
-	.board-processing-pad{
-		padding-top: 40px;
-		padding-bottom: 0px;
-	}
-	
-	/* 게시판 내용 위 여백 삭제  */
-	.board-content-toppad{
-		padding-top: 0px !important;
-	}
-	
-	/* 게시판 내용 패딩 삭제 */
-	.board-content-paddel{
-		padding-top: 0px !important;
-		padding-bottom: 0px !important; 
-	}
-	
-	/* 작업 내용 margin top */
-	.board-description-mar{
-		margin-top: 30px !important;
-	}
-	
-	/* 작업자가 작업 사진 등록 버튼 눌렀을때 상단 여백 */
-	.apply-register{
-		padding-top: 40px;
-	}
-	
+/* 댓글 보여지는 창 프로필 사진 */
+.avatar-prPic-height {
+	height: 64px;
+}
+
+/* 댓글 쓸때 작게 보여지는 프로필 */
+.avatar-sprPic-height {
+	height: 30px;
+}
+
+/* 정보 보여주는곳 여백 */
+.board-info-pad {
+	padding-left: 100px;
+	padding-top: 40px;
+}
+
+/* 게시판 내용 뿌려주는 곳 여백 */
+.board-card-pad {
+	padding-left: 130px;
+	padding-right: 30px;
+}
+
+/* 게시판 상세 페이지 위에 여백 조정 */
+.board-content-pad {
+	padding-top: 50px;
+}
+
+/* container 아래 여백 */
+.board-container-pad {
+	padding-bottom: 15px;
+}
+
+/* border 안 여백 */
+.board-border-pad {
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+/* 진행중일때 아래 여백 없애기 */
+.board-processing-pad {
+	padding-top: 40px;
+	padding-bottom: 0px;
+}
+
+/* 게시판 내용 위 여백 삭제  */
+.board-content-toppad {
+	padding-top: 0px !important;
+}
+
+/* 게시판 내용 패딩 삭제 */
+.board-content-paddel {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+/* 작업 내용 margin top */
+.board-description-mar {
+	margin-top: 30px !important;
+}
+
+/* 작업자가 작업 사진 등록 버튼 눌렀을때 상단 여백 */
+.apply-register {
+	padding-top: 40px;
+}
 </style>
 
-<input type="hidden" value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0" id="info">
+<input type="hidden"
+	value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0"
+	id="info">
 
-<div id="changemain" class="page-header header-filter" data-parallax="true"></div>
+<div id="changemain" class="page-header header-filter"
+	data-parallax="true"></div>
 <div class="section section-gray">
-		<div class="container board-container-pad">
+	<div class="container board-container-pad">
 		<div class="main main-raised main-product">
 			<div class="row">
 				<div class="col-md-12 ml-auto mr-auto">
 					<h2 class="title text-center">${boardInfo.brdTitle}</h2>
-					
+
 					<c:if test="${boardInfo.operStateNo eq 1}">
 						<div class="board-border-pad">
-						<div class="projects-4 board-processing-pad">
-							<div class="row">
-								<div class="col-md-1"></div>
-								<div class="col-md-3 ml-auto">
-			                        <div class="info info-horizontal">
-			                            <div class="icon icon-info">
-			                                <i class="material-icons">date_range</i>
-			                            </div>
-			                            <div class="description">
-			                                <h4 class="info-title">희망 완료 날짜</h4>
-			                                <p class="description">
-			                                   <fmt:formatDate pattern="yyyy-MM-dd"  value="${boardInfo.brdExpectEndDate}" />
-			                                </p>
-			                            </div>
-			                        </div>
-			                        <div class="info info-horizontal">
-			                            <div class="icon icon-success">
-			                                <i class="material-icons">attach_money</i>
-			                            </div>
-			                            <div class="description">
-			                                <h4 class="info-title">희망 금액</h4>
-			                                <p class="description">
-			                                   <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
-			                                </p>
-			                            </div>
-			                        </div>
-			                        <div class="info info-horizontal">
-			                            <div class="icon icon-rose">
-			                                <i class="material-icons">copyright</i>
-			                            </div>
-			                            <div class="description">
-			                                <h4 class="info-title">저작권</h4>
-			                                <p class="description">
-			                                   <c:choose>
-				                            		<c:when test="${boardInfo.copyright eq 'T'}">
+							<div class="projects-4 board-processing-pad">
+								<div class="row">
+									<div class="col-md-1"></div>
+									<div class="col-md-3 ml-auto">
+										<div class="info info-horizontal">
+											<div class="icon icon-info">
+												<i class="material-icons">date_range</i>
+											</div>
+											<div class="description">
+												<h4 class="info-title">희망 완료 날짜</h4>
+												<p class="description">
+													<fmt:formatDate pattern="yyyy-MM-dd"
+														value="${boardInfo.brdExpectEndDate}" />
+												</p>
+											</div>
+										</div>
+										<div class="info info-horizontal">
+											<div class="icon icon-success">
+												<i class="material-icons">attach_money</i>
+											</div>
+											<div class="description">
+												<h4 class="info-title">희망 금액</h4>
+												<p class="description">
+													<fmt:formatNumber value="${boardInfo.brdExpectPrice}"
+														pattern="#,###" />
+													원
+												</p>
+											</div>
+										</div>
+										<div class="info info-horizontal">
+											<div class="icon icon-rose">
+												<i class="material-icons">copyright</i>
+											</div>
+											<div class="description">
+												<h4 class="info-title">저작권</h4>
+												<p class="description">
+													<c:choose>
+														<c:when test="${boardInfo.copyright eq 'T'}">
 				                            			저작권 양도 허용
 				                            		</c:when>
-				                            		<c:otherwise>
+														<c:otherwise>
 				                            			저작권 양도 거부
 				                            		</c:otherwise>
-				                              </c:choose>
-			                                </p>
-			                            </div>
-			                        </div>
-			                    </div>
-		                    
-			                    <div class="col-md-7 mr-auto">
-			                        <div class="card card-background" style="background-image:url('<%=request.getContextPath()%>/assets/img/examples/camera-581126_1920.jpg')">
-			                            <a href="#pablo"></a>
-			                            <div class="card-body board-content-paddel card-title">
-			                                <h3 class="card-title">Content</h3>
-			                                <p class="card-title card-description board-description-mar">
-			                                    ${boardInfo.brdContent}
-			                                </p>
-			                            </div>
-			                        </div>
-			                    </div>
-			                    <div class="col-md-1"></div>
-			                </div>
-			                </div>
-					
-					<div class="projects-4 board-content-pad" id="projects-4">
-						<div class="row">
-							<div class="col-md-12 ml-auto mr-auto" align="left">
-								<h3 class="title">Comment</h3>
+													</c:choose>
+												</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-7 mr-auto">
+										<div class="card card-background"
+											style="background-image:url('<%=request.getContextPath()%>/assets/img/examples/camera-581126_1920.jpg')">
+											<a href="#pablo"></a>
+											<div class="card-body board-content-paddel card-title">
+												<h3 class="card-title">Content</h3>
+												<p class="card-title card-description board-description-mar">
+													${boardInfo.brdContent}</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1"></div>
+								</div>
+							</div>
+
+							<div class="projects-4 board-content-pad" id="projects-4">
+								<div class="row">
+									<div class="col-md-12 ml-auto mr-auto" align="left">
+										<h3 class="title">Comment</h3>
 										<!-- <h3 class="main-price">$335</h3> -->
 										<div id="accordion" role="tablist">
 											<div class="card card-collapse">
-
-												<div id="collapseThree" class="collapse show"
-													role="tabpanel" aria-labelledby="headingThree"
-													data-parent="#accordion"
-													style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
-													<div class="card-body" id="reviewcontents">
-
-														<c:forEach var="review1" items="${comment}"
-															varStatus="status">
-
-															<div class="media">
-																<a class="float-left"
-																	href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
-																	<div class="avatar">
-																		<img class="media-object avatar-prPic-height" alt="Tim Picture"
-																			src="${commentuser[status.index].prPicture}">
-																	</div>
-																</a>
-																<div class="media-body">
-																	<h4 class="media-heading">
-
-																		${commentuser[status.index].userName} <small>·
-																			<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
-																				value="${review1.cmtReg}" />
-																		</small>
-
-																	</h4>
-																	<p>${review1.cmtContent}</p>
-																	<c:if test="${review1.userNo != user.userNo}">
-																		<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
-																			<i class="material-icons">reply</i> 신고
+												<div class="card-header" role="tab" id="headingThree">
+													<h5 class="mb-0">
+														<a id="scrolldown" class="collapsed"
+															data-toggle="collapse" href="#collapseThree"
+															aria-expanded="false" aria-controls="collapseThree">
+															Comment : <span>${fn:length(comment)}</span> <i
+															class="material-icons">keyboard_arrow_down</i>
+														</a>
+													</h5>
+												</div>
+												<div id="collapseThree" class="collapse" role="tabpanel"
+													aria-labelledby="headingThree" data-parent="#accordion"
+													style="max-height: 250px; overflow-x: hidden; overflow-y: inherit;">
+													<div id="reviewcontents" class="card-body">
+														<c:choose>
+															<c:when test="${empty comment}">
+																<h3 class="category text-muted">아직 댓글이 없습니다.</h3>
+															</c:when>
+															<c:otherwise>
+																<c:forEach var="comm" items="${comment}"
+																	varStatus="status">
+																	<div class="media">
+																		<a class="float-left"
+																			href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentuser[status.index].userNo}">
+																			<div class="avatar">
+																				<img class="media-object avatar-prPic-height"
+																					alt="64x64"
+																					src="${commentuser[status.index].prPicture}">
+																			</div>
 																		</a>
-																	</c:if>
-																</div>
-															</div>
-
-														</c:forEach>
-
+																		<div style="width: 70%;" class="media-body">
+																			<h4 class="media-heading">${commentuser[status.index].userName}<small>·
+																					<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
+																						value="${comm.cmtReg}" />
+																				</small>
+																			</h4>
+																			<p>${comm.cmtContent}</p>
+																			<c:if test="${comm.userNo==user.userNo}">
+																				<a id="commentDel"
+																					class="btn btn-rose btn-link float-right message-margin-del"
+																					value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a>
+																			</c:if>
+																			<c:if
+																				test="${comm.userNo!=user.userNo and sessionScope.user.userNo ne null}">
+																				<a
+																					class="btn btn-primary btn-link float-right message-margin-del"
+																					rel="tooltip" data-original-title="보내버리기"
+																					id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i
+																					class="material-icons">reply</i>신고</a>
+																			</c:if>
+																		</div>
+																	</div>
+																</c:forEach>
+															</c:otherwise>
+														</c:choose>
 													</div>
 												</div>
 											</div>
@@ -505,372 +527,337 @@
 														<a>Input Comment</a>
 													</h5>
 												</div>
-												<div id="collapseTwo" class="collapse show" role="tabpanel"
+												<div id="collapseTwo" role="tabpanel"
 													aria-labelledby="headingTwo" data-parent="#accordion"
 													style="">
 													<div class="media media-post">
-														<a class="author float-left" href="#pablo">
-															<div class="avatar">
-																<img class="media-object avatar-sprPic-height" alt="64x64"
-																	src="${sessionScope.user.prPicture}">
-															</div>
-														</a>
-														<div class="media-body">
-															<div class="form-group label-floating bmd-form-group">
-																<label class="form-control-label bmd-label-floating"
-																	for="exampleBlogPost"> 댓글을 달아보세요...</label>
-																<textarea class="form-control" rows="5"
-																	id="reviewcontent"></textarea>
-															</div>
-															<div class="media-footer">
-																<a href="#pablo"
-																	class="btn btn-primary btn-round btn-wd float-right"
-																	id="addreviewbutton">댓글 작성</a>
-																
-																<c:choose>
-																	<c:when	test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
-																		<button type="button" class="btn btn-primary btn-md float-left" data-toggle="modal" data-target="#exampleModal">
-																			<i class="material-icons">linked_camera</i> &nbsp;작업 신청
-																		</button>
-																	</c:when>
-																	<c:otherwise>
-																		<button type="button" class="btn btn-primary btn-md float-left apply-status">
-																			<i class="material-icons">linked_camera</i> &nbsp;신청 현황
-																		</button>
-																	</c:otherwise>
-																</c:choose>
-															</div>
-															
-														</div>
+														<c:choose>
+															<c:when test="${sessionScope.user eq null}">
+																<h3 class="category text-muted">로그인 후 이용가능합니다.</h3>
+															</c:when>
+															<c:otherwise>
+																<a class="author float-left" href="#pablo">
+																	<div class="avatar">
+																		<img class="media-object avatar-sprPic-height"
+																			alt="64x64" src="${sessionScope.user.prPicture}">
+																	</div>
+																</a>
+																<div class="media-body">
+																	<div class="form-group label-floating bmd-form-group">
+																		<label class="form-control-label bmd-label-floating"
+																			for="exampleBlogPost"> 댓글을 달아보세요...</label>
+																		<textarea id="reviewcontent" class="form-control"
+																			rows="5"></textarea>
+																	</div>
+																	<div class="media-footer">
+																		<button type="button" id="addreviewbutton"
+																			class="btn btn-primary btn-round btn-wd float-right">Post
+																			Comment</button>
+
+																		<c:choose>
+																			<c:when
+																				test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
+																				<button type="button"
+																					class="btn btn-primary btn-md float-left"
+																					data-toggle="modal" data-target="#opersend">
+																					<i class="material-icons">linked_camera</i>
+																					&nbsp;작업 신청
+																				</button>
+																			</c:when>
+																			<c:otherwise>
+																				<button type="button"
+																					class="btn btn-primary btn-md float-left apply-status">
+																					<i class="material-icons">linked_camera</i>
+																					&nbsp;신청 현황
+																				</button>
+																			</c:otherwise>
+																		</c:choose>
+																	</div>
+																</div>
+															</c:otherwise>
+														</c:choose>
 													</div>
 												</div>
 											</div>
 										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-						</div>		
-						
-						
-						
-									
 					</c:if>
 				</div>
 			</div>
-			
-			
-		<div class="row" align="center" >
-			<div class="col-md-12 ml-auto mr-auto">
-				<div class="board-border-pad">
-			<c:choose>
-				<c:when test="${boardInfo.operStateNo ne 1}">
-						<div class="row board-content-pad">
-							<div class="col-md-12 ml-auto mr-auto">
-							
-								<div class="row">
-									<div class="col-md-3"></div>
-									<div class="col-md-3 info-horizontal mr-auto ml-auto">
-				                         <div class="description">
-				                             <h4 class="info-title "><i class="material-icons">person</i> 요청자</h4>
-				                             <p class="description">
-				                                 ${requestUser.userName}
-				                             </p>
-				                         </div>
-				                    </div>
-				                    <div class="col-md-3 info-horizontal mr-auto ml-auto">
-				                         <div class="description">
-				                             <h4 class="info-title "><i class="material-icons">person</i> 작업자</h4>
-				                             <p class="description">
-				                                 ${operatorUser.userName}
-				                             </p>
-				                         </div>
-				                    </div>
-				                    <div class="col-md-3"></div>
-				                    
-				                    
-					              </div>
-					              <div class="projects-4 board-processing-pad">
+
+
+			<div class="row" align="center">
+				<div class="col-md-12 ml-auto mr-auto">
+					<div class="board-border-pad">
+						<c:choose>
+							<c:when test="${boardInfo.operStateNo ne 1}">
+								<div class="row board-content-pad">
+									<div class="col-md-12 ml-auto mr-auto">
 										<div class="row">
-											<div class="col-md-1"></div>
-											<div class="col-md-3 ml-auto">
-						                        <div class="info info-horizontal">
-						                            <div class="icon icon-info">
-						                                <i class="material-icons">date_range</i>
-						                            </div>
-						                            <div class="description">
-						                                <h4 class="info-title">작업 완료 날짜</h4>
-						                                <p class="description">
-						                                   <fmt:formatDate pattern="yyyy-MM-dd"  value="${boardInfo.brdExpectEndDate}" />
-						                                </p>
-						                            </div>
-						                        </div>
-						                        <div class="info info-horizontal">
-						                            <div class="icon icon-success">
-						                                <i class="material-icons">attach_money</i>
-						                            </div>
-						                            <div class="description">
-						                                <h4 class="info-title">거래 금액</h4>
-						                                <p class="description">
-						                                   <fmt:formatNumber value="${boardInfo.brdExpectPrice}" pattern="#,###"/>원
-						                                </p>
-						                            </div>
-						                        </div>
-						                        <div class="info info-horizontal">
-						                            <div class="icon icon-rose">
-						                                <i class="material-icons">copyright</i>
-						                            </div>
-						                            <div class="description">
-						                                <h4 class="info-title">저작권</h4>
-						                                <p class="description">
-						                                   <c:choose>
-							                            		<c:when test="${boardInfo.copyright eq 'T'}">
-							                            			저작권 양도 허용
-							                            		</c:when>
-							                            		<c:otherwise>
-							                            			저작권 양도 거부
-							                            		</c:otherwise>
-							                              </c:choose>
-						                                </p>
-						                            </div>
-						                        </div>
-						                    </div>
-					                    
-						                    <div class="col-md-7 mr-auto">
-						                        <div class="card card-background" style="background-image:url('<%=request.getContextPath()%>/assets/img/examples/camera-581126_1920.jpg')">
-						                            <div class="card-body board-content-paddel card-title">
-						                                <h3 class="card-title">Content</h3>
-						                                <p class="card-title card-description board-description-mar">
-						                                    ${boardInfo.brdContent}
-						                                </p>
-						                            </div>
-						                        </div>
-						                    </div>
-						                    <div class="col-md-1"></div>
-						                </div>
-					                </div>
-								
-								<div class="projects-4 board-content-pad board-processing-pad" id="projects-4">
-									<div class="row">
-										<div class="col-md-12 ml-auto mr-auto" align="left">
-											<h3 class="title">Message</h3>
-													<!-- <h3 class="main-price">$335</h3> -->
-													<div id="accordion" role="tablist">
-										
-											<div class="card card-collapse">
-							<div class="card-header" role="tab" id="headingThree">
-								<h5 class="mb-0">
-								<a id="scrolldown" class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                 Comment : <span>${fn:length(comment)}</span> 
-                                 <i class="material-icons">keyboard_arrow_down</i>
-                                 </a>
-								</h5>
-							</div>
-							<div id="collapseThree" class="collapse" role="tabpanel"
-								aria-labelledby="headingThree" data-parent="#accordion"
-								style="max-height: 250px; overflow-x: hidden; overflow-y: inherit;">
-								<div id="reviewcontents" class="card-body">
-									<c:choose>
-										<c:when test="${empty comment}">
-											<h3 class="category text-muted">아직 댓글이 없습니다.</h3>
-										</c:when>
-										<c:otherwise>
-											<c:forEach var="comm" items="${comment}" varStatus="status">
-												<div class="media">
-													<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentuser[status.index].userNo}">
-														<div class="avatar">
-												         <img class="media-object" alt="64x64" src="${commentuser[status.index].prPicture}">
-														</div>
-													</a>
-													<div style="width: 70%;" class="media-body">
-														<h4 class="media-heading">${commentuser[status.index].userName}<small>·
-																<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
-																	value="${comm.cmtReg}" />
-															</small>
-														</h4>
-														<p>${comm.cmtContent}</p>
-														<c:if test="${comm.userNo==user.userNo}"><a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a></c:if>														
-														<c:if test="${comm.userNo!=user.userNo and sessionScope.user.userNo ne null}"><a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a></c:if>
-													</div>
-												</div>
-											</c:forEach>
-										</c:otherwise>
-									</c:choose>
-								</div>
-							</div>
-						</div>
-						<div class="card card-collapse">
-							<div class="card-header" role="tab" id="headingTwo">
-								<h5 class="mb-0">
-									<a>Input Comment</a>
-								</h5>
-							</div>
-							<div id="collapseTwo" role="tabpanel"
-								aria-labelledby="headingTwo" data-parent="#accordion" style="">
-								<div class="media media-post">
-									<c:choose>
-										<c:when test="${sessionScope.user eq null}">
-											<h3 class="category text-muted">로그인 후 이용가능합니다.</h3>
-										</c:when>
-										<c:otherwise>
-											<a class="author float-left" href="#pablo">
-												<div class="avatar">
-												  <img class="media-object" alt="64x64" src="${sessionScope.user.prPicture}">
-												</div>
-											</a>
-											<div class="media-body">
-												<div class="form-group label-floating bmd-form-group">
-													<label class="form-control-label bmd-label-floating"
-														for="exampleBlogPost"> 댓글을 달아보세요...</label>
-													<textarea id="reviewcontent" class="form-control" rows="5"></textarea>
-												</div>
-												<div class="media-footer">
-													<button type="button" id="addreviewbutton"
-														class="btn btn-primary btn-round btn-wd float-right">Post
-														Comment</button>
-														
-														<c:choose>
-																					<c:when	test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo eq 2}">
-																						<button type="button" class="btn btn-primary btn-md float-left apply-pic-confirm">
-																							<i class="material-icons">linked_camera</i> &nbsp;작업 사진 확인
-																						</button>
-																					</c:when>
-																					<c:otherwise>
-																						<c:choose>
-																							<c:when test="${boardInfo.operStateNo eq 3}">
-																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-complete">
-																									<i class="material-icons">linked_camera</i> &nbsp;거래된 사진 보기
-																								</button>
-																							</c:when>
-																							<c:otherwise>
-																								<button type="button" class="btn btn-primary btn-md float-left apply-pic-register">
-																									<i class="material-icons">linked_camera</i> &nbsp;작업 사진 등록
-																								</button>
-																							</c:otherwise>
-																						</c:choose>
-																					</c:otherwise>
-																				</c:choose>
+											<div class="col-md-3"></div>
+											<div class="col-md-3 info-horizontal mr-auto ml-auto">
+												<div class="description">
+													<h4 class="info-title ">
+														<i class="material-icons">person</i> 요청자
+													</h4>
+													<p class="description">${requestUser.userName}</p>
 												</div>
 											</div>
-										</c:otherwise>
-									</c:choose>
-								</div>
-							</div>
-						</div>
-										
-										
-														<%-- <div class="card card-collapse">
-			
-															<div id="collapseThree" class="collapse show"
-																role="tabpanel" aria-labelledby="headingThree"
-																data-parent="#accordion"
-																style="height: 250px; overflow-x: hidden; overflow-y: inherit;">
-																<div class="card-body" id="reviewcontents">
-			
-																	<c:forEach var="review1" items="${comment}"
-																		varStatus="status">
-			
-																		<div class="media">
-																			<a class="float-left"
-																				href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${review1.userNo}">
-																				<div class="avatar">
-																					<img class="media-object avatar-prPic-height" alt="Tim Picture"
-																						src="${commentuser[status.index].prPicture}">
-																				</div>
-																			</a>
-																			<div class="media-body">
-																				<h4 class="media-heading">
-			
-																					${commentuser[status.index].userName} <small>·
-																						<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
-																							value="${review1.cmtReg}" />
-																					</small>
-			
-																				</h4>
-																				<p>${review1.cmtContent}</p>
-																				<c:if test="${review1.userNo != user.userNo}">
-																					<a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title="" data-original-title="보내버리기" id="${review1.tableNo},${review1.userNo},${review1.brdNo},0,${review1.cmtNo}">
-																						<i class="material-icons">reply</i> 신고
+											<div class="col-md-3 info-horizontal mr-auto ml-auto">
+												<div class="description">
+													<h4 class="info-title ">
+														<i class="material-icons">person</i> 작업자
+													</h4>
+													<p class="description">${operatorUser.userName}</p>
+												</div>
+											</div>
+											<div class="col-md-3"></div>
+
+
+										</div>
+										<div class="projects-4 board-processing-pad">
+											<div class="row">
+												<div class="col-md-1"></div>
+												<div class="col-md-3 ml-auto">
+													<div class="info info-horizontal">
+														<div class="icon icon-info">
+															<i class="material-icons">date_range</i>
+														</div>
+														<div class="description">
+															<h4 class="info-title">작업 완료 날짜</h4>
+															<p class="description">
+																<fmt:formatDate pattern="yyyy-MM-dd"
+																	value="${boardInfo.brdExpectEndDate}" />
+															</p>
+														</div>
+													</div>
+													<div class="info info-horizontal">
+														<div class="icon icon-success">
+															<i class="material-icons">attach_money</i>
+														</div>
+														<div class="description">
+															<h4 class="info-title">거래 금액</h4>
+															<p class="description">
+																<fmt:formatNumber value="${boardInfo.brdExpectPrice}"
+																	pattern="#,###" />
+																원
+															</p>
+														</div>
+													</div>
+													<div class="info info-horizontal">
+														<div class="icon icon-rose">
+															<i class="material-icons">copyright</i>
+														</div>
+														<div class="description">
+															<h4 class="info-title">저작권</h4>
+															<p class="description">
+																<c:choose>
+																	<c:when test="${boardInfo.copyright eq 'T'}">
+							                            			저작권 양도 허용
+							                            		</c:when>
+																	<c:otherwise>
+							                            			저작권 양도 거부
+							                            		</c:otherwise>
+																</c:choose>
+															</p>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-7 mr-auto">
+													<div class="card card-background"
+														style="background-image:url('<%=request.getContextPath()%>/assets/img/examples/camera-581126_1920.jpg')">
+														<div class="card-body board-content-paddel card-title">
+															<h3 class="card-title">Content</h3>
+															<p
+																class="card-title card-description board-description-mar">
+																${boardInfo.brdContent}</p>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-1"></div>
+											</div>
+										</div>
+
+										<div class="projects-4 board-content-pad board-processing-pad"
+											id="projects-4">
+											<div class="row">
+												<div class="col-md-12 ml-auto mr-auto" align="left">
+													<h3 class="title">Message</h3>
+													<!-- <h3 class="main-price">$335</h3> -->
+													<div id="accordion" role="tablist">
+
+														<div class="card card-collapse">
+															<div class="card-header" role="tab" id="headingThree">
+																<h5 class="mb-0">
+																	<a id="scrolldown" class="collapsed"
+																		data-toggle="collapse" href="#collapseThree"
+																		aria-expanded="false" aria-controls="collapseThree">
+																		Comment : <span>${fn:length(comment)}</span> <i
+																		class="material-icons">keyboard_arrow_down</i>
+																	</a>
+																</h5>
+															</div>
+															<div id="collapseThree" class="collapse" role="tabpanel"
+																aria-labelledby="headingThree" data-parent="#accordion"
+																style="max-height: 250px; overflow-x: hidden; overflow-y: inherit;">
+																<div id="reviewcontents" class="card-body">
+																	<c:choose>
+																		<c:when test="${empty comment}">
+																			<h3 class="category text-muted">아직 댓글이 없습니다.</h3>
+																		</c:when>
+																		<c:otherwise>
+																			<c:forEach var="comm" items="${comment}"
+																				varStatus="status">
+																				<div class="media">
+																					<a class="float-left"
+																						href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentuser[status.index].userNo}">
+																						<div class="avatar">
+																							<img class="media-object avatar-prPic-height"
+																								alt="64x64"
+																								src="${commentuser[status.index].prPicture}">
+																						</div>
 																					</a>
-																				</c:if>
-																			</div>
-																		</div>
-			
-																	</c:forEach>
-			
+																					<div style="width: 70%;" class="media-body">
+																						<h4 class="media-heading">${commentuser[status.index].userName}<small>·
+																								<fmt:formatDate pattern="yyyy-MM-dd, HH:mm:ss"
+																									value="${comm.cmtReg}" />
+																							</small>
+																						</h4>
+																						<p>${comm.cmtContent}</p>
+																						<c:if test="${comm.userNo==user.userNo}">
+																							<a id="commentDel"
+																								class="btn btn-rose btn-link float-right message-margin-del"
+																								value="${comm.cmtNo}"><i
+																								class="material-icons">clear</i>삭제</a>
+																						</c:if>
+																						<c:if
+																							test="${comm.userNo!=user.userNo and sessionScope.user.userNo ne null}">
+																							<a
+																								class="btn btn-primary btn-link float-right message-margin-del"
+																								rel="tooltip" data-original-title="보내버리기"
+																								id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i
+																								class="material-icons">reply</i>신고</a>
+																						</c:if>
+																					</div>
+																				</div>
+																			</c:forEach>
+																		</c:otherwise>
+																	</c:choose>
 																</div>
 															</div>
 														</div>
 														<div class="card card-collapse">
 															<div class="card-header" role="tab" id="headingTwo">
 																<h5 class="mb-0">
-																	<a>Input Message</a>
+																	<a>Input Comment</a>
 																</h5>
 															</div>
-															<div id="collapseTwo" class="collapse show" role="tabpanel"
+															<div id="collapseTwo" role="tabpanel"
 																aria-labelledby="headingTwo" data-parent="#accordion"
 																style="">
 																<div class="media media-post">
-																	<a class="author float-left" href="#pablo">
-																		<div class="avatar">
-																			<img class="media-object avatar-sprPic-height" alt="64x64"
-																				src="${sessionScope.user.prPicture}">
-																		</div>
-																	</a>
-																	<div class="media-body">
-																		<div class="form-group label-floating bmd-form-group">
-																			<label class="form-control-label bmd-label-floating"
-																				for="exampleBlogPost"> 메시지를 주고 받아보세요...</label>
-																			<textarea class="form-control" rows="5"
-																				id="reviewcontent"></textarea>
-																		</div>
-																		<div class="media-footer">
-																			<a href="#pablo"
-																				class="btn btn-primary btn-round btn-wd float-right"
-																				id="addreviewbutton">메시지 보내기</a>
-																			
-																				
-																		</div>
-																		
-																	</div>
+																	<c:choose>
+																		<c:when test="${sessionScope.user eq null}">
+																			<h3 class="category text-muted">로그인 후 이용가능합니다.</h3>
+																		</c:when>
+																		<c:otherwise>
+																			<a class="author float-left" href="#pablo">
+																				<div class="avatar">
+																					<img class="media-object avatar-sprPic-height"
+																						alt="64x64" src="${sessionScope.user.prPicture}">																						
+																				</div>
+																			</a>
+																			<div class="media-body">
+																				<div
+																					class="form-group label-floating bmd-form-group">
+																					<label
+																						class="form-control-label bmd-label-floating"
+																						for="exampleBlogPost"> 댓글을 달아보세요...</label>
+																					<textarea id="reviewcontent" class="form-control"
+																						rows="5"></textarea>
+																				</div>
+																				<div class="media-footer">
+																					<button type="button" id="addreviewbutton"
+																						class="btn btn-primary btn-round btn-wd float-right">Post
+																						Comment</button>
+
+																					<c:choose>
+																						<c:when
+																							test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo eq 2}">
+																							<button type="button"
+																								class="btn btn-primary btn-md float-left apply-pic-confirm">
+																								<i class="material-icons">linked_camera</i>
+																								&nbsp;작업 사진 확인
+																							</button>
+																						</c:when>
+																						<c:otherwise>
+																							<c:choose>
+																								<c:when test="${boardInfo.operStateNo eq 3}">
+																									<button type="button"
+																										class="btn btn-primary btn-md float-left apply-pic-complete">
+																										<i class="material-icons">linked_camera</i>
+																										&nbsp;거래된 사진 보기
+																									</button>
+																								</c:when>
+																								<c:otherwise>
+																									<button type="button"
+																										class="btn btn-primary btn-md float-left apply-pic-register">
+																										<i class="material-icons">linked_camera</i>
+																										&nbsp;작업 사진 등록
+																									</button>
+																								</c:otherwise>
+																							</c:choose>
+																						</c:otherwise>
+																					</c:choose>
+																				</div>
+																			</div>
+																		</c:otherwise>
+																	</c:choose>
 																</div>
 															</div>
-															</div>  --%>
+														</div>
 													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-									
-							</div>
-						</div>
-						<c:if test="${boardInfo.operStateNo eq 2}">
-							<div align="center">
-								<c:choose>
-									<c:when test="${operation.operatorEnd ne 'T'}">
-										<button type="button" class="btn btn-danger">작업자 확인</button>
-									</c:when>
-									<c:otherwise>
-										<button type="button" class="btn btn-success">작업자 확인</button>
-									</c:otherwise>
-								</c:choose>
-								<c:choose>
-									<c:when test="${operation.requesterEnd ne 'T'}">
-										<button type="button" class="btn btn-danger">요청자 확인</button>
-									</c:when>
-									<c:otherwise>
-										<button type="button" class="btn btn-success">요청자 확인</button>
-									</c:otherwise>
-								</c:choose>
-							</div>
-						</c:if>
-				</c:when>
-			</c:choose>
-			
+								</div>
+								<c:if test="${boardInfo.operStateNo eq 2}">
+									<div align="center">
+										<c:choose>
+											<c:when test="${operation.operatorEnd ne 'T'}">
+												<button type="button" class="btn btn-danger">작업자 확인</button>
+											</c:when>
+											<c:otherwise>
+												<button type="button" class="btn btn-success">작업자
+													확인</button>
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${operation.requesterEnd ne 'T'}">
+												<button type="button" class="btn btn-danger">요청자 확인</button>
+											</c:when>
+											<c:otherwise>
+												<button type="button" class="btn btn-success">요청자
+													확인</button>
+											</c:otherwise>
+										</c:choose>
+									</div>
+								</c:if>
+							</c:when>
+						</c:choose>
+
+					</div>
+				</div>
 			</div>
-			</div>
-		</div>
-		
+
 			<c:choose>
-				<c:when test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo ne 2}">
+				<c:when
+					test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo ne 2}">
 					<table class="table apply-table">
 						<thead>
 							<tr>
@@ -895,9 +882,10 @@
 												operApplyNo="${apply.operApplyNo}"
 												operUserNo="${apply.operUserNo}"
 												operApplyAppeal="${apply.operApplyAppeal}"
-												 operApplyPrice="${apply.operApplyPrice}">
+												operApplyPrice="${apply.operApplyPrice}">
 												<td class="text-center">${applyid[status.index]}</td>
-												<td class="text-center"><fmt:formatNumber value="${apply.operApplyPrice}" pattern="#,###"/>원</td>
+												<td class="text-center"><fmt:formatNumber
+														value="${apply.operApplyPrice}" pattern="#,###" />원</td>
 												<td class="text-center">${apply.operApplyReg}</td>
 											</tr>
 										</c:forEach>
@@ -906,155 +894,165 @@
 							</c:choose>
 						</tbody>
 					</table>
-				</c:when>				
+				</c:when>
 			</c:choose>
-			
-			<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
-			<div class="apply-register" align="center">
-				<c:choose>
-					<c:when test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
-					<div class="row">
-							<div class="col-md-6">
-								<div style="height: 350px; width : 350px;">
-									<img alt="No Image" height="100%" id="filePath" width="100%" src="${operPicture.picPath}">
+
+			<c:if
+				test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
+				<div class="apply-register" align="center">
+					<c:choose>
+						<c:when
+							test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
+							<div class="row">
+								<div class="col-md-6">
+									<div style="height: 350px; width: 350px;">
+										<img alt="No Image" height="100%" id="filePath" width="100%"
+											src="${operPicture.picPath}">
+									</div>
+									<div></div>
 								</div>
-								<div>
-								
-								</div>
-							</div>
-							<div class="col-md-6">
-								<form action="<%=request.getContextPath()%>/picture/operationComplete.ps">
-										<input type="hidden" name="picPrice" value="${operation.operPrice}">
-										<input type="hidden" name="transferState" value="${boardInfo.copyright}">
-										<input type="hidden" name="picPath" value="${operPicture.picPath}">
-										<input type="hidden" name="userNo" value="${boardInfo.userNo}">
-										<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
-									<div class="form-group">
-										<label for="title">제목</label> <input type="text"
-											class="form-control" id="pictureTitle" name="picTitle" autocomplete="off">
-									</div>
-			
-									<div class="form-group">
-										<label for="description">설명</label> <input type="text"
-											class="form-control" id="pictureDesc" name="picContent" autocomplete="off">
-									</div>
-			
-									<!-- <form action=""> -->
-									<div id="picTags" class="form-group">
-										<label for="comment">Tags</label> <br>
-											<div id="loaderIcon">
-										
-											</div>
-									</div>
-									<!-- </form> -->
-							<%--	<div class="form-group">
+								<div class="col-md-6">
+									<form
+										action="<%=request.getContextPath()%>/picture/operationComplete.ps">
+										<input type="hidden" name="picPrice"
+											value="${operation.operPrice}"> <input type="hidden"
+											name="transferState" value="${boardInfo.copyright}">
+										<input type="hidden" name="picPath"
+											value="${operPicture.picPath}"> <input type="hidden"
+											name="userNo" value="${boardInfo.userNo}"> <input
+											type="hidden" name="brdNo" value="${boardInfo.brdNo}">
+										<div class="form-group">
+											<label for="title">제목</label> <input type="text"
+												class="form-control" id="pictureTitle" name="picTitle"
+												autocomplete="off">
+										</div>
+
+										<div class="form-group">
+											<label for="description">설명</label> <input type="text"
+												class="form-control" id="pictureDesc" name="picContent"
+												autocomplete="off">
+										</div>
+
+										<!-- <form action=""> -->
+										<div id="picTags" class="form-group">
+											<label for="comment">Tags</label> <br>
+											<div id="loaderIcon"></div>
+										</div>
+										<!-- </form> -->
+										<%--	<div class="form-group">
 										<input type="text" name="picPath" value="${picPath}"> 
 									</div> --%>
-									<div id="tagA">
-									
-									</div>
-									<input type="button" id ="operPicture" class="btn btn-primary" value="사진 검증">
-									<button type="submit" id="savePicture" class="btn btn-primary" >저장하기</button>
-								</form>
-							</div>
-						</div>		
-					</c:when>
-					
-					<c:otherwise>
-						<c:choose>
-						<c:when test="${operation.operatorEnd eq 'T'}">							
-								<div style="height: 350px; width : 350px; text-align: center;">
-									<img alt="No Image"  height="100%" width="100%" src="${operPicture.picPath}">
+										<div id="tagA"></div>
+										<input type="button" id="operPicture" class="btn btn-primary"
+											value="사진 검증">
+										<button type="submit" id="savePicture" class="btn btn-primary">저장하기</button>
+									</form>
 								</div>
+							</div>
 						</c:when>
-							<c:otherwise>
-								<div id="upload">								
+
+						<c:otherwise>
+							<c:choose>
+								<c:when test="${operation.operatorEnd eq 'T'}">
+									<div style="height: 350px; width: 350px; text-align: center;">
+										<img alt="No Image" height="100%" width="100%"
+											src="${operPicture.picPath}">
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div id="upload">
 										<div id="picupload" align="center">
-											<form id="fileForm" action=""
-											enctype="multipart/form-data" method="post">
-												<input type="hidden" name="operNo" value="${operation.operNo}">
-												<input type="hidden" name="brdNo" value="${boardInfo.brdNo}">
+											<form id="fileForm" action="" enctype="multipart/form-data"
+												method="post">
+												<input type="hidden" name="operNo"
+													value="${operation.operNo}"> <input type="hidden"
+													name="brdNo" value="${boardInfo.brdNo}">
 												<div class="fileinput fileinput-new text-center"
-												data-provides="fileinput">
-													<div class="fileinput-new thumbnail img-raised" >
+													data-provides="fileinput">
+													<div class="fileinput-new thumbnail img-raised">
 														<img
-														src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
-														alt="...">
+															src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
+															alt="...">
 													</div>
-													<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
-													<%-- <canvas id="canvasdiv"></canvas> --%>
-													
-													</div> 
+													<div
+														class="fileinput-preview fileinput-exists thumbnail img-raised">
+														<%-- <canvas id="canvasdiv"></canvas> --%>
+
+													</div>
 													<div>
-													<span class="btn btn-raised btn-round btn-default btn-file"> 
-														<span class="fileinput-new">Select image</span> <span
-														class="fileinput-exists">Change</span> <input type="file"
-														name="file" accept=".jpg, .png, .bmp" />
-													</span> <a href="#pablo"
-														class="btn btn-danger btn-round fileinput-exists"
-														data-dismiss="fileinput"> <i class="fa fa-times"></i>
-														Remove
-													</a>
-													<input type="button" id ="operpic" class="btn btn-primary btn-round" value="요청자 보여주기">
+														<span
+															class="btn btn-raised btn-round btn-default btn-file">
+															<span class="fileinput-new">Select image</span> <span
+															class="fileinput-exists">Change</span> <input type="file"
+															name="file" accept=".jpg, .png, .bmp" />
+														</span> <a href="#pablo"
+															class="btn btn-danger btn-round fileinput-exists"
+															data-dismiss="fileinput"> <i class="fa fa-times"></i>
+															Remove
+														</a> <input type="button" id="operpic"
+															class="btn btn-primary btn-round" value="요청자 보여주기">
 													</div>
 												</div>
-											
+
 											</form>
 										</div>
 									</div>
 								</c:otherwise>
-						</c:choose>
-					</c:otherwise>
-				</c:choose>
-			</div>
+							</c:choose>
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</c:if>
-			
-			<c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.requesterNo}">
+
+			<c:if
+				test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.requesterNo}">
 				<div class="apply-confirm" align="center">
-				<h5>작업자가 올린 사진</h5>
+					<h5>작업자가 올린 사진</h5>
 					<div>
 						<c:choose>
 							<c:when test="${empty operPicture}">
 								작업자가 사진을 아직 업로드 하지 않았습니다 :)
 							</c:when>
 							<c:otherwise>
-										
-							
-								<div style="height: 350px; width : 350px;">
-									<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
+								<div style="height: 350px; width: 350px;">
+									<img alt="No Image" height="100%" width="100%"
+										src="${operPicture.picPath}">
 								</div>
-								<button type="button" id="opercomplete" class="btn btn-success">작업 수락</button>
+								<button type="button" id="opercomplete" class="btn btn-success">작업
+									수락</button>
 							</c:otherwise>
 						</c:choose>
-						
+
 					</div>
-					
+
 				</div>
 			</c:if>
-			
+
 			<c:if test="${boardInfo.operStateNo eq 3}">
 				<div class="apply-complete" align="center">
-				<h5>거래 완료된 사진 <a id="download" href="${operPicture.picPath}">
-						<i class="material-icons">vertical_align_bottom</i>
-					</a></h5>
-					
+					<h5>
+						거래 완료된 사진 <a id="download" href="${operPicture.picPath}"> <i
+							class="material-icons">vertical_align_bottom</i>
+						</a>
+					</h5>
 					<div>
-						<div style="height: 350px; width : 350px;">
-							<img alt="No Image" height="100%" width="100%" src="${operPicture.picPath}">
+						<div style="height: 350px; width: 350px;">
+							<img alt="No Image" height="100%" width="100%"
+								src="${operPicture.picPath}">
 						</div>
 					</div>
-					
+
 				</div>
 			</c:if>
-			
+
 		</div>
-	<!-- </div> -->
-	
-</div>
+		<!-- </div> -->
+
+	</div>
 </div>
 
 <!-- 신청Modal -->
-<div class="modal fade" id="exampleModal" tabindex="1" role="dialog"
+<div class="modal fade" id="opersend" tabindex="1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

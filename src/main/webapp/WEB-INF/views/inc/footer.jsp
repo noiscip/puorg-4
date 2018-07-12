@@ -60,7 +60,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */ 
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.23:8090/picsion/message.ps") //테스트 용도  
+			 	wsocket = new WebSocket("ws://192.168.0.31:8090/picsion/message.ps") //테스트 용도  
 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
@@ -93,7 +93,7 @@
 								if(data.userinfo.prPicture == null){
 										 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
 									}else{
-										media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'>";
+										media += "<img class='media-object' alt='64x64' src='"+data.userinfo.prPicture+"'>";
 									}
 									media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 									data.userinfo.userName+"<small>· "+moment(data.receivecomment.cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
