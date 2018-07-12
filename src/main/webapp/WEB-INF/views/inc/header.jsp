@@ -317,7 +317,7 @@ $('.navbar-transparent').on()
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
 		                 
-		                    <c:if test="${sessionScope.user.naver eq null}">
+		                 <%--    <c:if test="${sessionScope.user.naver eq null}">
 			                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>네이버 계정 연동 
 		                    	</a>
@@ -326,7 +326,7 @@ $('.navbar-transparent').on()
 			                    <a href="<%=request.getContextPath()%>/google/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>구글 계정 연동 
 		                    	</a>
-	                    	</c:if>
+	                    	</c:if> --%>
 	                    	<c:if test="${sessionScope.user.roleNo eq 3}">
 			                    <a href="<%=request.getContextPath()%>/user/admin.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">build</i>회원/매출/신고
