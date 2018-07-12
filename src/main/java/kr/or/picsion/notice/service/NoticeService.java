@@ -68,7 +68,7 @@ public class NoticeService {
 	 * @param userNo
 	 * @return HashMap<Integer, Object>
 	*/
-	public HashMap<Integer, Object> noticeList(int userNo) {
+	public Map<Integer, Object> noticeList(int userNo) {
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 
 		List<Notice> noticeList = noticeDao.noticeList(userNo);
