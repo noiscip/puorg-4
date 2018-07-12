@@ -26,10 +26,10 @@ public class OperPictureService {
 	* 날      짜 : 2018. 7. 3.
 	* 메소드명 : insertOperPicture
 	* 작성자명 : 김준수 
-	* 기      능 : 
+	* 기      능 : 작업 사진 추가하기
 	*
 	* @param operpicture
-	* @return
+	* @return Integer
 	*/
 	public int insertOperPicture(OperPicture operpicture) {
 
@@ -39,6 +39,15 @@ public class OperPictureService {
 	}
 	
 	
+	/**
+	 * 날      짜 : 2018. 7. 13.
+	 * 메소드명 : selectOperpicture
+	 * 작성자명 : 김준수
+	 * 기      능 : 해당 글의 작업 사진 찾기
+	 *
+	 * @param operNo
+	 * @return OperPicture
+	*/
 	public OperPicture selectOperpicture(int operNo) {
 
 		OperPictureDao operPictureDao = sqlSession.getMapper(OperPictureDao.class);
