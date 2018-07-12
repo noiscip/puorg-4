@@ -1,7 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-	<link href="<%=request.getContextPath()%>/images/picsionlogo.png" rel="icon" type="image/png">
+	<link href="<%=request.getContextPath()%>/images/eye.png" rel="icon" type="image/png">
 	<meta charset="utf-8">
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<title>PICSION</title>

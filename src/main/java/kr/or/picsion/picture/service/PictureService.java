@@ -369,7 +369,7 @@ public class PictureService {
         AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
         w.setComposite(alphaChannel);
         w.setColor(Color.GRAY);
-        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, (image.getWidth()/40)));
+        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, (image.getWidth()/20)));
         FontMetrics fontMetrics = w.getFontMetrics();
         Rectangle2D rect = fontMetrics.getStringBounds(text, w);
 
