@@ -4,7 +4,6 @@
 
 
   	<script type="text/javascript">
-		  //top으로ws
 		  	
 			$(function() {
 				if($('#loginUserNo').val()!= "0"){
@@ -145,8 +144,6 @@
 										   	"</div></div>";
 										   	
 							$('#commentstart').prepend(userList);
-								
-                        	
                         }
                     })
                 }
@@ -154,8 +151,6 @@
 	               	console.log('여기는 노티스 안  false')
 	               	newNoticeCount()
 				}
-                
-                
 		 	}
 		  	
 		  	

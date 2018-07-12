@@ -14,7 +14,6 @@ $(function(){
 	
 	var isRun =false
 	$(document).on('click','#newNotice',function(){
-		
 		$('#noticeList').hide() 
  
 		console.log(isRun)
@@ -167,6 +166,7 @@ $(function(){
 		    buyer_name : $('.userName').val(),
 		    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
 	}, function(rsp) {
+		$('#chargePrice').val("")
 		if ( rsp.success ) {
 			var msg = '결제가 완료되었습니다.'
 			msg += '결제 금액 : ' + rsp.paid_amount
@@ -180,13 +180,14 @@ $(function(){
 						msg = '결제 완료 BUT 업데이트 실패'
 					}else{
 						console.log(data.point)
+						console.log(numberWithCommas(data.point))
 						$('.point').val(data.point)
+						$('#fmtPoint')[0].innerHTML = '포인트 : '+ numberWithCommas(data.point)
 					}
 					
 				}
 			})
 		
-			$('#chargePrice').val("")
 		} else {
 		    var msg = '결제에 실패하였습니다.'
 		    msg += '에러내용 : ' + rsp.error_msg
@@ -197,6 +198,10 @@ $(function(){
 	})	
 	
 })
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function newNoticeCount() {
 		var alram = "<i id='newNotice' class='material-icons'>notifications_active</i>";
 		$.ajax({
@@ -331,7 +336,7 @@ function newNoticeCount() {
                                  <a href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${sessionScope.user.userNo}" class="dropdown-item">
                                  <i class="material-icons">face</i> 마이 스튜디오</a>
                                  <fmt:formatNumber var="fmtmoney" value="${sessionScope.user.point}" pattern="#,###"/>
-                                 <h6 class="dropdown-header">포인트 : ${fmtmoney}</h6>
+                                 <h6 id="fmtPoint" class="dropdown-header">포인트 : ${fmtmoney}</h6>
                                  <input type="hidden" class="point" id="nowPoint" value="${sessionScope.user.point}">
                                  <a href="#pablo" class="dropdown-item" data-toggle="modal" data-target="#exampleModal">
                                  <i class="material-icons">credit_card</i> 충전하기</a>
