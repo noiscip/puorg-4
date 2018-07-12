@@ -33,7 +33,7 @@ input[type=radio] {
 input[type=radio]+label {
 	display: inline-block;
 	cursor: pointer;
-	line-height: 22px;
+/* 	line-height: 22px; */
 	padding-left: 22px;
 /* 	background: url('/picsion/assets/img/favicon.png') left/22px no-repeat; */
 	border-width: 2px;
@@ -45,7 +45,7 @@ input[type=radio]:checked+label {
 	/* background-image: url('/picsion/assets/img/loading_bar2.gif'); */
 	border-width: 2px;
 	border-style: solid;
-	border-color: #000;
+	border-color: #9c27b0;
 }
 .bootstrap-tagsinput .tag {
 	border : 2px solid;
@@ -114,14 +114,14 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
 			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
-			<h1>upload</h1>
+			<h1> </h1>
 			<div class="row">
 				<div class="col-md-6">
 					<form id="fileForm" enctype="multipart/form-data" method="post">
 
 						<div class="fileinput fileinput-new text-center"
 							data-provides="fileinput">
-							<div class="fileinput-new thumbnail img-raised">
+							<div class="fileinput-new thumbnail">
 								<img
 									src="assets/img/up.png"
 									alt="...">
@@ -137,29 +137,21 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 									<input type="file" name="filePath" accept=".jpg, .png, .bmp" />
 								</span> 
 								<a href="#Redirect" class="btn btn-danger btn-round" onclick="fileCancle()">
-									<i class="fa fa-times"></i>Remove
+									Remove
 								</a>
 							</div>
 							<div id="peopleRadio" class="form-group" style="display: none;">
 								<br>
-								<div class="row">
 								<label for="numberPeople">사람수</label>
-								</div>
-								<div class="row">
-								<input type="radio" name="people" id="zero"><label for="zero"> X <img src="assets/img/userNo.png" width="30px" height="30px"></label> 
-  								<input type="radio" name="people" id="one"><label for="one"> 1 <img src="assets/img/user1.png" width="30px" height="30px"></label>
-  								<input type="radio" name="people" id="two"><label for="two"> 2 <img src="assets/img/user2.png" width="30px" height="30px"></label> 
-  								<input type="radio" name="people" id="thr"><label for="thr"> 3~5 <img src="assets/img/user5.png" width="30px" height="30px"></label>
-  								<input type="radio" name="people" id="six"><label for="six"> 6+ <img src="assets/img/user6.png" width="30px" height="30px"></label>
-  								</div>
+								<input type="radio" name="picPeople" id="zero" value="0"><label for="zero"> 0 <img src="assets/img/userNo.png" width="30px" height="30px"></label> 
+  								<input type="radio" name="picPeople" id="one" value="1"><label for="one"> 1 <img src="assets/img/user1.png" width="30px" height="30px"></label>
+  								<input type="radio" name="picPeople" id="two" value="2"><label for="two"> 2 <img src="assets/img/user2.png" width="30px" height="30px"></label> 
+  								<input type="radio" name="picPeople" id="thr" value="3"><label for="thr"> 3~5 <img src="assets/img/user5.png" width="30px" height="30px"></label>
+  								<input type="radio" name="picPeople" id="six" value="6"><label for="six"> 6+ <img src="assets/img/user6.png" width="30px" height="30px"></label>
 							</div>
 							<div class="form-group" id="price" style="display: none;">
-								<div class="row">
 								<label for="price">희망 가격</label>
-								</div>
-								<div class="row"> 
-								<input type="text" class="form-control" id="pictureTitle" name="picPrice" style="width: 90%">
-								</div>
+								<input type="text" class="form-control" id="picPrice" name="picPrice" style="width: 90%">
 							</div>
 						</div>
 					
@@ -187,6 +179,8 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						</div>
 						<div id="tagA">
 						</div>
+						<input type="hidden" id="subPrice" name="picPrice" value=""/>
+						<input type="hidden" id="subPeople" name="picPeople" value=""/>
 						<button type="submit" class="btn btn-primary">저장하기</button>
 					</form>
 				</div>
@@ -212,6 +206,13 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 	}
 	
 	$(function() {
+		$('#picPrice').focusout(function(){
+			$('#subPrice').val($(this).val());
+		});
+		$('input[type=radio]:checked').each(function(){
+			console.log($(this).val());
+			$('#subPeople').val($(this).val());
+		});
 		$('.btn-danger').hide()
 		
 		$('input[type=file]').change(function() {
@@ -392,7 +393,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 $(document).ready(function(){
 	
 	$(document).on('mouseover','.face-rectangle',function(){
-		 $(this).css("border-color","#3ADF00");
+		 $(this).css("border-color","#9c27b0");
 	});
 	$(document).on('mouseout','.face-rectangle',function(){
 		 $(this).css("border-color","#F2F2F2");
