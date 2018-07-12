@@ -212,6 +212,8 @@ function newNoticeCount() {
 			}
 		})
 	}
+	
+
 </script>
 
 <style>
@@ -238,8 +240,8 @@ function newNoticeCount() {
                  <div class="form-group has-default bmd-form-group">
                        <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
-                 <button id="submitbtn" type="submit" class="btn btn-white btn-raised btn-fab btn-fab-mini btn-round">
-                    <i class="material-icons">search</i>
+                 <button id="submitbtn" style="background-color: transparent;" type="submit" class="btn btn-fab btn-round">
+                   <img alt="No Img" style="width:30px"src="<%=request.getContextPath()%>/images/eye.png">
                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
