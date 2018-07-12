@@ -9,9 +9,6 @@
 	                <div class="card-header card-header-primary text-center">
 	                  <h4>Sign Up</h4>
 	                  <div class="social-line">
-	                    <button class="btn btn-just-icon  btn-google">
-                                <i class="fa fa-google"> </i>
-                         </button>
 	                    <a href="<%=request.getContextPath()%>/google/login.ps" class="btn btn-link btn-just-icon">
 	                       <img alt="구글 로그인" src="<%=request.getContextPath()%>/assets/img/portalsite/google_icon.png" style="width: 40px">
 	                    </a>
@@ -20,7 +17,7 @@
 	                    </a>
 	                  </div> 
 	                </div>
-	                <p class="text-divider">Or Be Classical</p>
+	                <p class="text-divider">회원 로그인</p>
 	                <div class="card-body">
 	                  	<span class="bmd-form-group"><div class="input-group">
 		                    <div class="input-group-prepend">

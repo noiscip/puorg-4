@@ -252,21 +252,21 @@ $('.navbar-transparent').on()
                  <div class="form-group has-default bmd-form-group">
                        <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
-                 <button id="submitbtn" style="background-color: transparent;" type="submit" class="btn btn-fab btn-round">
-                   <img alt="No Img" style="width:40px"src="<%=request.getContextPath()%>/images/eye.png">
-                </button>
+                <button id="submitbtn" type="submit"  class="btn btn-white btn-fab btn-round">
+                      <i class="material-icons">search</i>
+                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/register.ps"> 
-								<i class="material-icons">accessibility_new</i> 회원가입
+								<i class="material-icons">how_to_reg</i> 회원가입
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/login.ps"> 
-								<i class="material-icons">camera_front</i>로그인
+								<i class="material-icons">account_circle</i>로그인
 							</a>
 						</li>
 					</c:when>

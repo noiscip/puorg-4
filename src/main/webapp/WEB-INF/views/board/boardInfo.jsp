@@ -373,6 +373,7 @@
 		<div class="row">
 		<div class="col-md-12">
 		<!-- 전체 진행 탭-->
+		<div>${operation.step}</div>
 			<ul class="nav nav-pills nav-pills-icons justify-content-center"" role="tablist">
 				<!-- 진행 전 -->
 			    <li class="nav-item">
