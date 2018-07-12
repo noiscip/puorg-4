@@ -68,31 +68,44 @@ $(function(){
 	<div class="container"></div>
 </div>
 <div class="main">
-	<div class="section section-basic">
+	<div class="profile-content">
 		<div class="container">
-		
-		<ul class="nav nav-pills nav-pills-rose">
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/admin.ps">회원 관리</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/blame/adminComplainList.ps">신고글 관리</a></li>
-		  <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/adminPurchase.ps">매출 내역</a></li>
-		  <li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/user/adminStats.ps">통계</a></li>
+		<ul class="nav nav-pills justify-content-center my-ul">
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
+			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
 		</ul>
-		<br>
-		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-4">
-				<input id="datePicker1" type="text" class="form-control datetimepicker"/>
+		
+			<div id="tables" class="my-ul">
+				<div class="tabs-underline">
+				<ul>
+					<li><a href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
+					<li><a href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
+					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/personalStatistics.ps">통계 차트</a></li>
+					
+				</ul>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-4">
+						<input id="datePicker1" type="text" class="form-control datetimepicker"/>
+					</div>
+					~
+					<div class="col-md-4">
+						<input id="datePicker2" type="text" class="form-control datetimepicker"/>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-primary btn-sm" id="daySearch">검색</button>
+					</div>
+				</div>
+				<br>
+				<div id="sales" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				</div>
+				
+				</div>
 			</div>
-			~
-			<div class="col-md-4">
-				<input id="datePicker2" type="text" class="form-control datetimepicker"/>
-			</div>
-			<div class="col-md-2">
-				<button class="btn btn-primary btn-sm" id="daySearch">검색</button>
-			</div>
-		</div>
-		<br>
-		<div id="sales" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			
 		</div>
 	</div>
-</div>
