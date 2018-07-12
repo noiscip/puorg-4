@@ -168,7 +168,7 @@ $(function(){
 		    pg : 'inicis', // version 1.1.0부터 지원.
 		    pay_method : 'card',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
-		    name : '주문명:포인트 충전',
+		    name : '포인트 충전',
 		    amount : $('#chargePrice').val(),
 		    buyer_name : $('.userName').val(),
 		    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
