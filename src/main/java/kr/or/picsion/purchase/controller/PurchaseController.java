@@ -114,6 +114,26 @@ public class PurchaseController {
 		model.addAttribute("map",map);
 		return jsonview; 
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 12.
+	* 메소드명 : maySalesStatistics
+	* 작성자명 : 김준수 
+	* 기      능 : 개인별 매출 보기
+	*
+	* @param startDate
+	* @param endDate
+	* @param userNo
+	* @param model
+	* @return
+	*/
+	@RequestMapping("mySalesAmount.ps")
+	public View maySalesStatistics(Date startDate, Date endDate, int userNo, Model model) {
+		
+		Map<Integer, List<Object>> map = purchaseService.maySalesStatistics(startDate,endDate,userNo);
+		model.addAttribute("map",map);
+		return jsonview; 
+	}
 		
 	/**
 	* 날      짜 : 2018. 7. 2.

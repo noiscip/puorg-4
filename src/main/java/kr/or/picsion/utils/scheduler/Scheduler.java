@@ -37,7 +37,7 @@ public class Scheduler {
 	@Autowired
 	private UserService userService;
 	
-	/*@Scheduled(cron="0 0 4 * * ?")
+	/*@Scheduled(cron="0 0 0 * * ?")
 	public void deleteMsg() {
 		System.out.println("스케쥴러");
 		Date nowDate = new Date();

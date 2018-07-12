@@ -24,13 +24,15 @@ public class Operation {
 	private String requesterCancel;
 	private int operApplyNo;
 	private int brdNo;
+	private int step;
 
 	public Operation() {
 	}
 
 	public Operation(int operNo, int requesterNo, int operatorNo, int operPrice, Date operStartReg, Date operEndReg,
 			int firstCancelUserNo, String operatorEnd, String requesterEnd, String operatorCancel,
-			String requesterCancel, int operApplyNo, int brdNo) {
+			String requesterCancel, int operApplyNo, int brdNo, int step) {
+		super();
 		this.operNo = operNo;
 		this.requesterNo = requesterNo;
 		this.operatorNo = operatorNo;
@@ -44,6 +46,7 @@ public class Operation {
 		this.requesterCancel = requesterCancel;
 		this.operApplyNo = operApplyNo;
 		this.brdNo = brdNo;
+		this.step = step;
 	}
 
 	public int getOperNo() {
@@ -150,12 +153,21 @@ public class Operation {
 		this.brdNo = brdNo;
 	}
 
+	public int getStep() {
+		return step;
+	}
+
+	public void setStep(int step) {
+		this.step = step;
+	}
+
 	@Override
 	public String toString() {
 		return "Operation [operNo=" + operNo + ", requesterNo=" + requesterNo + ", operatorNo=" + operatorNo
 				+ ", operPrice=" + operPrice + ", operStartReg=" + operStartReg + ", operEndReg=" + operEndReg
 				+ ", firstCancelUserNo=" + firstCancelUserNo + ", operatorEnd=" + operatorEnd + ", requesterEnd="
 				+ requesterEnd + ", operatorCancel=" + operatorCancel + ", requesterCancel=" + requesterCancel
-				+ ", operApplyNo=" + operApplyNo + ", brdNo=" + brdNo + "]";
+				+ ", operApplyNo=" + operApplyNo + ", brdNo=" + brdNo + ", step=" + step + "]";
 	}
+
 }
