@@ -6,11 +6,23 @@
 
 
 <style>
-/* 메시지함 신고버튼, 삭제버튼 여백 삭제 */
-.message-margin-del{
-	margin: 5px;
-	padding: 5px;
-}
+	/* 메시지함 신고버튼, 삭제버튼 여백 삭제 */
+	.message-margin-del{
+		margin: 5px;
+		padding: 5px;
+		
+	}
+	
+	/* 댓글창에 보이는 작은 프로필 */
+	.comment-small-pr{
+		height: 30px;
+	}
+	
+	/* 댓글에 보이는 프로필 */
+	.comment-lg-pr{
+	    height: 64px;
+	}
+	
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -146,32 +158,34 @@ $(document).ready(function() {
 					tableNo : tableNo
 				   };
 		
+		
+		
 		$.ajax({
 			  url : "<%=request.getContextPath()%>/comment/insertpiccomment.ps",
 			  data: data,
 			  success : function(data){
-				  if(data.errorCheck == 0){
-					  alert("댓글 작성 실패");
-				  }else{
-					  var media="";
-				      $('#commentstart').empty();
-				      $.each(data.newcommentUserList,function(index,element){
-				    	  console.log(element)
-							media += "<div class='media'>"+
-						    "<a class='float-left' href='/picsion/picture/mystudio.ps?userNo="+element.userNo+"'>"+
-							"<div class='avatar'>";
-							media += "<img class='media-object' alt='64x64' src='"+element.prPicture+"'>";
-							media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
-								element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
-							    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p><a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'>"+
-							    "<i class='material-icons'>clear</i>삭제</a>"+
-								"<a class='btn btn-primary btn-link float-right message-margin-del' rel='tooltip' data-original-title='보내버리기' id='" + data.newcommentlist[index].tableNo + ","+element.userNo+",0,"+picNo+","+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>reply</i>신고</a></div></div>";
-						}) 
-						$('#commentstart').append(media);
-				       	$('a[rel=tooltip]').tooltip();
-				        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
-				      	$("#newComment").val("");
-				  }
+				  var media="";
+			      $('#commentstart').empty();
+			      console.log(data)
+			      $.each(data.newcommentUserList,function(index,element){
+			    	  console.log(element)
+						media += "<div class='media'>"+
+					    "<a class='float-left' href='/picsion/picture/mystudio.ps?userNo="+element.userNo+"'>"+
+						"<div class='avatar'>";
+						media += "<img class='media-object comment-lg-pr' alt='64x64' src='"+element.prPicture+"'>";
+						media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
+							element.userName+"<small>· "+moment(data.newcommentlist[index].cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
+						    "</h4><p>"+data.newcommentlist[index].cmtContent+"</p>";
+						    
+						if(loginUserNo==moment(data.newcommentlist[index].userNo)){ media += "<a id='commentDel' class='btn btn-rose btn-link float-right message-margin-del' value='"+data.newcommentlist[index].cmtNo+"'><i class='material-icons'>clear</i>삭제</a>";}
+						media += "</div></div>";
+						
+					}) 
+					$('#commentstart').append(media);
+			       	$('a[rel=tooltip]').tooltip();
+			        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+			      	$("#newComment").val("");
+			     
 			  },
 			  error: function(){
 			   	  alert("댓글 보내는 도중 오류가 발생했습니다.");
@@ -422,7 +436,7 @@ $(document).ready(function() {
 				</div>
 				<div class="col-md-6 col-sm-6">
 					<h2 class="title">${picture.picTitle}</h2>
-				 <h1 class="card-title"><small>${picture.picPrice}원</small></h1> 
+				 <h1 class="card-title"><small><fmt:formatNumber var="fmtmoney" value="${picture.picPrice}" pattern="#,###"/>${fmtmoney}원</small></h1> 
 					<div id="accordion" role="tablist">
 						<div class="card card-collapse">
 							<div class="card-header" id="headingOne">
@@ -474,7 +488,7 @@ $(document).ready(function() {
 												<div class="media">
 													<a class="float-left" href="<%=request.getContextPath()%>/picture/mystudio.ps?userNo=${commentUserList[status.index].userNo}">
 														<div class="avatar">
-												         <img class="media-object" alt="64x64" src="${commentUserList[status.index].prPicture}">
+												         <img class="media-object comment-lg-pr" alt="64x64" src="${commentUserList[status.index].prPicture}">
 														</div>
 													</a>
 													<div style="width: 70%;" class="media-body">
@@ -484,8 +498,8 @@ $(document).ready(function() {
 															</small>
 														</h4>
 														<p>${comm.cmtContent}</p>
-														<a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a>
-														<a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a>
+														<c:if test="${comm.userNo==user.userNo}"><a id="commentDel" class="btn btn-rose btn-link float-right message-margin-del" value="${comm.cmtNo}"><i class="material-icons">clear</i>삭제</a></c:if>														
+														<c:if test="${comm.userNo!=user.userNo and sessionScope.user.userNo ne null}"><a class="btn btn-primary btn-link float-right message-margin-del" rel="tooltip" data-original-title="보내버리기" id="${comm.tableNo},${comm.userNo},0,${comm.picNo},${comm.cmtNo}"><i	class="material-icons">reply</i>신고</a></c:if>
 													</div>
 												</div>
 											</c:forEach>
@@ -510,7 +524,7 @@ $(document).ready(function() {
 										<c:otherwise>
 											<a class="author float-left" href="#pablo">
 												<div class="avatar">
-												  <img class="media-object" alt="64x64" src="${sessionScope.user.prPicture}">
+												  <img class="media-object comment-small-pr" alt="64x64" src="${sessionScope.user.prPicture}">
 												</div>
 											</a>
 											<div class="media-body">

@@ -77,7 +77,17 @@
         	})
    });
 
-    </script>
+</script>
+<style>
+	.awhite-font-color{
+		color:#fff;	
+	}
+	.awhite-font-color:hover,
+	.awhite-font-color:focus{
+		color:#fff;	
+	}
+</style>
+
 <div id="changemain" class="page-header header-filter" data-parallax="true">
 </div>
 
@@ -115,14 +125,32 @@
 									Total<span id="total1"class="price"><fmt:formatNumber value="${total}" pattern="#,###"/><small>원</small></span>
 								</div>
 								<div class="total">
-									구매 후 잔액<span id="change" value="${user.point-total}" class="price"><fmt:formatNumber value="${user.point-total}" pattern="#,###"/><small>원</small></span>
-									<input id="changehidden" name="point" value="${user.point-total}" type="hidden">
+									 <c:choose>
+											<c:when test="${user.point-total >= 0}">
+												구매 후 잔액<span id="change" value="${user.point-total}" class="price"><fmt:formatNumber value="${user.point-total}" pattern="#,###"/><small>원</small></span>
+												<input id="changehidden" name="point" value="${user.point-total}" type="hidden">
+											</c:when>
+											<c:otherwise>
+												<span>잔액(${user.point}) 부족</span>
+											</c:otherwise>
+									</c:choose>
+									
 								</div> 
 								<br>
 								<div class="form-group col-sm-12">
-									<button type="submit" class="btn btn-primary btn-block">
-										Proceed
-									</button>
+								<c:choose>
+											<c:when test="${user.point-total >= 0}">
+												<button type="submit" class="btn btn-primary btn-block">
+													Proceed
+												</button>
+											</c:when>
+											<c:otherwise>
+												<button class="btn btn-primary btn-sm float-right">
+													<a href="<%=request.getContextPath()%>/user/updatebefore.ps" class="awhite-font-color">캐시 충전</a>
+												</button>												
+											</c:otherwise>
+									</c:choose>								
+									
 								</div>
 							</div>
 						</form:form>

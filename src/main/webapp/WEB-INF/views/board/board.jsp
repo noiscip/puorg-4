@@ -11,13 +11,6 @@ $(document).ready( function () {
     	"bInfo": false,    	
     	"bLengthChange": false
     } );
-    var errorCheck = ${errorCheck};
-    if(errorCheck == 0){
-    	alert("글 작성 오류");
-    }
-    
-    
-    
     
 } );
 </script>
@@ -68,9 +61,9 @@ $(document).ready( function () {
 											</c:otherwise>
 										</c:choose></td>
 									<td class="text-center">${n.userName}</td>
-									<td class="text-center"><small> ·<fmt:formatDate
+									<td class="text-center"><fmt:formatDate
 												pattern="yyyy-MM-dd, HH:mm" value="${n.brdReg}" />
-									</small></td>
+									</td>
 									<td class="text-center">${n.operState}</td>
 								</tr>
 							</c:forEach>

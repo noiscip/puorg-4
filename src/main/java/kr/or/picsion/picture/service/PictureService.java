@@ -39,7 +39,6 @@ public class PictureService {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	
 	/**
 	* 날      짜 : 2018. 6. 13.
 	* 메소드명 : studioPicList

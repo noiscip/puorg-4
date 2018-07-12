@@ -155,6 +155,15 @@ public class MessageService {
 	}
 	
 	
+	/**
+	 * 날      짜 : 2018. 7. 08.
+	 * 메소드명 : deleteMsg
+	 * 작성자명 : 아윤근
+	 * 기      능 : 메시지 삭제
+	 *
+	 * @param date
+	 * @return Integer
+	*/
 	public int deleteMsg(Date date) {
 		MessageDao messageDao = sqlSession.getMapper(MessageDao.class);
 		int result = messageDao.deleteMessage(date);

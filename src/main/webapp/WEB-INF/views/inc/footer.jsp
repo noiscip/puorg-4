@@ -4,13 +4,11 @@
 
 
   	<script type="text/javascript">
-		  //top으로ws
 		  	
 			$(function() {
-				if($('#loginUserNo').val()!= ""){
+				if($('#loginUserNo').val()!= "0"){
 					connect() 
 				}
-				
 				//신고하기/////////////////////////////////////////////////////////////////
 				$('#blaSend').click(function(){
 					var info = $('#info').val().split(',')
@@ -62,7 +60,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */ 
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.24:8090/picsion/message.ps") //테스트 용도  
+			 	wsocket = new WebSocket("ws://192.168.0.31:8090/picsion/message.ps") //테스트 용도  
 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
@@ -77,7 +75,8 @@
 				var sendUserNo = evt.data.split(':')[0]
 				var removeDiv = $('#commentstart').find('p[data-no='+sendUserNo+']').closest('.media');
 				var url = "";
-				
+				console.log(evt)
+				var isThis = false
 				if(table==4 && evt.data.split(':')[3] != null){
 				
 					 $.ajax({
@@ -91,10 +90,10 @@
 									media += "<div class='media'>"+
 								    "<a class='float-left' href='#pablo'>"+
 									"<div class='avatar'>";
-									if(data.userinfo.prPicture == null){
+								if(data.userinfo.prPicture == null){
 										 media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>/assets/img/user.png'>";
 									}else{
-										media += "<img class='media-object' alt='64x64' src='<%=request.getContextPath()%>"+data.userinfo.prPicture+"'>";
+										media += "<img class='media-object' alt='64x64' src='"+data.userinfo.prPicture+"'>";
 									}
 									media += "</div></a><div class='media-body'><h4 class='media-heading'>"+
 									data.userinfo.userName+"<small>· "+moment(data.receivecomment.cmtReg).format('YYYY-MM-DD, H:mm:ss')+"</small>"+
@@ -106,17 +105,16 @@
 								$("#reviewcontents").append(media); 									
 						        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
 						      	$("#reviewcontent").val("");                        	
-                        
                         }
-                        }); 
-				}
-				else if(table==5 && evt.data.split(':')[3] != null){
+                    }); 
+				}else if(table==5 && evt.data.split(':')[3] != null){
 		  			
                     $.ajax({
                     	url:"/picsion/message/readmsg.ps",
                     	data: {	sendUserNo: sendUserNo,
                     			msgNo: evt.data.split(':')[3]
                     	},
+                    	async: false,
                         success: function(data) {
                         	/* 현재 연 메시지창이 보낸사람이 맞는지 확인해서 메시지 뿌려주기  */
                         	if($('.messageSend').data("no")==sendUserNo && $('#msgContent-show').hasClass('msg-show')){
@@ -128,6 +126,8 @@
 						                      "</div></div>";
 								$('#msg-body').append(msg);
 								$('#msg-body').scrollTop($('#msg-body')[0].scrollHeight);
+								isThis= true
+								console.log(isThis)
                         	}
 							removeDiv.remove();
 							
@@ -144,13 +144,13 @@
 										   	"</div></div>";
 										   	
 							$('#commentstart').prepend(userList);
-								
-                        	
                         }
                     })
-                } 
-               	newNoticeCount()
-                
+                }
+				if(!isThis){
+	               	console.log('여기는 노티스 안  false')
+	               	newNoticeCount()
+				}
 		 	}
 		  	
 		  	
@@ -160,7 +160,7 @@
 		  
 		  	function send(receiveUser,tableNo) {
 			  	var loginUser = $('#loginUserNo').val()
-			  	if(loginUser != receiverUser){
+			  	if(loginUser != receiveUser){
 			        wsocket.send(loginUser+":"+receiveUser+":"+tableNo);
 			  	}
 		    }

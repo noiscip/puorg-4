@@ -109,16 +109,14 @@ public class BoardController {
 	public String postwriteBoard(Board board, HttpSession session, Model model) {
 		User user = (User) session.getAttribute("user");
 		Board inboard = board;
-		int errorCheck = 0;
 		try {
 			inboard.setUserNo(user.getUserNo());
 			inboard.setTableNo(3);
 			inboard.setOperStateNo(1);
-			errorCheck = boardService.insertBoard(inboard);
+			boardService.insertBoard(inboard);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		model.addAttribute("errorCheck",errorCheck);
 		return "redirect:/board/board.ps";
 	}
 
