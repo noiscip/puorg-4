@@ -25,7 +25,6 @@
 	/*  background-position: inherit; */
 }
 
-
 input[type=radio] {
 	display: none;
 }
@@ -33,9 +32,9 @@ input[type=radio] {
 input[type=radio]+label {
 	display: inline-block;
 	cursor: pointer;
-/* 	line-height: 22px; */
+	/* 	line-height: 22px; */
 	padding-left: 22px;
-/* 	background: url('/picsion/assets/img/favicon.png') left/22px no-repeat; */
+	/* 	background: url('/picsion/assets/img/favicon.png') left/22px no-repeat; */
 	border-width: 2px;
 	border-style: solid;
 	border-color: #BDBDBD;
@@ -47,10 +46,11 @@ input[type=radio]:checked+label {
 	border-style: solid;
 	border-color: #9c27b0;
 }
+
 .bootstrap-tagsinput .tag {
-	border : 2px solid;
-    background-color: #fff;
-    color: #9c27b0;
+	border: 2px solid;
+	background-color: #fff;
+	color: #9c27b0;
 }
 </style>
 
@@ -99,22 +99,29 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 	 $("#preview").css("class", "rainbow-color"); }) */
 </script>
 
-<div id="changemain" class="page-header header-filter clear-filter purple-filter"
+<div id="changemain"
+	class="page-header header-filter clear-filter purple-filter"
 	data-parallax="true">
 	<div class="container"></div>
 </div>
 <div class="main">
 	<div class="profile-content">
 		<div class="container">
-		<ul class="nav nav-pills justify-content-center my-ul">
-			<li class="nav-item"><a class="nav-link active" href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
-			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
-		</ul>
-			<h1> </h1>
+			<ul class="nav nav-pills justify-content-center my-ul">
+				<li class="nav-item"><a class="nav-link active"
+					href="<%=request.getContextPath()%>/upload.ps">업로드</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=request.getContextPath()%>/user/bookmarklist.ps">즐겨찾기</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=request.getContextPath()%>/message/receivemessage.ps">메시지함</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=request.getContextPath()%>/purchase/history.ps">거래 내역</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=request.getContextPath()%>/operation/operequest.ps">요청/작업</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="<%=request.getContextPath()%>/user/updatebefore.ps">정보 수정</a></li>
+			</ul>
+			<h1></h1>
 			<div class="row">
 				<div class="col-md-6">
 					<form id="fileForm" enctype="multipart/form-data" method="post">
@@ -122,39 +129,42 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						<div class="fileinput fileinput-new text-center"
 							data-provides="fileinput">
 							<div class="fileinput-new thumbnail">
-								<img
-									src="assets/img/up.png"
-									alt="...">
+								<img src="assets/img/up.png" alt="...">
 							</div>
-							<div class="fileinput-preview fileinput-exists thumbnail img-raised"> 
-							<%-- <canvas id="canvasdiv"></canvas> --%> 
-								
-							</div> 
+							<div class="fileinput-preview fileinput-exists thumbnail">
+
+							</div>
 							<div>
-								<span class="btn btn-raised btn-round btn-default btn-file"> 
-									<span class="fileinput-new" id="selectImage">Select image</span> 
-									<span class="fileinput-exists" id="changeImage">Change</span> 
+								<span class="btn btn-raised btn-round btn-default btn-file">
+									<span class="fileinput-new" id="selectImage">Select
+										image</span> <span class="fileinput-exists" id="changeImage">Change</span>
 									<input type="file" name="filePath" accept=".jpg, .png, .bmp" />
-								</span> 
-								<a href="#Redirect" class="btn btn-danger btn-round" onclick="fileCancle()">
-									Remove
-								</a>
+								</span> <a href="#Redirect" class="btn btn-default btn-round"
+									id="removeBtn" onclick="fileCancle()"> Remove </a>
 							</div>
 							<div id="peopleRadio" class="form-group" style="display: none;">
-								<br>
-								<label for="numberPeople">사람수</label>
-								<input type="radio" name="picPeople" id="zero" value="0"><label for="zero"> 0 <img src="assets/img/userNo.png" width="30px" height="30px"></label> 
-  								<input type="radio" name="picPeople" id="one" value="1"><label for="one"> 1 <img src="assets/img/user1.png" width="30px" height="30px"></label>
-  								<input type="radio" name="picPeople" id="two" value="2"><label for="two"> 2 <img src="assets/img/user2.png" width="30px" height="30px"></label> 
-  								<input type="radio" name="picPeople" id="thr" value="3"><label for="thr"> 3~5 <img src="assets/img/user5.png" width="30px" height="30px"></label>
-  								<input type="radio" name="picPeople" id="six" value="6"><label for="six"> 6+ <img src="assets/img/user6.png" width="30px" height="30px"></label>
+								<br> <label for="numberPeople">사람수</label> <input
+									type="radio" name="picPeople" id="zero" value="0"><label
+									for="zero"> 0 <img src="assets/img/userNo.png"
+									width="30px" height="30px"></label> <input type="radio"
+									name="picPeople" id="one" value="1"><label for="one">
+									1 <img src="assets/img/user1.png" width="30px" height="30px">
+								</label> <input type="radio" name="picPeople" id="two" value="2"><label
+									for="two"> 2 <img src="assets/img/user2.png"
+									width="30px" height="30px"></label> <input type="radio"
+									name="picPeople" id="thr" value="3"><label for="thr">
+									3~5 <img src="assets/img/user5.png" width="30px" height="30px">
+								</label> <input type="radio" name="picPeople" id="six" value="6"><label
+									for="six"> 6+ <img src="assets/img/user6.png"
+									width="30px" height="30px"></label>
 							</div>
 							<div class="form-group" id="price" style="display: none;">
-								<label for="price">희망 가격</label>
-								<input type="text" class="form-control" id="picPrice" name="picPrice" style="width: 90%">
+								<label for="price">희망 가격</label> <input type="text"
+									class="form-control" id="picPrice" name="picPrice"
+									style="width: 90%">
 							</div>
 						</div>
-					
+
 					</form>
 				</div>
 
@@ -174,13 +184,10 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						<!-- <form action=""> -->
 						<div id="picTags" class="form-group">
 							<label for="comment">Tags</label>
-								<div id="loaderIcon">
-								</div>
+							<div id="loaderIcon"></div>
 						</div>
-						<div id="tagA">
-						</div>
-						<input type="hidden" id="subPrice" name="picPrice" value=""/>
-						<input type="hidden" id="subPeople" name="picPeople" value=""/>
+						<div id="tagA"></div>
+						<input type="hidden" id="subPrice" name="picPrice" value="" /> 
 						<button type="submit" class="btn btn-primary">저장하기</button>
 					</form>
 				</div>
@@ -190,38 +197,45 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 </div>
 
 <script>
+	var isUpload = false;
 	function fileCancle(){
-		fileChange()
-		$('#selectImage').show()
-		$('#changeImage').hide()
-		$('.fileinput-preview').empty().append('<img src="assets/img/up.png">') 
+		if(isUpload){
+			fileChange()
+			$('#selectImage').show()
+			$('#changeImage').hide()
+			$('.fileinput-preview').empty().append('<img src="assets/img/up.png">')
+		}
 	}
 	
 	function fileChange(){
-		$('.btn-danger,#peopleRadio,#selectImage').hide()
+		$('#removeBtn,#peopleRadio,#selectImage,#price').hide()
 		$('#tagA,#picTags').empty()
 		$('#changeImage').show()
 		$('.alert').remove()
-		$('#picTags').append('<label for="comment">Tags</label><div id="loaderIcon"></div>')
+		$('#picTags').append('<label for="comment">태그</label><div id="loaderIcon"></div>')
 	}
 	
 	$(function() {
 		$('#picPrice').focusout(function(){
 			$('#subPrice').val($(this).val());
 		});
-		$('input[type=radio]:checked').each(function(){
-			console.log($(this).val());
-			$('#subPeople').val($(this).val());
+		$("input:radio[name='picPeople']").click(function(){
+			$('#picPeople').val($(this).val());
 		});
-		$('.btn-danger').hide()
+		$('#removeBtn').hide()
 		
 		$('input[type=file]').change(function() {
+			isUpload = false;
 			if($('input[type=file]').val().trim()==""){
 				$('form').reset()
 				return false
 			}
 			fileChange()
-			$('.btn-danger').show()
+			$('#removeBtn').show(function(){
+				if(isUpload == false){
+					return;
+				}
+			})
 
 			var formData = new FormData($('#fileForm')[0])
 			$("fileinput-preview fileinput-exists thumbnail img-raised:first").attr({
@@ -234,6 +248,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 				contentType: false,
 				type :'POST',
 				success : function(data){
+					isUpload = true;
 					console.log(data)
 					$("#loaderIcon").empty();
 					if(data.logo != null){
@@ -380,31 +395,25 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					$('#tagA').append(color);
 					$('#price').show();
 				},beforeSend:function(){
-					$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
-				}
-				
+					$("#loaderIcon").html("<img height='250px' src='<%=request.getContextPath()%>/assets/img/eyeMove.gif'/>"); }
 			})
-			
 		})
 	})
-	
 
-	
-$(document).ready(function(){
-	
-	$(document).on('mouseover','.face-rectangle',function(){
-		 $(this).css("border-color","#9c27b0");
+	$(document).ready(function() {
+
+		$(document).on('mouseover', '.face-rectangle', function() {
+			$(this).css("border-color", "#9c27b0");
+		});
+		$(document).on('mouseout', '.face-rectangle', function() {
+			$(this).css("border-color", "#F2F2F2");
+		});
+
+		/* $(".face-rectangle").mouseover(function(){
+			consol.log("띠띠");
+			$(".face-rectangle").style("border-color","red");
+		
+		/* $("#preview").css("class", "rainbow-color"); 
+		}); */
 	});
-	$(document).on('mouseout','.face-rectangle',function(){
-		 $(this).css("border-color","#F2F2F2");
-	});
-	
-	
-	/* $(".face-rectangle").mouseover(function(){
-		consol.log("띠띠");
-		$(".face-rectangle").style("border-color","red");
-	
-	/* $("#preview").css("class", "rainbow-color"); 
-	}); */
-});
 </script>
