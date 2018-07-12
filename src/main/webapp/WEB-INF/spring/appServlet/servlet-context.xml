@@ -70,7 +70,7 @@
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
 	
-	<bean id="message" class="kr.or.picsion.utils.NoticeSocketHandler"></bean>
+	<bean id="message" class="kr.or.picsion.utils.NoticeSocketHandler" />
 	
 	<!-- google Class Bean설정 추가 -->
 	
