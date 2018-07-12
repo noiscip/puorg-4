@@ -375,11 +375,23 @@
 			<div class="tab-pane <c:if test='${operation.step == 1}'>active</c:if>" id="step-2">
 			<c:choose>
 				<c:when test="${boardInfo.userNo eq user.userNo}">
-				<button type="button" data-toggle="modal" data-target="#checkPicModal"
-					class="btn btn-primary btn-md float-right">
-					<i class="material-icons">linked_camera</i>
-					&nbsp;작업 사진 확인
-				</button>
+				<c:choose>
+					<c:when test="${operation.operatorEnd ne 'T'}">
+						<button type="button" data-toggle="modal" data-target="#checkPicModal"
+							class="btn btn-primary btn-md float-right">
+							<i class="material-icons">linked_camera</i>
+							&nbsp;작업 사진 확인
+						</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" data-toggle="modal" data-target="#checkPicModal"
+							class="btn btn-success btn-md float-right">
+							<i class="material-icons">linked_camera</i>
+							&nbsp;검증 대기
+						</button>
+					</c:otherwise>
+				</c:choose>
+				
 				</c:when>
 				<c:otherwise>
 				<c:choose>
@@ -392,7 +404,7 @@
 				</c:when>
 				<c:otherwise>
 						<button type="button" data-toggle="modal" data-target="#uploadPicModal"
-					class="btn btn-primary btn-success btn-md apply-pic-register float-right">
+					class="btn btn-success btn-md apply-pic-register float-right">
 					<i class="material-icons">linked_camera</i>
 					&nbsp;사진 선택 완료
 				</button>
@@ -997,7 +1009,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         
-	       <c:if test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.requesterNo}">
+	       <c:if test="${user.userNo eq operation.requesterNo}">
             <div class="modal-header">
                 <h5 class="modal-title" id="checkPicLabel">작업자가 올린 사진</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1014,8 +1026,8 @@
 				<c:otherwise>
 					  <div class="picture">
             			<div class="picturezoom">
-							<a href="${operPicture.picPath}"> 
-							<img class="rounded img-fluid" src="${operPicture.picPath}">
+							<a href="${operPicture.wpicPath}"> 
+							<img class="rounded img-fluid" src="${operPicture.wpicPath}">
 							</a>
 						</div>
          			</div>
@@ -1028,6 +1040,7 @@
             <div class="modal-footer">
             	<c:choose>
 				<c:when test="${empty operPicture}"></c:when>
+				<c:when test="${operation.operatorEnd ne 'T'}"></c:when>
 				<c:otherwise>
 				<button type="button" id="opercomplete" class="btn btn-success btn-link">사진이 마음에 들어요</button>
 				</c:otherwise>
@@ -1057,8 +1070,8 @@
 			<c:when test="${operation.operatorEnd eq 'T'}">
 			  <div class="picture">
           		<div class="picturezoom">
-					<a href="${operPicture.picPath}"> 
-					<img class="rounded img-fluid" src="${operPicture.picPath}">
+					<a href="${operPicture.wpicPath}"> 
+					<img class="rounded img-fluid" src="${operPicture.wpicPath}">
 					</a>
 				</div>
      		</div>
