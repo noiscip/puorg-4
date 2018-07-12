@@ -51,7 +51,7 @@ $(function(){
 	
 	function statistics(date){
 		$.ajax({
-			url:"/picsion/purchase/salesAmount.ps",
+			url:"/picsion/purchase/mySalesAmount.ps",
 			data:date,
 			success: function(data){
 				console.log(data)
@@ -84,7 +84,7 @@ $(function(){
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
 					<li><a href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
-					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/personalStatistics.ps">통계 차트</a></li>
+					<li><a class="tab-active" href="<%=request.getContextPath()%>/user/myStats.ps">통계 차트</a></li>
 					
 				</ul>
 				<div class="row">

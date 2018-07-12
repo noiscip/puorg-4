@@ -22,7 +22,7 @@ public interface PurchaseDao {
 	public Purchase sellList(int saleUserNo);	   //판매
 	public List<Purchase> purchaseList();		   //구매 리스트
 	public List<Purchase> purchaseSearch(String date); //날짜로 검색한 구매 리스트
-	public int maySalesStatistics(Date startDate, Date endDate, int userNo);//개인별 매출 보기
+	public int mySalesStatistics(Date startDate, Date endDate, int userNo);//개인별 판매매출 보기
 	public int salesStatistics(Date startDate, Date endDate);
 
 	public int insertCart(int picNo, int userNo);  //장바구니에 저장

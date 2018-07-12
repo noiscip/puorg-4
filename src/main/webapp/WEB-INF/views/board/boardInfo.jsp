@@ -30,6 +30,7 @@
                 $('#scrolldown').click();
             }
         })
+        var brdNo = ${boardInfo.brdNo};
         var myNo = $('#loginUserNo').val();
         if(${operation.operNo} != 0)
         {
@@ -50,7 +51,7 @@
                             url : "/picsion/comment/insertreview.ps",
                             type : "post",
                             data : {
-                                brdNo : ${boardInfo.brdNo},
+                                brdNo : brdNo,
                                 cmtContent : cmtcon
                             },
                             success : function(data) {
@@ -129,7 +130,6 @@
         $('#apply').on("click",function() {
                     
         console.log($("#operApplyPrice").val());
-        
                     $.ajax({
                         url : "/picsion/operationApply/apply.ps",
                         type : "post",
@@ -138,14 +138,16 @@
                             operApplyPrice : $("#operApplyPrice").val(),
                             operApplyReg : $("#operApplyReg").val(),
                             requestUserNo : ${boardInfo.userNo},
-                            brdNo : ${boardInfo.brdNo}
+                            brdNo : brdNo
                         },
                         success : function(data) {
                             console.log(data);
-                            if(data.check == true){
+                            if(data.check == "true"){
                                 alert('성공')
+                                var tableNo=10+":"+brdNo+":새로운 작업신청이 있습니다.";
+                                send(receiveUserNo,tableNo);
                             }else{
-                                var check =''
+                                /* var check =''
                                     check += '<div class="alert alert-warning">'
                                     check +=    '<div class="container-fluid">'
                                     check +=        '<div class="alert-icon">'
@@ -157,14 +159,15 @@
                                     check +=        '<b>Warning Alert</b> 이미 신청 되었습니다'
                                     check +=    '</div>'
                                     check += '</div>'
-                                $('.media-footer').after(check)
+                                $('.media-footer').after(check) */
+                            	alert("이미 신청 되었습니다.");
                             }
                         }
                     }); 
                 });
         
         $('#applysummit').on("click",function() {
-            var brdNo=${boardInfo.brdNo};
+            
             var requesterNo=${boardInfo.userNo};
             var operPrice=$('#oApplyPrice').attr("operApplyPrice");
             console.log(operPrice);
@@ -183,6 +186,8 @@
                             console.log("test");
                             console.log(data.check);
                             location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+                            var tableNo=10+":"+brdNo+":요청자가 작업을 수락하였습니다.";
+                            send(receiveUserNo,tableNo);
                         }
                     }); 
                 });
@@ -206,6 +211,8 @@
                             html+='</div>';
                             $('.apply-register').append(html);
                             console.log("성공");
+                            var tableNo=10+":"+brdNo+":작업자가 사진을 올렸습니다 확인해주세요";
+                            send(receiveUserNo,tableNo);
                         }
                     }); 
             });
@@ -213,7 +220,7 @@
         
         $('#opercomplete').on("click",function() {
             console.log("haha");
-            var brdNo=${boardInfo.brdNo};
+            
                     $.ajax({
                         url : "/picsion/operation/opercomplete.ps",                       
                         type :'POST',   
@@ -223,6 +230,8 @@
                         success : function(data) {
                             console.log("성공");
                             location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+                            var tableNo=10+":"+brdNo+":요청자가 사진을 마음에 들어합니다.";
+                            send(receiveUserNo,tableNo);
                         }
                     }); 
             });

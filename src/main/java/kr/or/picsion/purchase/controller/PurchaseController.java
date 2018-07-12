@@ -128,9 +128,9 @@ public class PurchaseController {
 	* @return
 	*/
 	@RequestMapping("mySalesAmount.ps")
-	public View maySalesStatistics(Date startDate, Date endDate, int userNo, Model model) {
-		
-		Map<Integer, List<Object>> map = purchaseService.maySalesStatistics(startDate,endDate,userNo);
+	public View mySalesStatistics(Date startDate, Date endDate, HttpSession session, Model model) {
+		User user = (User) session.getAttribute("user");
+		Map<Integer, List<Object>> map = purchaseService.mySalesStatistics(startDate,endDate,user.getUserNo());
 		model.addAttribute("map",map);
 		return jsonview; 
 	}
