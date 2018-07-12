@@ -412,8 +412,8 @@
 		</div>
 		
 		<div class="row">
-		<div class="col-md-10"></div>
-		<div class="col-md-2">
+		<div class="col-md-8"></div>
+		<div class="col-md-4">
 		<div class="tab-content tab-space">
 			<div class="tab-pane <c:if test='${operation.step == 0}'>active</c:if>" id="step-1">
 		<c:choose>
