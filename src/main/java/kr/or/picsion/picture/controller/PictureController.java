@@ -275,6 +275,42 @@ public class PictureController {
 	}
 	
 	
+	@Transactional(propagation = Propagation.REQUIRED) //s3 저장 트랜잭션
+	public void operwpS3(OperPicture operPicture) {
+		try {
+			String upath=operPicture.getPicPath();   //워터마크에 사용할 파일 경로
+			String waterText = "PICSION";
+			File input = new File(upath);
+			
+			//워터마크 폴더 생성
+			File dir = new File(imagePicsion);
+			if (!dir.isDirectory()) {
+				dir.mkdirs();
+			}
+			//워터마크 사진 이름 수정하여 저장
+			
+			File output = new File(imagePicsion+"w"+upath.split("\\/")[3]);
+
+			pictureService.addTextWatermark(waterText, "jpg", input, output);
+			
+			//워터마크사진 s3에 저장
+			String waterPath = amazonService.uploadObject(imagePicsion,output.getName(),"picsion/woperpic");
+			operPicture.setWpicPath(waterPath);
+			operPictureService.updatewpicOperPicture(operPicture);//워터마크 s3 주소저장
+						
+			//원본사진 변경
+			File reFile = new File(imagePicsion+"p"+upath.split("\\/")[3]); 
+			new File(upath).renameTo(reFile);
+			
+			String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/operpic");
+			operPicture.setPicPath(webFilePath);
+			operPictureService.updatepicOperPicture(operPicture);//s3 사진 주소 저장
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	/**
 	* 날      짜 : 2018. 7. 3.
 	* 메소드명 : insertOperPicture
@@ -294,7 +330,6 @@ public class PictureController {
 			Operation operation = operationService.operNoselectOper(operNo);
 			OperPicture operPicture = new OperPicture();
 			String uploadPath = imagePicsion;
-			String dbPath="";
 			
 			File dir = new File(uploadPath);
 			if (!dir.isDirectory()) {
@@ -302,22 +337,23 @@ public class PictureController {
 			}
 
 			String originalFileName = file.getOriginalFilename();
-			String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
 			
+			String saveFileName = "operNo"+operation.getOperNo()+"."+originalFileName.split("\\.")[1];		
+			File fi = new File(uploadPath + saveFileName);
 				if(saveFileName != null && !saveFileName.equals("")) {
-					if(new File(uploadPath + saveFileName).exists()) {
-						saveFileName = saveFileName + "_" + System.currentTimeMillis();
+					if(fi.exists()) {
+						fi.delete();
 					}
 					
 						File newFile = new File(uploadPath + saveFileName);
 						file.transferTo(newFile);
-						dbPath=amazonService.uploadObject(imagePicsion,saveFileName,"picsion/operpic"); //db경로
 						operPicture.setOperNo(operation.getOperNo());
-						operPicture.setPicPath(dbPath);
 						operPicture.setUserNo(user.getUserNo());
+						operPictureService.insertOperPicture(operPicture);
+						operPicture.setPicPath(uploadPath+saveFileName);
+						operwpS3(operPicture);//s3 w p 저장
 						operation.setOperatorEnd("T");
 						operationService.updateOperation(operation);
-						operPictureService.insertOperPicture(operPicture);
 						operPicture=operPictureService.selectOperpicture(operNo);
 						
 				} 	
@@ -381,11 +417,15 @@ public class PictureController {
 	        int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
 	        	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
 	        if(tradeMoney>0) {
+	        	System.out.println("돈부족 아니고");
 	        	Purchase purchase = new Purchase();
 	        	Board board = boardService.selectBoard(brdNo);
+	        	Operation operation = operationService.selectOper(brdNo);	        	
 	        	List<Purchase> purlist = new ArrayList<>();
 	        	requestorUser.setPoint(tradeMoney);
 	        	user.setPoint(user.getPoint()+picture.getPicPrice());
+	        	operation.setStep(3);
+	        	operationService.updateOperation(operation);
 	        	purchase.setPicNo(picture.getPicNo());
 	        	purchase.setPurchaseUserNo(requestorUser.getUserNo());
 	        	purchase.setSaleUserNo(user.getUserNo());
@@ -393,7 +433,11 @@ public class PictureController {
 	        	purchaseService.buyPicture(purlist);
 	    		board.setOperStateNo(3);    		
 	    		boardService.updateBoard(board);
-	        	wpS3(picture);
+	    		OperPicture operPicture =operPictureService.selectOperpicture(operation.getOperNo());
+	    		System.out.println("음음");
+	    		System.out.println(operPicture);
+	    		pictureService.updateWater(operPicture.getWpicPath(), picture.getPicNo());
+	    		pictureService.updatePicture(operPicture.getPicPath(), picture.getPicNo());
 	        }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -412,6 +456,7 @@ public class PictureController {
 	@Transactional(propagation = Propagation.REQUIRED) //s3 저장 트랜잭션
 	public void wpS3(Picture picture) {
 		try {
+			System.out.println(picture.getPicPath());
 			String upath=picture.getPicPath();   //워터마크에 사용할 파일 경로
 			String waterText = "PICSION";
 			File input = new File(upath);
@@ -433,11 +478,9 @@ public class PictureController {
 
 			//s3 저장 (원본 사진)
 			String saveFileName="";
-			if(picture.getPicPath().startsWith("C:")) {
-				saveFileName=picture.getPicPath().split("\\\\")[2];
-			}else {		
+					
 				saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
-			}
+			
 			//원본사진 변경
 			File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 			new File(picture.getPicPath()).renameTo(reFile);
