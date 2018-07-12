@@ -21,11 +21,6 @@ public class OperationApplyService {
 
 	@Autowired
 	private SqlSession sqlSession;
-
-	
-	
-	
-	
 	
 	/**
 	* 날      짜 : 2018. 7. 9.
@@ -34,7 +29,7 @@ public class OperationApplyService {
 	* 기      능 : 중복 신청 확인
 	*
 	* @param operationApply
-	* @return
+	* @return Integer
 	*/
 	public int countOperationApply(OperationApply operationApply) {
 		int result=0;
@@ -46,13 +41,13 @@ public class OperationApplyService {
 	
 	
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : insertOperationApply 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 신청하기
+	 * 기      능 : 신청하기
 	 *
 	 * @param operationApply
-	 * @return
+	 * @return Integer
 	 */
 	public int insertOperationApply(OperationApply operationApply) {
 		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
@@ -63,13 +58,13 @@ public class OperationApplyService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : operationApplyNameList 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 해당유저가쓴 요청글에 신청자 이름 목록 가져오기
+	 * 기      능 : 해당유저가쓴 요청글에 신청자 이름 목록 가져오기
 	 *
 	 * @param brdNo
-	 * @return
+	 * @return List<String>
 	 */
 	public List<String> operationApplyNameList(int brdNo) {
 		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
@@ -80,14 +75,14 @@ public class OperationApplyService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : operationApplyList 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 해당유저가쓴 요청글에 신청자 목록 가져오기
+	 * 기      능 : 해당유저가쓴 요청글에 신청자 목록 가져오기
 	 *
 	 * @param brdNo
 	 * @param requestUserNo
-	 * @return
+	 * @return List<OperationApply>
 	 */
 	public List<OperationApply> operationApplyList(int brdNo, int requestUserNo) {
 		OperationApplyDao operationApplyDao = sqlSession.getMapper(OperationApplyDao.class);
