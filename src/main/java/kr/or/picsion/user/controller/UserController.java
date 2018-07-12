@@ -77,7 +77,7 @@ public class UserController {
 //		user.setPwd(bCryptPasswordEncoder.encode(user.getPwd()));
 //		System.out.println("회원가입 비밀번호 : " + user.getPwd());
 		userService.register(user);
-		return "redirect:/home.ps";
+		return "redirect:/user/login.ps";
 	}
 	
 	/**
