@@ -4,8 +4,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script>
-
 $(function(){
+	$(window).scroll(function(){
+		if($("nav").hasClass("navbar-transparent")){
+			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo-white.png');
+		}else{
+			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo.png');
+		}	
+		
+	});
 	console.log($('#loginUserNo').val())
 	if($('#loginUserNo').val() != 0){
 		newNoticeCount();
@@ -217,7 +224,7 @@ function newNoticeCount() {
 			}
 		})
 	}
-	
+$('.navbar-transparent').on()
 
 </script>
 
@@ -233,7 +240,7 @@ function newNoticeCount() {
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
-        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
+        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img id="logo" src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
@@ -245,21 +252,21 @@ function newNoticeCount() {
                  <div class="form-group has-default bmd-form-group">
                        <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
-                 <button id="submitbtn" style="background-color: transparent;" type="submit" class="btn btn-fab btn-round">
-                   <img alt="No Img" style="width:40px"src="<%=request.getContextPath()%>/images/eye.png">
-                </button>
+                <button id="submitbtn" type="submit"  class="btn btn-white btn-fab btn-round">
+                      <i class="material-icons">search</i>
+                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/register.ps"> 
-								<i class="material-icons">accessibility_new</i> 회원가입
+								<i class="material-icons">how_to_reg</i> 회원가입
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/login.ps"> 
-								<i class="material-icons">camera_front</i>로그인
+								<i class="material-icons">account_circle</i>로그인
 							</a>
 						</li>
 					</c:when>
