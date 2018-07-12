@@ -93,7 +93,6 @@ public class PictureService {
 		return list;
 	}
 	
-	
 	/**
 	* 날      짜 : 2018. 6. 17.
 	* 메소드명 : increaseRespect

@@ -18,9 +18,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class LoginHandler extends HandlerInterceptorAdapter {
 	   @Override
-	    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
 	        try {
-	            //admin이라는 세션key를 가진 정보가 널일경우 로그인페이지로 이동
+	            //user 세션key를 가진 정보가 널일경우 메인 페이지로 이동
 	            if(request.getSession().getAttribute("user") == null ){
 	                    response.sendRedirect("/picsion/");
 	                    return false;
@@ -28,7 +28,6 @@ public class LoginHandler extends HandlerInterceptorAdapter {
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
-	        //admin 세션key 존재시 main 페이지 이동
 	        return true;
 	    }
 	 

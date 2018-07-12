@@ -45,15 +45,7 @@
            <mvc:mapping path="/user/updateinfo.ps"/>
            <mvc:mapping path="/user/popular.ps"/>
            <mvc:mapping path="/message/receivemessage.ps"/>
-           <!-- 여러개 컨트롤러 추가 가능 -->
-           <!--
-                <mvc:mapping path="/admin_write"/>
-                <mvc:mapping path="/admin_update"/>
-                <mvc:mapping path="/admin_delete"/>
-                .
-                .
-                .
-           -->
+           
            <!-- 로그인체크 인터셉터 클래스 -->
            <bean class="kr.or.picsion.utils.controller.LoginHandler"/>
         </mvc:interceptor>
@@ -81,11 +73,13 @@
 	<bean id="message" class="kr.or.picsion.utils.NoticeSocketHandler"></bean>
 	
 	<!-- google Class Bean설정 추가 -->
+	
 	<!-- 클라이언트ID와 보안비밀 세팅 -->
 	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
 	  <constructor-arg value="#{config['google.clientId']}" />
 	  <constructor-arg value="#{config['google.secretKey']}" />
 	</bean>
+	
  	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
 	<bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
 	  <property name="scope" value="https://www.googleapis.com/auth/plus.login" />
