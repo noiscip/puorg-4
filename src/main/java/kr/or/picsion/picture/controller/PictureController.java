@@ -291,8 +291,7 @@ public class PictureController {
 	public View insertOperPicture(MultipartFile file, HttpSession session, int operNo, Model model) {
 		try {
 			User user = (User) session.getAttribute("user");
-			Operation operation = new Operation();
-			operation.setOperNo(operNo);
+			Operation operation = operationService.operNoselectOper(operNo);
 			OperPicture operPicture = new OperPicture();
 			String uploadPath = imagePicsion;
 			String dbPath="";
@@ -372,6 +371,7 @@ public class PictureController {
 	@Transactional(propagation = Propagation.REQUIRED) //작업 관련 트랜잭션
 	public String operationComplete(Picture picture,@RequestParam List<String> tag, HttpSession session, int brdNo) {
 		User user = (User) session.getAttribute("user");
+		System.out.println(picture);
 		try {
 			picture.setTagContent(tag);
 			User requestorUser = userService.userInfo(picture.getUserNo());

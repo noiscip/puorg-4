@@ -246,7 +246,7 @@ function newNoticeCount() {
                        <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
                  <button id="submitbtn" style="background-color: transparent;" type="submit" class="btn btn-fab btn-round">
-                   <img alt="No Img" style="width:30px"src="<%=request.getContextPath()%>/images/eye.png">
+                   <img alt="No Img" style="width:40px"src="<%=request.getContextPath()%>/images/eye.png">
                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
