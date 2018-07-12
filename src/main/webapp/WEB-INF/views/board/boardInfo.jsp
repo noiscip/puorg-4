@@ -128,7 +128,7 @@
         
         $('#apply').on("click",function() {
                     
-        console.log("apply클릭");
+        console.log($("#operApplyPrice").val());
         
                     $.ajax({
                         url : "/picsion/operationApply/apply.ps",
@@ -271,6 +271,7 @@
             }
         });
         
+        
     });
     
     
@@ -289,12 +290,12 @@
 <style>
 /* 댓글 보여지는 창 프로필 사진 */
 .avatar-prPic-height {
-	height: 64px;
+	height: 64px !important;
 }
 
 /* 댓글 쓸때 작게 보여지는 프로필 */
 .avatar-sprPic-height {
-	height: 30px;
+	height: 30px !important;
 }
 
 /* 정보 보여주는곳 여백 */
@@ -369,6 +370,97 @@
 	<div class="container board-container-pad">
 		<div class="main main-raised main-product">
 		
+		<div class="row">
+		<div class="col-md-12">
+		<!-- 전체 진행 탭-->
+		<div>${operation.step}</div>
+			<ul class="nav nav-pills nav-pills-icons justify-content-center"" role="tablist">
+				<!-- 진행 전 -->
+			    <li class="nav-item">
+			        <div class="nav-link <c:if test='${operation.step == 0}'>active</c:if>" 
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="요청자와 작가의 매칭이 이루어집니다">
+			            <i class="material-icons">people</i> 
+			                            step1 매칭하기
+			        </div>
+			    </li>
+			    <!-- 진행 중 -->
+			    <li class="nav-item">
+			        <div class="nav-link <c:if test='${operation.step == 1}'>active</c:if>"
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="작가의 사진을 요청자가 확인합니다">
+			            <i class="material-icons">add_photo_alternate</i>
+			                           step2 사진확인
+			        </div>
+			    </li>
+			    <!-- 진행 중 -->
+			    <li class="nav-item">
+			        <div class="nav-link <c:if test='${operation.step == 2}'>active</c:if>"
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="PICSION에서 사진을 검증합니다">
+			            <i class="material-icons">verified_user</i>
+			                         step3 사진검증
+			        </div>
+			    </li>
+			    <li class="nav-item ">
+			        <div class="nav-link <c:if test='${operation.step == 3}'>active</c:if>"
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="요청자는 사진을 받을 수 있습니다">
+			            <i class="material-icons">collections</i>
+			                           step4 완료
+			        </div>
+			    </li>
+			</ul>
+		
+		</div>
+		</div>
+		
+		<div class="row">
+		<div class="col-md-10"></div>
+		<div class="col-md-2">
+		<div class="tab-content tab-space">
+			<div class="tab-pane <c:if test='${operation.step == 0}'>active</c:if>" id="step-1">
+		<c:choose>
+			<c:when
+				test="${boardInfo.userNo ne user.userNo}">
+				<button type="button"
+					class="btn btn-primary btn-md"
+					data-toggle="modal" data-target="#opersend">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;작업 신청
+				</button>
+			</c:when>	
+		</c:choose>
+			</div>
+			<div class="tab-pane <c:if test='${operation.step == 1}'>active</c:if>" id="step-2">
+			<c:choose>
+				<c:when test="${boardInfo.userNo eq user.userNo}">
+				<button type="button"
+					class="btn btn-primary btn-md apply-pic-confirm">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;작업 사진 확인
+				</button>
+				</c:when>
+				<c:otherwise>
+				<button type="button"
+					class="btn btn-primary btn-md apply-pic-register">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;작업 사진 등록
+				</button>
+				</c:otherwise>
+			</c:choose>
+			
+			</div>
+			<div class="tab-pane <c:if test='${operation.step == 2}'>active</c:if>" id="step-3">
+			</div>
+			<div class="tab-pane <c:if test='${operation.step == 3}'>active</c:if>" id="step-4">
+			<button type="button" data-toggle="modal" data-target="#completePicModal"
+					class="btn btn-primary btn-md apply-pic-complete">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;거래된 사진 보기
+			</button>
+			</div>
+		</div>
+		</div>
+		</div>
+		
+		<!-- 상세 탭 -->
 		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
 		  <li class="nav-item">
 		    <a class="nav-link active" id="brdinfo-tab" data-toggle="tab" href="#brdinfo" role="tab" aria-controls="brdinfo" aria-selected="false">상세 정보</a>
@@ -600,50 +692,6 @@
 																		<button type="button" id="addreviewbutton"
 																			class="btn btn-primary btn-round btn-wd float-right">Post
 																			Comment</button>
-																			
-																			
-																		<c:if test="${boardInfo.operStateNo eq 1}">
-																		<c:choose>
-																			<c:when
-																				test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
-																				<button type="button"
-																					class="btn btn-primary btn-md float-left"
-																					data-toggle="modal" data-target="#opersend">
-																					<i class="material-icons">linked_camera</i>
-																					&nbsp;작업 신청
-																				</button>
-																			</c:when>	
-																		</c:choose>
-																		</c:if>
-																		<c:if test="${boardInfo.operStateNo ne 1}">
-																		<c:choose>
-																		<c:when test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo eq 2}">
-																				<button type="button"
-																					class="btn btn-primary btn-md float-left apply-pic-confirm">
-																					<i class="material-icons">linked_camera</i>
-																					&nbsp;작업 사진 확인
-																				</button>
-																			</c:when>
-																			<c:otherwise>
-																				<c:choose>
-																					<c:when test="${boardInfo.operStateNo eq 3}">
-																						<button type="button" data-toggle="modal" data-target="#completePicModal"
-																							class="btn btn-primary btn-md float-left apply-pic-complete">
-																							<i class="material-icons">linked_camera</i>
-																							&nbsp;거래된 사진 보기
-																						</button>
-																					</c:when>
-																					<c:otherwise>
-																						<button type="button"
-																							class="btn btn-primary btn-md float-left apply-pic-register">
-																							<i class="material-icons">linked_camera</i>
-																							&nbsp;작업 사진 등록
-																						</button>
-																					</c:otherwise>
-																				</c:choose>
-																			</c:otherwise>
-																		</c:choose>
-																		</c:if>
 																	</div>
 																</div>
 															</c:otherwise>
@@ -858,24 +906,6 @@
 
 				</div>
 			</c:if>
-
-				<%-- <div class="apply-complete" align="center">
-					<h5>
-						거래 완료된 사진 <a id="download" href="${operPicture.picPath}"> <i
-							class="material-icons">vertical_align_bottom</i>
-						</a>
-					</h5>
-					<div>
-						<div style="height: 350px; width: 350px;">
-							<img alt="No Image" height="100%" width="100%"
-								src="${operPicture.picPath}">
-						</div>
-					</div>
-
-				</div> --%>
-			
-			
-			
 			</div>
 			 
 			<!-- 0------------------------------------- -->

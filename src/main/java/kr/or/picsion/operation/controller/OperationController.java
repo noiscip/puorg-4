@@ -130,9 +130,10 @@ public class OperationController {
 	*/
 	@RequestMapping(value = "opercomplete.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
-	public View operComplete(HttpSession session, Model model,int brdNo) {
+	public View operComplete(HttpSession session, Model model,Operation oper) {
 		try {
-			Operation operation = operationService.selectOper(brdNo);
+			Operation operation = operationService.selectOper(oper.getBrdNo());
+			System.out.println(operation);
 			operation.setRequesterEnd("T");
 			operationService.updateOperation(operation);
 		} catch (Exception e) {
