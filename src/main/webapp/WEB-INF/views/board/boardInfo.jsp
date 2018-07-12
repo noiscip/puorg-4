@@ -128,7 +128,7 @@
         
         $('#apply').on("click",function() {
                     
-        console.log("apply클릭");
+        console.log($("#operApplyPrice").val());
         
                     $.ajax({
                         url : "/picsion/operationApply/apply.ps",
@@ -289,12 +289,12 @@
 <style>
 /* 댓글 보여지는 창 프로필 사진 */
 .avatar-prPic-height {
-	height: 64px;
+	height: 64px !important;
 }
 
 /* 댓글 쓸때 작게 보여지는 프로필 */
 .avatar-sprPic-height {
-	height: 30px;
+	height: 30px !important;
 }
 
 /* 정보 보여주는곳 여백 */
