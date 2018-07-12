@@ -46,6 +46,7 @@ select * from OPERATION where operNo=#{operNo}
  <update id="updateOperation" parameterType="kr.or.picsion.operation.dto.Operation">
       update OPERATION set 
       				operPrice=#{operPrice}
+      				<if test="step != 0">, step=#{step}</if>
 			      	<if test="operatorEnd != null">, operatorEnd=#{operatorEnd}</if>
 			      	<if test="requesterEnd != null">, requesterEnd=#{requesterEnd}</if>
 			      	<if test="operatorCancel != null">, operatorCancel=#{operatorCancel}</if>

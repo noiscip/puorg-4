@@ -222,6 +222,7 @@
                         },
                         success : function(data) {
                             console.log("성공");
+                            location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
                         }
                     }); 
             });
