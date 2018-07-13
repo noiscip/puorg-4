@@ -194,22 +194,15 @@
 		                <div class="col-md-4">
 		                    <h5>About Us</h5><br>
 		                    <p>사진을 찍는 취미를 갖고 계신가요?<br>즐겁게 사진 찍고 새로운 수익을 만들어 보세요!<br>PICSION은 모든 크리에이터분들이 작품을 전세계에 공개하고 판매할 수 있는 플랫폼을 제공합니다. </p>
-		                	<!-- <p>
-								Do you have a hobby to take pictures?<br>
-								Take fun photos and make new revenue!<br>
-								PICSION provides a platform for all creators to publish and sell their work worldwide.</p> -->
-
-		                    <h5>About Us</h5>
-		                    <p>It Could Be / 그럴수 있조</p>
 		                </div>
 		
 		                <div class="col-md-4">
-		                    <h5>Function</h5>
+		                    <h5>Function</h5><br>
 		                    <div class="social-feed">
-		                        <div class="feed-line">
+		                        <!-- <div class="feed-line">
 		                            <i class="fab fa-aws"></i>
 		                            <p>AWS를 사용하여 최적의 환경을 제공합니다.</p>
-		                        </div>
+		                        </div> -->
 		                        <div class="feed-line">
 		                            <i class="fa fa-eye"></i>
 		                            <p>Google Cloud Vision API를 통한 인공지능 사진 분석.</p>
@@ -229,11 +222,9 @@
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/christian.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/juwon.JPG" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/card-profile1-square.jpg" class="img img-raised rounded">
-		
+								
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/marc.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/kendall.jpg" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/faces/card-profile5-square.jpg" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/faces/card-profile2-square.jpg" class="img img-raised rounded">
 		                    </div>
 		
 		                </div>
@@ -244,31 +235,10 @@
 		        <hr>
 		
 		        <div class="copyright float-right">
-		            Copyright © <script>document.write(new Date().getFullYear())</script> Team I.C.B All Rights Reserved.
+		            It Could Be / 그럴수 있조
 		        </div>
 		        
-		        <ul class="float-left">
-		            <li>
-		                <a href="#pablo">
-		                   Blog
-		                </a>
-		            </li>
-		            <li>
-		                <a href="#pablo">
-		                    PICSION
-		                </a>
-		            </li>
-		            <li>
-		                <a href="#pablo">
-		                   Discover
-		                </a>
-		            </li>
-		            <li>
-		                <a href="#pablo">
-		                    Contact Us
-		                </a>
-		            </li>
-		        </ul>
+		        
 		
 		    </div>
 		</footer>
