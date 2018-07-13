@@ -396,8 +396,8 @@ public class PictureService {
         //top left
         orig.setToRotation(Math.toRadians(angle), rect.getWidth()/2, rect.getHeight());
         w.setTransform(orig);
-        w.drawString(text, (int)(rect.getWidth()), (int)(rect.getHeight()));
-        System.out.println("top left"+w.getClipBounds());
+        w.drawString(text, (int)(rect.getWidth()/2), (int)(rect.getHeight()));
+        System.out.println("y=top x=left"+w.getClipBounds().getX());
         //y=top x=right
         orig.setToRotation(Math.toRadians(angle), image.getWidth()-rect.getWidth(), rect.getHeight());
         w.setTransform(orig);
