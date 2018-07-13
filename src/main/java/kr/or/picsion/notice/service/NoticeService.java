@@ -79,8 +79,11 @@ public class NoticeService {
 		for (Notice no : noticeList) {
 			String key = no.getTableNo() +","+no.getSendUserNo()+","+no.getBrdNo()+","+no.getPicNo();
 			
-			if(overlap.get(key) == null ) overlap.put(key, no);
-			else continue;
+			if(overlap.get(key) == null ) {
+				overlap.put(key, no);
+			}else {
+				continue;
+			}
 			
 			List<Object> obj = new ArrayList<>();
 			obj.add(no);
@@ -121,7 +124,19 @@ public class NoticeService {
 
 		NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
 
-		return noticeDao.readCheckCount(userNo);
+		List<Notice> noticeList = noticeDao.noticeList(userNo);
+		
+		Map<String,Notice> overlap = new HashMap<>();
+		int i = 0;
+		for (Notice no : noticeList) {
+			String key = no.getTableNo() +","+no.getSendUserNo()+","+no.getBrdNo()+","+no.getPicNo();
+			
+			if(overlap.get(key) == null ) {
+				overlap.put(key, no);
+				i++;
+			}
+		}
+		return i;
 	}
 	
 	/**

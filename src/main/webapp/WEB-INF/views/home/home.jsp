@@ -718,7 +718,8 @@ label.btn.btn-default.btn-circle.focus {
 }
 </style>
 <script>
-//postid 가져와서 댓글달기
+
+var isChartShow = false
 $(document).ready(function() {
 	var loginUserNo = $('#loginUserNo').val();
 						console.log($('#result').val())
@@ -762,9 +763,18 @@ $(document).ready(function() {
 								});
 						
 						  ///워드 차트 기능
-							$.ajax({
+						  $('#wordchart-tab').click(function(){
+								if(isChartShow == true){
+									return
+								}
+								$.ajax({
 								  url : "/picsion/picture/tagList.ps",
+								  beforeSend : function () {
+										$('#wordchart').append('&nbsp&nbsp<img src="/picsion/assets/img/point_speed_4.0.gif" style="width: 220px;margin-left: 40%;" >')  
+								  },
 								  success : function(data){
+									  isChartShow = true
+									  $('#wordchart').empty()
 									  var text=data.wordChartList;
 									  var data = Highcharts.reduce(text, function(arr, word) {
 											var obj = Highcharts.find(arr,
@@ -782,36 +792,36 @@ $(document).ready(function() {
 											}
 											return arr;
 										}, 
-								[]);
+									[]);
 
-								Highcharts.chart('wordchart', {
-									plotOptions: {
-								        series: {
-								            cursor: 'pointer',
-								            point: {
-								                events: {
-								                    click: function () {
-								                    	location.href="/picsion/picture/tagpicList.ps?tag="+$(this)[0].name;
-								                    }
-								                }
-								            }
-								        }
-								    },
-									series : [ {
-										type : 'wordcloud',
-										data : data,
-										name : '태그'
-									} ],
-									title : {
-										text : false
-									}
-								});
+									Highcharts.chart('wordchart', {
+										plotOptions: {
+									        series: {
+									            cursor: 'pointer',
+									            point: {
+									                events: {
+									                    click: function () {
+									                    	location.href="/picsion/picture/tagpicList.ps?tag="+$(this)[0].name;
+									                    }
+									                }
+									            }
+									        }
+									    },
+										series : [ {
+											type : 'wordcloud',
+											data : data,
+											name : '태그'
+										} ],
+										title : {
+											text : false
+										}
+									});
 								  },
 								  error: function(){
 								   	  alert("천천히!!");
 								  }
 							})
-						
+						  })
 					
 
 	//css - 카테고리별 게시물 필터링

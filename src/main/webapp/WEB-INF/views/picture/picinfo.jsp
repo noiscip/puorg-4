@@ -277,9 +277,6 @@ $(document).ready(function() {
                 <div class="col-md-4 ml-auto">
                 <c:choose>
                 	<c:when test="${sessionScope.user eq null}">
-                	<script type="text/javascript">
-                		alert("사진 구매는 로그인 후 이용해주세요");
-                	</script>
                 	</c:when>
                 	<c:otherwise>
                 	<c:choose>
