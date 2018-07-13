@@ -214,7 +214,9 @@ input[type=radio]:checked+label {
         $('#applysummit').on("click",function() {
             
             var requesterNo=${boardInfo.userNo};
+            var userPoint=${user.point};
             var operPrice=$('#oApplyPrice').attr("operApplyPrice");
+            if((userPoint-operPrice)>0){
             console.log(operPrice);
                     $.ajax({
                         url : "/picsion/operation/operok.ps",
@@ -235,6 +237,10 @@ input[type=radio]:checked+label {
                             send($("#oUserNo").val(),tableNo);
                         }
                     }); 
+            }
+            else{
+            	alert("돈이 부족합니다.");
+            }
                 });
         
         $('#operpic').on("click",function() {

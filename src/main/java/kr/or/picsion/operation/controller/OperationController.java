@@ -20,6 +20,7 @@ import kr.or.picsion.operation.dto.Operation;
 import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.user.dto.User;
+import kr.or.picsion.user.service.UserService;
 
 /**
  * @project Final_Picsion
@@ -41,6 +42,9 @@ public class OperationController {
 	@Autowired
 	private OperPictureService operPictureService;
 
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private CommentService commentService;
 
@@ -64,6 +68,7 @@ public class OperationController {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public View OperationApplyok(Operation operation, Model model) {
 		int result=0;
+		User user = userService.userInfo(operation.getRequesterNo());
 		try {
 			if(operationService.selectOper(operation.getBrdNo())==null) 
 			{
@@ -75,7 +80,8 @@ public class OperationController {
 				boardService.updateBoard(board);
 				operation.setStep(1);
 				result = operationService.insertOperation(operation);
-		
+				
+				userService.pointCharge((-1*board.getBrdExpectPrice()), user.getUserNo());
 				if (result != 0) {
 					HashMap<String, Object> noticeMap = new HashMap<String, Object>();
 		
