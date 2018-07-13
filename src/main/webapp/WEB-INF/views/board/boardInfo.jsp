@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -30,6 +30,7 @@
                 $('#scrolldown').click();
             }
         })
+        var brdNo = ${boardInfo.brdNo};
         var myNo = $('#loginUserNo').val();
         if(${operation.operNo} != 0)
         {
@@ -50,7 +51,7 @@
                             url : "/picsion/comment/insertreview.ps",
                             type : "post",
                             data : {
-                                brdNo : ${boardInfo.brdNo},
+                                brdNo : brdNo,
                                 cmtContent : cmtcon
                             },
                             success : function(data) {
@@ -129,7 +130,6 @@
         $('#apply').on("click",function() {
                     
         console.log($("#operApplyPrice").val());
-        
                     $.ajax({
                         url : "/picsion/operationApply/apply.ps",
                         type : "post",
@@ -138,14 +138,16 @@
                             operApplyPrice : $("#operApplyPrice").val(),
                             operApplyReg : $("#operApplyReg").val(),
                             requestUserNo : ${boardInfo.userNo},
-                            brdNo : ${boardInfo.brdNo}
+                            brdNo : brdNo
                         },
                         success : function(data) {
                             console.log(data);
-                            if(data.check == true){
+                            if(data.check == "true"){
                                 alert('성공')
+                                var tableNo=10+":"+brdNo+":새로운 작업신청이 있습니다.";
+                                send(receiveUserNo,tableNo);
                             }else{
-                                var check =''
+                                /* var check =''
                                     check += '<div class="alert alert-warning">'
                                     check +=    '<div class="container-fluid">'
                                     check +=        '<div class="alert-icon">'
@@ -157,14 +159,15 @@
                                     check +=        '<b>Warning Alert</b> 이미 신청 되었습니다'
                                     check +=    '</div>'
                                     check += '</div>'
-                                $('.media-footer').after(check)
+                                $('.media-footer').after(check) */
+                            	alert("이미 신청 되었습니다.");
                             }
                         }
                     }); 
                 });
         
         $('#applysummit').on("click",function() {
-            var brdNo=${boardInfo.brdNo};
+            
             var requesterNo=${boardInfo.userNo};
             var operPrice=$('#oApplyPrice').attr("operApplyPrice");
             console.log(operPrice);
@@ -183,6 +186,8 @@
                             console.log("test");
                             console.log(data.check);
                             location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+                            var tableNo=10+":"+brdNo+":요청자가 작업을 수락하였습니다.";
+                            send(receiveUserNo,tableNo);
                         }
                     }); 
                 });
@@ -206,6 +211,8 @@
                             html+='</div>';
                             $('.apply-register').append(html);
                             console.log("성공");
+                            var tableNo=10+":"+brdNo+":작업자가 사진을 올렸습니다 확인해주세요";
+                            send(receiveUserNo,tableNo);
                         }
                     }); 
             });
@@ -213,7 +220,7 @@
         
         $('#opercomplete').on("click",function() {
             console.log("haha");
-            var brdNo=${boardInfo.brdNo};
+            
                     $.ajax({
                         url : "/picsion/operation/opercomplete.ps",                       
                         type :'POST',   
@@ -222,6 +229,9 @@
                         },
                         success : function(data) {
                             console.log("성공");
+                            location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+                            var tableNo=10+":"+brdNo+":요청자가 사진을 마음에 들어합니다.";
+                            send(receiveUserNo,tableNo);
                         }
                     }); 
             });
@@ -249,16 +259,6 @@
             $('#operApplyNo').val(operApplyNo);
         }); 
         
-        $('.apply-confirm').hide();
-        $('.apply-pic-confirm').click(function(){
-            if($('.apply-pic-confirm').hasClass('open-confirm')){
-                $('.apply-confirm').hide();
-                $('.apply-pic-confirm').removeClass('open-confirm');
-            }else{
-                $('.apply-confirm').show();
-                $('.apply-pic-confirm').addClass('open-confirm');
-            }
-        });
         
         $('.apply-register').hide();
         $('.apply-pic-register').click(function(){
@@ -270,6 +270,7 @@
                 $('.apply-pic-register').addClass('open-register');
             }
         });
+        
         
     });
     
@@ -361,14 +362,135 @@
 	value="${boardInfo.tableNo},${boardInfo.userNo},${boardInfo.brdNo},0"
 	id="info">
 
-<div id="changemain" class="page-header header-filter"
-	data-parallax="true"></div>
+<div id="changemain" class="page-header header-filter"	data-parallax="true">
+	<div class="container">
+       <div class="row title-row">
+           <div class="col-md-4 ml-auto">
+           
+           <div class="tab-content tab-space">
+			<div class="tab-pane <c:if test='${operation.step == 0}'>active</c:if>" id="step-1">
+		<c:choose>
+			<c:when
+				test="${boardInfo.userNo ne user.userNo}">
+				<button type="button"
+					class="btn btn-primary btn-md float-right"
+					data-toggle="modal" data-target="#opersend">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;작업 신청
+				</button>
+			</c:when>	
+		</c:choose>
+			</div>
+			<div class="tab-pane <c:if test='${operation.step == 1}'>active</c:if>" id="step-2">
+			<c:choose>
+				<c:when test="${boardInfo.userNo eq user.userNo}">
+				<c:choose>
+					<c:when test="${operation.operatorEnd ne 'T'}">
+						<button type="button" data-toggle="modal" data-target="#checkPicModal"
+							class="btn btn-primary btn-md float-right">
+							<i class="material-icons">linked_camera</i>
+							&nbsp;작업 사진 확인
+						</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" data-toggle="modal" data-target="#checkPicModal"
+							class="btn btn-success btn-md float-right">
+							<i class="material-icons">linked_camera</i>
+							&nbsp;검증 대기
+						</button>
+					</c:otherwise>
+				</c:choose>
+				
+				</c:when>
+				<c:otherwise>
+				<c:choose>
+				<c:when test="${operation.requesterEnd ne 'T'}">
+						<button type="button" data-toggle="modal" data-target="#uploadPicModal"
+					class="btn btn-primary btn-md apply-pic-register float-right">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;작업 사진 등록
+				</button>
+				</c:when>
+				<c:otherwise>
+						<button type="button" data-toggle="modal" data-target="#uploadPicModal"
+					class="btn btn-success btn-md apply-pic-register float-right">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;사진 선택 완료
+				</button>
+				</c:otherwise>
+				</c:choose>
+			
+				</c:otherwise>
+			</c:choose>
+			
+			</div>
+			<div class="tab-pane <c:if test='${operation.step == 2}'>active</c:if>" id="step-3">
+			</div>
+			<div class="tab-pane <c:if test='${operation.step == 3}'>active</c:if>" id="step-4">
+			<button type="button" data-toggle="modal" data-target="#completePicModal"
+					class="btn btn-primary btn-md apply-pic-complete float-right">
+					<i class="material-icons">linked_camera</i>
+					&nbsp;거래된 사진 보기
+			</button>
+			</div>
+		</div>
+           
+           </div>
+       </div>
+    </div>
+</div>
 	
 	
 <div class="section section-gray">
 	<div class="container board-container-pad">
 		<div class="main main-raised main-product">
 		
+		<div class="row">
+		<div class="col-md-12">
+		<!-- 전체 진행 탭-->
+			<ul class="nav nav-pills nav-pills-icons justify-content-center"" role="tablist">
+				<!-- 진행 전 -->
+			    <li class="nav-item">
+			        <div class="nav-link <c:if test='${operation.step == 0}'>active</c:if>" 
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="요청자와 작가의 매칭이 이루어집니다">
+			            <i class="material-icons">people</i> 
+			                            step1 매칭하기
+			        </div>
+			    </li>
+			    <!-- 진행 중 -->
+			    <li class="nav-item">
+			        <div class="nav-link <c:if test='${operation.step == 1}'>active</c:if>"
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="작가의 사진을 요청자가 확인합니다">
+			            <i class="material-icons">add_photo_alternate</i>
+			                           step2 사진확인
+			        </div>
+			    </li>
+			    <!-- 진행 중 -->
+			    <li class="nav-item">
+			        <div class="nav-link <c:if test='${operation.step == 2}'>active</c:if>"
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="PICSION에서 사진을 검증합니다">
+			            <i class="material-icons">verified_user</i>
+			                         step3 사진검증
+			        </div>
+			    </li>
+			    <li class="nav-item ">
+			        <div class="nav-link <c:if test='${operation.step == 3}'>active</c:if>"
+			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="요청자는 사진을 받을 수 있습니다">
+			            <i class="material-icons">collections</i>
+			                           step4 완료
+			        </div>
+			    </li>
+			</ul>
+		
+		</div>
+		</div>
+		<hr>
+		<br>
+	
+		
+		
+		
+		<!-- 상세 탭 -->
 		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
 		  <li class="nav-item">
 		    <a class="nav-link active" id="brdinfo-tab" data-toggle="tab" href="#brdinfo" role="tab" aria-controls="brdinfo" aria-selected="false">상세 정보</a>
@@ -600,50 +722,6 @@
 																		<button type="button" id="addreviewbutton"
 																			class="btn btn-primary btn-round btn-wd float-right">Post
 																			Comment</button>
-																			
-																			
-																		<c:if test="${boardInfo.operStateNo eq 1}">
-																		<c:choose>
-																			<c:when
-																				test="${boardInfo.userNo ne user.userNo && boardInfo.operStateNo eq 1}">
-																				<button type="button"
-																					class="btn btn-primary btn-md float-left"
-																					data-toggle="modal" data-target="#opersend">
-																					<i class="material-icons">linked_camera</i>
-																					&nbsp;작업 신청
-																				</button>
-																			</c:when>	
-																		</c:choose>
-																		</c:if>
-																		<c:if test="${boardInfo.operStateNo ne 1}">
-																		<c:choose>
-																		<c:when test="${boardInfo.userNo eq user.userNo && boardInfo.operStateNo eq 2}">
-																				<button type="button"
-																					class="btn btn-primary btn-md float-left apply-pic-confirm">
-																					<i class="material-icons">linked_camera</i>
-																					&nbsp;작업 사진 확인
-																				</button>
-																			</c:when>
-																			<c:otherwise>
-																				<c:choose>
-																					<c:when test="${boardInfo.operStateNo eq 3}">
-																						<button type="button" data-toggle="modal" data-target="#completePicModal"
-																							class="btn btn-primary btn-md float-left apply-pic-complete">
-																							<i class="material-icons">linked_camera</i>
-																							&nbsp;거래된 사진 보기
-																						</button>
-																					</c:when>
-																					<c:otherwise>
-																						<button type="button"
-																							class="btn btn-primary btn-md float-left apply-pic-register">
-																							<i class="material-icons">linked_camera</i>
-																							&nbsp;작업 사진 등록
-																						</button>
-																					</c:otherwise>
-																				</c:choose>
-																			</c:otherwise>
-																		</c:choose>
-																		</c:if>
 																	</div>
 																</div>
 															</c:otherwise>
@@ -656,6 +734,7 @@
 								</div>
 							</div>
 						</div>
+						<%-- 
 						<c:if test="${boardInfo.operStateNo eq 2}">
 									<div align="center">
 										<c:choose>
@@ -677,7 +756,7 @@
 											</c:otherwise>
 										</c:choose>
 									</div>
-								</c:if>
+								</c:if> --%>
 					
 				</div>
 			</div>
@@ -783,7 +862,7 @@
 						</c:when>
 
 						<c:otherwise>
-							<c:choose>
+						<%-- 	<c:choose>
 								<c:when test="${operation.operatorEnd eq 'T'}">
 									<div style="height: 350px; width: 350px; text-align: center;">
 										<img alt="No Image" height="100%" width="100%"
@@ -807,7 +886,7 @@
 													</div>
 													<div
 														class="fileinput-preview fileinput-exists thumbnail img-raised">
-														<%-- <canvas id="canvasdiv"></canvas> --%>
+														<canvas id="canvasdiv"></canvas>
 
 													</div>
 													<div>
@@ -829,57 +908,15 @@
 										</div>
 									</div>
 								</c:otherwise>
-							</c:choose>
+							</c:choose> --%>
 						</c:otherwise>
 					</c:choose>
 				</div>
 			</c:if>
 
-			<c:if
-				test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.requesterNo}">
-				<div class="apply-confirm" align="center">
-					<h5>작업자가 올린 사진</h5>
-					<div>
-						<c:choose>
-							<c:when test="${empty operPicture}">
-								작업자가 사진을 아직 업로드 하지 않았습니다 :)
-							</c:when>
-							<c:otherwise>
-								<div style="height: 350px; width: 350px;">
-									<img alt="No Image" height="100%" width="100%"
-										src="${operPicture.picPath}">
-								</div>
-								<button type="button" id="opercomplete" class="btn btn-success">작업
-									수락</button>
-							</c:otherwise>
-						</c:choose>
-
-					</div>
-
-				</div>
-			</c:if>
-
-				<%-- <div class="apply-complete" align="center">
-					<h5>
-						거래 완료된 사진 <a id="download" href="${operPicture.picPath}"> <i
-							class="material-icons">vertical_align_bottom</i>
-						</a>
-					</h5>
-					<div>
-						<div style="height: 350px; width: 350px;">
-							<img alt="No Image" height="100%" width="100%"
-								src="${operPicture.picPath}">
-						</div>
-					</div>
-
-				</div> --%>
-			
-			
 			
 			</div>
 			 
-			<!-- 0------------------------------------- -->
-			
 			</div>
 			
 			</div>
@@ -934,7 +971,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="myModalLabel">신청자 상제보기</h5>
+				<h5 class="modal-title" id="myModalLabel">신청자 상세보기</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
 			</div>
@@ -973,6 +1010,124 @@
 		</div>
 	</div>
 </div>
+
+<!-- 요청자 사진 확인 모달-->
+<div class="modal fade" id="checkPicModal" tabindex="-1" role="dialog" aria-labelledby="checkPicLabel"aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        
+	       <c:if test="${user.userNo eq operation.requesterNo}">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkPicLabel">작업자가 올린 사진</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="material-icons">clear</i>
+                </button>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+           	<c:choose>
+				<c:when test="${empty operPicture}">
+					작업자가 사진을 아직 업로드 하지 않았습니다 :)
+				</c:when>
+				<c:otherwise>
+					  <div class="picture">
+            			<div class="picturezoom">
+							<a href="${operPicture.wpicPath}"> 
+							<img class="rounded img-fluid" src="${operPicture.wpicPath}">
+							</a>
+						</div>
+         			</div>
+					
+				</c:otherwise>
+			</c:choose>
+            </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+            	<c:choose>
+				<c:when test="${empty operPicture}"></c:when>
+				<c:when test="${operation.operatorEnd ne 'T'}"></c:when>
+				<c:otherwise>
+				<button type="button" id="opercomplete" class="btn btn-success btn-link">사진이 마음에 들어요</button>
+				</c:otherwise>
+				</c:choose>
+                <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
+            </div>
+            </c:if>
+        </div>
+    </div>
+</div>
+
+<!-- 작업자 사진 업로드  모달 -->
+<div class="modal fade" id="uploadPicModal" tabindex="-1" role="dialog" aria-labelledby="uploadPicLabel"aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadPicLabel">사진 등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="material-icons">clear</i>
+                </button>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+            <div class="col-md-12">
+            
+            <c:choose>
+			<c:when test="${operation.operatorEnd eq 'T'}">
+			  <div class="picture">
+          		<div class="picturezoom">
+					<a href="${operPicture.wpicPath}"> 
+					<img class="rounded img-fluid" src="${operPicture.wpicPath}">
+					</a>
+				</div>
+     		</div>
+			</c:when>
+			<c:otherwise>
+           <div id="upload">
+				<div id="picupload" align="center">
+					<form id="fileForm" action="" enctype="multipart/form-data"
+						method="post">
+						<input type="hidden" name="operNo"
+							value="${operation.operNo}"> <input type="hidden"
+							name="brdNo" value="${boardInfo.brdNo}">
+						<div class="fileinput fileinput-new text-center"
+							data-provides="fileinput">
+							<div class="fileinput-new thumbnail">
+								<img src="<%=request.getContextPath()%>/assets/img/up.png" alt="...">
+							</div>
+							<div
+								class="fileinput-preview fileinput-exists thumbnail img-raised">
+								<%-- <canvas id="canvasdiv"></canvas> --%>
+
+							</div>
+							<div>
+								<span
+									class="btn btn-raised btn-default btn-file">
+									<span class="fileinput-new">사진 선택</span> <span
+									class="fileinput-exists">바꾸기</span> <input type="file"
+									name="file" accept=".jpg, .png, .bmp" />
+								</span> <a href="#pablo"
+									class="btn btn-danger fileinput-exists"
+									data-dismiss="fileinput">취소
+								</a> <input type="button" id="operpic"
+									class="btn btn-success" value="요청자 보여주기">
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+			
+			</c:otherwise>
+			</c:choose>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- 사진 모달 -->
 <div class="modal fade" id="completePicModal" tabindex="-1" role="dialog" aria-labelledby="completePicLabel"aria-hidden="true">

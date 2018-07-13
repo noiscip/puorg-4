@@ -15,7 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="salesStatistics" resultType="Integer">
 	select ifNull(sum(picPrice),0) from PICTURE where picNo in (select picNo from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg)
 	</select>
-
+	<select id="mySalesStatistics" resultType="Integer">	
+	select ifNull(sum(picPrice),0) from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg and saleUserNo=#{param3};
+	</select>
+	
 	<!-- 장바구니 담기 -->
 	<insert id="insertCart">
 		INSERT INTO CART

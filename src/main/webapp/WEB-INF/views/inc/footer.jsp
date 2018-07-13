@@ -66,7 +66,7 @@
 			 	wsocket.onmessage = onMessage
 			}
 		  	function onOpen(evt) {
-				console.log("여기는 오픈 이벤트")
+				console.log("websocket 실행")
 			}
 		  	function onMessage(evt){
 		  		console.log("onMessage 실행")
@@ -147,6 +147,13 @@
                         }
                     })
                 }
+				if(table==10 && evt.data.split(':')[3] != null){
+					var brdNo= evt.data.split(':')[3];
+					console.log(evt.data.split(':')[3]);
+                	alert(evt.data.split(':')[4]);
+					location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+				}
+				
 				if(!isThis){
 	               	console.log('여기는 노티스 안  false')
 	               	newNoticeCount()
@@ -155,7 +162,7 @@
 		  	
 		  	
 		  	function onClose(evt) {
-			  console.log("여기는 클로즈 이벤트")
+			  console.log("websocket 종료")
 			}
 		  
 		  	function send(receiveUser,tableNo) {
@@ -177,12 +184,12 @@
 		    <div class="container">
 		        <div class="content">
 		            <div class="row">
-		                <div class="col-md-5">
+		                <div class="col-md-4">
 		                    <h5>About Us</h5>
-		                    <p>돈 되는 취미 생활 사진 찍기</p> <p>이미지가 판매될 때마다 수익을 얻을 수 있습니다.</p> <p>당신이 쉬고 있거나 잠을 자고 있을 때도 수익이 들어옵니다.</p> <p>한장의 이미지도 여러번 판매될 수 있습니다.</p> <p>한 번의 업로드로 꾸준한 수익을 만들어 보세요. </p>
+		                    <p>Creative Tim is a startup that creates design tools that make the web development process faster and easier. </p> <p>We love the web and care deeply for how users interact with a digital product. We power businesses and individuals to create better looking web projects around the world. </p>
 		                </div>
 		
-		                <div class="col-md-3">
+		                <div class="col-md-4">
 		                    <h5>Social Feed</h5>
 		                    <div class="social-feed">
 		                        <div class="feed-line">

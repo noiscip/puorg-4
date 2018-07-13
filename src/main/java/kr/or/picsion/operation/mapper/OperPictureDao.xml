@@ -8,13 +8,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 <insert id="insertOperPicture" parameterType="kr.or.picsion.operation.dto.OperPicture">
-	insert into OPERPICTURE (operNo,picPath,userNo) values (#{operNo},#{picPath},#{userNo})
+	insert into OPERPICTURE (operNo,userNo) values (#{operNo},#{userNo})
 </insert>
 
 <select id="selectOperpicture" parameterType="Integer" resultType="kr.or.picsion.operation.dto.OperPicture">
 	select * from OPERPICTURE where operNo=#{operNo}
 </select>
 
+<delete id="operPictureCancle">
+	DELETE from PICTURE where picNo=#{picNo};
+</delete>
+<update id="updatepicOperPicture" parameterType="kr.or.picsion.operation.dto.OperPicture">
+      update OPERPICTURE set 
+      				picPath=#{picPath}
+      where operNo=#{operNo}
+ </update>
+ <update id="updatewpicOperPicture" parameterType="kr.or.picsion.operation.dto.OperPicture">
+      update OPERPICTURE set 
+			      	wpicPath=#{wpicPath}
+      where operNo=#{operNo}
+ </update>
 
  
 </mapper>

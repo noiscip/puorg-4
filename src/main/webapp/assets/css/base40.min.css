@@ -323,7 +323,6 @@ html,body{height:100%;min-width:320px}
 #footer_inner .hover_links{opacity:.8}
 #footer_inner .hover_links a{padding:0 5px}
 #bg_svg{position:fixed;top:-10px;left:0;width:100%;height:100%;z-index:-1}
-#logo{position:relative;top:2px;display:inline-block;width:115px;height:30px;background:url(../img/sprites.png);background:url(../img/sprites.svg),none;float:left;text-decoration:none;margin-right:40px}
 ::-webkit-input-placeholder{color:#bbb !important}
 ::-moz-placeholder{color:#bbb !important}
 :-ms-input-placeholder{color:#bbb !important}
@@ -350,7 +349,6 @@ html,body{height:100%;min-width:320px}
 .tab_menu+div>div{max-width:1800px;margin:auto;padding:22px 20px}
 .tab_menu+div .flex_grid{margin:0}
 .tiny_search{display:inline-block;position:relative;font-size:16px;min-width:0}
-.tiny_search label{z-index:10;display:inline-block !important;margin:0 !important;background:url(/static/img/sprites.png);background:url(/static/img/sprites.svg),none;background-position:-200px 0;width:20px;height:20px;cursor:pointer;position:absolute;right:0;top:1px;opacity:.7}
 .tiny_search [type="text"]{transition:.3s;width:0;opacity:0;border:0;border-bottom:1px solid #ccc;border-radius:0 !important;padding:2px 28px 2px 2px;color:#777}
 .tiny_search [type="submit"]{position:absolute;left:-9999px}
 .tiny_search.active input{width:220px;opacity:1;border:0;border-bottom:1px solid #ccc;border-radius:0 !important;padding:2px 28px 2px 2px;background:transparent}
@@ -520,7 +518,6 @@ html,body{height:100%;min-width:320px}
 .icon_instagram{background-position:-100px -350px;width:15px;height:15px}
 .icon_images{background-position:-150px -350px;width:14px;height:12px}
 .media_search{background:#fff;border-radius:5px;border:1px solid #eee}
-.media_search [type="submit"]{float:left;width:50px;height:55px;border:0;background:url(../img/sprites.png);background:url(../img/sprites.svg),none;background-position:15px -83px;opacity:.7;transition:opacity .3s}
 .media_search [type="submit"]:hover{opacity:.9}
 .media_search>div>span{display:block;overflow:hidden}
 .media_search [name="q"]{width:100%;margin:0;padding:18px 0;border:0;font:normal 16px arial,sans-serif}

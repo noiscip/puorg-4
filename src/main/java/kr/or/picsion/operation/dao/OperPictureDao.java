@@ -12,6 +12,8 @@ import kr.or.picsion.operation.dto.OperPicture;
 public interface OperPictureDao {
 
 	public int insertOperPicture(OperPicture operpicture);
-	
+	public int operPictureCancle(int operNo);
 	public OperPicture selectOperpicture(int operNo);
+	public int updatepicOperPicture(OperPicture operPicture);
+	public int updatewpicOperPicture(OperPicture operPicture);
 }

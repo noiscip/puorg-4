@@ -5,31 +5,24 @@
 
 <script>
 $(function(){
-	$(window).scroll(function(){
-		if($("nav").hasClass("navbar-transparent")){
-			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo-white.png');
-		}else{
-			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo.png');
-		}	
-		
-	});
+
 	console.log($('#loginUserNo').val())
+	
+	$(window).scroll(function(){
+		if($(this).scrollTop() >= 90){ 
+			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo.png');
+		}else{
+			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo-white.png');
+		}
+	});
+	
 	if($('#loginUserNo').val() != 0){
 		newNoticeCount();
 		myCart();
 	}
 	
-	var isRun =false
-	$(document).on('click','#newNotice',function(){
+	$(document).on('click','#alram',function(){
 		$('#noticeList').hide() 
- 
-		console.log(isRun)
-		if(isRun == true) {
-       		return;
-  	  	}
-    
-		if($(this).closest('li').hasClass('show') != true){
-	    	isRun = true;
 			$('#noticeList').show() 
 			$.ajax({
 				url: "/picsion/notice/notice.ps",
@@ -37,9 +30,12 @@ $(function(){
 					$('#noticeList').append('&nbsp&nbsp<img src="/picsion/assets/img/loading_bar3.gif" style="width : 130px" >')  
 				},
 				success : function (data) {
-					$('#noticeList').empty() 
+					console.log(data)
 					var noticeMenu = '';
+					var j = -1
+					$('#noticeList').empty() 
 					$.each(data.map, function(i, elt) {
+						j = i
 						noticeMenu += '<li class="divider"><a>'
 						noticeMenu += '<img class="rounded-circle header-prPic" src="'+elt[1].prPicture + '">&nbsp&nbsp' 
 						noticeMenu += '"'+ elt[1].userName +'"'
@@ -63,11 +59,12 @@ $(function(){
 						noticeMenu += '<input type="hidden" value="'+value+'">'
 						noticeMenu += '</a></li>' 
 					})
+					if (j == -1){
+						noticeMenu = '<li class="divider"><a>도착한 알림이 없습니다</a></li>'
+					}
 					$('#noticeList').append(noticeMenu)
-					isRun =false
 				}
 			})
-		}
 	})
 	
 	
@@ -156,7 +153,7 @@ $(function(){
 		  var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
 		  return ranNum;
 	}
-	$('#changemain').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,15)+'.jpg)');
+	$('#changemain').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main1.jpg)');
 	
 	var nowPoint = $('#nowPoint').val();
 	
@@ -168,7 +165,7 @@ $(function(){
 		    pg : 'inicis', // version 1.1.0부터 지원.
 		    pay_method : 'card',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
-		    name : '주문명:포인트 충전',
+		    name : '포인트 충전',
 		    amount : $('#chargePrice').val(),
 		    buyer_name : $('.userName').val(),
 		    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
@@ -210,21 +207,15 @@ function numberWithCommas(x) {
 }
 
 function newNoticeCount() {
-		var alram = "<i id='newNotice' class='material-icons'>notifications_active</i>";
 		$.ajax({
 			url : "/picsion/notice/noticeMsg.ps",
 			success: function (data) {
+				alram.append(data.count)
 				console.log("새알람숫자")
 				console.log(data.count)
-				if (data.count > 0 ){
-					$('#alram').empty();
-					$('#alram').append(alram);
-					$('#newNotice').css('color','red');
-				}
 			}
 		})
 	}
-$('.navbar-transparent').on()
 
 </script>
 
@@ -240,7 +231,7 @@ $('.navbar-transparent').on()
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
-        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img id="logo" src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
+        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img id="logo" src="<%=request.getContextPath()%>/assets/img/picsion-logo-white.png" style="width: 100px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
@@ -252,27 +243,28 @@ $('.navbar-transparent').on()
                  <div class="form-group has-default bmd-form-group">
                        <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
-                 <button id="submitbtn" style="background-color: transparent;" type="submit" class="btn btn-fab btn-round">
-                   <img alt="No Img" style="width:40px"src="<%=request.getContextPath()%>/images/eye.png">
-                </button>
+                <button id="submitbtn" type="submit"  class="btn btn-white btn-fab btn-round">
+                      <i class="material-icons">search</i>
+                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/register.ps"> 
-								<i class="material-icons">accessibility_new</i> 회원가입
+								<i class="material-icons">how_to_reg</i> 회원가입
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/login.ps"> 
-								<i class="material-icons">camera_front</i>로그인
+								<i class="material-icons">account_circle</i>로그인
 							</a>
 						</li>
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item">
 							<a href="" class="nav-link" data-toggle="dropdown" id="alram">
+								<i id='newNotice' class='material-icons'>notifications_active</i>
 							</a>
 								<ul class="dropdown-menu" id="noticeList">
 								</ul>
@@ -316,17 +308,6 @@ $('.navbar-transparent').on()
 		                    <a href="<%=request.getContextPath()%>/user/updatebefore.ps" class="dropdown-item">
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
-		                 
-		                    <c:if test="${sessionScope.user.naver eq null}">
-			                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="dropdown-item"> 
-			                   		<i class="material-icons">visibility</i>네이버 계정 연동 
-		                    	</a>
-		                    </c:if>
-		                    <c:if test="${sessionScope.user.google eq null}">
-			                    <a href="<%=request.getContextPath()%>/google/login.ps" class="dropdown-item"> 
-			                   		<i class="material-icons">visibility</i>구글 계정 연동 
-		                    	</a>
-	                    	</c:if>
 	                    	<c:if test="${sessionScope.user.roleNo eq 3}">
 			                    <a href="<%=request.getContextPath()%>/user/admin.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">build</i>회원/매출/신고
