@@ -186,29 +186,29 @@
 		            <div class="row">
 		                <div class="col-md-4">
 		                    <h5>About Us</h5>
-		                    <p>Creative Tim is a startup that creates design tools that make the web development process faster and easier. </p> <p>We love the web and care deeply for how users interact with a digital product. We power businesses and individuals to create better looking web projects around the world. </p>
+		                    <p>It Could Be / 그럴수 있조</p>
 		                </div>
 		
 		                <div class="col-md-4">
-		                    <h5>Social Feed</h5>
+		                    <h5>Function</h5>
 		                    <div class="social-feed">
 		                        <div class="feed-line">
-		                            <i class="fa fa-twitter"></i>
-		                            <p>How to handle ethical disagreements with your clients.</p>
+		                            <i class="fab fa-aws"></i>
+		                            <p>AWS를 사용하여 최적의 환경을 제공합니다.</p>
 		                        </div>
 		                        <div class="feed-line">
-		                            <i class="fa fa-twitter"></i>
-		                            <p>The tangible benefits of designing at 1x pixel density.</p>
+		                            <i class="fa fa-eye"></i>
+		                            <p>Google Cloud Vision API를 통한 인공지능 사진 분석.</p>
 		                        </div>
 		                        <div class="feed-line">
-		                            <i class="fa fa-facebook-square"></i>
-		                            <p>A collection of 25 stunning sites that you can use for inspiration.</p>
+		                            <i class="fa fa-credit-card"></i>
+		                            <p>포인트를 충전하여 사진을 구매하세요.</p>
 		                        </div>
 		                    </div>
 		                </div>
 		
 		                <div class="col-md-4">
-		                    <h5>Instagram Feed</h5>
+		                    <h5>Our Team</h5>
 		                    <div class="gallery-feed">
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/card-profile6-square.jpg" class="img img-raised rounded" alt="">
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/christian.jpg" class="img img-raised rounded" alt="">
@@ -236,7 +236,7 @@
 		            </li>
 		            <li>
 		                <a href="#pablo">
-		                    Presentation
+		                    PICSION
 		                </a>
 		            </li>
 		            <li>
@@ -246,19 +246,11 @@
 		            </li>
 		            <li>
 		                <a href="#pablo">
-		                    Payment
-		                </a>
-		            </li>
-		            <li>
-		                <a href="#pablo">
 		                    Contact Us
 		                </a>
 		            </li>
 		        </ul>
 		
-		        <div class="copyright float-right">
-		            Copyright © <script>document.write(new Date().getFullYear())</script>2018 Creative Tim All Rights Reserved.
-		        </div>
 		    </div>
 		</footer>
 
