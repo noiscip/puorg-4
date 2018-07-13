@@ -168,10 +168,6 @@ $(function() {
     		
     	})
     	
-    	$(document).on('click','#refresh',function(){
-			   $('input[value="Latest"]').checked();
-    	})
-    	
 })  
 </script>
 
@@ -224,9 +220,6 @@ $(function() {
 						<div class="card-body">
 							<h4 style="text-transform: uppercase;border-bottom: 1px solid #888;"class="card-title filter-option">
 								#${tag}
-								<button id="refresh"class="btn btn-default btn-fab btn-fab-mini btn-link pull-right" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Refresh">
-									<i class="material-icons">cached</i>
-								<div class="ripple-container"></div></button> 
 							</h4>
 							<div id="accordion" role="tablist" class="row">
 							
