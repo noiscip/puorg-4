@@ -60,7 +60,7 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */ 
 			 	
-			 	wsocket = new WebSocket("ws://192.168.0.23:8090/picsion/message.ps") //테스트 용도  
+			 	wsocket = new WebSocket("ws://192.168.0.31:8090/picsion/message.ps") //테스트 용도  
 
 			 	wsocket.onopen = onOpen
 			 	wsocket.onmessage = onMessage
@@ -147,6 +147,13 @@
                         }
                     })
                 }
+				if(table==10 && evt.data.split(':')[3] != null){
+					var brdNo= evt.data.split(':')[3];
+					console.log(evt.data.split(':')[3]);
+                	alert(evt.data.split(':')[4]);
+					location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+				}
+				
 				if(!isThis){
 	               	console.log('여기는 노티스 안  false')
 	               	newNoticeCount()

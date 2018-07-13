@@ -289,7 +289,12 @@ public class UserController {
 		
 		return "mypage.bookmark";
 	}
-	
+	@RequestMapping("myStats.ps")
+	public String myStats(Model model) {
+		
+		
+		return "mypage.personalStatistics";
+	}
 	/**
 	* 날      짜 : 2018. 7. 2.
 	* 메소드명 : myBookmark

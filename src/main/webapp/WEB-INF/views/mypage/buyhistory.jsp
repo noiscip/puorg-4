@@ -34,6 +34,7 @@
 				<ul>
 					<li><a class="tab-active" href="<%=request.getContextPath()%>/purchase/history.ps">구매 내역</a></li>
 					<li><a href="<%=request.getContextPath()%>/purchase/sellhistory.ps">판매 내역</a></li>
+					<li><a href="<%=request.getContextPath()%>/user/myStats.ps">통계 차트</a></li>
 					<li style="float:right;"><b>총 구매 금액 : </b><small><fmt:formatNumber value="${sumPurchase}" pattern="#,###"/>원</small></li>
 				</ul>
 				<div class="table-responsive">
