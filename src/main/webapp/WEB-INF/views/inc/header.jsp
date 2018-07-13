@@ -21,6 +21,16 @@ $(function(){
 		myCart();
 	}
 	
+	$('#userProfile').click(function(){
+		console.log('클릭클릭')
+		$.ajax({
+			url:"/picsion/user/sessionReset.ps",
+			success: function(){
+				
+			}
+		})
+	})
+	
 	$(document).on('click','#alram',function(){
 		$('#noticeList').hide() 
 			$('#noticeList').show() 

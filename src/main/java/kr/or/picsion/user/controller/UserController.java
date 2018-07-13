@@ -588,4 +588,14 @@ public class UserController {
 		return result;
 	}
 	
+	@RequestMapping("sessionReset.ps")
+	public View sessionReset(HttpSession session) {
+		User user = (User)session.getAttribute("user");
+		user = userService.userInfo(user.getUserNo());
+		
+		session.setAttribute("user", user);
+		
+		return jsonview;
+	}
+	
 }
