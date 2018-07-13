@@ -195,6 +195,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						</div>
 						<div id="tagA"></div>
 						<input type="hidden" id="subPrice" name="picPrice" value="" /> 
+
 						<input type="button" id="uploadSubmit" class="btn btn-primary" value="저장하기"/>
 					</form>
 				</div>
@@ -234,6 +235,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 		});
 		$('#removeBtn').hide()
 		
+
 		$('#uploadSubmit').click(function(){
 			priceCheck = $('#subPrice').val();
 			if(priceCheck<1000 || isNaN(priceCheck)){

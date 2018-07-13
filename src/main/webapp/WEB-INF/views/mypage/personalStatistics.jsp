@@ -61,7 +61,13 @@ $(function(){
 	}
 })
 </script>
-
+<style>
+	/* 마이페이지 상단 메뉴 위,아래 여백 */
+	.my-ul {
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+</style>
 
 <div id="changemain" class="page-header header-filter clear-filter purple-filter"
 	data-parallax="true">

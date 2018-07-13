@@ -402,8 +402,8 @@ $(function() {
 
 								<div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" style="">
 								  <div class="card-body card-refine">
-									<span id="price-left" class="price-left pull-left detailinput" data-currency="최저"></span>
-		  							<span id="price-right" class="price-right pull-right detailinput" data-currency="최고"></span>
+									<span id="price-left" class="price-left pull-left" data-currency="최저"></span>
+		  							<span id="price-right" class="price-right pull-right" data-currency="최고"></span>
 		  							<div class="clearfix"></div>
 		  							<div id="sliderRefine" class="slider slider-success noUi-target noUi-ltr noUi-horizontal">
 		  							</div>
