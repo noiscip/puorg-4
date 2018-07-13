@@ -150,6 +150,7 @@
   				alert('비밀번호는 영문 숫자 특수문자 혼용하여 4~15글자 입니다')
   				reg = '사용 불가능 합니다!!'
   			}
+  			console.log($('#pwd').closest('.form-group'))
   			$('#pwd').closest('.form-group')[0].childNodes[2].remove()
   			$('#pwd')[0].parentElement.after(reg)
   		})
