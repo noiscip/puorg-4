@@ -41,6 +41,9 @@ public class PurchaseController {
 	@Autowired
 	private PurchaseService purchaseService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@RequestMapping("adminPurchase.ps")
 	public String purchase(Model model) {
 		
@@ -180,19 +183,21 @@ public class PurchaseController {
 	@Transactional(propagation = Propagation.REQUIRED) // 트랜잭션으로 예외 발생시 결제와 포인트 반환
 	public String buyPicture(@ModelAttribute("PurchList") PurchList purchases, HttpSession session, Model model, int point) {
 		User user = (User) session.getAttribute("user");
+		String view = "redirect:";
 		if(user != null) {
 			try {
 			    purchaseService.buyPicture(purchases.getPurchases()); //장바구니에 담긴 사진 전체 구매
 			    purchaseService.updatePoint(point, user.getUserNo()); //구매자 포인트 변경
 			    purchaseService.updateSalePoint(purchases.getPurchases()); //판매자 포인트 변경
 				purchaseService.deleteCartAll(user.getUserNo());      //카트 전체 삭제
-				return "redirect:/purchase/history.ps";
+				session.setAttribute("user", userService.userInfo(user.getUserNo()));
+				view += "/purchase/history.ps";
 			} catch (Exception e) {
 				e.printStackTrace();
-				return "redirect:/home.ps";
+				view +=  "/home.ps";
 			}
 		}
-		return "home.home";
+		return view;
 	}
 	
 	
