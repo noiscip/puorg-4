@@ -66,7 +66,7 @@
 			 	wsocket.onmessage = onMessage
 			}
 		  	function onOpen(evt) {
-				console.log("websocket 실행")
+				console.log("여기는 오픈 이벤트")
 			}
 		  	function onMessage(evt){
 		  		console.log("onMessage 실행")
@@ -147,8 +147,9 @@
                         }
                     })
                 }
-				if(table==10 && evt.data.split(':')[3] != null){
+				if(table==10){
 					var brdNo= evt.data.split(':')[3];
+					console.log(brdNo);
                 	alert(evt.data.split(':')[4]);
 					location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
 				}
@@ -161,7 +162,7 @@
 		  	
 		  	
 		  	function onClose(evt) {
-			  console.log("websocket 종료")
+			  console.log("여기는 클로즈 이벤트")
 			}
 		  
 		  	function send(receiveUser,tableNo) {

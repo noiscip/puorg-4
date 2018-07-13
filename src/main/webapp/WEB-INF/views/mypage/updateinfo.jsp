@@ -2,7 +2,48 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<script>
+	$(function(){
+  		var regPwd = /^[a-zA-Z0-9!@#$%^&*()?_~]{4,15}$/  //영문 숫자 특수문자 혼용해서 4~15글자
+	  	var pwCheck = false
+	  	
+	  	$('#pwd').focusout(function(){
+  			pwCheck = false
+  			var reg = '사용 가능 합니다!!'
+  			if( !regPwd.test($('#pwd').val()) ){
+  				alert('비밀번호는 영문 숫자 특수문자 혼용하여 4~15글자 입니다')
+  				reg = '사용 불가능 합니다!!'
+  			}
+  			$('#pwd').closest('.form-group')[0].childNodes[2].remove()
+  			$('#pwd')[0].parentElement.after(reg)
+  		})
+  		
+  		$('#pwCheck').keyup(function(){
+  			var isPwCheck = '사용 불가능 합니다!!'
+  			if( $('#pwd').val() == $('#pwCheck').val() ){
+  				isPwCheck = '사용 가능 합니다!!'
+	  			pwCheck = true
+  			}else{
+  				pwCheck = false
+  			}
+  			$('#pwCheck').closest('.form-group')[0].childNodes[2].remove()
+  			$('#pwCheck')[0].parentElement.after(isPwCheck)
+  		})
+  		
+  		if($('#pwd').val()==""){
+  			console.log("패스워드 변경 안하는거지?")
+  		}else{
+	  		$('#pwdConfirm').click(function(){
+	  			if(!pwCheck){
+	  				alert('비밀번호를 다시 확인 해주세요')
+	  				$('#pwd').focus()
+	  			}else if(pwCheck){
+		  			$('form').submit()
+	  			}
+	  		})
+  		}
+	})
+</script>
 <style>
 /* 뿌려주는 이미지의 크기 */
 .img-size {
@@ -193,18 +234,18 @@
 	                        <input type="text" class="form-control userName input-content-pad" name="userName" value="${userinfo.userName}" autocomplete="off">
 
 	                      </div>
-		                    </div>
-		                    <div class="form-group">
-		                      <label for="exampleInput1" class="bmd-label-floating">비밀번호</label>
-		                      <div class="input-group">
-		                        <input type="password" name="pwd" class="form-control input-content-pad" />
-		                      </div>
-		                    </div>
-		                    <div class="form-group">
-		                      <label for="exampleInput1" class="bmd-label-floating">비밀번호 확인</label>
-		                      <div class="input-group">
-		                        <input type="password" class="form-control input-content-pad" />
-		                      </div>
+		                </div>
+	                    <div class="form-group">
+	                      <label for="exampleInput1" class="bmd-label-floating">비밀번호</label>
+	                      <div class="input-group">
+	                        <input type="password" id="pwd" name="pwd" class="form-control input-content-pad" />
+	                      </div>
+	                    </div>
+	                    <div class="form-group">
+	                      <label for="exampleInput1" class="bmd-label-floating">비밀번호 확인</label>
+	                      <div class="input-group">
+	                        <input type="password" id="pwCheck" class="form-control input-content-pad" />
+	                      </div>
                    		 </div> 
 	                    
 	                  <div class="form-group text-center update-lab-padding">
@@ -224,7 +265,7 @@
 	        	</div>
         	<!-- submit -->
         		<div align="center">
-                  	<button type="submit" class="btn btn-info update-btn-save">저장하기</button>
+                  	<button type="submit" id="pwdConfirm" class="btn btn-info update-btn-save">저장하기</button>
                  </div>
 			</form>
 		</div>
