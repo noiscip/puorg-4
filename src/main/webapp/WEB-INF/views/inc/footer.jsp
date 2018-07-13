@@ -60,7 +60,6 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */ 
 			 	
-
 			 	wsocket = new WebSocket("ws://192.168.0.47:8090/picsion/message.ps") //테스트 용도  
 
 			 	wsocket.onopen = onOpen
@@ -148,8 +147,9 @@
                         }
                     })
                 }
-				if(table==10 && evt.data.split(':')[3] != null){
+				if(table==10){
 					var brdNo= evt.data.split(':')[3];
+					console.log(brdNo);
                 	alert(evt.data.split(':')[4]);
 					location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
 				}

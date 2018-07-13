@@ -8,6 +8,46 @@
 .bootstrap-tagsinput .tag {
 	background-color: #9c27b0;
 }
+/*얼굴 영역 잡기 */
+.face-rectangle {
+	/* id:faceIt; */
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	border-width: 3px;
+	border-style: solid;
+	border-color: #F2F2F2;
+	background-color: transparent;
+	/*  background-position: inherit; */
+}
+
+input[type=radio] {
+	display: none;
+}
+
+input[type=radio]+label {
+	display: inline-block;
+	cursor: pointer;
+	/* 	line-height: 22px; */
+	padding-left: 22px;
+	/* 	background: url('/picsion/assets/img/favicon.png') left/22px no-repeat; */
+	border-width: 2px;
+	border-style: solid;
+	border-color: #BDBDBD;
+}
+
+input[type=radio]:checked+label {
+	/* background-image: url('/picsion/assets/img/loading_bar2.gif'); */
+	border-width: 2px;
+	border-style: solid;
+	border-color: #9c27b0;
+}
+
+.bootstrap-tagsinput .tag {
+	border: 2px solid;
+	background-color: #fff;
+	color: #9c27b0;
+}
 </style>
 
 <script type="text/javascript">
@@ -147,9 +187,10 @@
                         success : function(data) {
                             console.log(data);
                             if(data.check == "true"){
-                                alert('성공')
-                                var tableNo=10+":"+brdNo+":새로운 작업신청이 있습니다.";
-                                send(receiveUserNo,tableNo);
+                            	var tableNo=10+":"+brdNo+":새로운 작업신청이 있습니다.";
+                            	send(${boardInfo.userNo},tableNo);
+                                alert('성공');                                
+                                
                             }else{
                                 /* var check =''
                                     check += '<div class="alert alert-warning">'
@@ -191,7 +232,7 @@
                             console.log(data.check);
                             location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
                             var tableNo=10+":"+brdNo+":요청자가 작업을 수락하였습니다.";
-                            send(receiveUserNo,tableNo);
+                            send($("#oUserNo").val(),tableNo);
                         }
                     }); 
                 });
@@ -278,6 +319,34 @@
         }
         
     });
+    
+    function drawFace(imgId,rectX,rectY,rectWid,rectHei){
+    	var img,sagac;
+    	var wid,hei,scalWid,scalHei;
+    	img = document.getElementById(imgId);
+    	sagac = document.createElement("DIV");
+    	sagac.setAttribute("class","face-rectangle");
+    	
+    	img.parentElement.insertBefore(sagac,img);
+    /* 	sagac.style.backgroundImage = "url('"+img.src+"')"; */
+    	sagac.style.backgroundRepeat = "no-repeat";
+    	/* sagc.style.background-origin = "padding-box"; */
+    	sagac.style.width= rectWid + "px";
+    	sagac.style.height=rectHei + "px";
+    	
+    	sagac.style.backgroundSize = img.width + "px " + img.height + "px";
+    	showRect();
+    	function showRect(){
+    		var x,y;
+    		
+    		x = rectX; 
+    		y = rectY;
+    		x*=1;
+    		sagac.style.left = x+"px";
+    		sagac.style.top = y+"px";
+    	}
+    	
+    }
 </script>
 
 <style>
@@ -491,17 +560,57 @@
 	    <c:if test='${operation.step == 2}'>
 	    
 			<c:if test="${user.userNo eq operation.operatorNo}">
-				<div class="apply-register" align="center">
+				<div class="apply-register">
 					<c:choose>
 						<c:when
 							test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
 							<div class="row">
 								<div class="col-md-6">
-									<div style="height: 350px; width: 350px;">
-										<img alt="No Image" height="100%" id="filePath" width="100%"
-											src="${operPicture.picPath}">
-									</div>
-									<div></div>
+								<!--  -->
+										<div class="fileinput fileinput-new text-center" style="height: 350px; width: 350px;"
+											data-provides="fileinput">
+											<div class="fileinput-new thumbnail">
+												<!-- <img src="assets/img/up.png" alt="..."> -->
+												<div style="height: 350px; width: 350px;" id ="preview">
+													<img alt="No Image" height="100%" id="filePath" width="100%"
+														src="${operPicture.picPath}">
+												</div>
+											</div>
+											<!-- <div class="fileinput-preview fileinput-exists thumbnail">
+				
+											</div> -->
+											
+											<div id="peopleRadio" class="form-group" style="display: none;">
+												<br> 
+												<label for="numberPeople">사람수</label> 
+												<input type="radio" name="picPeople" id="zero" value="0">
+												<label for="zero"> 0 
+													<img src="/picsion/assets/img/userNo.png" width="30px" height="30px">
+												</label> 
+												<input type="radio" name="picPeople" id="one" value="1">
+												<label for="one"> 1 
+													<img src="/picsion/assets/img/user1.png" width="30px" height="30px">
+												</label> 
+												<input type="radio" name="picPeople" id="two" value="2">
+												<label for="two"> 2 
+													<img src="/picsion/assets/img/user2.png" width="30px" height="30px">
+												</label> 
+												<input type="radio" name="picPeople" id="thr" value="3">
+												<label for="thr"> 3~5 
+													<img src="/picsion/assets/img/user5.png" width="30px" height="30px">
+												</label> 
+												<input type="radio" name="picPeople" id="six" value="6">
+												<label for="six"> 6+ 
+													<img src="/picsion/assets/img/user6.png" width="30px" height="30px">
+												</label>
+											</div>
+											<div class="form-group" id="price" style="display: none;">
+												<label for="price">희망 가격</label> 
+												<input type="text" class="form-control" id="picPrice" name="picPrice" style="width: 90%">
+											</div>
+										</div>
+								<!--  -->
+									
 								</div>
 								<div class="col-md-6">
 									<form
@@ -1121,47 +1230,76 @@
 						 
 						$('h1').after(logo)
 					}
+					/*사람수 측정*/
+					$('#peopleRadio').show();
+					var peopleNum = data.face.length;
+					console.log(peopleNum);
+					if(peopleNum==0){
+						$('#zero').attr('checked',true);
+					}else if(peopleNum==1){
+						$('#one').attr('checked',true);
+					}else if(peopleNum==2){
+						$('#two').attr('checked',true);
+					}else if(peopleNum>=3&&peopleNum<=5){
+						$('#thr').attr('checked',true);
+					}else{
+						$('#six').attr('checked',true);
+					}
  					/*얼굴감지*/
- 					 if(data.face != null){
+ 					/* $(".fileinput-preview").children().attr({id:"preview"}); */
+ 					/* console.log($(".fileinput-preview").children()); */
+					
+					var chaHei = 350;
+					var natHei = data.metaMap.resolH.split(" ")[0];
+					var chaWid = 350;
+					var natWid = data.metaMap.resolW.split(" ")[0];
+					var moveLeft = 0;
+					chaHei *= 1;
+					natHei *= 1;
+					chaWid *= 1;
+					natWid *= 1;					
+					var scalH = (chaHei/natHei).toFixed(3);
+					var scalW = (chaWid/natWid).toFixed(3);
+					console.log(scalH);
+					console.log(scalW);
+					
+ 					 if(data.face != 0){
+						
+ 						var modelUse =''
+ 						modelUse += '<div class="alert alert-info">'
+ 						modelUse += 	'<div class="container-fluid">'
+ 						modelUse += 		'<div class="alert-icon">'
+ 						modelUse += 			'<i class="material-icons">warning</i>'
+ 						modelUse += 		'</div>'
+ 						modelUse += 		'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+ 						modelUse += 			'<span aria-hidden="true"><i class="material-icons">clear</i></span>'
+ 						modelUse += 		'</button>'
+ 						modelUse += 		'<b>Warning Alert</b>' + ' 사진 속에 사람이 감지되었습니다. 모델 사용권을 확인해주세요.'
+ 						modelUse += 	'</div>'
+ 						modelUse += '</div>'
+ 						$('h1').after(modelUse)
  						console.log("얼굴그리기")
- 						/* $('canvas').drawImage({
- 							source: $('.fileinput-preview')["0"].children["0"].src,
- 							x: 10, y: 10,
- 							load:rec
- 						});
- 						function rec(){
- 							console.log("이게 되낭?");
- 							$('canvas').drawRect({
-								strokeStyle:"#FF0000",
-								strokeWidth:4,
-								x:data.face["0"].x_0, y:data.face["0"].y_1,
-								width:data.face["0"].width,
-								height:data.face["0"].height
- 							});
- 						}
- 						 */
- 						 
- 						  /* $('#aaaa').append("<img style='width:100%;height:100%' src='"+$('.fileinput-preview')['0'].children['0'].src+"'>"); */ 
- 						//이 밑에 잠시 주석걸겠습니다
- 						/* $('canvas').drawImage({
- 							source: $('.fileinput-preview')['0'].children['0'].src,
- 							x: 100, y: 100,
- 							load:rec
- 						});
- 						function rec(){
- 							console.log("이게 되낭?");
- 							$('canvas').drawRect({
- 							strokeStyle:"#FF0000",
- 							strokeWidth:2,
- 							x:100, y:100,
- 							width:20,
- 							height:20
- 							});
- 						}
- */ 						
+ 						$("#preview").attr({
+ 							position:"relative"
+ 						})
+ 						
+ 						/* drawFace("preview",scalW*data.face["0"].x_0,scalH*data.face["0"].y_1,scalW*data.face["0"].width,
+ 								scalH*data.face["0"].height); */
+ 						$.each(data.face,function(i,val){
+ 							console.log(val.x_0,val.y_1,val.width,
+ 									val.height);
+ 							drawFace("preview",Math.ceil(scalW*val.x_0)+moveLeft,scalH*val.y_1,scalW*val.width,
+ 	 								scalH*val.height);
+ 							console.log(Math.ceil(scalW*val.x_0)+moveLeft,scalH*val.y_1,scalW*val.width,
+ 	 								scalH*val.height);
+ 						})
+ 						
+  						
  					} 
-					var safe = ''
+					
 					if(data.safe != null){
+
+						var safe = '';
 						safe += '<div class="alert alert-danger">'
 						safe += 	'<div class="container-fluid">'
 						safe += 		'<div class="alert-icon">'
@@ -1197,7 +1335,6 @@
 					
 					tags ='<br><br>태그추가: <input type="text" id="tagAddName">';
 					tags +='<button type="button" class="btn btn-primary" id="tagAdd">추가</button><br>';
-					tags += '<input type="text" name="picPath" value="' + data.picPath + '">';
 					tags += '<input type="hidden" name="camera" id="camera" value="'+cameraName+'"/>';
 					tags += '<input type="hidden" name="resolutionH" id="resolutionH" value="'+resolH+'"/>';
 					tags += '<input type="hidden" name="resolutionW" id="resolutionW" value="'+resolW+'"/>';
@@ -1233,4 +1370,20 @@
 			})
 		})
 	})
+	$(document).ready(function() {
+
+		$(document).on('mouseover', '.face-rectangle', function() {
+			$(this).css("border-color", "#9c27b0");
+		});
+		$(document).on('mouseout', '.face-rectangle', function() {
+			$(this).css("border-color", "#F2F2F2");
+		});
+
+		/* $(".face-rectangle").mouseover(function(){
+			consol.log("띠띠");
+			$(".face-rectangle").style("border-color","red");
+		
+		/* $("#preview").css("class", "rainbow-color"); 
+		}); */
+	});
 </script>
