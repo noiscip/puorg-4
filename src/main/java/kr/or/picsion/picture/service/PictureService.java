@@ -394,23 +394,25 @@ public class PictureService {
         w.drawString(text, (int)(wid-x), (int)(hei+(yMove*y)));
         
         //top left
-        orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, rect.getHeight());
+        orig.setToRotation(Math.toRadians(angle), rect.getWidth()/2, rect.getHeight());
         w.setTransform(orig);
-        w.drawString(text, (int)(rect.getHeight()/2), (int)(rect.getHeight()));
-        
+        w.drawString(text, (int)(rect.getWidth()), (int)(rect.getHeight()));
+        System.out.println("top left"+w.getClipBounds());
         //y=top x=right
-        orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, rect.getHeight());
+        orig.setToRotation(Math.toRadians(angle), image.getWidth()-rect.getWidth(), rect.getHeight());
         w.setTransform(orig);
-        w.drawString(text, (int)(rect.getHeight()/2), (int)(rect.getHeight()));
+        w.drawString(text, (int)(image.getWidth()-rect.getWidth()), (int)(rect.getHeight()));
+        System.out.println("y=top x=right"+w.getClipBounds());
         //y=bottom x=left
         orig.setToRotation(Math.toRadians(angle), rect.getHeight()/2, image.getHeight()-rect.getHeight());    
         w.setTransform(orig);
         w.drawString(text, (int)(rect.getHeight()/2), (int)(image.getHeight()-rect.getHeight()));
+        System.out.println("y=bottom x=left"+w.getClipBounds());
         //y=bottom x=right
         orig.setToRotation(Math.toRadians(angle), image.getWidth() - (rect.getHeight()), image.getHeight()-rect.getHeight());    
         w.setTransform(orig);
         w.drawString(text, (int)(image.getWidth() - rect.getHeight()), (int)(image.getHeight()-rect.getHeight()));
-        
+        System.out.println("y=bottom x=right"+w.getClipBounds());
         ImageIO.write(watermarked, type, destination);
         w.dispose();
     }
