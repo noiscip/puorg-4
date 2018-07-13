@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 메인 화면 랜덤 사진 리스트 -->
 	<select id="selectRandom" resultType="kr.or.picsion.picture.dto.Picture">
-	 select * from PICTURE order by rand() limit 10
+	 select * from PICTURE p join PICTUREINFO pi on p.picNo = pi.picNo where pi.resolutionW >= 1000 order by rand() limit 10
 	</select>
 	
 	<!-- 메인 화면 최신 사진 리스트 -->

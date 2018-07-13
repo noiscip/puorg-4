@@ -10,7 +10,7 @@
     
    $(document).ready(function() {
         	var loginUserNo = $('#loginUserNo').val();
-        	var tot = ${total};
+        	var tot = $('#hiddentotal').val();
         	var userPoint = ${user.point}
             var widget = $('.tabs-underline');
             var tabs = widget.find('ul a'),
@@ -36,11 +36,13 @@
           //장바구니 사진 삭제
         	$(document).on('click', '#deleteItem', function(){
         		var tr = $(this).parent().parent();
-        		var picNo = $(this).attr("value");
-        		var price = $(this).attr("price");
-        		var userpoint = $('#change').attr('value');
+        		var picNo = $(this).attr("value"); //선택 항목 사진 번호
+        		var price = $(this).attr("price"); //선택 항목 가격
+        		tot-=price; //장바구니 토탈  - 항목 가격
+        		console.log(tot);
+        		var userpoint = $('.changeit').attr('value');
         		
-        		console.log($('#change'));
+        		console.log($('.changeit'));
         		   $.ajax({
         			url:"/picsion/purchase/deleteItem.ps",
         			data:{userNo:loginUserNo,
@@ -56,9 +58,12 @@
             			$('#total2')["0"].childNodes["0"].data=tot;
         				$(tr).remove();
         				$("#cartNo"+picNo).remove();
-        				$('#change')["0"].childNodes["0"].data=userpoint;
-        				$('#changehidden').val(userPoint);
-        				alert("항목 삭제 완료");
+       					$('.changeit')["0"].childNodes["0"].data=userpoint;
+       					$('.changeit')["0"].childNodes["0"].data=userpoint;
+           				$('.changehidden').val(userPoint);
+           				alert("항목 삭제 완료");
+           				
+        				
         				
         				if(data.again==0){
         					$('#cartnav')["0"].childNodes[3].data--;
@@ -68,7 +73,6 @@
         					$('#cartnav')["0"].childNodes[3].data--;
     						$('#'+picNo+'tt').parent().parent().remove();
         				}
-        				
         				}else{
         					alert("항목 삭제 실패");
         				}
@@ -94,7 +98,7 @@
 <div class="section">
 	<div class="container">
 		<div class="main main-raised main-product">
-
+                  <input id="hiddentotal" type="hidden" value="${total}">
 			<div class="tabs-underline">
 
 				<ul>
@@ -124,34 +128,27 @@
 								<div class="total">
 									Total<span id="total1"class="price"><fmt:formatNumber value="${total}" pattern="#,###"/><small>원</small></span>
 								</div>
-								<div class="total">
 									 <c:choose>
 											<c:when test="${user.point-total >= 0}">
-												구매 후 잔액<span id="change" value="${user.point-total}" class="price"><fmt:formatNumber value="${user.point-total}" pattern="#,###"/><small>원</small></span>
-												<input id="changehidden" name="point" value="${user.point-total}" type="hidden">
+											<div id="plusprice" class="total">
+												구매 후 잔액<span value="${user.point-total}" class="price changeit"><fmt:formatNumber value="${user.point-total}" pattern="#,###"/><small>원</small></span>
+												<input class="changehidden" name="point" value="${user.point-total}" type="hidden">
+											</div>
+											<br>
+											<br>
+											  <button type="submit" class="btn btn-primary btn-block">
+                                                    Proceed
+                                                </button>
 											</c:when>
 											<c:otherwise>
-												<span>잔액(${user.point}) 부족</span>
+											<div id="minusprice" class="total">
+												금액 부족<span value="${user.point-total}" class="price text-danger changeit"><fmt:formatNumber value="${user.point-total}" pattern="#,###"/><small>원</small></span>
+												<input class="changehidden" name="point" value="${user.point-total}" type="hidden">
+											</div>
 											</c:otherwise>
 									</c:choose>
 									
-								</div> 
 								<br>
-								<div class="form-group col-sm-12">
-								<c:choose>
-											<c:when test="${user.point-total >= 0}">
-												<button type="submit" class="btn btn-primary btn-block">
-													Proceed
-												</button>
-											</c:when>
-											<c:otherwise>
-												<button class="btn btn-primary btn-sm float-right">
-													<a href="<%=request.getContextPath()%>/user/updatebefore.ps" class="awhite-font-color">캐시 충전</a>
-												</button>												
-											</c:otherwise>
-									</c:choose>								
-									
-								</div>
 							</div>
 						</form:form>
 						</div>
