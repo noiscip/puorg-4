@@ -149,7 +149,6 @@
                 }
 				if(table==10 && evt.data.split(':')[3] != null){
 					var brdNo= evt.data.split(':')[3];
-					console.log(evt.data.split(':')[3]);
                 	alert(evt.data.split(':')[4]);
 					location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
 				}
