@@ -30,7 +30,6 @@ $(function(){
 					$('#noticeList').append('&nbsp&nbsp<img src="/picsion/assets/img/loading_bar3.gif" style="width : 130px" >')  
 				},
 				success : function (data) {
-					console.log(data)
 					var noticeMenu = '';
 					var j = -1
 					$('#noticeList').empty() 
@@ -93,19 +92,16 @@ $(function(){
 	})
 	
 	//검색 태그 autocomplete
-	$("#searchAll").autocomplete({
-		          
+	$(".searchAll").autocomplete({
 					matchContains: true,
 					source : function(request, response) {
-						if($('#searchAll').val()!=''){
+						if($('.searchAll').val()!=''){
 						$.ajax({
 							type : 'post',
 							url : "/picsion/picture/searchpicture.ps",
 							dataType : "json",
-							//request.term = $("#autocomplete").val() 
 							data : {tagParam : request.term},
 							success : function(data) {
-								console.log(data.searchTagList);
 								response(data.searchTagList);
 							}
 						});
@@ -114,8 +110,7 @@ $(function(){
 					//조회를 위한 최소글자수 
 					minLength : 1,
 					select : function(event, ui) {
-						console.log(ui.item.value);
-						$('#searchAll').val(ui.item.value);
+						$('.searchAll').val(ui.item.value);
 						$('.autosend').submit();
 					},
 				});
@@ -183,8 +178,6 @@ $(function(){
 					if(data.result == 0){
 						msg = '결제 완료 BUT 업데이트 실패'
 					}else{
-						console.log(data.point)
-						console.log(numberWithCommas(data.point))
 						$('.point').val(data.point)
 						$('#fmtPoint')[0].innerHTML = '포인트 : '+ numberWithCommas(data.point)
 					}
@@ -211,8 +204,6 @@ function newNoticeCount() {
 			url : "/picsion/notice/noticeMsg.ps",
 			success: function (data) {
 				alram.append(data.count)
-				console.log("새알람숫자")
-				console.log(data.count)
 			}
 		})
 	}
@@ -241,9 +232,9 @@ function newNoticeCount() {
       <div class="collapse navbar-collapse">
       	<form action="/picsion/picture/tagpicList.ps" class="form-inline autosend">
                  <div class="form-group has-default bmd-form-group">
-                       <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
+                       <input type="text" name="tag" class="form-control searchAll" placeholder="Search">
                  </div>
-                <button id="submitbtn" type="submit"  class="btn btn-white btn-fab btn-round">
+                <button type="submit" class="btn btn-white btn-fab btn-round">
                       <i class="material-icons">search</i>
                  </button>
            </form>
