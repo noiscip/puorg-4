@@ -60,7 +60,6 @@
 			function connect(){
 			 	/* wsocket = new WebSocket("ws://13.124.171.244:8080/picsion/message.ps") //ec2등록 용도 */ 
 			 	
-
 			 	wsocket = new WebSocket("ws://192.168.0.47:8090/picsion/message.ps") //테스트 용도  
 
 			 	wsocket.onopen = onOpen
@@ -148,8 +147,9 @@
                         }
                     })
                 }
-				if(table==10 && evt.data.split(':')[3] != null){
+				if(table==10){
 					var brdNo= evt.data.split(':')[3];
+					console.log(brdNo);
                 	alert(evt.data.split(':')[4]);
 					location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
 				}
@@ -198,28 +198,32 @@
 								Do you have a hobby to take pictures?<br>
 								Take fun photos and make new revenue!<br>
 								PICSION provides a platform for all creators to publish and sell their work worldwide.</p> -->
+
+		                    <h5>About Us</h5>
+		                    <p>It Could Be / 그럴수 있조</p>
 		                </div>
 		
 		                <div class="col-md-4">
-		                    <h5>Social Feed</h5>
+		                    <h5>Function</h5>
 		                    <div class="social-feed">
 		                        <div class="feed-line">
-		                            <i class="fa fa-twitter"></i>
-		                            <p>How to handle ethical disagreements with your clients.</p>
+		                            <i class="fab fa-aws"></i>
+		                            <p>AWS를 사용하여 최적의 환경을 제공합니다.</p>
 		                        </div>
 		                        <div class="feed-line">
-		                            <i class="fa fa-twitter"></i>
-		                            <p>The tangible benefits of designing at 1x pixel density.</p>
+		                            <i class="fa fa-eye"></i>
+		                            <p>Google Cloud Vision API를 통한 인공지능 사진 분석.</p>
 		                        </div>
 		                        <div class="feed-line">
-		                            <i class="fa fa-facebook-square"></i>
-		                            <p>A collection of 25 stunning sites that you can use for inspiration.</p>
+		                            <i class="fa fa-credit-card"></i>
+		                            <p>포인트를 충전하여 사진을 구매하세요.</p>
 		                        </div>
 		                    </div>
 		                </div>
 		
 		                <div class="col-md-4">
 		                    <h5>Created by</h5>
+
 		                    <div class="gallery-feed">
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/card-profile6-square.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/faces/christian.jpg" class="img img-raised rounded">
@@ -242,6 +246,30 @@
 		        <div class="copyright float-right">
 		            Copyright © <script>document.write(new Date().getFullYear())</script> Team I.C.B All Rights Reserved.
 		        </div>
+		        
+		        <ul class="float-left">
+		            <li>
+		                <a href="#pablo">
+		                   Blog
+		                </a>
+		            </li>
+		            <li>
+		                <a href="#pablo">
+		                    PICSION
+		                </a>
+		            </li>
+		            <li>
+		                <a href="#pablo">
+		                   Discover
+		                </a>
+		            </li>
+		            <li>
+		                <a href="#pablo">
+		                    Contact Us
+		                </a>
+		            </li>
+		        </ul>
+		
 		    </div>
 		</footer>
 

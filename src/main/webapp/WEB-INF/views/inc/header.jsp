@@ -21,6 +21,16 @@ $(function(){
 		myCart();
 	}
 	
+	$('#userProfile').click(function(){
+		console.log('클릭클릭')
+		$.ajax({
+			url:"/picsion/user/sessionReset.ps",
+			success: function(){
+				
+			}
+		})
+	})
+	
 	$(document).on('click','#alram',function(){
 		$('#noticeList').hide() 
 			$('#noticeList').show() 
@@ -148,7 +158,7 @@ $(function(){
 		  var ranNum = Math.floor(Math.random()*(max-min+1)) + min;
 		  return ranNum;
 	}
-	$('#changemain').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main1.jpg)');
+	$('#changemain').css('background-image','url(<%=request.getContextPath()%>/assets/img/main2/main'+generateRandom(1,11)+'.jpg)');
 	
 	var nowPoint = $('#nowPoint').val();
 	
