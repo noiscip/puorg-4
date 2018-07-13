@@ -16,7 +16,11 @@
     	baguetteBox.run('.picturezoom');
         $('#savePicture').hide();
         if(${boardInfo.operStateNo}==2){ 
-        $('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+        	if(${operation.step}==2){
+        		
+        	}else{
+        	$('#collapseThree').scrollTop($('#collapseThree')[0].scrollHeight);
+        	}
         }
         
         //댓글창 스크롤 가장 하단으로 내리기
@@ -260,17 +264,6 @@
         }); 
         
         
-        $('.apply-register').hide();
-        $('.apply-pic-register').click(function(){
-            if($('.apply-pic-register').hasClass('open-register')){
-                $('.apply-register').hide();
-                $('.apply-pic-register').removeClass('open-register');
-            }else{
-                $('.apply-register').show();
-                $('.apply-pic-register').addClass('open-register');
-            }
-        });
-        
         
     });
     
@@ -385,18 +378,25 @@
 			<c:choose>
 				<c:when test="${boardInfo.userNo eq user.userNo}">
 				<c:choose>
-					<c:when test="${operation.operatorEnd ne 'T'}">
+					<c:when test="${operation.operatorEnd eq 'T'}">
 						<button type="button" data-toggle="modal" data-target="#checkPicModal"
 							class="btn btn-primary btn-md float-right">
 							<i class="material-icons">linked_camera</i>
 							&nbsp;작업 사진 확인
 						</button>
 					</c:when>
-					<c:otherwise>
+					<c:when test="${operation.requesterEnd eq 'T'}">
 						<button type="button" data-toggle="modal" data-target="#checkPicModal"
 							class="btn btn-success btn-md float-right">
 							<i class="material-icons">linked_camera</i>
 							&nbsp;검증 대기
+						</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" data-toggle="modal" data-target="#checkPicModal"
+							class="btn btn-danger btn-md float-right">
+							<i class="material-icons">linked_camera</i>
+							&nbsp;사진 등록 대기
 						</button>
 					</c:otherwise>
 				</c:choose>
@@ -412,11 +412,11 @@
 				</button>
 				</c:when>
 				<c:otherwise>
-						<button type="button" data-toggle="modal" data-target="#uploadPicModal"
-					class="btn btn-success btn-md apply-pic-register float-right">
-					<i class="material-icons">linked_camera</i>
-					&nbsp;사진 선택 완료
-				</button>
+						<button type="button"
+						class="btn btn-success btn-md apply-pic-register float-right">
+						<i class="material-icons">linked_camera</i>
+						&nbsp;사진 검증
+						</button>
 				</c:otherwise>
 				</c:choose>
 			
@@ -473,6 +473,7 @@
 			                         step3 사진검증
 			        </div>
 			    </li>
+			    <!-- 진행 완료 -->
 			    <li class="nav-item ">
 			        <div class="nav-link <c:if test='${operation.step == 3}'>active</c:if>"
 			        data-toggle="popover" data-placement="top" data-trigger="hover" data-content="요청자는 사진을 받을 수 있습니다">
@@ -487,9 +488,69 @@
 		<hr>
 		<br>
 	
+	    <c:if test='${operation.step == 2}'>
+	    
+			<c:if test="${user.userNo eq operation.operatorNo}">
+				<div class="apply-register" align="center">
+					<c:choose>
+						<c:when
+							test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
+							<div class="row">
+								<div class="col-md-6">
+									<div style="height: 350px; width: 350px;">
+										<img alt="No Image" height="100%" id="filePath" width="100%"
+											src="${operPicture.picPath}">
+									</div>
+									<div></div>
+								</div>
+								<div class="col-md-6">
+									<form
+										action="<%=request.getContextPath()%>/picture/operationComplete.ps">
+										<input type="hidden" name="picPrice"
+											value="${operation.operPrice}"> <input type="hidden"
+											name="transferState" value="${boardInfo.copyright}">
+										<input type="hidden" name="picPath"
+											value="${operPicture.picPath}"> <input type="hidden"
+											name="userNo" value="${boardInfo.userNo}"> <input
+											type="hidden" name="brdNo" value="${boardInfo.brdNo}">
+										<div class="form-group">
+											<label for="title">제목</label> <input type="text"
+												class="form-control" id="pictureTitle" name="picTitle"
+												autocomplete="off">
+										</div>
+
+										<div class="form-group">
+											<label for="description">설명</label> <input type="text"
+												class="form-control" id="pictureDesc" name="picContent"
+												autocomplete="off">
+										</div>
+
+										<!-- <form action=""> -->
+										<div id="picTags" class="form-group">
+											<label for="comment">Tags</label> <br>
+											<div id="loaderIcon"></div>
+										</div>
+										<div id="tagA"></div>
+										<input type="button" id="operPicture" class="btn btn-primary"
+											value="사진 검증">
+										<button type="submit" id="savePicture" class="btn btn-primary">저장하기</button>
+									</form>
+								</div>
+							</div>
+						</c:when>
+
+						<c:otherwise>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</c:if>
+	    
+	    </c:if>
+	    <c:if test='${operation.step != 2}'>
+	   
 		
-		
-		
+		<!-- step 0, 1 -->	
+		<div>
 		<!-- 상세 탭 -->
 		<ul class="nav nav-tabs-center justify-content-center"  id="myTab"  role="tablist">
 		  <li class="nav-item">
@@ -733,31 +794,11 @@
 									</div>
 								</div>
 							</div>
+							
+							
+							
+							
 						</div>
-						<%-- 
-						<c:if test="${boardInfo.operStateNo eq 2}">
-									<div align="center">
-										<c:choose>
-											<c:when test="${operation.operatorEnd ne 'T'}">
-												<button type="button" class="btn btn-danger">작업자 확인</button>
-											</c:when>
-											<c:otherwise>
-												<button type="button" class="btn btn-success">작업자
-													확인</button>
-											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${operation.requesterEnd ne 'T'}">
-												<button type="button" class="btn btn-danger">요청자 확인</button>
-											</c:when>
-											<c:otherwise>
-												<button type="button" class="btn btn-success">요청자
-													확인</button>
-											</c:otherwise>
-										</c:choose>
-									</div>
-								</c:if> --%>
-					
 				</div>
 			</div>
 			</div>
@@ -806,117 +847,11 @@
 				</c:when>
 			</c:choose>
 			</div>
-
-			<c:if
-				test="${boardInfo.operStateNo eq 2 && user.userNo eq operation.operatorNo}">
-				<div class="apply-register" align="center">
-					<c:choose>
-						<c:when
-							test="${operation.operatorEnd eq 'T' && operation.requesterEnd eq 'T'}">
-							<div class="row">
-								<div class="col-md-6">
-									<div style="height: 350px; width: 350px;">
-										<img alt="No Image" height="100%" id="filePath" width="100%"
-											src="${operPicture.picPath}">
-									</div>
-									<div></div>
-								</div>
-								<div class="col-md-6">
-									<form
-										action="<%=request.getContextPath()%>/picture/operationComplete.ps">
-										<input type="hidden" name="picPrice"
-											value="${operation.operPrice}"> <input type="hidden"
-											name="transferState" value="${boardInfo.copyright}">
-										<input type="hidden" name="picPath"
-											value="${operPicture.picPath}"> <input type="hidden"
-											name="userNo" value="${boardInfo.userNo}"> <input
-											type="hidden" name="brdNo" value="${boardInfo.brdNo}">
-										<div class="form-group">
-											<label for="title">제목</label> <input type="text"
-												class="form-control" id="pictureTitle" name="picTitle"
-												autocomplete="off">
-										</div>
-
-										<div class="form-group">
-											<label for="description">설명</label> <input type="text"
-												class="form-control" id="pictureDesc" name="picContent"
-												autocomplete="off">
-										</div>
-
-										<!-- <form action=""> -->
-										<div id="picTags" class="form-group">
-											<label for="comment">Tags</label> <br>
-											<div id="loaderIcon"></div>
-										</div>
-										<!-- </form> -->
-										<%--	<div class="form-group">
-										<input type="text" name="picPath" value="${picPath}"> 
-									</div> --%>
-										<div id="tagA"></div>
-										<input type="button" id="operPicture" class="btn btn-primary"
-											value="사진 검증">
-										<button type="submit" id="savePicture" class="btn btn-primary">저장하기</button>
-									</form>
-								</div>
-							</div>
-						</c:when>
-
-						<c:otherwise>
-						<%-- 	<c:choose>
-								<c:when test="${operation.operatorEnd eq 'T'}">
-									<div style="height: 350px; width: 350px; text-align: center;">
-										<img alt="No Image" height="100%" width="100%"
-											src="${operPicture.picPath}">
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div id="upload">
-										<div id="picupload" align="center">
-											<form id="fileForm" action="" enctype="multipart/form-data"
-												method="post">
-												<input type="hidden" name="operNo"
-													value="${operation.operNo}"> <input type="hidden"
-													name="brdNo" value="${boardInfo.brdNo}">
-												<div class="fileinput fileinput-new text-center"
-													data-provides="fileinput">
-													<div class="fileinput-new thumbnail img-raised">
-														<img
-															src="https://epicattorneymarketing.com/wp-content/uploads/2016/07/Headshot-Placeholder-1.png"
-															alt="...">
-													</div>
-													<div
-														class="fileinput-preview fileinput-exists thumbnail img-raised">
-														<canvas id="canvasdiv"></canvas>
-
-													</div>
-													<div>
-														<span
-															class="btn btn-raised btn-round btn-default btn-file">
-															<span class="fileinput-new">Select image</span> <span
-															class="fileinput-exists">Change</span> <input type="file"
-															name="file" accept=".jpg, .png, .bmp" />
-														</span> <a href="#pablo"
-															class="btn btn-danger btn-round fileinput-exists"
-															data-dismiss="fileinput"> <i class="fa fa-times"></i>
-															Remove
-														</a> <input type="button" id="operpic"
-															class="btn btn-primary btn-round" value="요청자 보여주기">
-													</div>
-												</div>
-
-											</form>
-										</div>
-									</div>
-								</c:otherwise>
-							</c:choose> --%>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</c:if>
-
 			
 			</div>
-			 
+			 </div>
+			 <!-- step 0, 1 -->
+			</c:if>
 			</div>
 			
 			</div>
@@ -1028,7 +963,7 @@
             <div class="col-md-12">
            	<c:choose>
 				<c:when test="${empty operPicture}">
-					작업자가 사진을 아직 업로드 하지 않았습니다 :)
+					작업자가 사진을 아직 업로드 하지 않았습니다
 				</c:when>
 				<c:otherwise>
 					  <div class="picture">
@@ -1047,7 +982,6 @@
             <div class="modal-footer">
             	<c:choose>
 				<c:when test="${empty operPicture}"></c:when>
-				<c:when test="${operation.operatorEnd ne 'T'}"></c:when>
 				<c:otherwise>
 				<button type="button" id="opercomplete" class="btn btn-success btn-link">사진이 마음에 들어요</button>
 				</c:otherwise>
@@ -1098,7 +1032,6 @@
 							</div>
 							<div
 								class="fileinput-preview fileinput-exists thumbnail img-raised">
-								<%-- <canvas id="canvasdiv"></canvas> --%>
 
 							</div>
 							<div>
