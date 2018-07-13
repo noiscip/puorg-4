@@ -408,7 +408,7 @@ function followerPaging(userNo, pg){
 				  			</c:otherwise>
 				  		</c:choose>
 					</button>
-				  	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModal">
+				  	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#messageModal">
 				  		<i class="material-icons">mail</i> 메시지
 				  	</button>
 	              	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#reportModal">신고</button>
@@ -646,11 +646,11 @@ function followerPaging(userNo, pg){
   </div>
 
 	<!-- 메시지 Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="messageModal" tabindex="1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">메시지</h5>
+	        <h5 class="modal-title" id="messageModalLabel">메시지</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>

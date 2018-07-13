@@ -410,7 +410,7 @@ $(document).ready(function() {
 												<c:otherwise>
 												<c:if test="${sessionScope.user.userNo ne userInfo.userNo}">
 													<button type="button" class="btn btn-default btn-sm"
-														data-toggle="modal" data-target="#exampleModal">
+														data-toggle="modal" data-target="#messageModal">
 														<i class="material-icons"> mail</i> 메시지
 													</button>
 													<button class="btn btn-primary btn-sm" id="follow">
@@ -589,7 +589,7 @@ $(document).ready(function() {
 </div>
 
 <!-- 메시지 모달 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="">
+<div class="modal fade" id="messageModal" tabindex="-1" role="">
 	<div class="modal-dialog modal-login" role="document">
 		<div class="modal-content">
 			<div class="card card-signup card-plain">

@@ -39,7 +39,6 @@ public class PictureService {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	
 	/**
 	* 날      짜 : 2018. 6. 13.
 	* 메소드명 : studioPicList
@@ -93,7 +92,6 @@ public class PictureService {
 		List<String> list = picDao.wordChartList();
 		return list;
 	}
-	
 	
 	/**
 	* 날      짜 : 2018. 6. 17.
@@ -371,7 +369,7 @@ public class PictureService {
         AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
         w.setComposite(alphaChannel);
         w.setColor(Color.GRAY);
-        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, (image.getWidth()/40)));
+        w.setFont(new Font(Font.SANS_SERIF, Font.BOLD, (image.getWidth()/20)));
         FontMetrics fontMetrics = w.getFontMetrics();
         Rectangle2D rect = fontMetrics.getStringBounds(text, w);
 

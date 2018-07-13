@@ -77,7 +77,7 @@ public class UserController {
 //		user.setPwd(bCryptPasswordEncoder.encode(user.getPwd()));
 //		System.out.println("회원가입 비밀번호 : " + user.getPwd());
 		userService.register(user);
-		return "redirect:/home.ps";
+		return "redirect:/user/login.ps";
 	}
 	
 	/**
@@ -289,7 +289,12 @@ public class UserController {
 		
 		return "mypage.bookmark";
 	}
-	
+	@RequestMapping("myStats.ps")
+	public String myStats(Model model) {
+		
+		
+		return "mypage.personalStatistics";
+	}
 	/**
 	* 날      짜 : 2018. 7. 2.
 	* 메소드명 : myBookmark

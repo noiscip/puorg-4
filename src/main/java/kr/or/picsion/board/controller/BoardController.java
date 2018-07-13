@@ -117,7 +117,7 @@ public class BoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/board/board.ps";
+		return "redirect:/board/boardInfo.ps?brdNo="+inboard.getBrdNo();
 	}
 
 	/**

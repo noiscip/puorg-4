@@ -17,6 +17,7 @@ import kr.or.picsion.board.service.BoardService;
 import kr.or.picsion.comment.service.CommentService;
 import kr.or.picsion.notice.service.NoticeService;
 import kr.or.picsion.operation.dto.Operation;
+import kr.or.picsion.operation.service.OperPictureService;
 import kr.or.picsion.operation.service.OperationService;
 import kr.or.picsion.user.dto.User;
 
@@ -36,6 +37,9 @@ public class OperationController {
 
 	@Autowired
 	private OperationService operationService;
+	
+	@Autowired
+	private OperPictureService operPictureService;
 
 	@Autowired
 	private CommentService commentService;
@@ -69,7 +73,7 @@ public class OperationController {
 				board.setOperStateNo(2);
 				commentService.deleteAllComment(board.getBrdNo());
 				boardService.updateBoard(board);
-				
+				operation.setStep(1);
 				result = operationService.insertOperation(operation);
 		
 				if (result != 0) {
@@ -130,16 +134,36 @@ public class OperationController {
 	*/
 	@RequestMapping(value = "opercomplete.ps")
 	@Transactional(propagation = Propagation.REQUIRED)
-	public View operComplete(HttpSession session, Model model,int brdNo) {
+	public View operComplete(HttpSession session, Model model,Operation oper) {
 		try {
-			Operation operation = operationService.selectOper(brdNo);
+			Operation operation = operationService.selectOper(oper.getBrdNo());
+			System.out.println(operation);
 			operation.setRequesterEnd("T");
+			operation.setStep(2);
 			operationService.updateOperation(operation);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
+		}		
 		return jsonview;
 	}
 	
+	
+	
+	/**
+	* 날      짜 : 2018. 7. 12.
+	* 메소드명 : operPictureCancle
+	* 작성자명 : 김준수 
+	* 기      능 : 작업 취소
+	*
+	* @param operNo
+	* @param model
+	* @return
+	*/
+	@RequestMapping(value = "operPictureCancle.ps")
+	@Transactional(propagation = Propagation.REQUIRED)
+	public View operPictureCancle(int operNo, Model model) {
+		int result = operPictureService.operPictureCancle(operNo);		
+		model.addAttribute("result", result);		
+		return jsonview;
+	}
 }

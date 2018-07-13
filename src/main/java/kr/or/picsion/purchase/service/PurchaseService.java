@@ -66,6 +66,32 @@ public class PurchaseService {
         map.put(2, sales);
 		return map;
 	}
+	
+	
+	public Map<Integer, List<Object>> mySalesStatistics(Date startDate, Date endDate, int userNo) {
+		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
+		Map<Integer, List<Object>> map = new HashMap<>();
+		List<Object> date = new ArrayList<>();
+		List<Object> sales = new ArrayList<>();		
+
+		SimpleDateFormat reg = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		long diff = endDate.getTime() - startDate.getTime();
+		long diffDays = diff / 7;
+		Date md = new Date(startDate.getTime() +diffDays);
+		
+        for(int i=0; i < 7; i++) {
+            date.add(reg.format(md));
+            sales.add(purchaseDao.mySalesStatistics(startDate, md, userNo));
+            
+            startDate = md;
+            md = new Date(md.getTime()+diffDays);
+        }
+        
+        map.put(1, date);
+        map.put(2, sales);
+		return map;
+	}
 	/**
 	* 날      짜 : 2018. 7. 2.
 	* 메소드명 : insertCart

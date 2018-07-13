@@ -4,8 +4,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script>
-
 $(function(){
+	$(window).scroll(function(){
+		if($("nav").hasClass("navbar-transparent")){
+			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo-white.png');
+		}else{
+			$('#logo').attr('src','<%=request.getContextPath()%>/assets/img/picsion-logo.png');
+		}	
+		
+	});
 	console.log($('#loginUserNo').val())
 	if($('#loginUserNo').val() != 0){
 		newNoticeCount();
@@ -161,7 +168,7 @@ $(function(){
 		    pg : 'inicis', // version 1.1.0부터 지원.
 		    pay_method : 'card',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
-		    name : '주문명:포인트 충전',
+		    name : '포인트 충전',
 		    amount : $('#chargePrice').val(),
 		    buyer_name : $('.userName').val(),
 		    m_redirect_url : 'http://localhost:8090/user/updateinfo.ps'
@@ -217,6 +224,8 @@ function newNoticeCount() {
 			}
 		})
 	}
+$('.navbar-transparent').on()
+
 </script>
 
 <style>
@@ -231,7 +240,7 @@ function newNoticeCount() {
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">
-        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
+        <a class="navbar-brand" href="<%=request.getContextPath()%>/home.ps"><img id="logo" src="<%=request.getContextPath()%>/assets/img/picsion-logo.png" style="width: 100px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
@@ -243,21 +252,21 @@ function newNoticeCount() {
                  <div class="form-group has-default bmd-form-group">
                        <input id="searchAll" type="text" name="tag" class="form-control" placeholder="Search">
                  </div>
-                 <button id="submitbtn" type="submit" class="btn btn-white btn-raised btn-fab btn-fab-mini btn-round">
-                    <i class="material-icons">search</i>
-                </button>
+                <button id="submitbtn" type="submit"  class="btn btn-white btn-fab btn-round">
+                      <i class="material-icons">search</i>
+                 </button>
            </form>
         <ul class="navbar-nav ml-auto">
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/register.ps"> 
-								<i class="material-icons">accessibility_new</i> 회원가입
+								<i class="material-icons">how_to_reg</i> 회원가입
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<%=request.getContextPath()%>/user/login.ps"> 
-								<i class="material-icons">camera_front</i>로그인
+								<i class="material-icons">account_circle</i>로그인
 							</a>
 						</li>
 					</c:when>
@@ -308,7 +317,7 @@ function newNoticeCount() {
 		                        <i class="material-icons">settings</i>정보 수정
 		                    </a>
 		                 
-		                    <c:if test="${sessionScope.user.naver eq null}">
+		                 <%--    <c:if test="${sessionScope.user.naver eq null}">
 			                    <a href="<%=request.getContextPath()%>/naver/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>네이버 계정 연동 
 		                    	</a>
@@ -317,7 +326,7 @@ function newNoticeCount() {
 			                    <a href="<%=request.getContextPath()%>/google/login.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">visibility</i>구글 계정 연동 
 		                    	</a>
-	                    	</c:if>
+	                    	</c:if> --%>
 	                    	<c:if test="${sessionScope.user.roleNo eq 3}">
 			                    <a href="<%=request.getContextPath()%>/user/admin.ps" class="dropdown-item"> 
 			                   		<i class="material-icons">build</i>회원/매출/신고

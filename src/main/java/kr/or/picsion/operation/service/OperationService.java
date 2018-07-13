@@ -23,13 +23,13 @@ public class OperationService {
 	private SqlSession sqlSession;
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : insertOperation 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 작업 등록 서비스
+	 * 기      능 : 작업 등록 서비스
 	 *
 	 * @param operation
-	 * @return
+	 * @return Integer
 	 */
 	public int insertOperation(Operation operation) {
 		System.out.println(operation);
@@ -40,13 +40,13 @@ public class OperationService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : selectOper 
 	 * 작성자명 : 김준수
-	 * 기 능 : 작업 찾기 서비스
+	 * 기      능 : 작업 찾기 서비스
 	 *
 	 * @param brdNo
-	 * @return
+	 * @return Operation
 	 */
 	public Operation selectOper(int brdNo) {
 
@@ -60,10 +60,10 @@ public class OperationService {
 	* 날      짜 : 2018. 7. 4.
 	* 메소드명 : operNoselectOper
 	* 작성자명 : 김준수 
-	* 기      능 : 
+	* 기      능 : 작업번호로 작업 찾기
 	*
 	* @param operNo
-	* @return
+	* @return Operation
 	*/
 	public Operation operNoselectOper(int operNo) {
 
@@ -73,10 +73,10 @@ public class OperationService {
 		return operation;
 	}
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : operBoardList 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 작업 찾기list
+	 * 기      능 : 작업 찾기list
 	 *
 	 * @return
 	 */
@@ -88,10 +88,10 @@ public class OperationService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : operationList 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 내 작업 리스트
+	 * 기      능 : 내 작업 리스트
 	 *
 	 * @param userNo
 	 * @return
@@ -103,10 +103,10 @@ public class OperationService {
 	}
 
 	/**
-	 * 날 짜 : 2018. 6. 29. 
+	 * 날      짜 : 2018. 6. 29. 
 	 * 메소드명 : requestList 
 	 * 작성자명 : 김준수 
-	 * 기 능 : 내 요청 리스트
+	 * 기      능 : 내 요청 리스트
 	 *
 	 * @param userNo
 	 * @return

@@ -66,7 +66,7 @@
 			 	wsocket.onmessage = onMessage
 			}
 		  	function onOpen(evt) {
-				console.log("여기는 오픈 이벤트")
+				console.log("websocket 실행")
 			}
 		  	function onMessage(evt){
 		  		console.log("onMessage 실행")
@@ -147,6 +147,13 @@
                         }
                     })
                 }
+				if(table==10 && evt.data.split(':')[3] != null){
+					var brdNo= evt.data.split(':')[3];
+					console.log(evt.data.split(':')[3]);
+                	alert(evt.data.split(':')[4]);
+					location.href="/picsion/board/boardInfo.ps?brdNo="+brdNo;
+				}
+				
 				if(!isThis){
 	               	console.log('여기는 노티스 안  false')
 	               	newNoticeCount()
@@ -155,7 +162,7 @@
 		  	
 		  	
 		  	function onClose(evt) {
-			  console.log("여기는 클로즈 이벤트")
+			  console.log("websocket 종료")
 			}
 		  
 		  	function send(receiveUser,tableNo) {
