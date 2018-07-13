@@ -722,7 +722,6 @@ label.btn.btn-default.btn-circle.focus {
 var isChartShow = false
 $(document).ready(function() {
 	var loginUserNo = $('#loginUserNo').val();
-						console.log($('#result').val())
 						if ($('#result').val() == "F") {
 							alert('이미 연동된 계정 입니다. 다른 아이디를 등록 하세요.')
 							<%session.removeAttribute("result");%>}
@@ -828,7 +827,6 @@ $(document).ready(function() {
 	var all = $("#carousel").children(); //초기값
 	function cateClick(thisTag) {
 		var customType = $(thisTag).data("filter");
-		console.log(customType);
 		//보고있던 이미지값 저장
 		var currentTitle = $(".selected").children("div").children("img").data(
 				"postid");
@@ -1027,34 +1025,6 @@ $(document).ready(function() {
 			}
 		})
 		
-		//검색 태그 autocomplete
-		$("#searchAll2").autocomplete({
-			          
-						matchContains: true,
-						source : function(request, response) {
-							if($('#searchAll2').val()!=''){
-							$.ajax({
-								type : 'post',
-								url : "/picsion/picture/searchpicture.ps",
-								dataType : "json",
-								//request.term = $("#autocomplete").val() 
-								data : {tagParam : request.term},
-								success : function(data) {
-									console.log(data.searchTagList);
-									response(data.searchTagList);
-								}
-							});
-							}
-						},
-						//조회를 위한 최소글자수 
-						minLength : 1,
-						select : function(event, ui) {
-							console.log(ui.item.value);
-							$('#searchAll2').val(ui.item.value);
-							$('.autosend').submit();
-						},
-					});
-	
 })
 </script>
 
@@ -1078,12 +1048,12 @@ $(document).ready(function() {
 									<div class="row">
 										<div class="col-md-9">
 											<div class="form-group has-default bmd-form-group">
-							                       <input id="searchAll2" type="text" name="tag" class="form-control" placeholder="Search">
+							                       <input type="text" name="tag" class="form-control searchAll" placeholder="Search">
 							                 </div>
 										</div>
 
 										<div class="col-md-3">
-											<button id="submitbtn" type="submit" class="btn btn-primary btn-block">PICSION</button>
+											<button type="submit" class="btn btn-primary btn-block">PICSION</button>
 										</div>
 									</div>
 								</form>

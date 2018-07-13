@@ -136,32 +136,39 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 							</div>
 							<div>
 								<span class="btn btn-raised btn-round btn-default btn-file">
-									<span class="fileinput-new" id="selectImage">Select
-										image</span> <span class="fileinput-exists" id="changeImage">Change</span>
+									<span class="fileinput-new" id="selectImage">Select	image</span> 
+									<span class="fileinput-exists" id="changeImage">Change</span>
 									<input type="file" name="filePath" accept=".jpg, .png, .bmp" />
-								</span> <a href="#Redirect" class="btn btn-default btn-round"
-									id="removeBtn" onclick="fileCancle()"> Remove </a>
+								</span> 
+								<a href="#Redirect" class="btn btn-default btn-round" id="removeBtn" onclick="fileCancle()"> Remove </a>
 							</div>
 							<div id="peopleRadio" class="form-group" style="display: none;">
-								<br> <label for="numberPeople">사람수</label> <input
-									type="radio" name="picPeople" id="zero" value="0"><label
-									for="zero"> 0 <img src="assets/img/userNo.png"
-									width="30px" height="30px"></label> <input type="radio"
-									name="picPeople" id="one" value="1"><label for="one">
-									1 <img src="assets/img/user1.png" width="30px" height="30px">
-								</label> <input type="radio" name="picPeople" id="two" value="2"><label
-									for="two"> 2 <img src="assets/img/user2.png"
-									width="30px" height="30px"></label> <input type="radio"
-									name="picPeople" id="thr" value="3"><label for="thr">
-									3~5 <img src="assets/img/user5.png" width="30px" height="30px">
-								</label> <input type="radio" name="picPeople" id="six" value="6"><label
-									for="six"> 6+ <img src="assets/img/user6.png"
-									width="30px" height="30px"></label>
+								<br> 
+								<label for="numberPeople">사람수</label> 
+								<input type="radio" name="picPeople" id="zero" value="0">
+								<label for="zero"> 0 
+									<img src="/picsion/assets/img/userNo.png" width="30px" height="30px">
+								</label> 
+								<input type="radio" name="picPeople" id="one" value="1">
+								<label for="one"> 1 
+									<img src="/picsion/assets/img/user1.png" width="30px" height="30px">
+								</label> 
+								<input type="radio" name="picPeople" id="two" value="2">
+								<label for="two"> 2 
+									<img src="assets/img/user2.png" width="30px" height="30px">
+								</label> 
+								<input type="radio" name="picPeople" id="thr" value="3">
+								<label for="thr"> 3~5 
+									<img src="assets/img/user5.png" width="30px" height="30px">
+								</label> 
+								<input type="radio" name="picPeople" id="six" value="6">
+								<label for="six"> 6+ 
+									<img src="assets/img/user6.png" width="30px" height="30px">
+								</label>
 							</div>
 							<div class="form-group" id="price" style="display: none;">
-								<label for="price">희망 가격</label> <input type="text"
-									class="form-control" id="picPrice" name="picPrice"
-									style="width: 90%">
+								<label for="price">희망 가격</label> 
+								<input type="text" class="form-control" id="picPrice" name="picPrice" style="width: 90%">
 							</div>
 						</div>
 
@@ -169,16 +176,16 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 				</div>
 
 				<div class="col-md-6">
-					<form id="formsubmit" action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
+					<form id="uploadForm" action="<%=request.getContextPath()%>/picture/uploadAfter.ps">
 
 						<div class="form-group">
-							<label for="title">제목</label> <input type="text"
-								class="form-control" id="pictureTitle" name="picTitle">
+							<label for="title">제목</label> 
+							<input type="text" class="form-control" id="pictureTitle" name="picTitle">
 						</div>
 
 						<div class="form-group">
-							<label for="description">설명</label> <input type="text"
-								class="form-control" id="pictureDesc" name="picContent">
+							<label for="description">설명</label> 
+							<input type="text" class="form-control" id="pictureDesc" name="picContent">
 						</div>
 
 						<!-- <form action=""> -->
@@ -188,7 +195,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						</div>
 						<div id="tagA"></div>
 						<input type="hidden" id="subPrice" name="picPrice" value="" /> 
-						<input type="button" id="submit" class="btn btn-primary" value="저장하기"/>
+						<input type="button" id="uploadSubmit" class="btn btn-primary" value="저장하기"/>
 					</form>
 				</div>
 			</div>
@@ -227,7 +234,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 		});
 		$('#removeBtn').hide()
 		
-		$('#submit').click(function(){
+		$('#uploadSubmit').click(function(){
 			priceCheck = $('#subPrice').val();
 			if(priceCheck<1000 || isNaN(priceCheck)){
 				alert("사진의 가격을 다시 측정해주세요.가격 기준 :사진 당 1000원 이상 ");
@@ -235,7 +242,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 				return;
 			}else{
 				console.log("왔다");
-				$('#formsubmit').submit();
+				$('#uploadForm').submit();
 			}
 		})
 		
