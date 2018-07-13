@@ -68,7 +68,7 @@ public class PurchaseService {
 	}
 	
 	
-	public Map<Integer, List<Object>> maySalesStatistics(Date startDate, Date endDate, int userNo) {
+	public Map<Integer, List<Object>> mySalesStatistics(Date startDate, Date endDate, int userNo) {
 		PurchaseDao purchaseDao = sqlSession.getMapper(PurchaseDao.class);
 		Map<Integer, List<Object>> map = new HashMap<>();
 		List<Object> date = new ArrayList<>();
@@ -82,7 +82,7 @@ public class PurchaseService {
 		
         for(int i=0; i < 7; i++) {
             date.add(reg.format(md));
-            sales.add(purchaseDao.maySalesStatistics(startDate, md, userNo));
+            sales.add(purchaseDao.mySalesStatistics(startDate, md, userNo));
             
             startDate = md;
             md = new Date(md.getTime()+diffDays);
