@@ -5,9 +5,6 @@
 
 
 <script type="text/javascript">
-
-
-
 $(function() {
 	var loginUserNo = $('#loginUserNo').val();
 
@@ -18,7 +15,6 @@ $(function() {
 				    picNo : $(this).attr("value")};
 			var respect =  $(this);
 			var rpa = $(this).parent();
-			console.log($('#loginUserNo').val());
 			 $.ajax({
 				url : "<%=request.getContextPath()%>/picture/increaserespect.ps",
 				data : data,
@@ -77,7 +73,6 @@ $(function() {
 				    colorB : $('#bcol').val() *1
 				},
 			  success : function(data){
-				  console.log(data);
 				  $('#searchpic').empty();  
 				     $.each(data.detailSearch, function(index, obj){
 	             	
@@ -134,25 +129,18 @@ $(function() {
             min=Math.round(values[handle]);
         }  
         if((max >= 1000 && max <= 100000) && (min >= 1000 && min <= 100000)){
-        detailSearch(); 
-        console.log("1");
-        }else{
-        console.log("11");
-        	
+       		detailSearch(); 
         }
     });
     
     
     var example = new iro.ColorPicker(".wrapper", {  
-    	  // color picker options
-    	  // Option guide: https://rakujira.jp/projects/iro/docs/guide.html#Color-Picker-Options
     	  width: 200,
     	  height: 200,
-    	  color: {r: 255, g: 0, b: 0},
+    	  color: {r: 256, g: 0, b: 0},
     	  anticlockwise: true,
     	  borderWidth: 1,
     	  borderColor: "#fff",
-    	  // Dynamic CSS guide: https://rakujira.jp/projects/iro/docs/guide.html#Dynamic-CSS
     	  css: {
     	    "#swatch": {
     	      "background-color": "$color" 
@@ -163,10 +151,7 @@ $(function() {
     	var values = document.getElementById("values");
     	var css = document.getElementById("css");
 
-    	// https://rakujira.jp/projects/iro/docs/guide.html#color-change
     	example.on("color:change", function(color){
-    	  // Show the current color in different formats
-    	  // Using the selected color: https://rakujira.jp/projects/iro/docs/guide.html#Using-the-Selected-Color
     	  values.innerHTML = [
     	    "hex: " + color.hexString,
     	    "rgb: " + color.rgbString,  
@@ -175,13 +160,10 @@ $(function() {
     	  $('#rcol').val(color.rgb.r);
     	  $('#gcol').val(color.rgb.g);
     	  $('#bcol').val(color.rgb.b);
-    	  console.log("2");
     	  detailSearch();
-    	  // Get the dynamic stylesheet content and pretty-print it by replacing newlines and tabs with suitable html
     	});
     	
     	$(document).on('change','.detailinput',function(){
-    		console.log("3");
     		detailSearch();
     		
     	})

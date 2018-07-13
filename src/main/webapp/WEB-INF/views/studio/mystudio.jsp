@@ -108,11 +108,8 @@
 	        var scrollPage="";
 	        
 	        if( currentScrollTop - lastScrollTop > 0 ){
-	            
-	            // 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
-	            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
+	            if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ 
 	            	if($('#photo-library').hasClass('active')){
-		            	
 		            	$.ajax({
 		                    type : 'post',  
 		                    url : '/picsion/picture/mystudio.ps',
@@ -123,7 +120,6 @@
 		                    success : function(data){
 		                        
 		                        $.each(data.scrollPicList, function(index, obj){
-		                        		
 		                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
 										"<a href='/picsion/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 										"<img class='rounded img-size' src='"+obj.picWater+"' alt=''>"+
@@ -143,10 +139,7 @@
 										scrollPage+="</div><a href='/picsion/picture/mystudio.ps?userNo="+obj.userNo+"'>"+obj.userName+"</a></div></div>";
 										
 			                        	$('#studioview').append(scrollPage);
-                        	
-		                        	
 		                        })
-		                        
 							    page+=data.endpage;
 		                    }
 		                });

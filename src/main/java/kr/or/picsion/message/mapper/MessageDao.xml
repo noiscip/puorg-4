@@ -132,11 +132,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 보낸메시지,받은메시지 다 가져오기 -->
 	<select id="selectAll" resultMap="Message">
-		<!-- select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo where receiveUserNo = #{userNo}
-		union all
-		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo where sendUserNo = #{userNo}
-		ORDER by msgReg -->
-		
 		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo 
 								 join PROFILE p ON p.userNo = u.userNo
 		where receiveUserNo = #{userNo} AND receiveMsgDel='F'
