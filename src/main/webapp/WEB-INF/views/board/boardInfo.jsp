@@ -653,6 +653,26 @@ input[type=radio]:checked+label {
 					</c:choose>
 				</div>
 			</c:if>
+			<c:if test="${user.userNo eq operation.requesterNo}">
+					<div class="col-md-8 mr-auto ml-auto">
+                            <div class="card card-blog card-plain text-center">
+                                <div>
+                                    <a>
+                                        <img class="img" src="<%=request.getContextPath()%>/assets/img/eyeMove.gif">
+                                    </a>
+                                </div>
+                                <div class="card-body ">
+                                    <h4 class="card-category text-success">검증</h4>
+
+                                    <p class="card-description">작업자의 사진을 검증 중입니다.</p>
+                                    <p class="card-description">작업자의 사진이 검증될 때까지 기다려주세요.</p>
+                                </div>
+                            </div>
+
+                        </div>
+			
+			
+			</c:if>
 	    
 	    </c:if>
 	    <c:if test='${operation.step != 2}'>
@@ -1095,7 +1115,7 @@ input[type=radio]:checked+label {
 				<button type="button" id="opercomplete" class="btn btn-success btn-link">사진이 마음에 들어요</button>
 				</c:otherwise>
 				</c:choose>
-                <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">닫기</button>
             </div>
             </c:if>
         </div>
@@ -1364,7 +1384,7 @@ input[type=radio]:checked+label {
 					$('#savePicture').show();
 				}
 			,beforeSend:function(){
-				$("#loaderIcon").html("<img src='<%=request.getContextPath()%>/assets/img/LoaderIcon.gif'/>");
+				$("#loaderIcon").html("<img style='height:250px;'src='<%=request.getContextPath()%>/assets/img/eyeMove.gif'/>");
 			}
 				
 			})
