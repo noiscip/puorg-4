@@ -188,7 +188,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 						</div>
 						<div id="tagA"></div>
 						<input type="hidden" id="subPrice" name="picPrice" value="" /> 
-						<input type="button" id="submit" class="btn btn-primary" value="저장하기"/>
+						<input type="button" id="subSave" class="btn btn-primary" value="저장하기"/>
 					</form>
 				</div>
 			</div>
@@ -227,7 +227,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 		});
 		$('#removeBtn').hide()
 		
-		$('#submit').click(function(){
+		$('#subSave').click(function(){
 			priceCheck = $('#subPrice').val();
 			if(priceCheck<1000 || isNaN(priceCheck)){
 				alert("사진의 가격을 다시 측정해주세요.가격 기준 :사진 당 1000원 이상 ");
