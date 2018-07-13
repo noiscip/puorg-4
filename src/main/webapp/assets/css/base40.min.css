@@ -10,7 +10,6 @@ sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
 sup{top:-.5em}
 sub{bottom:-.25em}
 img{border:0}
-svg:not(:root){overflow:hidden}
 figure{margin:1em 40px}
 hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
 pre{overflow:auto}
@@ -322,7 +321,6 @@ html,body{height:100%;min-width:320px}
 #footer_inner>a,#footer_inner>span{color:#777;white-space:nowrap;margin-right:30px}
 #footer_inner .hover_links{opacity:.8}
 #footer_inner .hover_links a{padding:0 5px}
-#bg_svg{position:fixed;top:-10px;left:0;width:100%;height:100%;z-index:-1}
 ::-webkit-input-placeholder{color:#bbb !important}
 ::-moz-placeholder{color:#bbb !important}
 :-ms-input-placeholder{color:#bbb !important}
@@ -361,7 +359,6 @@ html,body{height:100%;min-width:320px}
 .paginator i,.single_quot,.times,.check{font-style:normal;display:inline-block;font-size:20px;overflow:hidden;line-height:12px}
 .times{font-size:18px;line-height:8px}
 .check{font-size:12px}
-.share_icons span{display:inline-block;width:40px;height:40px;cursor:pointer;background:url(../img/social_icons.svg) 0 0 no-repeat}
 .share_icons span:hover{opacity:.8}
 .media_list .paginator{position:relative;top:10px;font-size:13px}
 .media_list .paginator .pure-button{line-height:23px;padding:0 15px;position:relative;top:-1px}
@@ -483,7 +480,7 @@ html,body{height:100%;min-width:320px}
 .dd_box.langs+div a:nth-last-child(2){border:0 !important}
 @media screen and (max-width:567px){.dd_box.langs+div{left:20px !important}
 }
-.icon{position:relative;display:inline-block;padding:0;background-image:url(../img/sprites.png);background-repeat:no-repeat;cursor:pointer}
+.icon{position:relative;display:inline-block;padding:0;background-repeat:no-repeat;cursor:pointer}
 .icon_menu_loupe{background-position:-200px 0;width:17px;height:17px;top:2px}
 .icon_download{background-position:0 -50px;width:15px;height:15px;top:2px}
 .icon_ec{background-position:-100px -50px;width:15px;height:16px;top:2px}
