@@ -111,7 +111,7 @@ public class LoginManager implements HttpSessionBindingListener{
 				}
 			}
 		}else {
-			result = "redirect:/user/login.ps";
+			result = "redirect:/login.ps";
 		}
 		return result;
 	}
@@ -122,9 +122,7 @@ public class LoginManager implements HttpSessionBindingListener{
 		HttpSession session = null;
 		while(e.hasMoreElements()) {
 			session = (HttpSession)e.nextElement();
-			System.out.println(session);
 			if(loginUsers.get(session).equals(userId)) {
-				System.out.println(userId +" 님이 로그아웃 하십니다?");
 				loginUsers.remove(session);
 				session.invalidate();
 			}
