@@ -5,6 +5,7 @@ package kr.or.picsion.user.controller;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -56,13 +57,12 @@ public class LoginManager implements HttpSessionBindingListener{
 		}
 		return loginManager;
 	}
-	
+
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
 		loginUsers.put(event.getSession(), event.getName());
 		logger.debug(event.getName() + " 님이 로그인 하셨습니다.");
 		logger.debug("현재 접속자 수 : " + getUserCount());
-		
 	}
 
 	@Override
@@ -70,7 +70,49 @@ public class LoginManager implements HttpSessionBindingListener{
 		logger.debug(event.getName() + " 님이 로그아웃 하셨습니다.");
 		logger.debug("현재 접속자 수 : " + getUserCount());
 	}
-
+	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : register
+	* 작성자명 : 아윤근
+	* 기      능 : 회원가입 페이지로 이동
+	*
+	* @return String
+	*/
+	@RequestMapping(value="register.ps", method=RequestMethod.GET)
+    public String register(){
+        return "user.register";
+    }
+	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : userLogin
+	* 작성자명 : 아윤근
+	* 기      능 : 로그인 페이지로 이동
+	*
+	* @return String
+	*/
+	@RequestMapping(value="login.ps", method=RequestMethod.GET)
+	public String userLogin() {
+		return "user.login";
+	}
+	
+	/**
+	* 날      짜 : 2018. 6. 8.
+	* 메소드명 : adminPage
+	* 작성자명 : 김보경
+	* 기      능 : 관리자 페이지로 이동
+	*
+	* @param model
+	* @return String
+	*/
+	@RequestMapping("admin.ps")
+	public String adminPage(Model model) {
+		List<User> userList = userService.userList();
+		model.addAttribute("userList",userList);
+		return "admin.admin";
+	}	
+	
 	/**
 	* 날      짜 : 2018. 6. 8.
 	* 메소드명 : userRegister
@@ -105,7 +147,7 @@ public class LoginManager implements HttpSessionBindingListener{
 				setSession(session, loginUser);
 
 				if(loginUser.getRoleNo()==3) {
-					result = "redirect:/user/admin.ps";
+					result = "redirect:/admin.ps";
 				}else {
 					result = "redirect:/home.ps";
 				}
@@ -115,7 +157,16 @@ public class LoginManager implements HttpSessionBindingListener{
 		}
 		return result;
 	}
-	
+
+	/**
+	 * 날      짜 : 2018. 7. 14.
+	 * 메소드명 : removeSession
+	 * 작성자명 : 아윤근
+	 * 기      능 : loginUsers와 session 에 로그아웃
+	 *
+	 * @param userId
+	 * @return
+	*/
 	@RequestMapping("logout.ps")
 	public String removeSession(String userId){
 		Enumeration e = loginUsers.keys();
