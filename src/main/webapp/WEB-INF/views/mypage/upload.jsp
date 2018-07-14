@@ -184,12 +184,12 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 
 						<div class="form-group">
 							<label for="title">제목</label> 
-							<input type="text" class="form-control" id="pictureTitle" name="picTitle">
+							<input type="text" class="form-control" id="pictureTitle" name="picTitle" autocomplete="off">
 						</div>
 
 						<div class="form-group">
 							<label for="description">설명</label> 
-							<input type="text" class="form-control" id="pictureDesc" name="picContent">
+							<input type="text" class="form-control" id="pictureDesc" name="picContent" autocomplete="off">
 						</div>
 
 						<!-- <form action=""> -->
@@ -198,7 +198,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 							<div id="loaderIcon"></div>
 						</div>
 						<div id="tagA"></div>
-						<input type="hidden" id="subPrice" name="picPrice" value="" />
+						<input type="hidden" id="subPrice" name="picPrice" value=""/>
 						<input type="button" id="uploadSubmit" class="btn btn-primary" value="저장하기"/>
 					</form>
 				</div>
@@ -451,7 +451,7 @@ function drawFace(imgId,rectX,rectY,rectWid,rectHei){
 					var pictureDate = data.metaMap.pictureDate=='undefined'? 'null' : data.metaMap.pictureDate;
 					var lensName = data.metaMap.lensName=='undefined'? 'null' : data.metaMap.lensName;
 					
-					tags ='<br><div class="form-group"><label for="title">태그추가</label><div class="row"><div class="col-md-6"><input type="text" class="form-control" id="tagAddName"></div>';
+					tags ='<br><div class="form-group"><label for="title">태그추가</label><div class="row"><div class="col-md-6"><input type="text" class="form-control" id="tagAddName" autocomplete="off"></div>';
 					tags +='<div class="col-md-6"><button type="button" class="btn btn-primary" id="tagAdd">추가</button></div></div><br>';
 					tags += '<input type="hidden" name="picPath" value="' + data.picPath + '">';
 					tags += '<input type="hidden" name="camera" id="camera" value="'+cameraName+'"/>';
