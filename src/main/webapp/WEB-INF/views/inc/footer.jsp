@@ -199,10 +199,10 @@
 		                <div class="col-md-4">
 		                    <h5>Function</h5><br>
 		                    <div class="social-feed">
-		                        <!-- <div class="feed-line">
+		                        <div class="feed-line">
 		                            <i class="fab fa-aws"></i>
 		                            <p>AWS를 사용하여 최적의 환경을 제공합니다.</p>
-		                        </div> -->
+		                        </div>
 		                        <div class="feed-line">
 		                            <i class="fa fa-eye"></i>
 		                            <p>Google Cloud Vision API를 통한 인공지능 사진 분석.</p>
@@ -218,13 +218,12 @@
 		                    <h5>Created by</h5>
 
 		                    <div class="gallery-feed">
-		                        <img src="<%=request.getContextPath()%>/assets/img/faces/card-profile6-square.jpg" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/faces/christian.jpg" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/team/juwon.JPG" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/faces/card-profile1-square.jpg" class="img img-raised rounded">
+		                        <img src="<%=request.getContextPath()%>/assets/img/team/Junsoo.jpg" class="img img-raised rounded">
+		                        <img src="<%=request.getContextPath()%>/assets/img/team/Juwon.jpg" class="img img-raised rounded">
+		                        <img src="<%=request.getContextPath()%>/assets/img/team/yoon.jpg" class="img img-raised rounded">
 								
-		                        <img src="<%=request.getContextPath()%>/assets/img/faces/marc.jpg" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/faces/kendall.jpg" class="img img-raised rounded">
+		                        <img src="<%=request.getContextPath()%>/assets/img/team/Arim.jpg" class="img img-raised rounded">
+		                        <img src="<%=request.getContextPath()%>/assets/img/team/Dohyuk.jpg" class="img img-raised rounded">
 		                    </div>
 		
 		                </div>

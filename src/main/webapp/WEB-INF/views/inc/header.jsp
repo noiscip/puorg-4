@@ -5,6 +5,22 @@
 
 <script>
 $(function(){
+	
+	window.onscroll = function() {scrollFunction()};
+
+	function scrollFunction() {
+	    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+	        document.getElementById("topbtn").style.display = "block";
+	    } else {
+	        document.getElementById("topbtn").style.display = "none";
+	    }
+	}
+	
+	// When the user clicks on the button, scroll to the top of the document
+	function topFunction() {
+	    document.body.scrollTop = 0;
+	    document.documentElement.scrollTop = 0;
+	} 
 
 	$.ajax({
 		url:"/picsion/userCount.ps",
@@ -234,9 +250,24 @@ function newNoticeCount() {
 		width: 30px;
 		height: 30px;
 	}
+	#topbtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
 </style>
 
 <input type="hidden" value='<c:choose><c:when test="${sessionScope.user eq null}">0</c:when><c:otherwise>${sessionScope.user.userNo}</c:otherwise></c:choose>' id="loginUserNo">
+<button onclick="topFunction()" id="topbtn" class="btn btn-primary"title="Go to top">Top</button>
 <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
     <div class="container">
       <div class="navbar-translate">

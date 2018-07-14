@@ -716,6 +716,7 @@ label.btn.btn-default.btn-circle.focus {
 .pr-img{
 	height: 110px;
 }
+
 </style>
 <script>
 
@@ -911,11 +912,11 @@ $(document).ready(function() {
 	}
 	
 	
-	$( "#carousel" ).hover(
+	/* $( "#carousel" ).hover(
 			function(){$('body').css("overflow","hidden")},
 			function(){$('body').css("overflow","visible")	}
 	);
-	
+	 */
 	
 	var lastScrollTop = 0;
     var page = ${page};
@@ -1024,10 +1025,10 @@ $(document).ready(function() {
 				 }) 
 			}
 		})
+
 		
 })
 </script>
-
 		<div id="changemain" class="page-header header-filter" data-parallax="true">
 			<div class="container">
 				<div class="row">
@@ -1067,7 +1068,7 @@ $(document).ready(function() {
 
 			
 		
-		
+
 <div class="main">
 	<div class="section section-basic">
 		<div class="container">
