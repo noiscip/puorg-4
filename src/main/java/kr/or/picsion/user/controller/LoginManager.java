@@ -126,7 +126,7 @@ public class LoginManager implements HttpSessionBindingListener{
 	public String userRegister(User user) {
 		user.setPwd(bCryptPasswordEncoder.encode(user.getPwd()));
 		userService.register(user);
-		return "redirect:/user/login.ps";
+		return "redirect:/login.ps";
 	}
 	
 	@RequestMapping(value="login.ps", method=RequestMethod.POST)
