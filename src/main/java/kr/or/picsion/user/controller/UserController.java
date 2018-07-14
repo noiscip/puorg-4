@@ -43,32 +43,6 @@ public class UserController {
 	
 	/**
 	* 날      짜 : 2018. 6. 8.
-	* 메소드명 : register
-	* 작성자명 : 아윤근
-	* 기      능 : 회원가입 페이지로 이동
-	*
-	* @return String
-	*/
-	@RequestMapping(value="register.ps", method=RequestMethod.GET)
-    public String register(){
-        return "user.register";
-    }
-	
-	/**
-	* 날      짜 : 2018. 6. 8.
-	* 메소드명 : userLogin
-	* 작성자명 : 아윤근
-	* 기      능 : 로그인 페이지로 이동
-	*
-	* @return String
-	*/
-	@RequestMapping(value="login.ps", method=RequestMethod.GET)
-	public String userLogin() {
-		return "user.login";
-	}
-	
-	/**
-	* 날      짜 : 2018. 6. 8.
 	* 메소드명 : userLogin
 	* 작성자명 : 아윤근
 	* 기      능 : 로그인
@@ -100,38 +74,6 @@ public class UserController {
 			result = "redirect:/user/login.ps";
 		}
 		return result;
-	}
-	
-	/**
-	* 날      짜 : 2018. 6. 8.
-	* 메소드명 : userLogout
-	* 작성자명 : 아윤근
-	* 기      능 : 로그아웃
-	*
-	* @param session
-	* @return String
-	*/
-	@RequestMapping("logout.ps")
-	public String userLogout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/home.ps";
-	}
-	
-	/**
-	* 날      짜 : 2018. 6. 8.
-	* 메소드명 : adminPage
-	* 작성자명 : 김보경
-	* 기      능 : 관리자 페이지로 이동
-	*
-	* @param model
-	* @return String
-	*/
-	@RequestMapping("admin.ps")
-	public String adminPage(Model model) {
-		
-		List<User> userList = userService.userList();
-		model.addAttribute("userList",userList);
-		return "admin.admin";
 	}
 	
 	@RequestMapping("adminStats.ps")
@@ -187,10 +129,7 @@ public class UserController {
 		
 		return jsonview;
 	}
-	
-	
-	
-	
+
 	/**
 	* 날      짜 : 2018. 6. 9.
 	* 메소드명 : userList

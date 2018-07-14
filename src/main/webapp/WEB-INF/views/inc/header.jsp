@@ -293,12 +293,12 @@ function newNoticeCount() {
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
-							<a class="nav-link" href="<%=request.getContextPath()%>/user/register.ps"> 
+							<a class="nav-link" href="<%=request.getContextPath()%>/register.ps"> 
 								<i class="material-icons">how_to_reg</i> 회원가입
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<%=request.getContextPath()%>/user/login.ps"> 
+							<a class="nav-link" href="<%=request.getContextPath()%>/login.ps"> 
 								<i class="material-icons">account_circle</i>로그인
 							</a>
 						</li>
