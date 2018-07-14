@@ -222,7 +222,7 @@
 		                    <h5>Created by</h5>
 		                    <div class="gallery-feed">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/Junsoo.jpg" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/team/Juwon.jpg" class="img img-raised rounded">
+		                        <img src="<%=request.getContextPath()%>/assets/img/team/Juwon1.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/yoon.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/Arim.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/Dohyuk.jpg" class="img img-raised rounded">
