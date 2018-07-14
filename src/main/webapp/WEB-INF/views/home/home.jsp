@@ -1033,7 +1033,7 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-md-8 ml-auto mr-auto text-center">
 						<div class="brand">
-							<h1 class="title">Sell Your Picture!</h1>
+							<h1 class="title">Sell Your Photos!</h1>
 							<h4>
 								<b>PICSION</b>을 통해 당신의 꿈을 보여주세요
 							</h4>
@@ -1249,7 +1249,7 @@ $(document).ready(function() {
 		  <div class="tab-pane" id="wordtab" role="tabpanel" aria-labelledby="wordchart-tab">
 		  <div class="row">
               <div class="col-md-8 ml-auto mr-auto text-center">
-                     <h2 class="title">PICSION의 인기 태그들</h2>
+                     <h2 class="title">Popular tags of PICSION</h2>
               </div>
           </div>
           <hr>

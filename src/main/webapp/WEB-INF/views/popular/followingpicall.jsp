@@ -125,7 +125,7 @@ $(function() {
 				<div class="row">
 					<div class="col-md-8 ml-auto mr-auto text-center">
 						<div class="brand">
-							<h1 class="title">Following Latest Pictures</h1>
+							<h1 class="title">Following Latest Photos</h1>
 						</div>
 					</div>
 					

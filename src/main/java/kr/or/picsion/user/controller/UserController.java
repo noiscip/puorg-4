@@ -7,7 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +20,6 @@ import kr.or.picsion.picture.dto.Picture;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 import kr.or.picsion.utils.AmazonUpload;
-import kr.or.picsion.utils.VisionApi;
-
 
 /**
  * @project Final_Picsion
@@ -44,12 +41,6 @@ public class UserController {
 	@Autowired
 	private AmazonUpload amazonService;
 	
-	@Autowired
-	private VisionApi vision;
-	
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
 	/**
 	* 날      짜 : 2018. 6. 8.
 	* 메소드명 : register
@@ -62,23 +53,6 @@ public class UserController {
     public String register(){
         return "user.register";
     }
-	
-	/**
-	* 날      짜 : 2018. 6. 8.
-	* 메소드명 : userRegister
-	* 작성자명 : 아윤근
-	* 기      능 : 회원가입
-	*
-	* @param user
-	* @return String
-	*/
-	@RequestMapping(value="register.ps", method=RequestMethod.POST)
-	public String userRegister(User user) {
-//		user.setPwd(bCryptPasswordEncoder.encode(user.getPwd()));
-//		System.out.println("회원가입 비밀번호 : " + user.getPwd());
-		userService.register(user);
-		return "redirect:/user/login.ps";
-	}
 	
 	/**
 	* 날      짜 : 2018. 6. 8.
