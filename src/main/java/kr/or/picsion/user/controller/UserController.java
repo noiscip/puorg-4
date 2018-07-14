@@ -333,9 +333,10 @@ public class UserController {
 	*/
 	@RequestMapping("adminUserSearch.ps")
 	public View userSearch(String userId, Model model) {
-		
+		System.out.println(userId);
 		User user = userService.searchUserId(userId);
 		model.addAttribute("searchUser",user);
+		
 		return jsonview;
 	}
 	

@@ -131,7 +131,7 @@ public class LoginManager implements HttpSessionBindingListener{
 	
 	@RequestMapping(value="login.ps", method=RequestMethod.POST)
 	public String isValid(User user, HttpSession session) {
-		String result="";
+		String result="redirect:/login.ps";
 
 		String password = user.getPwd();
 		User loginUser = userService.searchUserId(user.getUserId());
@@ -152,8 +152,6 @@ public class LoginManager implements HttpSessionBindingListener{
 					result = "redirect:/home.ps";
 				}
 			}
-		}else {
-			result = "redirect:/login.ps";
 		}
 		return result;
 	}

@@ -269,10 +269,11 @@
   	      	}
 
   			$.ajax({
-  				url : "/picsion/user/adminUserSearch.ps",
+  				url : "/picsion/user/adminUserSearch.ps", 
   				data : {userId : $('#userId').val()},
-  				success : function (data) {
+  				success : function(data) {
   					console.log(data)
+  					console.log(data.searchUser)
 					if(data.searchUser == null){
 						alert('사용 가능한 아이디 입니다')
 						idCheck = true;
@@ -280,7 +281,8 @@
 						alert('중복된 아이디 입니다')
 					}
 				}
-  			})
+  			}) 
+  			
   		})
   		
   		$('#userId').keyup(function(){
