@@ -292,7 +292,7 @@ function newNoticeCount() {
 					
 						<li class="dropdown nav-item">
 		                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-		                      <i class="material-icons">apps</i> Components
+		                      <i class="material-icons">apps</i> 메뉴
 		                  </a>
 		                  <div class="dropdown-menu dropdown-with-icons">
 		                  <h6 class="dropdown-header">게시판</h6>

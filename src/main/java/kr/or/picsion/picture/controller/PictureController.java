@@ -413,23 +413,24 @@ public class PictureController {
 			User requestorUser = userService.userInfo(picture.getUserNo());
 			picture.setUserNo(user.getUserNo());		
 			picture.setPicPath(imagePicsion+picture.getPicPath().split("\\/")[5].split("\\,")[0]);
-			pictureService.insertPicture(picture);
+			
 	        int tradeMoney = requestorUser.getPoint()-picture.getPicPrice();
 	        	//이쪽에서 요청게시판 상태 변경, 구매 내역 추가 , 요청자 유저 포인트 차감, 작업자 포인트 증감  
 	        if(tradeMoney>0) {
+	        	pictureService.insertPicture(picture);
 	        	System.out.println("돈부족 아니고");
 	        	Purchase purchase = new Purchase();
 	        	Board board = boardService.selectBoard(brdNo);
 	        	Operation operation = operationService.selectOper(brdNo);	        	
 	        	List<Purchase> purlist = new ArrayList<>();
 	        	requestorUser.setPoint(tradeMoney);
-	        	user.setPoint(user.getPoint()+picture.getPicPrice());
 	        	operation.setStep(3);
 	        	operationService.updateOperation(operation);
 	        	purchase.setPicNo(picture.getPicNo());
 	        	purchase.setPurchaseUserNo(requestorUser.getUserNo());
 	        	purchase.setSaleUserNo(user.getUserNo());
 	        	purlist.add(purchase);
+	        	userService.pointCharge(picture.getPicPrice(), user.getUserNo());
 	        	purchaseService.buyPicture(purlist);
 	    		board.setOperStateNo(3);    		
 	    		boardService.updateBoard(board);
