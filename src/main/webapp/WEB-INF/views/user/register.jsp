@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-5 mr-auto">
                 
-                  <form class="form" method="post" action="<%=request.getContextPath()%>/user/register.ps">
+                  <form class="form" method="post" action="<%=request.getContextPath()%>/register.ps">
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -129,6 +129,7 @@
   				url : "/picsion/user/adminUserSearch.ps",
   				data : {userId : $('#userId').val()},
   				success : function (data) {
+  					console.log(data)
 					if(data.searchUser == null){
 						alert('사용 가능한 아이디 입니다')
 						idCheck = true;

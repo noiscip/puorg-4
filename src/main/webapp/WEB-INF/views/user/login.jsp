@@ -5,7 +5,7 @@
 	        <div class="row">
 	          <div class="col-md-4 ml-auto mr-auto">
 	            <div class="card card-signup">
-	              <form class="form" method="post" action="">
+	              <form class="form" method="post" action="/picsion/login.ps">
 	                <div class="card-header card-header-primary text-center">
 	                  <h4>Sign Up</h4>
 	                  <div class="social-line">
