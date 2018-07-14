@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
+import kr.or.picsion.user.controller.LoginManager;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 import kr.or.picsion.utils.NaverLoginConnectUrl;
@@ -33,6 +34,9 @@ public class NaverLoginController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LoginManager loginManager;
 	
 	@RequestMapping("login.ps")
 	public String naverLogin() {
@@ -67,13 +71,13 @@ public class NaverLoginController {
 					session.setAttribute("result", "F");
 					result = "redirect:/user/login.ps";
 				}else { // 연동된 계정이 있으면
-					session.setAttribute("user", userService.userInfo(accountUser.getUserNo()));
+					loginManager.setSession(session, userService.userInfo(accountUser.getUserNo()));
 				}
 			}else { //유저가 존재 한다면 계정 연동
 				if(userService.selectAccountNo(accountNo,NAVER) == null) { //네이버 등록이 안되어 있다면
 					userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
 					userService.updateRole(user.getUserNo());
-					session.setAttribute("user", userService.userInfo(user.getUserNo()));
+					loginManager.setSession(session, userService.userInfo(user.getUserNo()));
 				}else { //네이버 등록이 되어 있다면
 					session.setAttribute("result", "F");
 				}

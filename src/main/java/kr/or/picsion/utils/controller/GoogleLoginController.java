@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kr.or.picsion.user.controller.LoginManager;
 import kr.or.picsion.user.dto.User;
 import kr.or.picsion.user.service.UserService;
 
@@ -46,6 +47,9 @@ public class GoogleLoginController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LoginManager loginManager;
 	
 	/**
 	 * 날      짜 : 2018. 6. 18.
@@ -94,7 +98,6 @@ public class GoogleLoginController {
 	  
 	  String accountNo = profile.getId();
 	  String result = "redirect:/home.ps";
-
 	  if(user == null) { //유저가 null이면 로그인 되어 있지 않은 상태
 			User accountUser = userService.selectAccountNo(accountNo,GOOGLE);
 			
@@ -102,13 +105,13 @@ public class GoogleLoginController {
 				session.setAttribute("result", "F");
 				result = "redirect:/user/login.ps";
 			}else {
-				session.setAttribute("user", userService.userInfo(accountUser.getUserNo()));
+				loginManager.setSession(session, userService.userInfo(accountUser.getUserNo()));
 			}
 	  }else { //널이 아니면 등록
 		  if(userService.selectAccountNo(accountNo,GOOGLE) == null) {  //구글 등록이 안되어 있다면
 			  userService.updateAccountNo(user.getUserNo(),accountNo,GOOGLE);
 			  userService.updateRole(user.getUserNo());
-			  session.setAttribute("user", userService.userInfo(user.getUserNo()));
+			  loginManager.setSession(session, userService.userInfo(user.getUserNo()));
 		  }else { //구글 등록이 되어있다면
 			  	session.setAttribute("result", "F");
 		  }

@@ -46,7 +46,7 @@ public class LoginManager implements HttpSessionBindingListener{
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 		
-	private LoginManager() {
+	public LoginManager() {
 		
 	}
 	public static synchronized LoginManager getInstance() {
