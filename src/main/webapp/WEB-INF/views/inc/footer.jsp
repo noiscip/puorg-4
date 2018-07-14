@@ -192,36 +192,38 @@
 		        <div class="content">
 		            <div class="row">
 		                <div class="col-md-4">
-		                    <h5>About Us</h5><br>
+		                    <h5>About Us</h5>
 		                    <p>사진을 찍는 취미를 갖고 계신가요?<br>즐겁게 사진 찍고 새로운 수익을 만들어 보세요!<br>PICSION은 모든 크리에이터분들이 작품을 전세계에 공개하고 판매할 수 있는 플랫폼을 제공합니다. </p>
 		                </div>
 		
 		                <div class="col-md-4">
-		                    <h5>Function</h5><br>
+		                    <h5>Function</h5>
 		                    <div class="social-feed">
 		                        <div class="feed-line">
-		                            <i class="fab fa-aws"></i>
-		                            <p>AWS를 사용하여 최적의 환경을 제공합니다.</p>
+		                            <i class="fa fa-eye"></i>
+		                            <p>Google Cloud Vision API의 인공지능 사진 분석.</p>
 		                        </div>
 		                        <div class="feed-line">
-		                            <i class="fa fa-eye"></i>
-		                            <p>Google Cloud Vision API를 통한 인공지능 사진 분석.</p>
+		                            <i class="fas fa-search-plus"></i>
+		                            <p>다양한 사진 상세 검색.</p>
+		                        </div>
+		                         <div class="feed-line">
+		                            <i class="fas fa-shopping-cart"></i>
+		                            <p>장바구니로 여러 사진을 한번에 구매.</p>
 		                        </div>
 		                        <div class="feed-line">
 		                            <i class="fa fa-credit-card"></i>
-		                            <p>포인트를 충전하여 사진을 구매하세요.</p>
+		                            <p>포인트 충전시 안전한 결제 시스템.</p>
 		                        </div>
 		                    </div>
 		                </div>
 		
 		                <div class="col-md-4">
 		                    <h5>Created by</h5>
-
 		                    <div class="gallery-feed">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/Junsoo.jpg" class="img img-raised rounded">
-		                        <img src="<%=request.getContextPath()%>/assets/img/team/Juwon.jpg" class="img img-raised rounded">
+		                        <img src="<%=request.getContextPath()%>/assets/img/team/Juwon1.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/yoon.jpg" class="img img-raised rounded">
-								
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/Arim.jpg" class="img img-raised rounded">
 		                        <img src="<%=request.getContextPath()%>/assets/img/team/Dohyuk.jpg" class="img img-raised rounded">
 		                    </div>
