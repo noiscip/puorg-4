@@ -22,6 +22,14 @@ $(function(){
 	    document.documentElement.scrollTop = 0;
 	} 
 
+	$.ajax({
+		url:"/picsion/userCount.ps",
+		success: function(data){
+			console.log(data)
+			$('#userCount')[0].innerHTML = "현재 접속자 수 : "  + data.count
+		}
+		
+	})
 	console.log($('#loginUserNo').val())
 	
 	$(window).scroll(function(){
@@ -279,7 +287,9 @@ function newNoticeCount() {
                       <i class="material-icons">search</i>
                  </button>
            </form>
+			
         <ul class="navbar-nav ml-auto">
+        <h6 id="userCount">현재 접속자 수 : </h6>
           <c:choose>
 					<c:when test="${sessionScope.user eq null}">
 						<li class="nav-item">
@@ -363,7 +373,7 @@ function newNoticeCount() {
                                  <a href="#pablo" class="dropdown-item" data-toggle="modal" data-target="#exampleModal">
                                  <i class="material-icons">credit_card</i> 충전하기</a>
                                  <div class="dropdown-divider"></div>
-                                 <a href="<%=request.getContextPath()%>/user/logout.ps" class="dropdown-item">
+                                 <a href="<%=request.getContextPath()%>/logout.ps?userId=${sessionScope.user.userId}" class="dropdown-item">
                                  <i class="material-icons">highlight_off</i> 로그아웃</a>
                              </div>
 						</li>
