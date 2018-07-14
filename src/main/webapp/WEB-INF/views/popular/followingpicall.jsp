@@ -109,7 +109,7 @@ $(function() {
         }
 
     })
-	
+    
 })
 </script>
 
@@ -117,7 +117,7 @@ $(function() {
 .img-size {
 	height: 300px;
 	width: 100%;
-} 
+}
 </style>
 
 <div id="changemain" class="page-header header-filter" data-parallax="true">
