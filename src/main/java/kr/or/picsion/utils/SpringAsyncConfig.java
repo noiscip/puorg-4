@@ -1,7 +1,7 @@
 /**
  * 
  */
-package kr.or.picsion;
+package kr.or.picsion.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,21 +10,22 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 /**
- * @author Bit 
- *
+ * @project Final_Picsion
+ * @package kr.or.picsion.utils 
+ * @className SpringAsyncConfig
+ * @date 2018. 7. 10.
  */
 @Configuration
 @EnableAsync
 public class SpringAsyncConfig {
     
     @Bean(name = "threadExecutor")
-    public Executor fooExecutor() {
+    public Executor threadExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(5);
         taskExecutor.setMaxPoolSize(10);
         taskExecutor.setQueueCapacity(30);
         taskExecutor.setThreadNamePrefix("threadExecutor-");
-        System.out.println("스레드되나?");
         taskExecutor.initialize();
         return taskExecutor;
     }

@@ -527,6 +527,7 @@ public class PictureController {
 			//워터마크사진 s3에 저장
 			String waterPath = amazonService.uploadObject(imagePicsion,output.getPath().substring(18),"picsion/water");
 			pictureService.updateWater(waterPath, picture.getPicNo()); //워터마크 생성
+			System.out.println(waterPath);
 
 			//s3 저장 (원본 사진)
 			String saveFileName="";
