@@ -80,7 +80,7 @@ $(function() {
                         
                         $.each(data.scrollPicList, function(index, obj){
                         	
-                        		scrollPage="<div class='item col-sm-12 col-md-8'>"+
+                        		scrollPage="<div class='item col-sm-12 col-md-4'>"+
 								"<a href='<%=request.getContextPath()%>/picture/picinfo.ps?picNo="+obj.picNo+"'>"+
 								"<img class='rounded img-size' src='"+obj.picWater+"' alt='No Image'>"+
 								"</a>"+
