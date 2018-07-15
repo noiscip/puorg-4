@@ -235,10 +235,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 팔로워가 많은 순서 유저 리스트 -->
 	<select id="mostFollowingUser" resultType="kr.or.picsion.user.dto.User">
-	select u.*,COUNT(f.followingUserNo) as follower,  pr.prPicture, pr.prContent
-	from USERS u join FOLLOW f on u.userNo=f.userNo
+	select u.*,COUNT(f.userNo) as follower,  pr.prPicture, pr.prContent
+	from USERS u join FOLLOW f on u.userNo=f.followingUserNo
 				 join PROFILE pr ON u.userNo=pr.userNo
-	group by u.userNo order by COUNT(f.followingUserNo) desc
+	group by u.userNo order by COUNT(f.userNo) desc
 	</select>
 	
 </mapper>

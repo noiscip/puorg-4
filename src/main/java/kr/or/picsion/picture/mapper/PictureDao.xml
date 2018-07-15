@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 워드 차트 태그 리스트 -->
 	<select id="wordChartList" resultType="String">
-	select t.tagContent from PICTURE p join TAG t on p.picNo=t.picNo;
+	select t.tagContent from PICTURE p join TAG t on p.picNo=t.picNo order by picNo desc limit 1000
 	</select>
 	
 	<!-- 사진 태그 검색 헤더 -->

@@ -1250,7 +1250,7 @@ $(document).ready(function() {
 		  <div class="tab-pane" id="wordtab" role="tabpanel" aria-labelledby="wordchart-tab">
 		  <div class="row">
               <div class="col-md-8 ml-auto mr-auto text-center">
-                     <h2 class="title">Popular tags of PICSION</h2>
+                     <h2 class="title">Latest popular tags of PICSION</h2>
               </div>
           </div>
           <hr>
