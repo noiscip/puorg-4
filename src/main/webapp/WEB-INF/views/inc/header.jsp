@@ -237,7 +237,7 @@ function newNoticeCount() {
 		$.ajax({
 			url : "/picsion/notice/noticeMsg.ps",
 			success: function (data) {
-				alram.append(data.count)
+				$('#alram')[0].childNodes[2].nodeValue = data.count
 			}
 		})
 	}
@@ -310,17 +310,14 @@ function newNoticeCount() {
 							</a>
 								<ul class="dropdown-menu" id="noticeList">
 								</ul>
-															
 						</li>
 		                <li class="nav-item">
 							<a href="" class="nav-link" data-toggle="dropdown" id="cartnav">
-							 <i class="material-icons">shopping_cart</i>
+							 	<i class="material-icons">shopping_cart</i>
 							</a>						
-								<ul class="dropdown-menu" id="addcartnav">
-								</ul>
+							<ul class="dropdown-menu" id="addcartnav">
+							</ul>
 						</li>
-					
-					
 						<li class="dropdown nav-item">
 		                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 		                      <i class="material-icons">apps</i> 메뉴
