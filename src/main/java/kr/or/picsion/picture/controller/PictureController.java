@@ -1,7 +1,10 @@
 ﻿package kr.or.picsion.picture.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
+
+import com.mchange.io.FileUtils;
 
 import kr.or.picsion.board.dto.Board;
 import kr.or.picsion.board.service.BoardService;
@@ -275,6 +280,14 @@ public class PictureController {
 	}
 	
 	
+	/**
+	* 날      짜 : 2018. 7. 15.
+	* 메소드명 : operwpS3
+	* 작성자명 : 김준수
+	* 기      능 : 작업사진 워터마크 기존 사진  s3저장
+	*
+	* @param operPicture
+	*/
 	@Transactional(propagation = Propagation.REQUIRED) //s3 저장 트랜잭션
 	public void operwpS3(OperPicture operPicture) {
 		try {
@@ -298,9 +311,16 @@ public class PictureController {
 			operPicture.setWpicPath(waterPath);
 			operPictureService.updatewpicOperPicture(operPicture);//워터마크 s3 주소저장
 						
-			//원본사진 변경
+		/*	//원본사진 변경
 			File reFile = new File(imagePicsion+"p"+upath.split("\\/")[3]); 
 			new File(upath).renameTo(reFile);
+			*/
+			//원본사진 변경
+			File reFile = new File(imagePicsion+"p"+upath.split("\\/")[3]); 
+			File renameFile = new File(upath);
+			
+			copyFileUsingChannel(renameFile,reFile);
+			renameFile.delete();
 			
 			String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/operpic");
 			operPicture.setPicPath(webFilePath);
@@ -446,6 +466,37 @@ public class PictureController {
 		
 		return "redirect:mystudio.ps?userNo="+user.getUserNo();
 	}
+	
+	/**
+	* 날      짜 : 2018. 7. 15.
+	* 메소드명 : copyFileUsingChannel
+	* 작성자명 : 김준수
+	* 기      능 : renameTo가 가끔 실패하는 경우가 있어 사진을 복사하고 원래 사진을 지운다.
+	*
+	* @param source
+	* @param dest
+	*/
+	@SuppressWarnings({ "unused", "resource" })
+	private static void copyFileUsingChannel(File source, File dest){
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
+        try {
+            sourceChannel = new FileInputStream(source).getChannel();
+            destChannel = new FileOutputStream(dest).getChannel();
+            destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+           }catch (Exception e) {
+            
+        }        
+        finally{
+               try {
+                sourceChannel.close();
+                destChannel.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }              
+       }
+    }
 	/**
 	* 날      짜 : 2018. 7. 5.
 	* 메소드명 : wpS3
@@ -480,11 +531,16 @@ public class PictureController {
 			//s3 저장 (원본 사진)
 			String saveFileName="";
 					
-				saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
+			saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
 			System.out.println("이름 변경전~~~~~"+saveFileName);
 			//원본사진 변경
 			File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
-			new File(picture.getPicPath()).renameTo(reFile);
+			File renameFile = new File(picture.getPicPath());
+			
+			copyFileUsingChannel(renameFile,reFile);
+			renameFile.delete();
+			
+			
 			System.out.println("이름 변경됨" + reFile.getName());
 			
 			String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/img");
