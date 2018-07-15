@@ -65,7 +65,7 @@ public class PictureService {
     * @param picture
     * @param userNo
     */
-	@Async("threadExecutor")
+	
     public void insertPicture(Picture picture) throws Exception{
         PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
         pictureDao.insertPicture(picture);
@@ -338,7 +338,6 @@ public class PictureService {
 		} else {// 확장자가 벗어나면 파일명 그대로 셋팅
 			newFileName = fileName;
 		}
-
 		
 
 		// 끝난거 알려주는 리턴값
