@@ -174,7 +174,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 사진 태그 상세 검색 페이지 -->
 	<select id="detailSearch" resultType="kr.or.picsion.picture.dto.Picture">
-		select * from (select  DISTINCT p.*,u.userName as userName, pi.camera, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.photoDate, pi.lens,if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p 
+		select * from (select  DISTINCT p.*,u.userName as userName, pi.camera, CAST(SUBSTRING_INDEX(pi.resolutionW, ' ', 1) AS UNSIGNED) as resolutionW, CAST(SUBSTRING_INDEX(pi.resolutionH, ' ', 1)AS UNSIGNED) as resolutionH, pi.photoDate, pi.lens,if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p 
 		join USERS u on u.userNo = p.userNo
 		left join PICTUREINFO pi on p.picNo = pi.picNo
 		left join (select * from RESPECT where userNo=#{userNo}) r on p.picNo=r.picNo 
