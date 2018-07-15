@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,8 @@ public class UserController {
 	@Autowired
 	private AmazonUpload amazonService;
 	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;	
 	/**
 	* 날      짜 : 2018. 6. 8.
 	* 메소드명 : userLogin
@@ -422,9 +425,10 @@ public class UserController {
 			}
 					
 			//비밀번호, 유저네임 변경했을때
-			if(user.getPwd()=="") {
-			}else if(userSession.getPwd().equals(user.getPwd())) {
+			if(user.getPwd()=="" || userSession.getPwd().equals(user.getPwd())) {
+				
 			}else {
+				user.setPwd(bCryptPasswordEncoder.encode(user.getPwd()));
 				userService.updateUserInfo(user);
 			}
 			
@@ -492,8 +496,8 @@ public class UserController {
 	public String updateBefore(User user, HttpSession session) {
 		User userSession = (User)session.getAttribute("user");
 		String result;
-		
-		if(userSession.getPwd().equals(user.getPwd())) {
+		boolean login = bCryptPasswordEncoder.matches(user.getPwd(),userSession.getPwd());
+		if(login) {
 			result="redirect:updateinfo.ps";
 		}else {
 			result="redirect:updatebefore.ps";

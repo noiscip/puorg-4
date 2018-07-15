@@ -139,7 +139,7 @@ public class LoginManager implements HttpSessionBindingListener{
 		if(loginUser != null) {
 			boolean login = bCryptPasswordEncoder.matches(password,loginUser.getPwd());
 
-			if(login == true) {
+			if(login) {
 				if(isUsing(loginUser.getUserId())) {
 					removeSession(loginUser.getUserId());
 				}
