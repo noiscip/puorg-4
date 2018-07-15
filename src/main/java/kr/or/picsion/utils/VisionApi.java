@@ -119,10 +119,10 @@ public class VisionApi {
 
 			picturePath = uploadPath + saveFileName;
 
-			
+			File fi = new File(filePath);
 			if (saveFileName != null && !saveFileName.equals("")) {
-				if (new File(filePath).exists()) {
-					saveFileName = System.currentTimeMillis() + "_" + saveFileName;
+				if (fi.exists()) {
+					fi.delete();
 				}
 				try {
 					File newFile = new File(uploadPath + saveFileName);

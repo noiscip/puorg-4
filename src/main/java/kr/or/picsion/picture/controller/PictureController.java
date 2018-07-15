@@ -481,10 +481,11 @@ public class PictureController {
 			String saveFileName="";
 					
 				saveFileName =picture.getPicPath().split("/")[3];//경로빼고 사진 이름이랑 형식만 가져오기
-			
+			System.out.println("이름 변경전~~~~~"+saveFileName);
 			//원본사진 변경
 			File reFile = new File(imagePicsion+pictureService.renameFile(saveFileName,"p", picture.getUserNo(), picture.getPicNo())); 
 			new File(picture.getPicPath()).renameTo(reFile);
+			System.out.println("이름 변경됨" + reFile.getName());
 			
 			String webFilePath = amazonService.uploadObject(imagePicsion,reFile.getName(),"picsion/img");
 			pictureService.updatePicture(webFilePath,picture.getPicNo()); //s3 경로 생성
