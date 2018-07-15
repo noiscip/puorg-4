@@ -50,7 +50,6 @@
         			success:function(data){
         				console.log($('#total2'));
         				if(data.result==1){ //물품이 있을때 항목 삭제
-            			tot-=price;
             			userpoint *= 1;
             			price *= 1;
             			userpoint+=price;
