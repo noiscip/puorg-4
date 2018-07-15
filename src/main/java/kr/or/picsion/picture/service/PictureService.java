@@ -18,6 +18,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import kr.or.picsion.picture.dao.PictureDao;
@@ -64,7 +65,8 @@ public class PictureService {
     * @param picture
     * @param userNo
     */
-    public void insertPicture(Picture picture) {
+	@Async("threadExecutor")
+    public void insertPicture(Picture picture) throws Exception{
         PictureDao pictureDao = sqlSession.getMapper(PictureDao.class);
         pictureDao.insertPicture(picture);
         pictureDao.insertPicInfo(picture);
