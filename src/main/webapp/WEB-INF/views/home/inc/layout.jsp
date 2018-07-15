@@ -9,7 +9,7 @@
 	<tiles:insertAttribute name="script"/>
 </head>
 
-<body class="index-page sidebar-collapse">
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false" class="index-page sidebar-collapse">
 	<!-- header -->
 	<tiles:insertAttribute name="header" />
 
