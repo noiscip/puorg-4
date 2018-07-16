@@ -154,6 +154,13 @@
   			<version>1.2.2</version>
   		</dependency>
   		
+  		<!--jdbc ,tx -->
+		<dependency>
+    		<groupId>org.springframework</groupId>
+    		<artifactId>spring-jdbc</artifactId>
+    		<version>${org.springframework-version}</version>
+		</dependency>
+			
 		<!-- fileupload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -164,13 +171,6 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
-		</dependency>
-		
-		<!--jdbc ,tx -->
-		<dependency>
-    		<groupId>org.springframework</groupId>
-    		<artifactId>spring-jdbc</artifactId>
-    		<version>${org.springframework-version}</version>
 		</dependency>
 	
 		<!-- Security pwd -->
@@ -238,14 +238,14 @@
 			<version>4.5.3</version>
 		</dependency>
 		
-		<!-- 구글 번역  -->
+		<!-- Google translate  -->
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-translate</artifactId>
 			<version>1.31.0</version>
 		</dependency>
 		
-		<!-- 이미지 metadata -->
+		<!-- metadata -->
 		<dependency>
 		    <groupId>com.drewnoakes</groupId>
 		    <artifactId>metadata-extractor</artifactId>
@@ -258,6 +258,7 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>4.0.4.RELEASE</version>
 		</dependency>
+		
 	</dependencies>
     <build>
         <plugins>

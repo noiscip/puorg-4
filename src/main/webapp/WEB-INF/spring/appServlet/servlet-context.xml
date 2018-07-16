@@ -16,7 +16,10 @@
 						http://www.springframework.org/schema/task
        					http://www.springframework.org/schema/task/spring-task.xsd">
 
-	<task:annotation-driven/>
+	<task:annotation-driven executor="executor" scheduler="scheduler"/>
+    <task:scheduler id="scheduler"/>
+    <task:executor id="executor" />
+	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->

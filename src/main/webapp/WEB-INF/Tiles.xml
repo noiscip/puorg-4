@@ -2,8 +2,8 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
- <tiles-definitions>
  
+ <tiles-definitions>
       <!-- user.mypage 등등 -->
       <definition name="*.*" template="/WEB-INF/views/{1}/inc/layout.jsp"> 
           <put-attribute name="title"  value="wecome to picsion" /> 
