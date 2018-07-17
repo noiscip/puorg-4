@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.notice.dao.NoticeDao">
+
+	<insert id="insertNotice" parameterType="hashmap">
+		insert into NOTICE (receiveUserNo, sendUserNo,tableNo,${table})
+		values (#{receiveUserNo},#{sendUserNo},#{tableNo},#{no} <if test="addNo != null and addNo != '' "> ,#{addNo}</if>)
+	</insert>
+	
+	<select id="readCheckCount" resultType="int">
+		select count(*)  from NOTICE where receiveUserNo = #{userNo} AND readCheck = 'F'
+	</select>
+	
+	<select id="noticeList" resultType="kr.or.picsion.notice.dto.Notice">
+		select * from NOTICE where receiveUserNo = #{userNo} and readCheck ='F' order by noticeNo desc
+	</select>
+	
+	<update id="readCheck">
+		update NOTICE
+		   set readCheck='T'
+		 where receiveUserNo=#{receiveUserNo} AND sendUserNo=#{sendUserNo} AND tableNo = #{tableNo}
+		 	   <if test="brdNo != 0"> AND brdNo=#{brdNo}</if>
+		 	   <if test="picNo != 0"> AND picNo=#{picNo}</if>
+	</update>
+</mapper>

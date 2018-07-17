@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.picture.dao.PictureDao">
+
+	<!-- 메인 화면 랜덤 사진 리스트 -->
+	<select id="selectRandom" resultType="kr.or.picsion.picture.dto.Picture">
+	 select * from PICTURE p join PICTUREINFO pi on p.picNo = pi.picNo where pi.resolutionW >= 1000 order by rand() limit 10
+	</select>
+	
+	<!-- 메인 화면 최신 사진 리스트 -->
+	<select id="latestPicList" resultType="kr.or.picsion.picture.dto.Picture">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select * from (select  DISTINCT p.*, u.userName as userName,SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.camera, pi.lens, pi.photoDate, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p
+		    join USERS u on p.userNo=u.userNo
+			left join PICTUREINFO pi on p.picNo = pi.picNo
+			left join (select * from RESPECT where userNo= #{param1}) r on p.picNo=r.picNo 
+			left join (select * from BOOKMARK where userNo= #{param1}) b on p.picNo=b.picNo 
+			left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
+			left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo) pp where pp.transferState = 'T' order by pp.picReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+
+	<!-- 마이 스튜디오 사진 , 좋아요, 북마크 리스트 -->
+	<select id="studioPicList" resultType="kr.or.picsion.picture.dto.Picture">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select p.*,u.userName as userName, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.camera, pi.lens, pi.photoDate, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount
+		   	from (select * from PICTURE where userNo=#{param1} and transferState='T') p
+		   	join USERS u on p.userNo=u.userNo
+		   	left join PICTUREINFO pi on p.picNo = pi.picNo
+		   	left join (select * from RESPECT where userNo=#{param2}) r on p.picNo=r.picNo
+		   	left join (select * from BOOKMARK where userNo=#{param2}) b on p.picNo=b.picNo
+		   	left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo
+		   	left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo) pp where pp.transferState = 'T' order by pp.picNo DESC, pp.picReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param3}, #{param4}
+	</select>
+	
+	
+	<!-- 워드 차트 태그 리스트 -->
+	<select id="wordChartList" resultType="String">
+	select t.tagContent from PICTURE p join TAG t on p.picNo=t.picNo order by t.picNo desc limit 1000
+	</select>
+	
+	<!-- 사진 태그 검색 헤더 -->
+	<select id="searchTag" parameterType="String" resultType="String">
+	 select DISTINCT t.tagContent from PICTURE p join TAG t on p.picNo=t.picNo where tagContent like '${value}%';	
+	</select>
+	
+	<!-- 사진 태그 검색 페이지 -->
+	<select id="searchTagPicList" resultType="kr.or.picsion.picture.dto.Picture">
+		select *from (select  DISTINCT p.*,u.userName as userName, pi.camera, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.photoDate, pi.lens,if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p
+		    join USERS u on p.userNo=u.userNo 
+			left join PICTUREINFO pi on p.picNo = pi.picNo
+			left join (select * from RESPECT where userNo=#{param1}) r on p.picNo=r.picNo 
+			left join (select * from BOOKMARK where userNo=#{param1}) b on p.picNo=b.picNo 
+			left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
+			left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo
+			left join (select * from TAG where tagContent like '${param2}%') t on p.picNo=t.picNo
+			where p.picNo = t.picNo) pp where pp.transferState = 'T' order by pp.picReg desc
+	</select>
+	
+	
+	
+	<!-- 사진 정보 -->
+	<select id ="selectPicture" resultType="kr.or.picsion.picture.dto.Picture">
+		select p.*,pi.camera, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.photoDate, pi.lens, if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, if(ifNULL(c.userNo,0)=0,'F','T') as cartCheck, rr.respectCount, bb.bookmarkCount
+		from PICTURE p left join (select * from CART where userNo=#{param1}) c on p.picNo = c.picNo
+						left join PICTUREINFO pi on p.picNo = pi.picNo
+						left join (select * from BOOKMARK where userNo=#{param1}) b on p.picNo = b.picNo
+						left join (select * from RESPECT where userNo=#{param1}) r on p.picNo = r.picNo
+						left join (select picNo, count(*) as respectCount from RESPECT GROUP by picNo) rr on rr.picNo=p.picNo	
+						left join (select picNo, count(*) as bookmarkCount from BOOKMARK GROUP by picNo) bb on bb.picNo=p.picNo					
+		where p.picNo=#{param2};
+	</select>
+	
+	
+	<!-- 사진 좋아요 생성 -->
+	<insert id="respectIncrease" parameterType="int">
+		INSERT INTO RESPECT
+			(picNo, userNo)
+		VALUES
+			( #{param1}, #{param2})
+	</insert>
+	
+	<!-- 사진 좋아요 삭제 -->
+	<delete id="respectDelete">
+		DELETE FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
+	</delete>
+	
+	<!-- 사진 좋아요 확인 -->
+	<select id="respectConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM RESPECT WHERE picNo=#{param1} AND userNo=#{param2}
+	</select>
+	
+		
+	<!-- 사진 북마크 생성 -->
+	<insert id="bookmarkIncrease">
+	INSERT INTO BOOKMARK
+		(picNo, userNo)
+	VALUES
+		( #{param1}, #{param2})
+	</insert>
+	
+	<!-- 사진 북마크 삭제 -->
+	<delete id="bookmarkDelete">
+		DELETE FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
+	</delete>
+	
+	<!-- 사진 북마크 확인 -->
+	<select id="bookmarkConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM BOOKMARK WHERE picNo=#{param1} AND userNo=#{param2}
+	</select>
+	
+	
+	<!-- 사진 업로드 저장 -->
+	<insert id="insertPicture" parameterType="kr.or.picsion.picture.dto.Picture">		
+	insert into PICTURE
+	 (picTitle, picContent, picPath, picWater, picPrice, picPeople, userNo<if test="transferState eq 'F'.toString()">,transferState</if>)
+	values (#{picTitle},#{picContent},#{picPath},#{picWater},#{picPrice},#{picPeople},#{userNo}<if test="transferState eq 'F'.toString()">,#{transferState}</if>)
+	 <selectKey keyProperty="picNo" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey> 
+	</insert>
+	
+	<!-- 사진 워터마크 저장 -->
+	<update id="updateWater">
+	update PICTURE
+	set picWater=#{param1}
+	where picNo=#{param2}
+	</update>
+	<!-- s3에 사진 저장 -->
+	<update id="updatePicture">
+	update PICTURE
+	set picPath=#{param1}
+	where picNo=#{param2}
+	</update>
+	<!-- 사진 업로드 저장 시 태그 저장 -->
+	<insert id="insertTag" >
+    insert into TAG
+    values (#{param1},#{[param2]})
+    </insert>
+    <!-- 사진 색깔 정보 저장 -->
+    <insert id="insertColor" parameterType="hashmap">
+    insert into COLOR
+    (picNo,colorR,colorG,colorB)
+    values 
+    (#{picNo},#{color.colorR},#{color.colorG},#{color.colorB})
+    </insert>
+    <!-- 사진 메타데이터 저장 -->
+    <insert id="insertPicInfo" parameterType="kr.or.picsion.picture.dto.Picture">
+    insert into PICTUREINFO
+    (picNo,camera,resolutionH,resolutionW,photoDate,lens)
+    values 
+    (#{picNo},#{camera},#{resolutionH},#{resolutionW},#{photoDate},#{lens})
+    </insert>
+    <!-- 태그 정보 -->
+    <select id="selectTag" resultType="String">
+    	SELECT tagContent FROM TAG WHERE picNo=#{picNo}
+    </select>
+	
+	<!-- 작가의 인기순(좋아요) 사진 리스트 -->
+	<select id="photograherRespectPicList" resultType="kr.or.picsion.picture.dto.Picture">
+	select p.*,ifnull(r.c,0) as respectCount from PICTURE p 
+	left join (select picNo, count(*) as c from RESPECT GROUP by picNo) r on p.picNo=r.picNo 
+	where p.userNo=#{userNo} and p.transferState = 'T' order by r.c desc, p.picReg asc;
+	</select>
+	
+	<!-- 사진 태그 상세 검색 페이지 -->
+	<select id="detailSearch" resultType="kr.or.picsion.picture.dto.Picture">
+		select * from (select  DISTINCT p.*,u.userName as userName, pi.camera, CAST(SUBSTRING_INDEX(pi.resolutionW, ' ', 1) AS UNSIGNED) as resolutionW, CAST(SUBSTRING_INDEX(pi.resolutionH, ' ', 1)AS UNSIGNED) as resolutionH, pi.photoDate, pi.lens,if(ifNULL(r.userNo,0)=0,'F','T') as respectCheck, if(ifNULL(b.userNo,0)=0,'F','T') as bookmarkCheck, ifNULL(rc.respectcount,0) as respectCount, ifNULL(bc.bookmarkcount,0) as bookmarkCount from PICTURE p 
+		join USERS u on u.userNo = p.userNo
+		left join PICTUREINFO pi on p.picNo = pi.picNo
+		left join (select * from RESPECT where userNo=#{userNo}) r on p.picNo=r.picNo 
+		left join (select * from BOOKMARK where userNo=#{userNo}) b on p.picNo=b.picNo 
+		left join (SELECT picNo, COUNT(*) as respectCount FROM RESPECT GROUP BY picNo) rc on rc.picNo=p.picNo 
+		left join (SELECT picNo, COUNT(*) as bookmarkCount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=p.picNo
+		left join (select * from TAG where tagContent like '${tag}%') t on p.picNo=t.picNo
+		<choose>
+		<when test="colorR == 256"></when>
+		<otherwise>
+		join (select picNo, count(*) as colorCheck from COLOR 
+		where colorR  BETWEEN #{colorR}-50 AND #{colorR}+50 and colorG  BETWEEN #{colorG}-50 AND #{colorG}+50 and colorB  BETWEEN #{colorB}-50 AND #{colorB}+50 group by picNo) cl on cl.picNo = p.picNo
+		</otherwise>
+		</choose>
+		where p.picNo = t.picNo) pp where pp.transferState = 'T' and pp.picPrice BETWEEN #{lowPrice} AND #{highPrice} 
+	 	<choose>
+		<when test="picPeople == 0">and pp.picPeople = #{picPeople}</when>
+		<when test="picPeople == 1">and pp.picPeople = #{picPeople}</when>
+		<when test="picPeople == 2">and pp.picPeople = #{picPeople}</when>
+		<when test="picPeople == 3">and pp.picPeople &gt;= #{picPeople}</when>
+		<otherwise></otherwise>
+		</choose> 
+		<choose>
+		<when test="resolutionSize == 'Square'">and resolutionW = resolutionH</when>
+		<when test="resolutionSize == 'Horizontal'">and resolutionW &gt; resolutionH</when>
+		<when test="resolutionSize == 'Vertical'">and resolutionW &lt; resolutionH</when>
+		<otherwise></otherwise>
+		</choose>
+		order by 
+		<if test="order == 'Latest'">picReg</if>
+		<if test="order == 'Popular'">respectCount</if>
+		desc 
+			
+	</select>
+	
+</mapper>

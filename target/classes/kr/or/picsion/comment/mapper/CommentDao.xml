@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.comment.dao.CommentDao">
+	<!-- 요청글에 대한 댓글리스트 가져오기 -->
+	<select id="commentList" resultType="kr.or.picsion.comment.dto.Comment">
+	  select * from COMMENTS where brdNo=#{brdNo}
+	</select>
+	<!-- 요청글에 대한 댓글 작성자리스트 가져오기 -->
+	<select id="commentuser" resultType="kr.or.picsion.user.dto.User">
+		select u.userNo as userNo, u.userId as userId, u.userName as userName, p.prPicture as prPicture from COMMENTS c join USERS u on c.userNo=u.userNo 
+								join PROFILE p on c.userNo=p.userNo
+	 where c.brdNo=#{brdNo};
+	</select>
+
+
+
+	
+
+	<!-- 사진에 대한 댓글 사용자 리스트 가져오기 -->
+	<select id="picCommentUserList" resultType="kr.or.picsion.user.dto.User">
+		select u.userNo as userNo, u.userId as userId, u.userName as userName, p.prPicture as prPicture from COMMENTS c join USERS u on c.userNo=u.userNo 
+								join PROFILE p on c.userNo=p.userNo
+	 where c.picNo=#{picNo};
+	</select>
+	<!-- 사진에 대한 댓글리스트 가져오기 -->
+	<select id="picCommentList" resultType="kr.or.picsion.comment.dto.Comment">
+		SELECT * FROM COMMENTS WHERE picNo=#{picNo}
+	</select>
+	
+	<!-- 게시판 댓글 저장 -->
+	<insert id="insertComment" parameterType="kr.or.picsion.comment.dto.Comment" useGeneratedKeys="true" keyProperty="cmtNo">
+		insert into COMMENTS (cmtContent,userNo,brdNo,tableNo) values (#{cmtContent},#{userNo},#{brdNo},#{tableNo})	
+		<selectKey keyProperty="cmtNo,cmtReg" resultType="hashmap" order="AFTER">
+			SELECT cmtNo, cmtReg from COMMENTS where cmtNo = LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 사진에 대한 댓글 저장 -->	
+	<insert id="picInsertComment" parameterType="kr.or.picsion.comment.dto.Comment" useGeneratedKeys="true" keyProperty="cmtNo">
+	insert into COMMENTS (cmtContent,userNo,picNo,tableNo) values (#{cmtContent},#{userNo},#{picNo},#{tableNo})
+	</insert>
+	<!-- 작업중 댓글 삭제  -->    
+    <delete id="deleteAllComment" parameterType="Integer">
+        delete from COMMENTS where brdNo=#{brdNo}
+    </delete>
+	<!-- 댓글 삭제  -->	
+	<delete id="deleteComment" parameterType="Integer">
+		delete from COMMENTS where cmtNo =#{cmtNo}
+	</delete>
+
+	
+	<!-- 댓글 객체 하나 찾아오기 -->
+	<select id="selectComment" resultType="kr.or.picsion.comment.dto.Comment">
+		select * from COMMENTS where cmtNo = #{cmtNo}
+	</select>
+</mapper>

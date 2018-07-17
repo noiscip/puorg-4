@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.purchase.dao.PurchaseDao">
+	<select id="purchaseList" resultType="kr.or.picsion.purchase.dto.Purchase">
+		select * from PURCHASE
+	</select>
+	
+	<select id="purchaseSearch" resultType="kr.or.picsion.purchase.dto.Purchase">
+		select * from PURCHASE where purchaseReg > #{date}
+	</select>
+	
+	<select id="salesStatistics" resultType="Integer">
+	select ifNull(sum(picPrice),0) from PICTURE where picNo in (select picNo from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg)
+	</select>
+	<select id="mySalesStatistics" resultType="Integer">	
+	select ifNull(sum(picPrice),0) from PURCHASE where purchaseReg > #{param1} and #{param2} > purchaseReg and saleUserNo=#{param3};
+	</select>
+	
+	<!-- 장바구니 담기 -->
+	<insert id="insertCart">
+		INSERT INTO CART
+		(picNo, userNo)
+		VALUES
+		( #{param1}, #{param2})
+	</insert>
+	
+	<!-- 장바구니에서 항목 빼기 -->
+	<delete id="deleteCart">
+		DELETE FROM CART WHERE picNo=#{param1} AND userNo=#{param2}
+	</delete>
+	
+	<!-- 장바구니 전체 비우기 -->
+	<delete id="deleteCartAll">
+		DELETE FROM CART WHERE userNo=#{param1}
+	</delete>
+	
+	<!-- 장바구니 사진 리스트 -->
+	<select id="selectCart" resultType="kr.or.picsion.picture.dto.Picture">
+	 	SELECT p.*,pi.photoDate, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.camera, pi.lens FROM PICTURE p 
+	 	left JOIN CART c ON p.picNo = c.picNo 
+		left JOIN PICTUREINFO pi on p.picNo = pi.picNo
+		 WHERE c.userNo = #{userNo} order by p.picReg;
+	</select>
+	
+	<!-- 장바구니 사진 작가 리스트 -->
+	<select id="CartPhotographer" resultType="kr.or.picsion.user.dto.User">
+	 	SELECT u.userNo as userNo, u.userName as userName FROM PICTURE p 
+	 	left JOIN CART c ON p.picNo = c.picNo 
+		left JOIN USERS u ON p.userNo = u.userNo
+	 	WHERE c.userNo = #{userNo} order by p.picReg;
+	</select>
+	
+	<!-- 장바구니 합계 -->
+	<select id="cartTotal" resultType="Integer">
+		SELECT ifNULL(sum(p.picPrice),0) as total FROM PICTURE p JOIN CART c ON p.picNo = c.picNo 			 
+		WHERE c.userNo = #{userNo}
+	</select>
+	
+	<!-- 나의 장바구니 항목 갯수 -->
+	<select id="cartCount" resultType="Integer">
+		SELECT COUNT(*) FROM CART WHERE userNo=#{userNo}
+	</select>
+	
+	<!-- 장바구니 확인 -->
+	<select id="cartConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM CART WHERE userNo=#{param1} AND picNo=#{param2}
+	</select>
+	
+	<!-- 구매 확인 -->
+	<select id="purchaseConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM PURCHASE WHERE purchaseUserNo=#{param1} AND picNo=#{param2}
+	</select>
+	
+	<!-- 결제 -->
+	<insert id="buyPicture" parameterType="java.util.List">
+		INSERT INTO PURCHASE
+		(picNo, purchaseUserNo, saleUserNo, picPrice)
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+		(#{item.picNo}, #{item.purchaseUserNo}, #{item.saleUserNo}, #{item.picPrice})
+		</foreach>
+	</insert>
+
+	<!-- 구매한 사진 리스트 -->
+	<select id="selectPicPurchase" resultType="kr.or.picsion.picture.dto.Picture">
+		<!-- select ph.*
+		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		where p.purchaseUserNo=#{userNo}
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg, pin.camera, pin.resolutionH, pin.resolutionW, pin.photoDate, pin.lens
+			from PURCHASE p 
+			join PICTUREINFO pin on p.picNo=pin.picNo
+			join PICTURE ph on p.picNo=ph.picNo
+			where p.purchaseUserNo=#{param1}) pp order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 구매한 사진 작가 리스트 -->
+	<select id="selectPicUser" resultType="kr.or.picsion.user.dto.User">
+		<!-- select u.*
+		from PURCHASE p join USERS u on p.saleUserNo=u.userNo
+		where p.purchaseUserNo=#{userNo}
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select u.*, p.purchaseReg
+			from PURCHASE p join USERS u on p.saleUserNo=u.userNo
+			where p.purchaseUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 구매한 정보 리스트 -->
+	<select id="selectPurchase" resultType="kr.or.picsion.purchase.dto.Purchase">
+		<!-- select *
+		from PURCHASE 
+		where purchaseUserNo=#{userNo}
+		order by purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select *
+			from PURCHASE 
+			where purchaseUserNo=#{param1}) p
+			order by p.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 구매한 사진의 총 금액 합계 -->
+	<select id="sumPurchase" resultType="Integer">
+		select ifNULL(sum(ph.picPrice),0) as sum
+		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		where p.purchaseUserNo=#{userNo}
+	</select>
+	
+	<!-- 구매한 사진의 총 개수-->
+	<select id="getPurCount" resultType="Integer">
+		select count(*) from PURCHASE where purchaseUserNo=#{userNo};
+	</select>
+	
+	<!-- 판매한 사진 리스트 -->
+	<select id="selectPicSell" resultType="kr.or.picsion.picture.dto.Picture">
+		<!-- select ph.*
+		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		where p.saleUserNo=#{userNo}
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select ph.*, p.purchaseReg, pin.camera, pin.resolutionH, pin.resolutionW, pin.photoDate, pin.lens
+			from PURCHASE p			
+			join PICTUREINFO pin on p.picNo=pin.picNo 
+			join PICTURE ph on p.picNo=ph.picNo
+			where p.saleUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 구매한 사람 정보 -->
+	<select id="selectPicPurUser" resultType="kr.or.picsion.user.dto.User">
+		<!-- select u.*
+		from PURCHASE p join USERS u on p.purchaseUserNo=u.userNo
+		where p.saleUserNo=#{userNo}
+		order by p.purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select u.*, p.purchaseReg
+			from PURCHASE p join USERS u on p.purchaseUserNo=u.userNo
+			where p.saleUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 판매한 정보 리스트 -->
+	<select id="selectSell" resultType="kr.or.picsion.purchase.dto.Purchase">
+		<!-- select *
+		from PURCHASE 
+		where saleUserNo=#{userNo}
+		order by purchaseReg DESC -->
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select *
+			from PURCHASE 
+			where saleUserNo=#{param1}) pp
+			order by pp.purchaseReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 판매한 사진 가격 합계 -->
+	<select id="sumSell" resultType="Integer">
+		select ifNULL(sum(ph.picPrice),0) as sum
+		from PURCHASE p join PICTURE ph on p.picNo=ph.picNo
+		where p.saleUserNo=#{userNo}
+	</select>
+	
+	<!-- 판매한 사진의 총 개수 -->
+	<select id="getSaleCount" resultType="Integer">
+		select count(*) from PURCHASE where saleUserNo=#{userNo};
+	</select>
+	
+	<!-- 유저 금액 업데이트 -->
+	<update id="updatePoint">
+		update USERS set point = #{param1} where userNo = #{param2};
+	</update>
+	
+	<!-- 판매자 리스트 금액 업데이트 -->
+	<update id="updateSalePoint" parameterType="java.util.List">
+		update USERS set point = case
+		<foreach collection="list" item="item"  index="index">
+		when userNo = #{item.saleUserNo} then point + #{item.picPrice}
+		</foreach>
+		end
+		where userNo in
+		<foreach collection="list" item="item"  open="(" close=")" separator=",">
+		#{item.saleUserNo}
+		</foreach>
+	</update>
+	
+</mapper>

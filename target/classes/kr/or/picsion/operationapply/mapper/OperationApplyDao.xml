@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.operationapply.dao.OperationApplyDao">
+
+
+<select id="operationStatus" resultType="String">
+		select operState from OPERATIONSTATE where operStateNo = #{operStateNo}
+</select>
+
+<select id="countOperationApply" resultType="Integer">
+		select count(*) from OPERATIONAPPLY where brdNo = #{brdNo} and operUserNo = #{operUserNo}
+</select>
+
+
+
+<insert id="insertOperationApply" parameterType="kr.or.picsion.operationapply.dto.OperationApply" useGeneratedKeys="true" keyProperty="operApplyNo">
+insert into OPERATIONAPPLY (operApplyAppeal,operApplyPrice,operApplyReg,requestUserNo,brdNo,operUserNo)VALUES (#{operApplyAppeal},#{operApplyPrice},#{operApplyReg},#{requestUserNo},#{brdNo},#{operUserNo})
+</insert>
+
+<select id="operationApplyList" resultType="kr.or.picsion.operationapply.dto.OperationApply">
+		select * from OPERATIONAPPLY where requestUserNo=#{param2} and brdNo=#{param1}
+</select>
+<select id="operationApplyNameList" resultType="String">
+		select u.userId from OPERATIONAPPLY o join USERS u on o.operUserNo=u.userNo where o.brdNo=#{brdNo}
+</select>
+
+
+</mapper>

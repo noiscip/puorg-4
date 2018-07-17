@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.user.dao.UserDao">
+
+	<select id="getPicsionList" resultType="kr.or.picsion.user.dto.User">
+		SELECT * FROM USERS
+	</select>
+	
+	<select id="userList" resultType="kr.or.picsion.user.dto.User">
+		select * from  USERS
+	</select>
+	
+	<insert id="registerUser" parameterType="kr.or.picsion.user.dto.User" useGeneratedKeys="true" keyProperty="userNo">
+		INSERT INTO USERS
+			(userId, pwd, userName, roleNo)
+		VALUES
+			( #{userId}, #{pwd}, #{userName},  1)
+	</insert>
+	
+	<insert id="insertProfile">
+		INSERT INTO PROFILE (userNo,prPicture) VALUES	(#{userNo},'https://s3.ap-northeast-2.amazonaws.com/picsion/profile/user.png')
+	</insert>
+	
+	<!-- userId랑 userNo로 검색해서 회원의 프로필, 유저정보, 계정 연동 -->
+	<select id="selectUser" resultType="kr.or.picsion.user.dto.User">
+		SELECT u.userNo as userNo, userId, pwd, userName, point, userReg, tableNo, roleNo, naver, google, prPicture, prContent
+		FROM USERS u JOIN PROFILE p ON u.userNo=p.userNo
+					 JOIN ACCOUNTLINKED a ON u.userNo=a.userNo
+					 
+					 
+		WHERE ${param1}=#{param2}
+	</select>
+	
+	<!-- userNo로 회원 정보 가져오기 -->
+	
+	<!-- 회원의 프로필 정보 가져오기 -->
+	
+	<!-- 회원의 팔로워 리스트 (나를 따르는 회원)-->
+	<select id="followerUserList" resultType="kr.or.picsion.user.dto.User">
+		SELECT f.userNo as userNo, u.userId as userId, u.userName as userName, p.prPicture, p.prContent
+		FROM FOLLOW f JOIN PROFILE p ON f.userNo=p.userNo
+					  JOIN USERS u ON f.userNo=u.userNo
+		WHERE f.followingUserNo=#{userNo}
+	</select>
+	
+	<!-- 회원의 팔로잉 리스트 (내가 따르는 회원) -->
+	<select id="followingUserList" resultType="kr.or.picsion.user.dto.User">
+		SELECT f.followingUserNo as userNo, u.userId as userId, u.userName as userName, p.prPicture as prPicture, p.prContent as prContent
+		FROM FOLLOW f JOIN PROFILE p ON f.followingUserNo=p.userNo
+		              JOIN USERS u ON f.followingUserNo=u.userNo
+		WHERE f.userNo=#{userNo}
+	</select>
+	
+	<!-- 회원이 팔로잉하고 있는 회원인지 확인 -->
+	<select id="followingConfirm" resultType="Integer">
+		SELECT COUNT(*) FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2}
+	</select>
+	
+	<!-- 팔로잉 insert -->
+	<insert id="insertFollow">
+		INSERT INTO FOLLOW VALUES(#{param1}, #{param2})
+	</insert>
+	
+	<!-- 팔로잉 delete -->
+	<delete id="deleteFollow">
+		DELETE FROM FOLLOW WHERE userNo=#{param1} AND followingUserNo=#{param2}
+	</delete>
+	
+    <!-- 팔로잉 최신 사진 , 좋아요, 북마크 리스트  -->
+	<select id="followingUserPictureList" resultType="kr.or.picsion.picture.dto.Picture">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select po.userNo2 as userNo,po.userName as userName, po.picTitle as picTitle, po.picContent as picContent,po.picPath as picPath, po.picWater as picWater, po.picNo as picNo, po.picReg as picReg,SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.camera, pi.lens, pi.photoDate, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount from (SELECT f.userNo as userNo, f.followingUserNo as userNo2, u.userName as userName, p.picTitle as picTitle, p.picContent as picContent, p.picNo as picNo, p.picWater as picWater, p.picPath as picPath, p.picReg as picReg
+			    FROM USERS u join FOLLOW f on u.userNo = f.followingUserNo
+                join PICTURE p on u.userNo = p.userNo
+                where f.userNo = #{param1}) po 
+                left join PICTUREINFO pi on po.picNo = pi.picNo
+                left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo 
+                left join BOOKMARK b on po.picNo=b.picNo and po.userNo=b.userNo 
+                left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo 
+                left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo) pp
+				order by pp.picReg desc LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3};
+	</select>	
+	
+	<!-- 북마크한 사진 리스트 -->
+	<select id="bookmarkPicList" resultType="kr.or.picsion.picture.dto.Picture">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select po.*, SUBSTRING_INDEX(pi.resolutionW, ' ', 1) as resolutionW, SUBSTRING_INDEX(pi.resolutionH, ' ', 1) as resolutionH, pi.camera, pi.lens, pi.photoDate, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount 
+				from (SELECT p.picNo, b.userNo, p.picPath, p.picWater, p.picTitle, p.picReg FROM PICTURE p JOIN BOOKMARK b ON p.picNo = b.picNo	WHERE b.userNo=#{param1}) po
+				left join PICTUREINFO pi on po.picNo = pi.picNo
+				left join BOOKMARK b on po.picNo = b.picNo and po.userNo=b.userNo
+				left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo 
+				left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo 
+				left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo) pp order by  pp.picReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 북마크 사진 주인 리스트 -->
+	<select id="bookmarkPicUserList" resultType="kr.or.picsion.user.dto.User">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (select po.*, if(ifnull(r.picNo,0)=0,'F','T') as respectCheck, if(ifnull(b.picNo,0)=0,'F','T') as bookmarkCheck, ifnull(rc.respectcount,0) as respectCount, ifnull(bc.bookmarkcount,0) as bookmarkCount 
+				from (SELECT p.picNo, p.userNo, p.picPath, p.picWater, p.picTitle, p.picReg, u.userName FROM PICTURE p JOIN BOOKMARK b ON p.picNo = b.picNo join USERS u on p.userNo=u.userNo	WHERE b.userNo=#{param1}) po
+				left join BOOKMARK b on po.picNo = b.picNo and po.userNo=b.userNo
+				left join RESPECT r on po.picNo=r.picNo and po.userNo=r.userNo 
+				left join (SELECT picNo, COUNT(*) as respectcount FROM RESPECT GROUP BY picNo) rc on rc.picNo=po.picNo 
+				left join (SELECT picNo, COUNT(*) as bookmarkcount FROM BOOKMARK GROUP BY picNo) bc on bc.picNo=po.picNo) pp order by pp.picReg DESC LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 좋아요한 사진 리스트 -->
+	<select id="respectPicList" resultType="kr.or.picsion.picture.dto.Picture">
+		SELECT p.*
+		FROM PICTURE p JOIN RESPECT r 
+			ON p.picNo = r.picNo
+		WHERE r.userNo=#{userNo}
+	</select>
+	
+	<delete id="deleteUser">
+		delete from USERS where userNo = #{userNo}
+	</delete>
+	
+	<!-- 다른 사이트가 연동되어 있지 않는 경우 insert -->
+	<insert id="insertAccount">
+		insert into ACCOUNTLINKED (userNo)
+		values (#{userNo})
+	</insert>
+	
+	<!-- 이미 다른 사이트가 연동되어 있는 경우 update -->
+	<update id="updateAccount">
+		update ACCOUNTLINKED
+		   set ${param3} =#{param2}
+		 where userNo = #{param1}
+	</update>
+		
+	<!-- 계정 연동 확인 -->
+	<select id="selectAccountNo" resultType="kr.or.picsion.user.dto.User">
+		select userNo, ${param2} from ACCOUNTLINKED where ${param2} = #{param1}
+	</select>
+	
+	<!-- 계정연동에 아이디가 있는지 확인 -->
+	<select id="selectAccountUserNo" resultType="kr.or.picsion.user.dto.User">
+		select * from ACCOUNTLINKED where userNo = #{userNo}
+	</select>
+	
+	<update id="updateRole">
+		update USERS
+		   set roleNo = 2
+		 where userNo = #{userNo}
+	</update>
+	
+	<!-- 포인트 충전 -->
+	<update id="pointCharge">
+		update USERS 
+			set point=point+#{param1}
+		where userNo=#{param2};
+	</update>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateUser">
+		update USERS
+			set userName=#{userName}
+				<if test="pwd != ''">, pwd=#{pwd}</if>
+		where userNo=#{userNo}
+	</update>
+	
+	<!-- 회원 프로필 수정 -->
+	<update id="updateUserPr">
+		update PROFILE 
+			set prContent=#{prContent}
+		where userNo=#{userNo}
+	</update>
+	
+	<!-- 회원 프로필 사진 수정 -->
+	<update id="updateUserPic">
+		update PROFILE
+			set prPicture=#{prPicture}
+		where userNo=#{userNo}
+	</update>
+	
+	<!-- 유저가 팔로잉하고 있는 회원 리스트(팔로잉) -->
+	<select id="followingUserPaging" resultType="kr.or.picsion.user.dto.User">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select *from (SELECT f.followingUserNo as userNo, u.userId as userId, u.userName as userName, p.prPicture as prPicture, p.prContent as prContent
+			FROM FOLLOW f JOIN PROFILE p ON f.followingUserNo=p.userNo
+			              JOIN USERS u ON f.followingUserNo=u.userNo
+			WHERE f.userNo=#{param1})pp LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 유저가 팔로잉하고 있는 회원 총 명수 -->
+	<select id="getFollowingCount" resultType="Integer">
+		select count(*) 
+		from FOLLOW f JOIN USERS u on f.followingUserNo=u.userNo
+		where f.userNo=#{userNo}
+	</select>
+	
+	<!-- 유저를 팔로잉하고 있는 회원 리스트(팔로워) -->
+	<select id="followerUserPaging" resultType="kr.or.picsion.user.dto.User">
+		select *
+		from (select *from (select @RNUM := @RNUM + 1 AS ROWNUM, A.*  from (select * from (SELECT f.userNo as userNo, u.userId as userId, u.userName as userName, p.prPicture, p.prContent
+			FROM FOLLOW f JOIN PROFILE p ON f.userNo=p.userNo
+						  JOIN USERS u ON f.userNo=u.userNo
+			WHERE f.followingUserNo=#{param1})pp LIMIT 18446744073709551615 ) A, ( SELECT @RNUM := 0 ) R) RD order by RD.ROWNUM) SC
+		where SC.ROWNUM>0
+		order by SC.ROWNUM
+		limit #{param2}, #{param3}
+	</select>
+	
+	<!-- 해당 유저를 팔로잉하고 있는 회원 총 명수 -->
+	<select id="getFollowerCount" resultType="Integer">
+		select count(*) 
+		from FOLLOW f JOIN USERS u on f.userNo=u.userNo
+		where f.followingUserNo=#{userNo}
+	</select>
+	
+	<!-- 최근 7주일간 가장 많은 사진 업로더 -->
+	<select id="bestUploader" resultType="kr.or.picsion.user.dto.User">
+	SELECT u.userNo, u.userName, pr.prPicture, pr.prContent
+	FROM USERS u JOIN PICTURE p ON u.userNo=p.userNo
+				JOIN PROFILE pr ON u.userNo=pr.userNo
+	WHERE DATE(p.picReg) >= DATE(SUBDATE(NOW(),INTERVAL 7 DAY)) and DATE(p.picReg) &lt;= DATE(NOW())
+	GROUP BY u.userNo ORDER BY COUNT(u.userNo) DESC LIMIT 4
+	</select>
+	
+	<!-- 팔로워가 많은 순서 유저 리스트 -->
+	<select id="mostFollowingUser" resultType="kr.or.picsion.user.dto.User">
+	select u.*,COUNT(f.userNo) as follower,  pr.prPicture, pr.prContent
+	from USERS u join FOLLOW f on u.userNo=f.followingUserNo
+				 join PROFILE pr ON u.userNo=pr.userNo
+	group by u.userNo order by COUNT(f.userNo) desc
+	</select>
+	
+</mapper>

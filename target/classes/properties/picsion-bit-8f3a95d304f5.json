@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "picsion-bit",
+  "private_key_id": "8f3a95d304f5ece549c632761b14dc0f5ba3c1d7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOVPUxdw9EYEGn\na2YV36KJhFNdfaxk6yMafMo8cycsbeiXW7gpL3zznlPoMew968aR1hQlzH1tUD+y\nOKvbImk14qPbcrbdavNG36r4IUtN39IetjqtcIdVlP5agrGdDCXL/yX+rSnloqdW\ne65EZf/YFlwDr2+lkX/FNx+VoQfemUeGJhoe42rL6HZsIp7DVXdD+1Ti5y79KWE+\nCksBDMnC3lpzyUt+zlgbULlt8h+8dOu3vrwD4w6ld7PRwXMbYWnopJ/AFpFoLual\nUODhkgmjTwLJWJ2/CcQL1+BZYSZqCgC4hSWVExTSTY9Sw3aQ+2ZPPc5okhTSJsLi\nWd0/i4R1AgMBAAECggEARZk1zhYtobBgZRNer5Esl/t5TWd3b+E7CZO/eg2T0LJQ\nS0IGiGn62Yh2IDQ6zpZJ+GaAjFGCm41+tuTT34qnd6Q4Bm2XDnAlmKoY1zMP3jhZ\n/b8VYuy60dz8wVYliGaRF1M9Iz+RCuNHU+5LVcocN20vY5TZcb13HnSeJFBZwbVS\nbPdvii+S1icTiPDwJ2fWKxGzPV6agHGPjM8NsoWLnwgtRltwIatnO1wtRM9woDBq\nweynxynUnbJ2d9y+PxduFtQ2RdLfjtepwMTjL+W5eIt9k5fy7tpYqZ/ZahBgkTwi\noT5rOUcCbM26F21EGb2mAfBxqPG4TIsDSMnt7GId3wKBgQDqYShwhPPbFcpgTjGf\n93FOT5+IS+WFG6CH+qucWuRu5w07CHj9Ky0S35wNxGCePEDrUkQzdQ4cOiUpUeSv\nLhJDgpZUcUjfwa0Om+xFtPKeqeV8xOCmKV2+0h7AVA0stMw66Odp/mnVQZlPlNAE\n824CHSxeaNk5tVl8D+DEwhIwgwKBgQDhXXVCDfsPc3xHRnAiZWfZsD0tYg6v6HKB\nKuHRSO12LPrTXXqCsQrGIWtlCj/7M9eUau2dvBAwRPHDMttPjXltdse0ix4pO2AQ\nI2Uax7l8lbTLSLj++yEqpcdhRt6CU0f5/MpUMoGT3z1uNMita/3T1aD/VGMYW5G9\nDzKamNZ1pwKBgQDejX8uyLAdOmW+aMFqWjV23NhpPVgluoQGWpoVj6EVRcQkZ/kq\nvJLCNx4hXHU6C5DBYo5sJhxN5VBgGekCBsdE330Llb5S6b7//kKuNhGjY0QL445F\neUYQ6chVa/pOlybOUVVcKj4oR2/iRzX3XYb57uWwh/Ksf20HBrSxYG6RLQKBgQDE\nHliUiyYYZB+axyl+RVECl+QlQlgVrOs4jODHB/feB3afyZF7eiYuFZcn7quPJ6ZL\nemIeCjLsTpM1k2RW7n7lS6Cu9QHiT9FhOewaSgSY7o7O+RJEkrZiLrI7bTjloSPZ\n4KsSaoFo9bS32ydoA7p4Rkg86mryH33MURVwg+DdsQKBgEaWJR4ePygMDzPsQyLw\nZ5tMujm7BSJeOJfha0fdHp8zw6pMhUfD95zacMP6I146C+pNRNqO1fdrD9RtHwNM\nTAWP+qvJQ5EESVipp9bjA8HlXqgCkUFgCi7r3bXFAnIwMjyilWyiLFxycbXmAy39\nmjS/Nnhc5L5piRHaqSuXFi4l\n-----END PRIVATE KEY-----\n",
+  "client_email": "picsion@picsion-bit.iam.gserviceaccount.com",
+  "client_id": "108715880630981189206",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/picsion%40picsion-bit.iam.gserviceaccount.com"
+}
