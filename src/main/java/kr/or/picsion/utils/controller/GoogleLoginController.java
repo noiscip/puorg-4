@@ -95,7 +95,6 @@ public class GoogleLoginController {
 	  
 	  HttpSession session = request.getSession();
 	  User user = (User)session.getAttribute("user");
-	  
 	  String accountNo = profile.getId();
 	  String result = "redirect:/home.ps";
 	  if(user == null) { //유저가 null이면 로그인 되어 있지 않은 상태
@@ -103,7 +102,7 @@ public class GoogleLoginController {
 			
 			if(accountUser == null) { //연동되어 있는 계정이 없음
 				session.setAttribute("result", "F");
-				result = "redirect:/user/login.ps";
+				result = "redirect:/login.ps";
 			}else {
 				loginManager.setSession(session, userService.userInfo(accountUser.getUserNo()));
 			}
@@ -112,8 +111,9 @@ public class GoogleLoginController {
 			  userService.updateAccountNo(user.getUserNo(),accountNo,GOOGLE);
 			  userService.updateRole(user.getUserNo());
 			  loginManager.setSession(session, userService.userInfo(user.getUserNo()));
+			  session.setAttribute("accountSuccess", "T");
 		  }else { //구글 등록이 되어있다면
-			  	session.setAttribute("result", "F");
+			  session.setAttribute("result", "F");
 		  }
 	  }
 	  return result;

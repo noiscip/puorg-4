@@ -35,7 +35,7 @@ public class Scheduler {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-		
+	/*	
 	@Scheduled(cron="0 0 0 * * ?")
 	public void deleteMsg() {
 		System.out.println("스케쥴러");
@@ -57,5 +57,5 @@ public class Scheduler {
 		
 		logger.info("현재시간 : " + nowDate + ", 30일 전 : " + thirtyDaysAgo);
 		logger.info("현재시간으로부터 30일 전 메시지 " + result + "개 삭제 완료");
-	}
+	}*/
 }

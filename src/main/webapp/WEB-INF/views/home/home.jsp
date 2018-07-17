@@ -5,6 +5,7 @@
 
 
 <input type="hidden" value="${sessionScope.result}" id="result">
+<input type="hidden" value="${sessionScope.accountSuccess}" id="accountSuccess">
 
 <style>
 .hashTag {
@@ -723,7 +724,11 @@ label.btn.btn-default.btn-circle.focus {
 var isChartShow = false
 $(document).ready(function() {
 	var loginUserNo = $('#loginUserNo').val();
-						if ($('#result').val() == "F") {
+						if($('#accountSuccess').val() == "T"){
+							alert('이제 사진 업로드가 가능합니다')
+							<%session.removeAttribute("accountSuccess");%>
+						}
+						if($('#result').val() == "F") {
 							alert('이미 연동된 계정 입니다. 다른 아이디를 등록 하세요.')
 							<%session.removeAttribute("result");%>}
 						//이미지 class명부여

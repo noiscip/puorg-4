@@ -78,6 +78,7 @@ public class NaverLoginController {
 					userService.updateAccountNo(user.getUserNo(),accountNo,NAVER);
 					userService.updateRole(user.getUserNo());
 					loginManager.setSession(session, userService.userInfo(user.getUserNo()));
+					session.setAttribute("accountSuccess", "T");
 				}else { //네이버 등록이 되어 있다면
 					session.setAttribute("result", "F");
 				}
