@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.message.dao.MessageDao">
+	<!-- 메시지 보내기 처리 (insert) -->
+	<insert id="insertMessage" parameterType="kr.or.picsion.message.dto.Message">
+		INSERT INTO MESSAGES (msgContent, sendUserNo, receiveUserNo)
+		VALUES (#{msgContent}, #{sendUserNo}, #{receiveUserNo})
+		<selectKey keyProperty="msgNo,msgReg,tableNo" resultType="hashmap" order="AFTER">
+			SELECT msgNo, msgReg, tableNo from MESSAGES where msgNo = LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 받은 메시지리스트 -->
+	<select id="receiveMessageList" resultType="kr.or.picsion.message.dto.Message">
+		<!-- SELECT msgNo, msgContent, date_format(msgReg, '%y-%m-%d  %h:%i') as msgReg, msgState, sendUserNo, receiveUserNo, tableNo
+		FROM MESSAGES
+		WHERE receiveUserNo=#{receiveUserNo}
+		ORDER BY msgReg DESC -->
+		
+		SELECT *
+		FROM MESSAGES
+		WHERE receiveUserNo=#{receiveUserNo}
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 받은 메시지 보낸사람 리스트 -->
+	<select id="receiveMessageUserInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u.*
+		FROM MESSAGES m JOIN USERS u ON m.sendUserNo=u.userNo
+		WHERE m.receiveUserNo=#{receiveUserNo}
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 메시지 읽었을 때 상태 update -->
+	<update id="messageState">
+		UPDATE MESSAGES
+		SET msgState='T'
+		WHERE msgNo=#{msgNo}
+	</update>
+	
+	<!-- 받은 사람이 메시지 삭제 (receiveMsgDel update) -->
+	<update id="receiveMessageDel">
+		UPDATE MESSAGES
+		SET receiveMsgDel='T'
+		WHERE msgNo=#{msgNo}
+	</update>
+	
+	<!-- 보낸 메시지 리스트 -->
+	<select id="sendMessageList" resultType="kr.or.picsion.message.dto.Message">
+		SELECT *
+		FROM MESSAGES
+		WHERE sendUserNo=#{sendUserNo}
+		ORDER BY msgReg DESC;
+	</select>
+	
+	<!-- 보낸 메시지 받은사람 리스트  -->	
+	<select id="sendMessageUserInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u.*
+		FROM MESSAGES m JOIN USERS u ON m.receiveUserNo=u.userNo
+		WHERE m.sendUserNo=#{sendUserNo}
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 보낸 사람이 메시지 삭제 (sendMsgDel update) -->
+	<update id="sendMessageDel">
+		UPDATE MESSAGES
+		SET sendMsgDel='T'
+		WHERE msgNo=#{msgNo}
+	</update>
+	
+	<!-- 받은 메시지 userName 검색 (메시지 정보 리스트)-->
+	<select id="selectReceiveMsg" resultType="kr.or.picsion.message.dto.Message">
+		SELECT m.*
+		FROM MESSAGES m JOIN USERS u1 ON m.receiveUserNo=u1.userNo
+							 JOIN USERS u2 ON m.sendUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 받은 메시지 userName 검색 (메시지 유저 정보 리스트) -->
+	<select id="selectReceiveInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u2.*
+		FROM MESSAGES m JOIN USERS u1 ON m.receiveUserNo=u1.userNo
+							 JOIN USERS u2 ON m.sendUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 보낸 메시지 userName 검색 (메시지 정보 리스트) -->
+	<select id="selectSendMsg" resultType="kr.or.picsion.message.dto.Message">
+		SELECT m.*
+		FROM MESSAGES m JOIN USERS u1 ON m.sendUserNo=u1.userNo
+							 JOIN USERS u2 ON m.receiveUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
+	<!-- 보낸 메시지 userName 검색 (메시지 유저 정보 리스트) -->
+	<select id="selectSendInfo" resultType="kr.or.picsion.user.dto.User">
+		SELECT u2.*
+		FROM MESSAGES m JOIN USERS u1 ON m.sendUserNo=u1.userNo
+							 JOIN USERS u2 ON m.receiveUserNo=u2.userNo
+		WHERE u1.userNo=#{param1} AND u2.userName LIKE '%${param2}%'
+		ORDER BY msgReg DESC
+	</select>
+	
+	
+	<resultMap type="kr.or.picsion.user.dto.User" id="User">
+		<result column="userNo" property="userNo"/>
+		<result column="userId" property="userId"/>
+		<result column="userName" property="userName"/>
+		<result column="prPicture" property="prPicture"/>
+		<result column="prContent" property="prContent"/>
+	</resultMap>
+
+	<resultMap type="kr.or.picsion.message.dto.Message" id="Message">
+		<result column="msgNo" property="msgNo"/>
+		<result column="msgContent" property="msgContent"/>
+		<result column="msgReg" property="msgReg"/>
+		<result column="msgState" property="msgState"/>
+		<result column="sendMsgDel" property="sendMsgDel"/>
+		<result column="receiveMsgDel" property="receiveMsgDel"/>
+		<result column="sendUserNo" property="sendUserNo"/>
+		<result column="receiveUserNo" property="receiveUserNo"/>
+		<result column="tableNo" property="tableNo"/>
+		<collection property="user" resultMap="User"/>
+	</resultMap>
+
+
+	<!-- 보낸메시지,받은메시지 다 가져오기 -->
+	<select id="selectAll" resultMap="Message">
+		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where receiveUserNo = #{userNo} AND receiveMsgDel='F'
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where sendUserNo = #{userNo} AND sendMsgDel ='F'
+		ORDER by msgReg
+	</select>
+	
+	
+	<!-- 한 회원과 주고 받은 메시지 다 가져오기 -->
+	<select id="msgList" resultMap="Message">
+		<!-- select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo where receiveUserNo = #{userNo}
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo where sendUserNo = #{userNo}
+		ORDER by msgReg -->
+		
+		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where receiveUserNo = #{param1} AND sendUserNo=#{param2} AND receiveMsgDel='F'
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
+								 join PROFILE p ON p.userNo = u.userNo
+		where sendUserNo = #{param1} AND receiveUserNo=#{param2} AND sendMsgDel ='F'
+		ORDER by msgReg
+	</select>
+	
+	<!-- 메시지 번호로 메시지 정보 -->
+	<select id="selectMessage" resultType="kr.or.picsion.message.dto.Message">
+		select * from MESSAGES where msgNo=#{msgNo}
+	</select>
+	
+	<!-- 받은 메시지 삭제 -->
+	<update id="sendDel">
+		update MESSAGES
+		set receiveMsgDel='T'
+		where receiveUserNo=#{param1} AND sendUserNo=#{param2}
+	</update>
+	
+	<!-- 보낸 메시지 삭제 -->
+	<update id="receiveDel">
+		update MESSAGES
+		set sendMsgDel='T'
+		where sendUserNo=#{param1} AND receiveUserNo=#{param2}
+	</update>
+	
+	<!-- 메시지함에서 유저 검색 -->
+	<select id="selectUserMsg" resultMap="Message">
+		select * from MESSAGES m join USERS u ON m.sendUserNo = u.userNo
+						 		 join PROFILE p ON p.userNo = u.userNo
+		where receiveUserNo = #{param1} AND u.userName like '%${param2}%' AND receiveMsgDel='F'
+		union all
+		select * from MESSAGES m join USERS u ON m.receiveUserNo = u.userNo 
+										 join PROFILE p ON p.userNo = u.userNo
+		where sendUserNo = #{param1} AND u.userName like '%${param2}%' AND sendMsgDel ='F'
+		ORDER by msgReg
+	</select>
+	
+	<delete id="deleteMessage">
+		delete from MESSAGES where #{date} > msgReg
+	</delete>
+</mapper>

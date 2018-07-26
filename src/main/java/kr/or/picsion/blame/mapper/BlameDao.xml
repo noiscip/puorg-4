@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.blame.dao.BlameDao">
+
+	<select id="blameList" resultType="kr.or.picsion.blame.dto.Blame">
+		select * from BLAME
+	</select>
+	
+	<select id="complainSearch" resultType="kr.or.picsion.blame.dto.Blame">
+		select * from BLAME where blaReg > #{date}
+	</select>
+	
+	<insert id="complainInsert">
+		insert into BLAME 	(blaUserNo, blaContent, tableNo
+							<if test="brdNo != 0">, brdNo</if>
+							<if test="cmtNo != 0">, cmtNo</if>
+							<if test="picNo != 0">, picNo</if>
+							<if test="userNo != 0">, userNo</if>
+							<if test="msgNo != 0">, msgNo</if>
+							)
+					VALUES 	(#{blaUserNo}, #{blaContent}, #{tableNo}
+							<if test="brdNo != 0">, #{brdNo}</if>
+							<if test="cmtNo != 0">, #{cmtNo}</if>
+							<if test="picNo != 0">, #{picNo}</if>
+							<if test="userNo != 0">, #{userNo}</if>
+							<if test="msgNo != 0">, #{msgNo}</if>
+							)
+	</insert>
+</mapper>

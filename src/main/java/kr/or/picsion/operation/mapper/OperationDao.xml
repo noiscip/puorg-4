@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.operation.dao.OperationDao">
+
+
+
+<insert id="insertOperation" parameterType="kr.or.picsion.operation.dto.Operation">
+	insert into OPERATION (operApplyNo, operPrice, operEndReg, requesterNo, operatorNo, brdNo, step) values (#{operApplyNo},#{operPrice},#{operEndReg},#{requesterNo},#{operatorNo},#{brdNo},#{step})
+	<selectKey keyProperty="operNo" resultType="hashmap" order="AFTER">
+		SELECT operNo from OPERATION where operNo = LAST_INSERT_ID()
+	</selectKey>
+</insert>
+
+<select id="selectOper" resultType="kr.or.picsion.operation.dto.Operation">
+select * from OPERATION where brdNo=#{brdNo}
+</select>
+
+<select id="operNoselectOper" resultType="kr.or.picsion.operation.dto.Operation">
+select * from OPERATION where operNo=#{operNo}
+</select>
+
+<!-- operBoardList(전체조회) -->
+ <select id="operBoardList" 
+                           resultType="kr.or.picsion.operation.dto.Operation">
+      select bo.*,oper.* from BOARD bo left join OPERATION oper on bo.brdNo=oper.brdNo  order by bo.brdNo
+ </select>
+
+
+<!-- operationList(내 작업 정보 리스트) -->
+ <select id="operationList" parameterType="Integer" 
+                           resultType="kr.or.picsion.operation.dto.Operation">      
+      select * from OPERATION where operatorNo=#{userNo} order by operStartReg desc
+ </select>
+
+<!-- requestListv(내 요청 정보 리스트) -->
+ <select id="requestList" parameterType="Integer" 
+                           resultType="kr.or.picsion.operation.dto.Operation">
+      select * from OPERATION where requesterNo=#{userNo} order by operStartReg desc
+ </select>
+ 
+ 
+ <!-- updateOperation(요청 수정) -->
+ <update id="updateOperation" parameterType="kr.or.picsion.operation.dto.Operation">
+      update OPERATION set 
+      				operPrice=#{operPrice}
+      				<if test="step != 0">, step=#{step}</if>
+			      	<if test="operatorEnd != null">, operatorEnd=#{operatorEnd}</if>
+			      	<if test="requesterEnd != null">, requesterEnd=#{requesterEnd}</if>
+			      	<if test="operatorCancel != null">, operatorCancel=#{operatorCancel}</if>
+			      	<if test="requesterCancel != null">, requesterCancel=#{requesterCancel}</if>
+      where operNo=#{operNo}
+ </update>
+</mapper>

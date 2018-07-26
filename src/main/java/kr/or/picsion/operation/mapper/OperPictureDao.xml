@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.picsion.operation.dao.OperPictureDao">
+
+
+
+<insert id="insertOperPicture" parameterType="kr.or.picsion.operation.dto.OperPicture">
+	insert into OPERPICTURE (operNo,userNo) values (#{operNo},#{userNo})
+</insert>
+
+<select id="selectOperpicture" parameterType="Integer" resultType="kr.or.picsion.operation.dto.OperPicture">
+	select * from OPERPICTURE where operNo=#{operNo}
+</select>
+
+<delete id="operPictureCancle">
+	DELETE from PICTURE where picNo=#{picNo};
+</delete>
+<update id="updatepicOperPicture" parameterType="kr.or.picsion.operation.dto.OperPicture">
+      update OPERPICTURE set 
+      				picPath=#{picPath}
+      where operNo=#{operNo}
+ </update>
+ <update id="updatewpicOperPicture" parameterType="kr.or.picsion.operation.dto.OperPicture">
+      update OPERPICTURE set 
+			      	wpicPath=#{wpicPath}
+      where operNo=#{operNo}
+ </update>
+
+ 
+</mapper>
