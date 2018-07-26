@@ -5,7 +5,7 @@
 # 프로젝트 명: PICSION (picture + vision)
 - 공동작업 원격 저장소
 
-puorg-4/src/main/webapp/assets/img/mainpage.PNG
+![puorg-4-screenshot](/src/main/webapp/assets/img/mainpage.PNG)
 
 
 ## 조원
